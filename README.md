@@ -1,2 +1,0 @@
-# DietiDeals24UCM
-.
