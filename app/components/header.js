@@ -62,7 +62,7 @@ function ModifyProfileSection() {
 
 export default function Header({ headerType }) {
   return (
-    <div className="border-b">
+    <div className="sticky top-0 border-b">
       <div className="m-3 flex justify-between">
         <Logo />
 

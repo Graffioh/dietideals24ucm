@@ -7,6 +7,10 @@ export default function Home() {
         <Link href="/login" className="italic">
           Go to login →
         </Link>
+
+        <Link href="/get-started" className="italic">
+          Go to get-started →
+        </Link>
       </div>
 
       <div className="flex justify-center font-extrabold text-2xl">
