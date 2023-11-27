@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 // import { Icons } from "@/components/icons"
-import Image from 'next/image'
+// import Image from 'next/image'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,7 +25,7 @@ export function UserAuthForm({ className, ...props }) {
     <div className={cn("grid gap-4", className)} {...props}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
-          <div className="grid gap-1">
+          <div className="grid gap-3">
             <Label className="sr-only" htmlFor="email">
               Email
             </Label>
