@@ -10,9 +10,11 @@ export default function GetStartedPage() {
         <div className="mb-4 text-4xl">
           <p>It’s easy and fast to use, are you ready? Get started!</p>
       </div>
+      <Link href="/login">
       <div className="mt-2 bg-indigo-950 text-white rounded p-3">
-            <button href="/auth/login">Get started</button>
+            Get started
       </div>
+      </Link>
       </div>
     </>
   );
