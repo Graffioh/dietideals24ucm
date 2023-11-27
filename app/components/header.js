@@ -63,16 +63,15 @@ function ModifyProfileSection() {
 export default function Header({ headerType }) {
   return (
     <div className="sticky top-0 border-b">
-      <div className="m-3 flex justify-between">
-        <Logo />
-
-        {headerType === "headerLoggedFull" && <LoggedFullSection />}
-        {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
-        {headerType === "headerNotifications" && <OnlyNotificationsSection />}
-        {headerType === "headerNotLogged" && <NotLoggedSection />}
-        {headerType === "headerModifyProfile" && <ModifyProfileSection />}
-        {headerType === "headerEmpty"}
-      </div>
+        <div className="m-3 flex justify-between">
+          <Logo />
+          {headerType === "headerLoggedFull" && <LoggedFullSection />}
+          {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
+          {headerType === "headerNotifications" && <OnlyNotificationsSection />}
+          {headerType === "headerNotLogged" && <NotLoggedSection />}
+          {headerType === "headerModifyProfile" && <ModifyProfileSection />}
+          {headerType === "headerEmpty"}
+        </div>
     </div>
   );
 }
