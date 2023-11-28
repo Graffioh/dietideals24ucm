@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
 
 export default function ProfilePage() {
   return (
@@ -10,62 +11,69 @@ export default function ProfilePage() {
       <div className="text-3xl">
         Profilo
       </div>
-{/*       
-      
-        <Input className="w-auto h-8 mb-6 mt-3 flex justify-center w64 max-w-min border-2 border-black"></Input>
-        <Input className="w-auto h-8 mb-6 mt-3 flex justify-center w64 max-w-min border-2 border-black"></Input>
-        <Input className="w-auto h-8 mb-6 mt-3 flex justify-center w64 max-w-min border-2 border-black"></Input>
-        <Input className="w-auto h-8 mb-6 mt-3 flex justify-center w64 max-w-min border-2 border-black"></Input>
-        <Input className="w-auto h-8 mb-6 mt-3 flex justify-center w64 max-w-min border-2 border-black"></Input>
-        <Input className="w-auto h-8 mb-6 mt-3 flex justify-center w64 max-w-min border-2 border-black"></Input>
-        <Input className="w-auto h-8 mb-6 mt-3 flex justify-center w64 max-w-min border-2 border-black"></Input>
-        <Input className="w-auto h-8 mb-6 mt-3 flex justify-center w64 max-w-min border-2 border-black"></Input>
-        <Input className="w-auto h-8 mb-6 mt-3 flex justify-center w64 max-w-min border-2 border-black"></Input>
-        <Input className="w-auto h-8 mb-6 mt-3 flex justify-center w64 max-w-min border-2 border-black"></Input> */}
 
-      <div className="w-full max-w-sm items-center gap-4">
-
-        <Label>Name*</Label>
+      <div className="w-64 max-w-sm items-center grid gap-6">
+        
+      <div>
+        <Label className="flex">Name<div className="text-red-500">*</div></Label>
         <Input type="name" id="name" placeholder="Name"/>
-
-        <Label>Surname*</Label>
+      </div> 
+  
+      <div>
+        <Label className="flex">Surname<div className="text-red-500">*</div></Label>
         <Input type="surname" id="surname" placeholder="Surname"/>
+      </div>
 
-        <Label>Date of birth*</Label>
+      <div>
+        <Label className="flex">Date of birth<div className="text-red-500">*</div></Label>
         <Input type="dateofbirth" id="dateofbirth" placeholder="Date"/>
+      </div>
 
-        <Label>Username*</Label>
+      <div>
+        <Label className="flex">Username<div className="text-red-500">*</div></Label>
         <Input type="username" id="username" placeholder="Userame"/>
 
-        <Label>Mail*</Label>
+      </div>
+
+       <div> 
+        <Label className="flex">Mail<div className="text-red-500">*</div></Label>
         <Input type="mail" id="mail" placeholder="Mail" />
+      </div>
 
-        <Label>Password*</Label>
+      <div>
+        <Label className="flex">Password<div className="text-red-500">*</div></Label>
         <Input type="password" id="password" placeholder="Password" />
+      </div>
 
+      <div>
         <Label>Phone Number</Label>
         <Input type="phoneNumber" id="phoneNumber" placeholder="Phone Number"/>
+      </div>
 
+      <div>
         <Label>Bio</Label>
         <Input type="bio" id="bio" placeholder="Bio"/>
+      </div>
 
+      <div>
         <Label>Website</Label>
         <Input type="website" id="website" placeholder="Website"/>
+      </div>
+        
   
        </div>
 
-        {/* <div className="flex">
-          <div className="mx-2">
-            <button className="border-2 border-black">Cancel</button>
+        <div className="flex">
+          <div className="mx-5 mb-10">
+            <Button className="mr-6 mt-6">Cancel</Button>
           </div>
           <div className="mx-2">
-            <button className="border-2 border-black">Save</button>
+            <Button className="mt-6">Save</Button>
           </div>
-        </div> */}
+        </div>
 
   </div>
 
     </>
   );
 }
-  
