@@ -19,3 +19,4 @@ export default function PrivateProfileLayout({ children}) {
     </div>
   );
 }
+
