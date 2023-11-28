@@ -18,7 +18,7 @@ function LoggedPartialSection() {
     <div className="mr-8 flex justify-between">
       <div className="mr-7 font-medium text-xl">N</div>
       <Link
-        href="/profile"
+        href="/private-profile"
         className="font-medium text-l bg-blue-600 rounded-full pr-8"
       ></Link>
     </div>
@@ -34,7 +34,7 @@ function LoggedFullSection() {
       <div className="mr-8 flex justify-between">
         <div className="mr-7 font-medium text-xl">N</div>
         <Link
-          href="/profile"
+          href="/private-profile"
           className="font-medium text-l bg-blue-600 rounded-full pr-8"
         ></Link>
       </div>
