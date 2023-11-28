@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
+import githubIcon from '../../images/github-logo.svg'
+import googleIcon from '../../images/google-logo.svg'
+import facebookIcon from '../../images/facebook-logo.svg'
 
+import Image from 'next/image';
 import { cn } from "@/lib/utils";
-// import { Icons } from "@/components/icons"
-// import Image from 'next/image'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,9 +54,6 @@ export function UserAuthForm({ className, ...props }) {
             />
           </div>
           <Button disabled={isLoading}>
-            {/* {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )} */}
             Log In
           </Button>
         </div>
@@ -70,28 +69,36 @@ export function UserAuthForm({ className, ...props }) {
         </div>
       </div>
       <Button variant="outline" type="button" disabled={isLoading}>
-        {/* {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.gitHub className="mr-2 h-4 w-4" />
-        )}{" "} */}
+        <Image
+        src={githubIcon}
+        alt="My SVG"
+        width={23}
+        height={23}
+        className="mr-2"
+      />
         Github
       </Button>
       <Button variant="outline" type="button" disabled={isLoading}>
-        {/* {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.gitHub className="mr-2 h-4 w-4" />
-        )}{" "} */}
+        <Image
+        src={googleIcon}
+        alt="My SVG"
+        width={21}
+        height={21}
+        className="mr-2"
+      />
         Google
       </Button>
       <Button variant="outline" type="button" disabled={isLoading}>
-        {/* {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.gitHub className="mr-2 h-4 w-4" />
-        )}{" "} */}
+        <div className="flex ml-3">
+        <Image
+        src={facebookIcon}
+        alt="My SVG"
+        width={23}
+        height={23}
+        className="mr-2"
+      />
         Facebook
+        </div>
       </Button>
     </div>
   );

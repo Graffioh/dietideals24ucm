@@ -15,6 +15,10 @@ export default function Home() {
         <Link href="/insert-auction" className="italic">
           Go to insert auction (general)→
         </Link>
+
+        <Link href="/private-profile" className="italic">
+          Go to private profile →
+        </Link>
       </div>
 
       <div className="flex justify-center font-extrabold text-2xl">
