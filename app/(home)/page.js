@@ -3,13 +3,17 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex flex-col justify-center items-center">
         <Link href="/login" className="italic">
           Go to login →
         </Link>
 
         <Link href="/get-started" className="italic">
-          Go to get-started →
+          Go to get started →
+        </Link>
+
+        <Link href="/insert-auction" className="italic">
+          Go to insert auction (general)→
         </Link>
       </div>
 
