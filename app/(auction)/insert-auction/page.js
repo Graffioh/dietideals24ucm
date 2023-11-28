@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import ComboBox from "../components/combobox.js"
+
 export default function InsertAuctionPage() {
   return (
     <>
@@ -29,9 +31,9 @@ export default function InsertAuctionPage() {
             <Input type="text" placeholder="Description" className=""></Input>
           </div>
 
-          <div className="border-2 border-blue-500">Combobox1</div>
-          <div className="border-2 border-blue-500">Combobox2</div>
-          <div className="border-2 border-blue-500">Combobox3</div>
+          <ComboBox></ComboBox>
+          <ComboBox></ComboBox>
+          <ComboBox></ComboBox>
 
           <Button className="">Create Auction</Button>
         </div>
