@@ -6,17 +6,16 @@ import Footer from "../../components/footer.js";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Private Profile",
-  description: "private profile page for DietiDeals24UCM",
+  title: "homeUCM",
+  description: "Home page for DietiDeals24UCM",
 };
 
-export default function PrivateProfileLayout({ children}) {
+export default function InsertAuctionLayout({ children}) {
   return (
     <div className="relative flex min-h-screen flex-col">
-      <Header headerType={"headerLoggedFull"} />
-  <main className="flex-1">{children}</main>
+      <Header headerType={"headerLoggedPartial"} />
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );
 }
-
