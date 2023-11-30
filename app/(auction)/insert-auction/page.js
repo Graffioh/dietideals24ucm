@@ -1,22 +1,26 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import ComboBox from "../components/combobox.js"
+import ComboboxCategories from "../../components/comboboxCategories"
+import ComboboxAuctions from "../../components/comboboxAuctions.js"
+import ComboboxQuality from "../../components/comboboxQualities.js"
 
 export default function InsertAuctionPage() {
   return (
     <>
-      <div className="flex mt-12">
+      <div className="flex justify-center mt-12">
         <div className="m-6 grid grid-cols-2 gap-2 w-96 max-w-screen h-96 max-h-screen">
           <button className="mt-2 bg-indigo-950 text-white rounded p-3">
-            1
+            +
           </button>
           <button className="mt-2 bg-indigo-950 text-white rounded p-3">
-            2
+            +
           </button>
           <button className="mt-2 bg-indigo-950 text-white rounded p-3">
-            3
+            + 
           </button>
         </div>
 
@@ -31,9 +35,9 @@ export default function InsertAuctionPage() {
             <Input type="text" placeholder="Description" className=""></Input>
           </div>
 
-          <ComboBox></ComboBox>
-          <ComboBox></ComboBox>
-          <ComboBox></ComboBox>
+          <ComboboxCategories></ComboboxCategories>
+          <ComboboxAuctions></ComboboxAuctions>
+          <ComboboxQuality></ComboboxQuality>
 
           <Button className="">Create Auction</Button>
         </div>
