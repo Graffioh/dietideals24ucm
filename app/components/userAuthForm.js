@@ -54,7 +54,7 @@ export function UserAuthForm({ className, ...props }) {
             />
           </div>
           <Button disabled={isLoading}>
-            Log In
+            Create Account
           </Button>
         </div>
       </form>

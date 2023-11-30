@@ -19,7 +19,14 @@ export default function Home() {
         <Link href="/private-profile" className="italic">
           Go to private profile →
         </Link>
-      </div>
+    
+
+      <Link href="/create-account" className="italic">
+          Go to create account →
+        </Link>
+      
+        </div>
+
 
       <div className="flex justify-center font-extrabold text-2xl">
         HOME content
