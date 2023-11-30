@@ -3,61 +3,73 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 
 export default function ProfilePage() {
   return (
     <>
-    <div className="flex flex-col items-center h-auto">
-      <div className="text-3xl">
-        Profilo
-      </div>
 
-      <div className="w-64 max-w-sm items-center grid gap-6">
+   <div className = "flex flex justify-center mb-10 mt-10">
+    <Avatar className = "h-32 w-32">
+      <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
+      <AvatarFallback>gojo</AvatarFallback>
+    </Avatar>
+    </div> 
+  
+    
+    <div className="flex flex-col items-center">
+
+      <div className="w-64 items-center grid gap-6">
         
       <div>
-        <Label className="flex">Name<div className="text-red-500">*</div></Label>
-        <Input type="name" id="name" placeholder="Name"/>
+        <Label className="flex mb-2">Name<div className="text-red-500">*</div></Label>
+        <Input className="h-8" type="name" id="name" placeholder="Name"/>
       </div> 
   
       <div>
-        <Label className="flex">Surname<div className="text-red-500">*</div></Label>
-        <Input type="surname" id="surname" placeholder="Surname"/>
+        <Label className="flex mb-2">Surname<div className="text-red-500">*</div></Label>
+        <Input className="h-8" type="surname" id="surname" placeholder="Surname"/>
       </div>
 
-      <div>
-        <Label className="flex">Date of birth<div className="text-red-500">*</div></Label>
-        <Input type="dateofbirth" id="dateofbirth" placeholder="Date"/>
-      </div>
 
       <div>
-        <Label className="flex">Username<div className="text-red-500">*</div></Label>
-        <Input type="username" id="username" placeholder="Userame"/>
+        <Label className="flex mb-2">Username<div className="text-red-500">*</div></Label>
+        <Input className="h-8" type="username" id="username" placeholder="Userame"/>
 
       </div>
 
        <div> 
-        <Label className="flex">Mail<div className="text-red-500">*</div></Label>
-        <Input type="mail" id="mail" placeholder="Mail" />
+        <Label className="flex mb-2">Mail<div className="text-red-500">*</div></Label>
+        <Input className="h-8" type="mail" id="mail" placeholder="Mail" />
       </div>
 
       <div>
-        <Label className="flex">Password<div className="text-red-500">*</div></Label>
-        <Input type="password" id="password" placeholder="Password" />
+        <Label className="flex mb-2">Password<div className="text-red-500">*</div></Label>
+        <Input className="h-8" type="password" id="password" placeholder="Password" />
       </div>
 
       <div>
-        <Label>Phone Number</Label>
-        <Input type="phoneNumber" id="phoneNumber" placeholder="Phone Number"/>
+        <Label className="flex mb-2">Date of birth<div className="text-red-500">*</div></Label>
+        <Input className="h-8" type="dateofbirth" id="dateofbirth" placeholder="Date"/>
       </div>
 
       <div>
-        <Label>Bio</Label>
-        <Input type="bio" id="bio" placeholder="Bio"/>
+        <Label className="flex mb-2">Phone Number</Label>
+        <Input className="h-8" type="phoneNumber" id="phoneNumber" placeholder="Phone Number"/>
       </div>
 
       <div>
-        <Label>Website</Label>
-        <Input type="website" id="website" placeholder="Website"/>
+        <Label className="flex mb-2">Bio</Label>
+        <Input className="h-8" type="bio" id="bio" placeholder="Bio"/>
+      </div>
+
+      <div>
+        <Label className="flex mb-2">Website</Label>
+        <Input className="h-8" type="website" id="website" placeholder="Website"/>
       </div>
         
   
