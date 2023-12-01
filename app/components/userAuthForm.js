@@ -54,7 +54,7 @@ export function UserAuthForm({ className, ...props }) {
             />
           </div>
           <Button disabled={isLoading}>
-            Log In
+            Create Account
           </Button>
         </div>
       </form>
@@ -68,7 +68,7 @@ export function UserAuthForm({ className, ...props }) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
+      <Button variant="Github" type="button" disabled={isLoading}>
         <Image
         src={githubIcon}
         alt="My SVG"
@@ -78,7 +78,7 @@ export function UserAuthForm({ className, ...props }) {
       />
         Github
       </Button>
-      <Button variant="outline" type="button" disabled={isLoading}>
+      <Button variant="Google" type="button" disabled={isLoading}>
         <Image
         src={googleIcon}
         alt="My SVG"
@@ -88,7 +88,7 @@ export function UserAuthForm({ className, ...props }) {
       />
         Google
       </Button>
-      <Button variant="outline" type="button" disabled={isLoading}>
+      <Button variant="Facebook" type="button" disabled={isLoading}>
         <div className="flex ml-3">
         <Image
         src={facebookIcon}
