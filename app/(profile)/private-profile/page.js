@@ -1,6 +1,7 @@
 "use client"
 
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import {
@@ -38,7 +39,7 @@ export default function ProfilePage() {
 
       <div>
         <Label className="flex mb-2">Username<div className="text-red-500">*</div></Label>
-        <Input className="h-8" type="username" id="username" placeholder="Userame"/>
+        <Input className="h-8" type="username" id="username" placeholder="Username"/>
 
       </div>
 
@@ -64,7 +65,7 @@ export default function ProfilePage() {
 
       <div>
         <Label className="flex mb-2">Bio</Label>
-        <Input className="h-8" type="bio" id="bio" placeholder="Bio"/>
+        <Textarea placeholder="Type your description here." />
       </div>
 
       <div>
