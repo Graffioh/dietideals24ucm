@@ -20,16 +20,16 @@ import {
 
 const auctions = [
   {
-    value: "descending",
-    label: "Descending Auction",
-  },
-  {
     value: "fixed",
     label: "Fixed time Auction",
   },
   {
     value: "english",
     label: "English Auction",
+  },
+  {
+    value: "descending",
+    label: "Descending Auction",
   },
 ];
 
