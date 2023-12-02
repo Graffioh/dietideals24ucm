@@ -9,7 +9,7 @@ export default function CreateAccountPage() {
         <p className="text-sm text-slate-500 mb-4">
           Enter your email and password below to create your account
         </p>
-        <UserAuthForm className="w-80 min-w-screen" createOrLogin="Create account" />
+        <UserAuthForm className="w-80 min-w-screen" createOrLogin={"Create Account"} />
       </div>
     </>
   );
