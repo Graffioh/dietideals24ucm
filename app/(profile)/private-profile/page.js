@@ -1,6 +1,7 @@
 "use client"
 
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import {
@@ -27,49 +28,49 @@ export default function ProfilePage() {
         
       <div>
         <Label className="flex mb-2">Name<div className="text-red-500">*</div></Label>
-        <Input className="h-8" type="name" id="name" placeholder="Name"/>
+        <Input className="h-9" type="text" id="name" placeholder="Name"/>
       </div> 
   
       <div>
         <Label className="flex mb-2">Surname<div className="text-red-500">*</div></Label>
-        <Input className="h-8" type="surname" id="surname" placeholder="Surname"/>
+        <Input className="h-9" type="text" id="surname" placeholder="Surname"/>
       </div>
 
 
       <div>
         <Label className="flex mb-2">Username<div className="text-red-500">*</div></Label>
-        <Input className="h-8" type="username" id="username" placeholder="Userame"/>
+        <Input className="h-9" type="text" id="username" placeholder="Username"/>
 
       </div>
 
        <div> 
         <Label className="flex mb-2">Mail<div className="text-red-500">*</div></Label>
-        <Input className="h-8" type="mail" id="mail" placeholder="Mail" />
+        <Input className="h-9" type="email" id="mail" placeholder="Mail" />
       </div>
 
       <div>
         <Label className="flex mb-2">Password<div className="text-red-500">*</div></Label>
-        <Input className="h-8" type="password" id="password" placeholder="Password" />
+        <Input className="h-9" type="password" id="password" placeholder="Password" />
       </div>
 
       <div>
         <Label className="flex mb-2">Date of birth<div className="text-red-500">*</div></Label>
-        <Input className="h-8" type="dateofbirth" id="dateofbirth" placeholder="Date"/>
+        <Input className="h-9" type="text" id="dateofbirth" placeholder="Date"/>
       </div>
 
       <div>
         <Label className="flex mb-2">Phone Number</Label>
-        <Input className="h-8" type="phoneNumber" id="phoneNumber" placeholder="Phone Number"/>
+        <Input className="h-9" type="tel" id="phoneNumber" placeholder="Phone Number"/>
       </div>
 
       <div>
         <Label className="flex mb-2">Bio</Label>
-        <Input className="h-8" type="bio" id="bio" placeholder="Bio"/>
+        <Textarea placeholder="Type your description here." />
       </div>
 
       <div>
         <Label className="flex mb-2">Website</Label>
-        <Input className="h-8" type="website" id="website" placeholder="Website"/>
+        <Input className="h-9" type="url" id="website" placeholder="Website"/>
       </div>
         
   
