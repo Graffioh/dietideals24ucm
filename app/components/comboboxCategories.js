@@ -20,20 +20,20 @@ import {
 
 const categories = [
   {
-    value: "category1",
-    label: "Category 1",
+    value: "girl",
+    label: "Girl",
   },
   {
-    value: "category2",
-    label: "Category 2",
+    value: "boy",
+    label: "Boy",
   },
   {
-    value: "category3",
-    label: "Category 3",
+    value: "they/them",
+    label: "They/Them",
   },
 ]
 
-export default function ComboboxCategories() {
+export default function ComboboxCategories({ setCategoryFromCombobox }) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
 
@@ -64,6 +64,7 @@ export default function ComboboxCategories() {
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue)
                   setOpen(false)
+                  setCategoryFromCombobox(currentValue);
                 }}
               >
                 <Check
