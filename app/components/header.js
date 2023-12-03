@@ -1,4 +1,14 @@
+"use client";
+
 import Link from "next/link";
+
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { BellIcon, Pencil1Icon } from "@radix-ui/react-icons";
+
+import { cn } from "@/lib/utils";
+import ComboboxCategories from "./comboboxCategories";
+import Searchbar from "./searchbar";
 
 function Logo() {
   return (
@@ -16,11 +26,15 @@ function Logo() {
 function LoggedPartialSection() {
   return (
     <div className="mr-8 flex justify-between">
-      <div className="mr-7 font-medium text-xl">N</div>
-      <Link
-        href="/private-profile"
-        className="font-medium text-l bg-blue-600 rounded-full pr-8"
-      ></Link>
+      <Button variant="ghost" className="mx-2">
+        <BellIcon width="23" height="23" />
+      </Button>
+      <Link href="/private-profile" className="mt-0.5">
+        <Avatar className="h-9 w-9">
+          <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
+          <AvatarFallback>gojo</AvatarFallback>
+        </Avatar>
+      </Link>
     </div>
   );
 }
@@ -29,33 +43,73 @@ function LoggedPartialSection() {
 function LoggedFullSection() {
   return (
     <>
-      <div>Categories</div>
-      <div>Search</div>
+      <ComboboxCategories />
+
+      <Searchbar />
+
       <div className="mr-8 flex justify-between">
-        <div className="mr-7 font-medium text-xl">N</div>
         <Link
-          href="/private-profile"
-          className="font-medium text-l bg-blue-600 rounded-full pr-8"
-        ></Link>
+          href="/insert-auction"
+          className={cn(
+            buttonVariants({
+              variant: "default",
+              size: "default",
+              className: "h-9",
+            })
+          )}
+        >
+          Insert auction
+        </Link>
+        <Button variant="ghost" className="mx-2">
+          <BellIcon width="23" height="23" />
+        </Button>
+        <Link href="/private-profile" className="mt-0.5">
+          <Avatar className="h-9 w-9">
+            <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
+            <AvatarFallback>gojo</AvatarFallback>
+          </Avatar>
+        </Link>
       </div>
     </>
   );
 }
 
 function OnlyNotificationsSection() {
-  return <div className="mr-8 font-medium text-xl">N</div>;
+  return (
+    <Button variant="ghost" className="mx-2">
+      <BellIcon width="23" height="23" />
+    </Button>
+  );
 }
 
 function NotLoggedSection() {
-  return <div className="mr-6 font-medium text-xl">Log In</div>;
+  return (
+    <Link
+      href="/login"
+      className={cn(
+        buttonVariants({
+          variant: "default",
+          size: "default",
+          className: "h-9 mr-4",
+        })
+      )}
+    >
+      Log In
+    </Link>
+  );
 }
 
 // Modify profile icon and notifications
 function ModifyProfileSection() {
   return (
     <div className="mr-8 flex justify-between">
-      <div className="mr-7 font-medium text-xl">M</div>
-      <div className="font-medium text-xl">N</div>
+      <Button variant="ghost" className="">
+        <Pencil1Icon width="23" height="23" />
+      </Button>
+
+      <Button variant="ghost" className="">
+        <BellIcon width="23" height="23" />
+      </Button>
     </div>
   );
 }
