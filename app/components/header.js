@@ -47,35 +47,34 @@ function LoggedPartialSection() {
 function LoggedFullSection() {
   return (
     <>
-      {/* <div className="flex space-x-3 justify-between border-2 border-red-500"> */}
+      <div className="flex flex-grow justify-between mx-48 mb-2">
         <ComboboxCategories />
-
         <Searchbar />
+      </div>
 
-        <div className="mr-8 flex justify-between">
-          <Link
-            href="/insert-auction"
-            className={cn(
-              buttonVariants({
-                variant: "default",
-                size: "default",
-                className: "h-9",
-              })
-            )}
-          >
-            Insert auction
-          </Link>
-          <Button variant="ghost" className="mx-2">
-            <BellIcon width="23" height="23" />
-          </Button>
-          <Link href="/private-profile" className="mt-0.5">
-            <Avatar className="h-9 w-9">
-              <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
-              <AvatarFallback>gojo</AvatarFallback>
-            </Avatar>
-          </Link>
-        </div>
-      {/* </div> */}
+      <div className="mr-7 flex justify-between">
+        <Link
+          href="/insert-auction"
+          className={cn(
+            buttonVariants({
+              variant: "default",
+              size: "default",
+              className: "h-9",
+            })
+          )}
+        >
+          Insert auction
+        </Link>
+        <Button variant="ghost" className="mx-2">
+          <BellIcon width="23" height="23" />
+        </Button>
+        <Link href="/private-profile" className="mt-0.5">
+          <Avatar className="h-9 w-9">
+            <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
+            <AvatarFallback>gojo</AvatarFallback>
+          </Avatar>
+        </Link>
+      </div>
     </>
   );
 }
@@ -123,24 +122,30 @@ function ModifyProfileSection() {
 export default function Header({ headerType }) {
   return (
     <>
-    <div className="hidden m-2 md:flex justify-between sticky top-0 border-b">
-      <Logo />
+      <div className="hidden m-2 md:flex justify-between sticky top-0 border-b">
+        <div className="mt-1">
+          <Logo />
+        </div>
+
         {headerType === "headerLoggedFull" && <LoggedFullSection />}
         {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
         {headerType === "headerNotifications" && <OnlyNotificationsSection />}
         {headerType === "headerNotLogged" && <NotLoggedSection />}
         {headerType === "headerModifyProfile" && <ModifyProfileSection />}
         {headerType === "headerEmpty"}
-    </div>
-
-    <div className="md:hidden m-2 flex justify-between sticky top-0 border-b">
-      <Logo />
-      <div className="flex md:hidden">
-        <Button variant="ghost" className="">
-          <HamburgerMenuIcon width="23" height="23" />
-        </Button>
       </div>
-    </div>
+
+      <div className="md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
+        <div className="mt-1">
+          <Logo />
+        </div>
+
+        <div className="flex md:hidden">
+          <Button variant="ghost">
+            <HamburgerMenuIcon width="23" height="23" />
+          </Button>
+        </div>
+      </div>
     </>
   );
 }
