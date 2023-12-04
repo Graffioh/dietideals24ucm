@@ -4,7 +4,11 @@ import Link from "next/link";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BellIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import {
+  BellIcon,
+  Pencil1Icon,
+  HamburgerMenuIcon,
+} from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
 import ComboboxCategories from "./comboboxCategories";
@@ -43,11 +47,12 @@ function LoggedPartialSection() {
 function LoggedFullSection() {
   return (
     <>
-      <ComboboxCategories />
+      <div className="flex flex-grow justify-between mx-48 mb-2">
+        <ComboboxCategories />
+        <Searchbar />
+      </div>
 
-      <Searchbar />
-
-      <div className="mr-8 flex justify-between">
+      <div className="mr-7 flex justify-between">
         <Link
           href="/insert-auction"
           className={cn(
@@ -116,9 +121,11 @@ function ModifyProfileSection() {
 
 export default function Header({ headerType }) {
   return (
-    <div className="sticky top-0 border-b">
-      <div className="m-3 flex justify-between">
-        <Logo />
+    <>
+      <div className="hidden m-2 md:flex justify-between sticky top-0 border-b">
+        <div className="mt-1">
+          <Logo />
+        </div>
 
         {headerType === "headerLoggedFull" && <LoggedFullSection />}
         {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
@@ -127,6 +134,18 @@ export default function Header({ headerType }) {
         {headerType === "headerModifyProfile" && <ModifyProfileSection />}
         {headerType === "headerEmpty"}
       </div>
-    </div>
+
+      <div className="md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
+        <div className="mt-1">
+          <Logo />
+        </div>
+
+        <div className="flex md:hidden">
+          <Button variant="ghost">
+            <HamburgerMenuIcon width="23" height="23" />
+          </Button>
+        </div>
+      </div>
+    </>
   );
 }
