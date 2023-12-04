@@ -4,7 +4,11 @@ import Link from "next/link";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BellIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import {
+  BellIcon,
+  Pencil1Icon,
+  HamburgerMenuIcon,
+} from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
 import ComboboxCategories from "./comboboxCategories";
@@ -43,33 +47,35 @@ function LoggedPartialSection() {
 function LoggedFullSection() {
   return (
     <>
-      <ComboboxCategories />
+      {/* <div className="flex space-x-3 justify-between border-2 border-red-500"> */}
+        <ComboboxCategories />
 
-      <Searchbar />
+        <Searchbar />
 
-      <div className="mr-8 flex justify-between">
-        <Link
-          href="/insert-auction"
-          className={cn(
-            buttonVariants({
-              variant: "default",
-              size: "default",
-              className: "h-9",
-            })
-          )}
-        >
-          Insert auction
-        </Link>
-        <Button variant="ghost" className="mx-2">
-          <BellIcon width="23" height="23" />
-        </Button>
-        <Link href="/private-profile" className="mt-0.5">
-          <Avatar className="h-9 w-9">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
-            <AvatarFallback>gojo</AvatarFallback>
-          </Avatar>
-        </Link>
-      </div>
+        <div className="mr-8 flex justify-between">
+          <Link
+            href="/insert-auction"
+            className={cn(
+              buttonVariants({
+                variant: "default",
+                size: "default",
+                className: "h-9",
+              })
+            )}
+          >
+            Insert auction
+          </Link>
+          <Button variant="ghost" className="mx-2">
+            <BellIcon width="23" height="23" />
+          </Button>
+          <Link href="/private-profile" className="mt-0.5">
+            <Avatar className="h-9 w-9">
+              <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
+              <AvatarFallback>gojo</AvatarFallback>
+            </Avatar>
+          </Link>
+        </div>
+      {/* </div> */}
     </>
   );
 }
@@ -116,17 +122,25 @@ function ModifyProfileSection() {
 
 export default function Header({ headerType }) {
   return (
-    <div className="sticky top-0 border-b">
-      <div className="m-3 flex justify-between">
-        <Logo />
-
+    <>
+    <div className="hidden m-2 md:flex justify-between sticky top-0 border-b">
+      <Logo />
         {headerType === "headerLoggedFull" && <LoggedFullSection />}
         {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
         {headerType === "headerNotifications" && <OnlyNotificationsSection />}
         {headerType === "headerNotLogged" && <NotLoggedSection />}
         {headerType === "headerModifyProfile" && <ModifyProfileSection />}
         {headerType === "headerEmpty"}
+    </div>
+
+    <div className="md:hidden m-2 flex justify-between sticky top-0 border-b">
+      <Logo />
+      <div className="flex md:hidden">
+        <Button variant="ghost" className="">
+          <HamburgerMenuIcon width="23" height="23" />
+        </Button>
       </div>
     </div>
+    </>
   );
 }

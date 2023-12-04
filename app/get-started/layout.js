@@ -10,11 +10,11 @@ export const metadata = {
   description: "Home page for DietiDeals24UCM",
 };
 
-export default function HomeLayout({ children}) {
+export default function HomeLayout({ children }) {
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div>
       <Header headerType={"headerNotLogged"} />
-  <main className="flex-1">{children}</main>
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );
