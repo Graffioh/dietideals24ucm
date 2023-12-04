@@ -230,46 +230,54 @@ export default function Header({ headerType }) {
       </div>
 
       {/* Mobile */}
-      <div className="md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
-        <div className="mt-1">
-          <Logo />
+      {headerType === "headerEmpty" ? (
+        <div className="md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
+          <div className="mt-1">
+            <Logo />
+          </div>
         </div>
+      ) : (
+        <div className="md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
+          <div className="mt-1">
+            <Logo />
+          </div>
 
-        <div className="flex md:hidden" onClick={handleHamburger}>
-          {isHamburgerOpen ? (
-            <Button variant="ghost">
-              <Cross1Icon width="23" height="23" />
-            </Button>
-          ) : (
-            <Button variant="ghost">
-              <HamburgerMenuIcon width="23" height="23" />
-            </Button>
-          )}
-        </div>
+          <div className="flex md:hidden" onClick={handleHamburger}>
+            {isHamburgerOpen ? (
+              <Button variant="ghost">
+                <Cross1Icon width="23" height="23" />
+              </Button>
+            ) : (
+              <Button variant="ghost">
+                <HamburgerMenuIcon width="23" height="23" />
+              </Button>
+            )}
+          </div>
 
-        <div
-          className={
-            isHamburgerOpen
-              ? "md:hidden absolute flex items-center justify-center bg-indigo-950 min-h-[40vh] left-0 top-[100%] w-full rounded"
-              : "hidden"
-          }
-        >
-          <ul className="flex flex-col items-center">
-            {headerType === "headerLoggedFull" && <LoggedFullSectionMobile />}
-            {headerType === "headerLoggedPartial" && (
-              <LoggedPartialSectionMobile />
-            )}
-            {headerType === "headerNotifications" && (
-              <OnlyNotificationsSectionMobile />
-            )}
-            {headerType === "headerNotLogged" && <NotLoggedSectionMobile />}
-            {headerType === "headerModifyProfile" && (
-              <ModifyProfileSectionMobile />
-            )}
-            {headerType === "headerEmpty"}
-          </ul>
+          <div
+            className={
+              isHamburgerOpen
+                ? "md:hidden absolute flex items-center justify-center bg-indigo-950 min-h-[40vh] left-0 top-[100%] w-full rounded"
+                : "hidden"
+            }
+          >
+            <ul className="flex flex-col items-center">
+              {headerType === "headerLoggedFull" && <LoggedFullSectionMobile />}
+              {headerType === "headerLoggedPartial" && (
+                <LoggedPartialSectionMobile />
+              )}
+              {headerType === "headerNotifications" && (
+                <OnlyNotificationsSectionMobile />
+              )}
+              {headerType === "headerNotLogged" && <NotLoggedSectionMobile />}
+              {headerType === "headerModifyProfile" && (
+                <ModifyProfileSectionMobile />
+              )}
+              {headerType === "headerEmpty"}
+            </ul>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

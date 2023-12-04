@@ -10,13 +10,12 @@ export const metadata = {
   description: "private profile page for DietiDeals24UCM",
 };
 
-export default function PrivateProfileLayout({ children}) {
+export default function PrivateProfileLayout({ children }) {
   return (
     <div className="relative flex min-h-screen flex-col">
-      <Header headerType={"headerModifyProfile"}/>
-  <main className="flex-1">{children}</main>
+      <Header headerType={"headerModifyProfile"} />
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );
 }
-
