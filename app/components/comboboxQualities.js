@@ -40,15 +40,15 @@ export default function ComboboxQuality() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[200px] justify-between bg-white"
         >
           {value
             ? qualities.find((quality) => quality.value === value)?.label
             : "Select quality"}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 bg-white" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[200px] p-0 bg-white">
         <Command>
           <CommandInput placeholder="Select quality." />
           <CommandEmpty>No quality found</CommandEmpty>

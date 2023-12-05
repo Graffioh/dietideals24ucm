@@ -39,6 +39,7 @@ export function UserAuthForm({ className, createOrLogin}) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
+              className="bg-white"
             />
             <Label className="sr-only" htmlFor="email">
               Password
@@ -51,9 +52,10 @@ export function UserAuthForm({ className, createOrLogin}) {
               autoComplete="password"
               autoCorrect="off"
               disabled={isLoading}
+              className="bg-white"
             />
           </div>
-          <Button disabled={isLoading}>
+          <Button disabled={isLoading} className="bg-blue-950">
             {createOrLogin}
           </Button>
         </div>

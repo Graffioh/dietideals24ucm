@@ -40,7 +40,7 @@ function FixedTimeAuctionComponents() {
             Time<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="time" placeholder="Time" className=""></Input>
+        <Input type="time" placeholder="Time" className="bg-white"></Input>
       </div>
 
       <div>
@@ -52,7 +52,7 @@ function FixedTimeAuctionComponents() {
         <Input
           type="number"
           placeholder="Minimum threshold price"
-          className=""
+          className="bg-white"
         ></Input>
       </div>
     </>
@@ -68,7 +68,7 @@ function EnglishAuctionComponents() {
             Start price<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="number" placeholder="Start price" className=""></Input>
+        <Input type="number" placeholder="Start price" className="bg-white"></Input>
       </div>
 
       <div>
@@ -77,7 +77,7 @@ function EnglishAuctionComponents() {
             Offer timer<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="time" placeholder="Offer timer" className=""></Input>
+        <Input type="time" placeholder="Offer timer" className="bg-white"></Input>
       </div>
 
       <div>
@@ -89,7 +89,7 @@ function EnglishAuctionComponents() {
         <Input
           type="number"
           placeholder="Rise threshold price"
-          className=""
+          className="bg-white"
         ></Input>
       </div>
     </>
@@ -105,7 +105,7 @@ function DescendingAuctionComponents() {
             Start price<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="number" placeholder="Start price" className=""></Input>
+        <Input type="number" placeholder="Start price" className="bg-white"></Input>
       </div>
 
       <div>
@@ -114,7 +114,7 @@ function DescendingAuctionComponents() {
             Expire time<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="time" placeholder="Expire time" className=""></Input>
+        <Input type="time" placeholder="Expire time" className="bg-white"></Input>
       </div>
 
       <div>
@@ -123,7 +123,7 @@ function DescendingAuctionComponents() {
             Decrement amount<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="number" placeholder="Decrement amount" className=""></Input>
+        <Input type="number" placeholder="Decrement amount" className="bg-white"></Input>
       </div>
 
       <div>
@@ -132,7 +132,7 @@ function DescendingAuctionComponents() {
             Decrement Timer<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="number" placeholder="Decrement timer" className=""></Input>
+        <Input type="number" placeholder="Decrement timer" className="bg-white"></Input>
       </div>
 
       <div>
@@ -144,7 +144,7 @@ function DescendingAuctionComponents() {
         <Input
           type="number"
           placeholder="Secret minimum price"
-          className=""
+          className="bg-white"
         ></Input>
       </div>
     </>
@@ -181,7 +181,7 @@ export default function InsertAuctionPage() {
                   Title<span className="text-red-500">*</span>
                 </Label>
               </div>
-              <Input type="text" placeholder="Title" className=""></Input>
+              <Input type="text" placeholder="Title" className="bg-white"></Input>
             </div>
 
             <div>
@@ -190,7 +190,7 @@ export default function InsertAuctionPage() {
                   Description<span className="text-red-500">*</span>
                 </Label>
               </div>
-              <Textarea placeholder="Type your description here." />
+              <Textarea placeholder="Type your description here." className="bg-white" />
             </div>
           </div>
 
