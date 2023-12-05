@@ -162,13 +162,13 @@ export default function InsertAuctionPage() {
     <>
       <div className="flex flex-col md:flex-row items-center mt-12">
         <div className="mx-3 mb-6 md:m-6 md:mr-20 md:ml-48 grid md:grid-cols-2 gap-2">
-          <button className="w-52 h-52 mt-2 text-2xl bg-indigo-950 text-white rounded p-3">
+          <button className="w-52 h-52 mt-2 text-2xl bg-blue-950 text-white rounded p-3">
             +
           </button>
-          <button className="w-52 h-52 mt-2 text-2xl bg-indigo-950 text-white rounded p-3">
+          <button className="w-52 h-52 mt-2 text-2xl bg-blue-950 text-white rounded p-3">
             +
           </button>
-          <button className="w-52 h-52 mt-2 text-2xl bg-indigo-950 text-white rounded p-3">
+          <button className="w-52 h-52 mt-2 text-2xl bg-blue-950 text-white rounded p-3">
             +
           </button>
         </div>
