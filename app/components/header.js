@@ -216,7 +216,7 @@ export default function Header({ headerType }) {
   return (
     <>
       {/* Web */}
-      <div className="hidden m-2 md:flex justify-between sticky top-0 border-b">
+      <div className="bg-white hidden m-2 md:flex justify-between sticky top-0 border-b">
         <div className="mt-1">
           <Logo />
         </div>
@@ -231,13 +231,13 @@ export default function Header({ headerType }) {
 
       {/* Mobile */}
       {headerType === "headerEmpty" ? (
-        <div className="md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
+        <div className="bg-white md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
           <div className="mt-1">
             <Logo />
           </div>
         </div>
       ) : (
-        <div className="md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
+        <div className="bg-white md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
           <div className="mt-1">
             <Logo />
           </div>
