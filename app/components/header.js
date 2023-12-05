@@ -257,7 +257,7 @@ export default function Header({ headerType }) {
           <div
             className={
               isHamburgerOpen
-                ? "md:hidden absolute flex items-center justify-center bg-indigo-950 min-h-[40vh] left-0 top-[100%] w-full rounded"
+                ? "md:hidden absolute flex items-center justify-center bg-blue-950 min-h-[40vh] left-0 top-[100%] w-full rounded"
                 : "hidden"
             }
           >
