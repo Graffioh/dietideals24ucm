@@ -56,7 +56,7 @@ function LoggedFullSection() {
         <Searchbar />
       </div>
 
-      <div className="mr-7 flex justify-between">
+      <div className="mt-0.5 mr-7 flex justify-between">
         <Link
           href="/insert-auction"
           className={cn(
