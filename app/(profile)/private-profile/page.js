@@ -23,7 +23,7 @@ export default function ProfilePage() {
             <Label className="flex mb-2">
               Name<div className="text-red-500">*</div>
             </Label>
-            <Input className="h-9" type="text" id="name" placeholder="Name" />
+            <Input className="h-9 bg-white" type="text" id="name" placeholder="Name" />
           </div>
 
           <div>
@@ -31,7 +31,7 @@ export default function ProfilePage() {
               Surname<div className="text-red-500">*</div>
             </Label>
             <Input
-              className="h-9"
+              className="h-9 bg-white"
               type="text"
               id="surname"
               placeholder="Surname"
@@ -43,7 +43,7 @@ export default function ProfilePage() {
               Username<div className="text-red-500">*</div>
             </Label>
             <Input
-              className="h-9"
+              className="h-9 bg-white"
               type="text"
               id="username"
               placeholder="Username"
@@ -54,7 +54,7 @@ export default function ProfilePage() {
             <Label className="flex mb-2">
               Mail<div className="text-red-500">*</div>
             </Label>
-            <Input className="h-9" type="email" id="mail" placeholder="Mail" />
+            <Input className="h-9 bg-white" type="email" id="mail" placeholder="Mail" />
           </div>
 
           <div>
@@ -62,7 +62,7 @@ export default function ProfilePage() {
               Password<div className="text-red-500">*</div>
             </Label>
             <Input
-              className="h-9"
+              className="h-9 bg-white"
               type="password"
               id="password"
               placeholder="Password"
@@ -74,7 +74,7 @@ export default function ProfilePage() {
               Date of birth<div className="text-red-500">*</div>
             </Label>
             <Input
-              className="h-9"
+              className="h-9 bg-white"
               type="text"
               id="dateofbirth"
               placeholder="Date"
@@ -84,7 +84,7 @@ export default function ProfilePage() {
           <div>
             <Label className="flex mb-2">Phone Number</Label>
             <Input
-              className="h-9"
+              className="h-9 bg-white"
               type="tel"
               id="phoneNumber"
               placeholder="Phone Number"
@@ -93,13 +93,13 @@ export default function ProfilePage() {
 
           <div>
             <Label className="flex mb-2">Bio</Label>
-            <Textarea placeholder="Type your description here." />
+            <Textarea className="bg-white" placeholder="Type your description here." />
           </div>
 
           <div>
             <Label className="flex mb-2">Website</Label>
             <Input
-              className="h-9"
+              className="h-9 bg-white"
               type="url"
               id="website"
               placeholder="Website"

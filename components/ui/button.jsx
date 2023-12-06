@@ -15,11 +15,11 @@ const buttonVariants = cva(
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         Facebook:
-          "border border-input bg-background hover:bg-blue-600 hover:text-white",
+          "border border-input bg-white hover:bg-blue-600 hover:text-white",
         Google:
-        "border border-input bg-background hover:bg-red-700 hover:text-white",
+        "border border-input bg-white hover:bg-red-700 hover:text-white",
         Github:
-        "border border-input bg-background hover:bg-zinc-600 hover:text-white",
+        "border border-input bg-white hover:bg-zinc-600 hover:text-white",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
