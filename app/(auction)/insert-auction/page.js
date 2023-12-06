@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -68,7 +69,11 @@ function EnglishAuctionComponents() {
             Start price<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="number" placeholder="Start price" className="bg-white"></Input>
+        <Input
+          type="number"
+          placeholder="Start price"
+          className="bg-white"
+        ></Input>
       </div>
 
       <div>
@@ -77,7 +82,11 @@ function EnglishAuctionComponents() {
             Offer timer<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="time" placeholder="Offer timer" className="bg-white"></Input>
+        <Input
+          type="time"
+          placeholder="Offer timer"
+          className="bg-white"
+        ></Input>
       </div>
 
       <div>
@@ -105,7 +114,11 @@ function DescendingAuctionComponents() {
             Start price<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="number" placeholder="Start price" className="bg-white"></Input>
+        <Input
+          type="number"
+          placeholder="Start price"
+          className="bg-white"
+        ></Input>
       </div>
 
       <div>
@@ -114,7 +127,11 @@ function DescendingAuctionComponents() {
             Expire time<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="time" placeholder="Expire time" className="bg-white"></Input>
+        <Input
+          type="time"
+          placeholder="Expire time"
+          className="bg-white"
+        ></Input>
       </div>
 
       <div>
@@ -123,7 +140,11 @@ function DescendingAuctionComponents() {
             Decrement amount<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="number" placeholder="Decrement amount" className="bg-white"></Input>
+        <Input
+          type="number"
+          placeholder="Decrement amount"
+          className="bg-white"
+        ></Input>
       </div>
 
       <div>
@@ -132,7 +153,11 @@ function DescendingAuctionComponents() {
             Decrement Timer<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="number" placeholder="Decrement timer" className="bg-white"></Input>
+        <Input
+          type="number"
+          placeholder="Decrement timer"
+          className="bg-white"
+        ></Input>
       </div>
 
       <div>
@@ -158,19 +183,55 @@ export default function InsertAuctionPage() {
     setAuction(auctionType);
   };
 
+  const hiddenFileInput = useRef(null);
+
+  const handleFileUploadClick = (e) => {
+    hiddenFileInput.current.click();
+  };
+
   return (
     <>
       <div className="flex flex-col md:flex-row items-center mt-12">
         <div className="mx-3 mb-6 md:m-6 md:mr-20 md:ml-48 grid md:grid-cols-2 gap-2">
-          <button className="w-52 h-52 mt-2 text-2xl bg-blue-950 text-white rounded p-3">
-            +
-          </button>
-          <button className="w-52 h-52 mt-2 text-2xl bg-blue-950 text-white rounded p-3">
-            +
-          </button>
-          <button className="w-52 h-52 mt-2 text-2xl bg-blue-950 text-white rounded p-3">
-            +
-          </button>
+          <div>
+            <button
+              onClick={handleFileUploadClick}
+              className="w-52 h-52 mt-2 text-2xl bg-blue-950 text-white rounded p-3"
+            >
+              +
+            </button>
+            <input
+              type="file"
+              ref={hiddenFileInput}
+              style={{ display: "none" }}
+            />
+          </div>
+          <div>
+            <button
+              onClick={handleFileUploadClick}
+              className="w-52 h-52 mt-2 text-2xl bg-blue-950 text-white rounded p-3"
+            >
+              +
+            </button>
+            <input
+              type="file"
+              ref={hiddenFileInput}
+              style={{ display: "none" }}
+            />
+          </div>
+          <div>
+            <button
+              onClick={handleFileUploadClick}
+              className="w-52 h-52 mt-2 text-2xl bg-blue-950 text-white rounded p-3"
+            >
+              +
+            </button>
+            <input
+              type="file"
+              ref={hiddenFileInput}
+              style={{ display: "none" }}
+            />
+          </div>
         </div>
 
         <div className="flex flex-col mx-2">
@@ -181,7 +242,11 @@ export default function InsertAuctionPage() {
                   Title<span className="text-red-500">*</span>
                 </Label>
               </div>
-              <Input type="text" placeholder="Title" className="bg-white"></Input>
+              <Input
+                type="text"
+                placeholder="Title"
+                className="bg-white"
+              ></Input>
             </div>
 
             <div>
@@ -190,7 +255,10 @@ export default function InsertAuctionPage() {
                   Description<span className="text-red-500">*</span>
                 </Label>
               </div>
-              <Textarea placeholder="Type your description here." className="bg-white" />
+              <Textarea
+                placeholder="Type your description here."
+                className="bg-white"
+              />
             </div>
           </div>
 
