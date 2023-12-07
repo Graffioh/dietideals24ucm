@@ -12,10 +12,12 @@ export const metadata = {
 
 export default function HomeLayout({ children }) {
   return (
-    <div>
-      <Header headerType={"headerNotLogged"} />
-      <main className="flex-1">{children}</main>
-      <Footer />
-    </div>
+    <>
+      <div className="relative flex min-h-screen flex-col">
+        <Header headerType={"headerNotLogged"} />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </div>
+    </>
   );
 }
