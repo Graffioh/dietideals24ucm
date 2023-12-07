@@ -23,13 +23,11 @@ export default function Home() {
         <Link href="/public-profile" className="italic">
           Go to public profile →
         </Link>
-      </div>
 
-      <Link href="/create-account" className="italic">
+        <Link href="/create-account" className="italic">
           Go to create account →
         </Link>
-      
-        </div>
+      </div>
 
       <div className="flex justify-center font-extrabold text-2xl">
         HOME content
