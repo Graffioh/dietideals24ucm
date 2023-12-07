@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CardAuction from "../components/cardAuction";
 
 export default function Home() {
   return (
@@ -30,7 +31,10 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center font-extrabold text-2xl">
-        HOME content
+        
+        <CardAuction>
+          
+        </CardAuction>
       </div>
     </>
   );
