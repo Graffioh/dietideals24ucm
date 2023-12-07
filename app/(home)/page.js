@@ -25,6 +25,12 @@ export default function Home() {
         </Link>
       </div>
 
+      <Link href="/create-account" className="italic">
+          Go to create account →
+        </Link>
+      
+        </div>
+
       <div className="flex justify-center font-extrabold text-2xl">
         HOME content
       </div>

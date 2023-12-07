@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function UserAuthForm({ className, ...props }) {
+export function UserAuthForm({ className, createOrLogin}) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   async function onSubmit(event) {
@@ -24,7 +24,7 @@ export function UserAuthForm({ className, ...props }) {
   }
 
   return (
-    <div className={cn("grid gap-4", className)} {...props}>
+    <div className={cn("grid gap-4", className)}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
           <div className="grid gap-3">
@@ -39,6 +39,7 @@ export function UserAuthForm({ className, ...props }) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
+              className="bg-white"
             />
             <Label className="sr-only" htmlFor="email">
               Password
@@ -51,10 +52,11 @@ export function UserAuthForm({ className, ...props }) {
               autoComplete="password"
               autoCorrect="off"
               disabled={isLoading}
+              className="bg-white"
             />
           </div>
-          <Button disabled={isLoading}>
-            Log In
+          <Button disabled={isLoading} className="bg-blue-950">
+            {createOrLogin}
           </Button>
         </div>
       </form>

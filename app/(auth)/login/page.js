@@ -9,7 +9,7 @@ export default function LoginPage() {
         <p className="text-sm text-slate-500 mb-4">
           Enter your email and password below to login
         </p>
-        <UserAuthForm className="w-80 min-w-screen" />
+        <UserAuthForm className="w-80 min-w-screen" createOrLogin={"Log In"} />
         <div className="flex">
           <p className="text-xs text-slate-500 mt-2">
             If you don't have an account yet,
