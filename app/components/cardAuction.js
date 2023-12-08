@@ -2,7 +2,7 @@ import { Image } from "lucide-react";
 export default function CardAuction() {
   return (
     <div className="">
-      <button className="relative mt-20 bg-white w-72 h-80 flex justify-center rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
+      <button className="relative mt-20 bg-white w-64 h-80 flex justify-center rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
         <div className="relative">
           <img
             className="mt-5 rounded-lg flex items-center"
