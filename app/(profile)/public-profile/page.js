@@ -18,7 +18,7 @@ export default function ProfilePage() {
       </div>
       
       <div className="flex justify-center">
-        <div className="bg-stone-200 flex border-4 mt-10 mb-20 relative rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
+        <div className="bg-stone-200 flex mt-10 mb-20 relative rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
           <div className="flex flex-col absolute ml-5 mt-5">
           <RadioGroup defaultValue="option-one">
               <div className="flex items-center space-x-2">

@@ -74,7 +74,7 @@ function LoggedFullSection() {
           <BellIcon width="23" height="23" />
         </Button>
 
-        <Link href="/private-profile" className="mt-0.5 flex justify-center">
+        <Link href="/public-profile" className="mt-0.5 flex justify-center">
           <Avatar className="h-9 w-9">
             <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
             <AvatarFallback>gojo</AvatarFallback>
@@ -114,13 +114,17 @@ function NotLoggedSection() {
 function ModifyProfileSection() {
   return (
     <div className="mr-7 flex  justify-between mb-2">
-      <Button variant="ghost" className="">
-        <Pencil1Icon width="23" height="23" />
-      </Button>
+      <Link href="/private-profile">
+        <Button variant="ghost" className="">
+          <Pencil1Icon width="23" height="23" />
+        </Button>
+      </Link>
 
-      <Button variant="ghost" className="">
-        <BellIcon width="23" height="23" />
-      </Button>
+      <Link href="/">
+        <Button variant="ghost" className="">
+          <BellIcon width="23" height="23" />
+        </Button>
+      </Link>
     </div>
   );
 }
@@ -216,7 +220,7 @@ export default function Header({ headerType }) {
   return (
     <>
       {/* Web */}
-      <div className="bg-white hidden m-2 md:flex justify-between sticky top-0 border-b">
+      <div className="bg-white hidden m-2 md:flex justify-between top-0 border-b">
         <div className="mt-1">
           <Logo />
         </div>
