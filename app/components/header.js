@@ -15,6 +15,26 @@ import {
 import { cn } from "@/lib/utils";
 import ComboboxCategories from "./comboboxCategories";
 import Searchbar from "./searchbar";
+import NotificationsDropdown from "./notificationsDropdown";
+
+const notifications = [
+  {
+    value: "public-profile",
+    label: "notification 1",
+  },
+  {
+    value: "private-profile",
+    label: "notification 2",
+  },
+  {
+    value: "insert-auction",
+    label: "notification 3",
+  },
+  {
+    value: "/",
+    label: "notification 4",
+  },
+];
 
 function Logo() {
   return (
@@ -34,9 +54,8 @@ function Logo() {
 function LoggedPartialSection() {
   return (
     <div className="mr-7 flex justify-between mb-2">
-      <Button variant="ghost" className="mx-2">
-        <BellIcon width="23" height="23" />
-      </Button>
+      <NotificationsDropdown notifications={notifications} />
+
       <Link href="/private-profile" className="mt-0.5">
         <Avatar className="h-9 w-9">
           <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
@@ -70,9 +89,7 @@ function LoggedFullSection() {
           Insert auction
         </Link>
 
-        <Button variant="ghost" className="mx-2">
-          <BellIcon width="23" height="23" />
-        </Button>
+        <NotificationsDropdown notifications={notifications} />
 
         <Link href="/public-profile" className="mt-0.5 flex justify-center">
           <Avatar className="h-9 w-9">
@@ -86,11 +103,7 @@ function LoggedFullSection() {
 }
 
 function OnlyNotificationsSection() {
-  return (
-    <Button variant="ghost" className="mx-2 mb-2">
-      <BellIcon width="23" height="23" />
-    </Button>
-  );
+  return <NotificationsDropdown notifications={notifications} />;
 }
 
 function NotLoggedSection() {
@@ -120,11 +133,7 @@ function ModifyProfileSection() {
         </Button>
       </Link>
 
-      <Link href="/">
-        <Button variant="ghost" className="">
-          <BellIcon width="23" height="23" />
-        </Button>
-      </Link>
+      <NotificationsDropdown notifications={notifications} />
     </div>
   );
 }
