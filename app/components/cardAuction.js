@@ -20,7 +20,7 @@ export default function CardAuction({ isHomepage }) {
 
               <div className="flex justify-between">
                 <div className="text-2xl ml-8">€ 10,00</div>
-                <div className="text-xl mr-8 mt-1/2">00.00.00</div>
+                <div className="text-xl mr-8 mt-0.5">00.00.00</div>
               </div>
             </div>
           </button>
