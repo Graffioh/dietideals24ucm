@@ -15,7 +15,7 @@ public class User {
     private int id;
 
     @Getter @Setter
-    private String firstName, lastName, password, birthDate, mail, piva, telephoneNumber, biography, website;
+    private String firstName, lastName, username, password, birthDate, mail, piva, telephoneNumber, biography, website;
 
     @Getter @Setter
     private ArrayList<Offer> offers;

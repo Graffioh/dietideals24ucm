@@ -19,8 +19,8 @@ public class APIController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @GetMapping("/customers")
-    public List<Customer> getAllCustomers() {
-        return jdbcTemplate.query("SELECT * FROM customer", BeanPropertyRowMapper.newInstance(Customer.class));
+    @GetMapping("/offers")
+    public List<Offer> getAllOffers() {
+        return jdbcTemplate.query("SELECT * FROM offer", BeanPropertyRowMapper.newInstance(Offer.class));
     }
 }
