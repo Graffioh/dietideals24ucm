@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class User {
+public class UserAccount {
     @Getter @Setter
     private int id;
 
