@@ -27,6 +27,10 @@ export default function Home() {
         <Link href="/create-account" className="italic">
           Go to create account →
         </Link>
+
+        <Link href="/offer-details" className="italic">
+          Go to offer details →
+        </Link>
       </div>
 
       <div className="flex justify-center font-extrabold text-2xl">
