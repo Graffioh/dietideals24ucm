@@ -1,40 +1,24 @@
-import Link from "next/link";
+import TestPagesNavigation from "../components/testpagesNavigation";
+import AuctionPagination from "../components/auctionPagination";
+import CardAuction from "../components/cardAuction";
 
 export default function Home() {
+  const chiara = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
+
   return (
     <>
+      {/* <TestPagesNavigation /> */}
+
       <div className="flex flex-col justify-center items-center">
-        <Link href="/login" className="italic">
-          Go to login →
-        </Link>
+        <div className="grid grid-rows-auto grid-cols-4 gap-x-14">
+          {chiara.map((number) => (
+            <CardAuction key={number} isHomepage={true} />
+          ))}
+        </div>
 
-        <Link href="/get-started" className="italic">
-          Go to get started →
-        </Link>
-
-        <Link href="/insert-auction" className="italic">
-          Go to insert auction (general)→
-        </Link>
-
-        <Link href="/private-profile" className="italic">
-          Go to private profile →
-        </Link>
-
-        <Link href="/public-profile" className="italic">
-          Go to public profile →
-        </Link>
-
-        <Link href="/create-account" className="italic">
-          Go to create account →
-        </Link>
-
-        <Link href="/offer-details" className="italic">
-          Go to offer details →
-        </Link>
-      </div>
-
-      <div className="flex justify-center font-extrabold text-2xl">
-        HOME content
+        <div className="my-5 mt-10">
+          <AuctionPagination />
+        </div>
       </div>
     </>
   );
