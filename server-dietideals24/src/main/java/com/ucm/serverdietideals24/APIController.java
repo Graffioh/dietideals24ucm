@@ -20,7 +20,7 @@ public class APIController {
     JdbcTemplate jdbcTemplate;
 
     @GetMapping("/customers")
-    public int getAllCustomers() {
-        return jdbcTemplate.query("SELECT * FROM customer", BeanPropertyRowMapper.newInstance(Customer.class) ).size();
+    public List<Customer> getAllCustomers() {
+        return jdbcTemplate.query("SELECT * FROM customer", BeanPropertyRowMapper.newInstance(Customer.class));
     }
 }
