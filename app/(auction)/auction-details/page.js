@@ -4,26 +4,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 
-export default function OfferDetailsPage() {
+export default function AuctionDetailsPage() {
   return (
     <>
-      {/* <Image
-        src={facebookIcon}
-        alt="My SVG"
-        width={23}
-        height={23}
-        className="absolute"
-      />  */}
       <div className="absolute ml-[10em] mt-14">
         <div className="flex flex-col">
-          <Label className="flex text-2xl">NOME NEGRACCIO</Label>
-          {/* chiaretta bellissimissima qui va l'immagine, da qua...*/}
-          <div className="bg-blue-500">
-            <button className="mt-[27em] ml-80 ">ciao</button>
+          <Label className="flex text-2xl">NAME</Label>
+          <div className="">
+            <img
+                className="object-cover w-96 h-128 mt-5 rounded-lg flex items-center"
+                src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+              />
           </div>
-          {/* ...fino a qua */}
         </div>
       </div>
       <div className="flex flex-col max-w-2xl mt-10 ml-auto mr-20">
@@ -76,11 +71,15 @@ export default function OfferDetailsPage() {
             />
           </div>
           <div className="flex justify-center">
-            {/* chiaretta bellissimissima qui va l'avatar, da qua... */}
-            <button className="bg-blue-500 font-bold text-5xl rounded-full mt-10 mb-[10em]">
-              69
-            </button>
-            {/* ...fimo a qua */}
+            <div className="font-bold text-5xl rounded-full mt-10 mb-[10em]">
+              <Avatar className="h-32 w-32">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@avatar"
+                />
+                <AvatarFallback>gojo</AvatarFallback>
+              </Avatar>
+            </div>
             <div className="absolute mt-[18em]">
               <Label className="flex mb-2">Description</Label>
               <Textarea
