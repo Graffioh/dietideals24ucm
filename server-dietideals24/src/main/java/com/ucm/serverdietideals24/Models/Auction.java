@@ -8,9 +8,12 @@ import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
 
+enum AuctionType {
+    English, FixedTime, Descending
+}
+
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Auction {
     @Getter @Setter
     private int id;
@@ -23,4 +26,18 @@ public class Auction {
 
     @Getter @Setter
     private ArrayList<Offer> offers;
+
+    // English auction
+    @Getter @Setter
+    private float baseStartAuction, raiseThreshold;
+
+    // Fixed time auction
+    @Getter @Setter
+    private String expireDate;
+
+    // Descending auction
+    @Getter @Setter
+    private float startPrice, timer, decrementAmount, minimumPrice;
+    @Getter @Setter
+    private String fixedTime;
 }
