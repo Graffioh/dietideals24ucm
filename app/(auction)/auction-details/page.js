@@ -23,10 +23,10 @@ export default function AuctionDetailsPage() {
       </div>
       <div className="flex flex-col max-w-2xl mt-10 ml-auto mr-20">
         <div className="flex flex-col bg-stone-200 rounded-xl mb-60 ml-20 mr-20 shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
-          <div className="absolute ml-[10.5em] mt-[30em]">
+          <div className="absolute ml-[10.5em] mt-[32em]">
             <Button className="p-7 text-lg">Create Auction</Button>
           </div>
-          <div className="absolute ml-5 mt-[8em]">
+          <div className="absolute ml-5 mt-[10em]">
             <Label className="flex mb-2">
               Current offer<div className="text-red-500"></div>
             </Label>
@@ -37,7 +37,7 @@ export default function AuctionDetailsPage() {
               placeholder="Placeholder"
             />
           </div>
-          <div className="absolute ml-[19em] mt-[8em]">
+          <div className="absolute ml-[19em] mt-[10em]">
             <Label className="flex mb-2">
               Expire time<div className="text-red-500"></div>
             </Label>
@@ -48,7 +48,7 @@ export default function AuctionDetailsPage() {
               placeholder="Placeholder"
             />
           </div>
-          <div className="absolute ml-5 mt-[13em]">
+          <div className="absolute ml-5 mt-[15em]">
             <Label className="flex mb-2">
               Decrement amount<div className="text-red-500"></div>
             </Label>
@@ -59,7 +59,7 @@ export default function AuctionDetailsPage() {
               placeholder="Placeholder"
             />
           </div>
-          <div className="absolute ml-[19em] mt-[13em]">
+          <div className="absolute ml-[19em] mt-[15em]">
             <Label className="flex mb-2">
               Decrement timer<div className="text-red-500"></div>
             </Label>
@@ -71,7 +71,7 @@ export default function AuctionDetailsPage() {
             />
           </div>
           <div className="flex justify-center">
-            <div className="font-bold text-5xl rounded-full mt-10 mb-[10em]">
+            <div className="font-bold text-5xl rounded-full mt-5 mb-[10em]">
               <Avatar className="h-32 w-32">
                 <AvatarImage
                   src="https://github.com/shadcn.png"
@@ -80,7 +80,7 @@ export default function AuctionDetailsPage() {
                 <AvatarFallback>gojo</AvatarFallback>
               </Avatar>
             </div>
-            <div className="absolute mt-[18em]">
+            <div className="absolute mt-[20em]">
               <Label className="flex mb-2">Description</Label>
               <Textarea
                 className="w-screen max-w-[30em] bg-white h-32"
