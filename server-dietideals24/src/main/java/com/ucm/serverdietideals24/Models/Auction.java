@@ -12,6 +12,13 @@ enum AuctionType {
     English, FixedTime, Descending
 }
 
+enum AuctionCategory {
+    Appliances, BeautyAndHealth, BooksAndMagazines, BoatingAndBoats,
+    CarsMotorcyclesAndOtherVehicles, ClothingAndAccessories, Collectibles, CoinsAndBanknotes, Comics, Computers,
+    Electronics, Gardening, HomeFurnitureAndDIY, Infancy, Lighting, MoviesAndDVDs, MusicCDsAndVinyl, PhotographyAndVideo,
+    SportsAndLeisure, Stamps, TicketsAndEvents, Toys, TravelAccessories, VideoGamesAndConsoles, WatchesAndJewelry
+}
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class Auction {
@@ -19,10 +26,16 @@ public class Auction {
     private int id;
 
     @Getter @Setter
-    private String description, name, category, quality, images;
+    private String auctionDescription, auctionName, auctionQuality, auctionImages;
 
     @Getter @Setter
     private float currentOffer;
+
+    @Getter @Setter
+    private AuctionType auctionType;
+
+    @Getter @Setter
+    private AuctionCategory auctionCategory;
 
     @Getter @Setter
     private ArrayList<Offer> offers;
