@@ -1,6 +1,7 @@
 package com.ucm.serverdietideals24.Models;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,10 @@ public class UserAccount {
     private int id;
 
     @Getter @Setter
-    private String firstName, lastName, username, password, birthDate, mail, piva, telephoneNumber, biography, website;
+    private String firstName, lastName, username, password, mail, piva, telephoneNumber, biography, website;
+    
+    @Getter @Setter
+    private Date birthDate;
 
     @Getter @Setter
     private ArrayList<Offer> offers;

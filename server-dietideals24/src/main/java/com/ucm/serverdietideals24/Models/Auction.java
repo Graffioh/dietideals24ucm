@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 
@@ -44,13 +46,17 @@ public class Auction {
     @Getter @Setter
     private float baseStartAuction, raiseThreshold;
 
+    @Getter @Setter
+    private Timestamp offerTimer;
+    
     // Fixed time auction
     @Getter @Setter
-    private String expireDate;
+    private Date expireDate;
 
     // Descending auction
     @Getter @Setter
-    private float startPrice, timer, decrementAmount, minimumPrice;
+    private float startPrice, decrementAmount, minimumPrice;
+
     @Getter @Setter
-    private String fixedTime;
+    private Timestamp fixedTime, timer;
 }
