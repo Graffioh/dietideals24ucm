@@ -7,17 +7,19 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+
 
 @RestController
 public class APIController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @GetMapping("/offers")
-    public List<Offer> getAllOffers() {
-        return jdbcTemplate.query("SELECT * FROM offer", BeanPropertyRowMapper.newInstance(Offer.class));
+    @GetMapping("/auction-test")
+    public List<Auction> getAuctionsTest() {
+        return jdbcTemplate.query("SELECT * from auctiontest", new BeanPropertyRowMapper<Auction>(Auction.class));
     }
+    
 }
