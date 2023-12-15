@@ -3,27 +3,28 @@ package com.ucm.serverdietideals24.Models;
 import java.util.ArrayList;
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NonNull;
 
 @NoArgsConstructor
 @AllArgsConstructor
-
+@RequiredArgsConstructor
+@Data
 public class UserAccount {
-    @Getter @Setter
-    private int id;
+    @NonNull
+    private Integer id;
 
-    @Getter @Setter
-    private String firstName, lastName, username, password, mail, piva, telephoneNumber, biography, website;
+    @NonNull
+    private String firstName, lastName, username, password, mail; 
     
-    @Getter @Setter
+    private String piva, telephoneNumber, biography, website;
+    
     private Date birthDate;
 
-    @Getter @Setter
     private ArrayList<Offer> offers;
 
-    @Getter @Setter
     private ArrayList<Auction> auctions;
 }

@@ -1,14 +1,14 @@
 package com.ucm.serverdietideals24.Models;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Data;
+import lombok.NonNull;
 
 enum AuctionType {
     English, FixedTime, Descending
@@ -23,40 +23,37 @@ enum AuctionCategory {
 
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
+@Data
 public class Auction {
-    @Getter @Setter
-    private int id;
+    @NonNull
+    private Integer id;
 
-    @Getter @Setter
-    private String auctionDescription, auctionName, auctionQuality, auctionImages;
+    @NonNull
+    private String auctionDescription, auctionName, auctionQuality;
+    private String auctionImages;
 
-    @Getter @Setter
-    private float currentOffer;
+    @NonNull
+    private Float currentOffer;
 
-    @Getter @Setter
-    private AuctionType auctionType;
+    @NonNull
+    private String auctionType;
 
-    @Getter @Setter
+    @NonNull
     private AuctionCategory auctionCategory;
 
-    @Getter @Setter
     private ArrayList<Offer> offers;
 
     // English auction
-    @Getter @Setter
-    private float baseStartAuction, raiseThreshold;
+    private Float baseStartAuction, raiseThreshold;
 
-    @Getter @Setter
     private Timestamp offerTimer;
     
     // Fixed time auction
-    @Getter @Setter
     private Date expireDate;
 
     // Descending auction
-    @Getter @Setter
-    private float startPrice, decrementAmount, minimumPrice;
+    private Float startPrice, decrementAmount, minimumPrice;
 
-    @Getter @Setter
     private Timestamp fixedTime, timer;
 }
