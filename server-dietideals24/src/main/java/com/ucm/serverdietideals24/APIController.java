@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+
 
 
 
@@ -17,9 +23,18 @@ public class APIController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @GetMapping("/auction-test")
-    public List<Auction> getAuctionsTest() {
-        return jdbcTemplate.query("SELECT * from auctiontest", new BeanPropertyRowMapper<Auction>(Auction.class));
+    @PostMapping("/register")
+    public UserAccount createUserAccount(@RequestBody UserAccount entity) {
+        jdbcTemplate.execute("INSERT INTO useraccount ");
+        
+        return entity;
+    }
+    
+    @PutMapping("/update-profile/{id}")
+    public UserAccount updateUserAccount(@PathVariable String id, @RequestBody UserAccount entity) {
+        
+
+        return entity;
     }
     
 }

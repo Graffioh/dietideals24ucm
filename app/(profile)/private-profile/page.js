@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export default function ProfilePage() {
+export default function ProfilePage({ searchParams }) {
   return (
     <>
       <div className="flex flex justify-center mb-10 mt-10">
@@ -23,7 +23,12 @@ export default function ProfilePage() {
             <Label className="flex mb-2">
               Name<div className="text-red-500">*</div>
             </Label>
-            <Input className="h-9 bg-white" type="text" id="name" placeholder="Name" />
+            <Input
+              className="h-9 bg-white"
+              type="text"
+              id="name"
+              placeholder="Name"
+            />
           </div>
 
           <div>
@@ -54,7 +59,13 @@ export default function ProfilePage() {
             <Label className="flex mb-2">
               Mail<div className="text-red-500">*</div>
             </Label>
-            <Input className="h-9 bg-white" type="email" id="mail" placeholder="Mail" />
+            <Input
+              className="h-9 bg-white"
+              type="email"
+              id="mail"
+              placeholder="Mail"
+              defaultValue={searchParams.email}
+            />
           </div>
 
           <div>
@@ -66,6 +77,7 @@ export default function ProfilePage() {
               type="password"
               id="password"
               placeholder="Password"
+              value={searchParams.password}
             />
           </div>
 
@@ -93,7 +105,10 @@ export default function ProfilePage() {
 
           <div>
             <Label className="flex mb-2">Bio</Label>
-            <Textarea className="bg-white" placeholder="Type your description here." />
+            <Textarea
+              className="bg-white"
+              placeholder="Type your description here."
+            />
           </div>
 
           <div>

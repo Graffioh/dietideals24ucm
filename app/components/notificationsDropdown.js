@@ -35,7 +35,7 @@ export default function NotificationsDropdown({ notifications }) {
         <Command>
           <CommandGroup>
             {notifications.map((noti) => (
-              <Link
+              <Link key={noti}
                 href={noti.value}
                 className={cn(
                   "hover:bg-zinc-100 relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"

@@ -1,31 +1,92 @@
 "use client";
 
 import * as React from "react";
-import githubIcon from '../../images/github-logo.svg'
-import googleIcon from '../../images/google-logo.svg'
-import facebookIcon from '../../images/facebook-logo.svg'
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import githubIcon from "../../images/github-logo.svg";
+import googleIcon from "../../images/google-logo.svg";
+import facebookIcon from "../../images/facebook-logo.svg";
 
-import Image from 'next/image';
+import Image from "next/image";
+import Link from "next/link";
+
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function UserAuthForm({ className, createOrLogin}) {
-  const [isLoading, setIsLoading] = React.useState(false);
+export function UserAuthForm({ className, createOrLogin }) {
+  const router = useRouter();
+  const [email, setEmail] = useState("test@test.com");
 
-  async function onSubmit(event) {
+  function handleRegisterEmailInputChange(event) {
+    setEmail(event.target.value);
+  }
+
+  async function onSubmitLogin(event) {
     event.preventDefault();
-    setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    console.log("login");
+
+    router.push(event.target.href);
+  }
+
+  async function pushEmailAsUrlParameter(event) {
+    event.preventDefault();
+
+    console.log("register");
+
+    router.push(event.target.href + "?email=" + email);
   }
 
   return (
     <div className={cn("grid gap-4", className)}>
-      <form onSubmit={onSubmit}>
+      {createOrLogin === "Log In" ? (
+        <form onSubmit={onSubmitLogin}>
+          <div className="grid gap-2">
+            <div className="grid gap-3">
+              <Label className="sr-only" htmlFor="email">
+                Email
+              </Label>
+              <Input
+                id="email"
+                placeholder="name@example.com"
+                type="email"
+                autoCapitalize="none"
+                autoComplete="email"
+                autoCorrect="off"
+                className="bg-white"
+              />
+              <Label className="sr-only" htmlFor="email">
+                Password
+              </Label>
+              <Input
+                id="password"
+                placeholder="password"
+                type="password"
+                autoCapitalize="none"
+                autoComplete="password"
+                autoCorrect="off"
+                className="bg-white"
+              />
+            </div>
+            <Button>
+              <Link
+                href="/"
+                className={cn(
+                  buttonVariants({
+                    variant: "default",
+                    size: "default",
+                    className: "h-9",
+                  })
+                )}
+              >
+                {createOrLogin}
+              </Link>
+            </Button>
+          </div>
+        </form>
+      ) : (
         <div className="grid gap-2">
           <div className="grid gap-3">
             <Label className="sr-only" htmlFor="email">
@@ -38,28 +99,25 @@ export function UserAuthForm({ className, createOrLogin}) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading}
               className="bg-white"
-            />
-            <Label className="sr-only" htmlFor="email">
-              Password
-            </Label>
-            <Input
-              id="password"
-              placeholder="password"
-              type="password"
-              autoCapitalize="none"
-              autoComplete="password"
-              autoCorrect="off"
-              disabled={isLoading}
-              className="bg-white"
+              onChange={handleRegisterEmailInputChange}
             />
           </div>
-          <Button disabled={isLoading} className="bg-blue-950">
+          <Link
+            href="/private-profile"
+            className={cn(
+              buttonVariants({
+                variant: "default",
+                size: "default",
+                className: "h-9",
+              })
+            )}
+            onClick={pushEmailAsUrlParameter}
+          >
             {createOrLogin}
-          </Button>
+          </Link>
         </div>
-      </form>
+      )}
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
@@ -70,36 +128,36 @@ export function UserAuthForm({ className, createOrLogin}) {
           </span>
         </div>
       </div>
-      <Button variant="Github" type="button" disabled={isLoading}>
+      <Button variant="Github" type="button">
         <Image
-        src={githubIcon}
-        alt="My SVG"
-        width={23}
-        height={23}
-        className="mr-2"
-      />
+          src={githubIcon}
+          alt="My SVG"
+          width={23}
+          height={23}
+          className="mr-2"
+        />
         Github
       </Button>
-      <Button variant="Google" type="button" disabled={isLoading}>
+      <Button variant="Google" type="button">
         <Image
-        src={googleIcon}
-        alt="My SVG"
-        width={21}
-        height={21}
-        className="mr-2"
-      />
+          src={googleIcon}
+          alt="My SVG"
+          width={21}
+          height={21}
+          className="mr-2"
+        />
         Google
       </Button>
-      <Button variant="Facebook" type="button" disabled={isLoading}>
+      <Button variant="Facebook" type="button">
         <div className="flex ml-3">
-        <Image
-        src={facebookIcon}
-        alt="My SVG"
-        width={23}
-        height={23}
-        className="mr-2"
-      />
-        Facebook
+          <Image
+            src={facebookIcon}
+            alt="My SVG"
+            width={23}
+            height={23}
+            className="mr-2"
+          />
+          Facebook
         </div>
       </Button>
     </div>

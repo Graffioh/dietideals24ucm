@@ -11,8 +11,12 @@ export default function Home() {
     <>
       {/* <TestPagesNavigation /> */}
 
-      <Link href="/auction-details" className="italic">
-        Go to auction details →
+      <Link href="/login" className="italic">
+        Go to Login →
+      </Link>
+
+      <Link href="/create-account" className="italic">
+        Go to Create account →
       </Link>
 
       <div className="flex flex-col justify-center items-center">
