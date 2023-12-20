@@ -18,7 +18,7 @@ public class UserAccount {
     private Integer id;
 
     @NonNull
-    private String firstName, lastName, username, password, mail; 
+    private String firstName, lastName, username, password, email; 
     
     private String piva, telephoneNumber, biography, website;
     

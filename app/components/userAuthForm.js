@@ -19,25 +19,29 @@ export function UserAuthForm({ className, createOrLogin }) {
   const router = useRouter();
   const [email, setEmail] = useState("test@test.com");
 
+  // LOGIN
+  // **************************
+  async function onSubmitLogin(event) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    console.log("LOGIN");
+  }
+  // **************************
+
+  // REGISTRATION
+  // **************************
   function handleRegisterEmailInputChange(event) {
     setEmail(event.target.value);
   }
 
-  async function onSubmitLogin(event) {
-    event.preventDefault();
-
-    console.log("login");
-
-    router.push(event.target.href);
-  }
-
+  // When create account is clicked, pass the mail to private profile page
   async function pushEmailAsUrlParameter(event) {
     event.preventDefault();
 
-    console.log("register");
-
     router.push(event.target.href + "?email=" + email);
   }
+  // **************************
 
   return (
     <div className={cn("grid gap-4", className)}>
@@ -70,19 +74,16 @@ export function UserAuthForm({ className, createOrLogin }) {
                 className="bg-white"
               />
             </div>
-            <Button>
-              <Link
-                href="/"
-                className={cn(
-                  buttonVariants({
-                    variant: "default",
-                    size: "default",
-                    className: "h-9",
-                  })
-                )}
-              >
-                {createOrLogin}
-              </Link>
+            <Button
+              className={cn(
+                buttonVariants({
+                  variant: "default",
+                  size: "default",
+                  className: "h-9",
+                })
+              )}
+            >
+              {createOrLogin}
             </Button>
           </div>
         </form>

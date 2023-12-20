@@ -21,7 +21,7 @@ export default function ProfilePage({ searchParams }) {
         username: user.username,
         password: hashedPassword,
         birthDate: user.birthDate,
-        mail: user.mail,
+        email: user.email,
       }
         
       const response = await fetch("http://localhost:8080/register", {
@@ -47,7 +47,7 @@ export default function ProfilePage({ searchParams }) {
       username: inputs.username.value,
       password: inputs.password.value,
       birthDate: inputs.birthDate.value,
-      mail: inputs.mail.value,
+      email: inputs.mail.value,
     };
 
     // distinguish between POST and UPDATE
@@ -114,13 +114,13 @@ export default function ProfilePage({ searchParams }) {
 
             <div>
               <Label className="flex mb-2">
-                Mail<div className="text-red-500">*</div>
+                Email<div className="text-red-500">*</div>
               </Label>
               <Input
                 className="h-9 bg-white"
                 type="email"
-                id="mail"
-                placeholder="Mail"
+                id="email"
+                placeholder="Email"
                 defaultValue={searchParams.email}
               />
             </div>

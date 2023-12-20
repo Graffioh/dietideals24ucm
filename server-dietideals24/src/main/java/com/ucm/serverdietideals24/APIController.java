@@ -35,7 +35,7 @@ public class APIController {
     public ResponseEntity<UserAccount> createUserAccount(@RequestBody UserAccount entity) {
         jdbcTemplate.execute("INSERT INTO useraccount VALUES('" + entity.getId() + "', '" + entity.getFirstName()
                 + "', '" + entity.getLastName() + "', '" + entity.getUsername() + "', '" + entity.getPassword() + "', '"
-                + entity.getBirthDate() + "', '" + entity.getMail() + "')");
+                + entity.getBirthDate() + "', '" + entity.getEmail() + "')");
 
         return new ResponseEntity<UserAccount>(entity, HttpStatus.CREATED);
     }
