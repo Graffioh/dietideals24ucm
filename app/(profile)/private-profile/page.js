@@ -9,8 +9,6 @@ import { hash } from "bcryptjs";
 
 export default function ProfilePage({ searchParams }) {
   async function createUserAccount(user) {
-    console.log("og user: ", user);
-
     try {
       const hashedPassword = await hash(user.password, 10);
 
@@ -22,8 +20,8 @@ export default function ProfilePage({ searchParams }) {
         password: hashedPassword,
         birthDate: user.birthDate,
         email: user.email,
-      }
-        
+      };
+
       const response = await fetch("http://localhost:8080/register", {
         method: "POST",
         headers: {
@@ -41,17 +39,17 @@ export default function ProfilePage({ searchParams }) {
 
     const inputs = event.currentTarget;
     const userInfoFromInputs = {
-      id: 999,
+      id: 888,
       firstName: inputs.firstName.value,
       lastName: inputs.lastName.value,
       username: inputs.username.value,
       password: inputs.password.value,
       birthDate: inputs.birthDate.value,
-      email: inputs.mail.value,
+      email: inputs.email.value,
     };
 
     // distinguish between POST and UPDATE
-    // UPDATE = 
+    // UPDATE =
     //  1) fetch all users and check if the username in the input field is already in the database
     //  1.1) check if username in input field == username of the current logged account
     // else POST
@@ -61,7 +59,6 @@ export default function ProfilePage({ searchParams }) {
     // POST
     await createUserAccount(userInfoFromInputs);
 
-    console.log("form submitted");
   }
 
   return (

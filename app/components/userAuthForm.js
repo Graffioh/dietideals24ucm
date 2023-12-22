@@ -14,22 +14,71 @@ import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { compare } from "bcryptjs";
 
 export function UserAuthForm({ className, createOrLogin }) {
   const router = useRouter();
   const [email, setEmail] = useState("test@test.com");
+  const [error, setError] = useState("");
 
   // LOGIN
   // **************************
   async function onSubmitLogin(event) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    const userInfoFromInputs = event.currentTarget;
 
-    console.log("LOGIN");
+    try {
+      const userFromEmailResponse = await fetch(
+        "http://localhost:8080/user?email=" + userInfoFromInputs.email.value
+      );
+
+      const userFromEmail = await userFromEmailResponse.json();
+
+      const passwordCorrect = await compare(
+        userInfoFromInputs.password.value,
+        userFromEmail.password
+      );
+
+      if (passwordCorrect) {
+        const responseToken = await fetch(
+          "http://localhost:8080/generate-login-token",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userFromEmail),
+          }
+        );
+
+        const responseTokenText = await responseToken.text();
+
+        const responseCookie = await fetch(
+          "http://localhost:8080/set-login-token",
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(responseTokenText),
+          }
+        );
+        
+        router.push("/");
+
+        setError("");
+      } else {
+        setError("Error: invalid password, please try again.");
+      }
+    } catch (e) {
+      console.log({ e });
+      setError("Error: invalid email, please try again.");
+    }
   }
   // **************************
 
-  // REGISTRATION
+  // REGISTRATION (redirection to private-profile)
   // **************************
   function handleRegisterEmailInputChange(event) {
     setEmail(event.target.value);
@@ -61,7 +110,7 @@ export function UserAuthForm({ className, createOrLogin }) {
                 autoCorrect="off"
                 className="bg-white"
               />
-              <Label className="sr-only" htmlFor="email">
+              <Label className="sr-only" htmlFor="password">
                 Password
               </Label>
               <Input
@@ -119,6 +168,8 @@ export function UserAuthForm({ className, createOrLogin }) {
           </Link>
         </div>
       )}
+      <span className="text-red-500 text-sm">{error}</span>
+
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
@@ -129,7 +180,7 @@ export function UserAuthForm({ className, createOrLogin }) {
           </span>
         </div>
       </div>
-      <Button variant="Github" type="button">
+      <Button variant="Github" type="button" >
         <Image
           src={githubIcon}
           alt="My SVG"
