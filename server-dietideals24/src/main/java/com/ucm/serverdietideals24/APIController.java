@@ -58,11 +58,8 @@ public class APIController {
         }
 
         if (userId != -1) {
-            // Generate and check JWT
             String token = JwtUtil.generateToken(loginReq.getEmail());
             return new ResponseEntity<String>(token, HttpStatus.OK);
-            // String email = JwtUtil.checkToken(token);
-            // return email;
         }
 
         return new ResponseEntity<String>("none", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -71,7 +68,7 @@ public class APIController {
     @PostMapping("/set-login-token")
     public ResponseEntity<String> setLoginToken(@RequestBody String token, HttpServletResponse response) {
         Cookie tokenCookie = new Cookie("token", token);
-        tokenCookie.setSecure(true); // ONLY WHEN WORKING ON LOCALHOST
+        tokenCookie.setSecure(true); 
         tokenCookie.setHttpOnly(true);
         tokenCookie.setMaxAge(100000000);
         tokenCookie.setPath("/");
@@ -79,6 +76,19 @@ public class APIController {
         response.addCookie(tokenCookie);
 
         return new ResponseEntity<String>("Cookie token set successfully.", HttpStatus.OK);
+    }
+
+    @PostMapping("/get-email-from-token")
+    public ResponseEntity<String> getEmailFromToken(@RequestBody String token) {
+        String email = "";
+
+        try {
+            email = JwtUtil.extractEmailViaToken(token);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("none", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<String>(email, HttpStatus.ACCEPTED);
     }
 
     // @GetMapping("/get-login-token")
