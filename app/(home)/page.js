@@ -8,43 +8,37 @@ import { cookies } from "next/headers";
 export default async function Home() {
   const chiara = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
-  async function getTokenFromCookie() {
+  function getTokenFromCookie() {
     const nextCookies = cookies();
 
-    try {
-      const tokenCookieStr = nextCookies.get("token").value;
-
-      // return token without "..."
-      return tokenCookieStr.substring(1, tokenCookieStr.length - 1);
-    } catch (e) {
-      console.log({ e });
-    }
-
-    return "no token";
+    const tokenCookieStr = nextCookies.has("token")
+      ? nextCookies.get("token").value
+      : "no-token";
+    
+      return tokenCookieStr;
   }
 
   async function getCurrentUserEmailFromToken(token) {
-    // const token = await getTokenFromCookie();
     try {
       const emailFromToken = await fetch(
         "http://localhost:8080/get-email-from-token",
         {
           method: "POST",
           credentials: "include",
-          body: token
-        },
+          body: token,
+        }
       );
-      
+
       return emailFromToken.text();
     } catch (e) {
       console.log({ e });
     }
   }
 
-  // GET TOKEN
-  const token = await getTokenFromCookie();
+  // get JWT token for user session
+  const token = getTokenFromCookie();
 
-  // EXTRACT EMAIL FROM TOKEN AND GET CURRENT USER
+  // Extract current user email from token 
   const currentUserEmail = await getCurrentUserEmailFromToken(token);
 
   return (
@@ -58,8 +52,6 @@ export default async function Home() {
       <Link href="/create-account" className="italic">
         Go to Create account →
       </Link>
-
-      {/* <Button onClick={getTokenFromCookie}>TOKEN</Button> */}
 
       <div>TOKEN: {token}</div>
       <div>EMAIL: {currentUserEmail}</div>
