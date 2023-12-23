@@ -102,8 +102,24 @@ function LoggedFullSection() {
   );
 }
 
-function OnlyNotificationsSection() {
-  return <NotificationsDropdown notifications={notifications} />;
+async function logOut() {
+  try {
+    await fetch("http://localhost:8080/delete-login-token", {
+      method: "GET",
+      credentials: "include",
+    });
+  } catch (e) {
+    console.log({ e });
+  }
+}
+
+function PrivateProfileSection() {
+  return (
+    <div className="flex">
+      <NotificationsDropdown notifications={notifications} />
+      <Button onClick={logOut}>Log out</Button>
+    </div>
+  );
 }
 
 function NotLoggedSection() {
@@ -186,7 +202,7 @@ function LoggedFullSectionMobile() {
   );
 }
 
-function OnlyNotificationsSectionMobile() {
+function PrivateProfileSectionMobile() {
   return (
     <Link href="/" className="text-white">
       <div>Notifications</div>
@@ -236,7 +252,7 @@ export default function Header({ headerType }) {
 
         {headerType === "headerLoggedFull" && <LoggedFullSection />}
         {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
-        {headerType === "headerNotifications" && <OnlyNotificationsSection />}
+        {headerType === "headerNotifications" && <PrivateProfileSection />}
         {headerType === "headerNotLogged" && <NotLoggedSection />}
         {headerType === "headerModifyProfile" && <ModifyProfileSection />}
         {headerType === "headerEmpty"}
@@ -280,7 +296,7 @@ export default function Header({ headerType }) {
                 <LoggedPartialSectionMobile />
               )}
               {headerType === "headerNotifications" && (
-                <OnlyNotificationsSectionMobile />
+                <PrivateProfileSectionMobile />
               )}
               {headerType === "headerNotLogged" && <NotLoggedSectionMobile />}
               {headerType === "headerModifyProfile" && (

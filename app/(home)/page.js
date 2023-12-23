@@ -13,9 +13,10 @@ export default async function Home() {
 
     const tokenCookieStr = nextCookies.has("token")
       ? nextCookies.get("token").value
-      : "no-token";
-    
-      return tokenCookieStr;
+      : '"no-token"';
+
+    // return token without "..."
+    return tokenCookieStr.substring(1, tokenCookieStr.length - 1);
   }
 
   async function getCurrentUserEmailFromToken(token) {
@@ -38,7 +39,7 @@ export default async function Home() {
   // get JWT token for user session
   const token = getTokenFromCookie();
 
-  // Extract current user email from token 
+  // Extract current user email from token
   const currentUserEmail = await getCurrentUserEmailFromToken(token);
 
   return (

@@ -91,6 +91,19 @@ public class APIController {
         return new ResponseEntity<String>(email, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/delete-login-token")
+    public ResponseEntity<String> deleteLoginToken(HttpServletResponse response) {
+        Cookie tokenCookie = new Cookie("token", null);
+        tokenCookie.setSecure(true);
+        tokenCookie.setHttpOnly(true);
+        tokenCookie.setMaxAge(0);
+        tokenCookie.setPath("/");
+
+        response.addCookie(tokenCookie);
+
+        return new ResponseEntity<String>("Cookie token delete successfully.", HttpStatus.OK);
+    }
+
     // @GetMapping("/get-login-token")
     // public ResponseEntity<String> getLoginToken(@CookieValue("token") String
     // tokenFromCookie) {
