@@ -73,7 +73,7 @@ export function UserAuthForm({ className, createOrLogin }) {
       }
     } catch (e) {
       console.log({ e });
-      setError("Error: invalid email, please try again.");
+      setError("Error: invalid email or password, please try again.");
     }
   }
   // **************************

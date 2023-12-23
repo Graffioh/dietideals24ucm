@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -8,6 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { hash } from "bcryptjs";
 
 export default function ProfilePage({ searchParams }) {
+  const [profileStatus, setProfileStatus] = useState("");
+
   async function createUserAccount(user) {
     try {
       const hashedPassword = await hash(user.password, 10);
@@ -29,7 +33,10 @@ export default function ProfilePage({ searchParams }) {
         },
         body: JSON.stringify(userWithHashedPassword),
       });
+
+      setProfileStatus("Account created successfully.");
     } catch (e) {
+      setProfileStatus("Error while creating account");
       console.log({ e });
     }
   }
@@ -55,10 +62,10 @@ export default function ProfilePage({ searchParams }) {
     // else POST
 
     // UPDATE
+    //setProfileStatus("Profile updated successfully.");
 
     // POST
     await createUserAccount(userInfoFromInputs);
-
   }
 
   return (
@@ -82,6 +89,7 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="firstName"
                 placeholder="Name"
+                required
               />
             </div>
 
@@ -94,6 +102,7 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="lastName"
                 placeholder="Surname"
+                required
               />
             </div>
 
@@ -106,6 +115,7 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="username"
                 placeholder="Username"
+                required
               />
             </div>
 
@@ -119,6 +129,7 @@ export default function ProfilePage({ searchParams }) {
                 id="email"
                 placeholder="Email"
                 defaultValue={searchParams.email}
+                required
               />
             </div>
 
@@ -132,12 +143,25 @@ export default function ProfilePage({ searchParams }) {
                 id="password"
                 placeholder="Password"
                 value={searchParams.password}
+                required
               />
             </div>
 
             <div>
               <Label className="flex mb-2">
-                Date of birth<div className="text-red-500">*</div>
+                 P.IVA 
+              </Label>
+              <Input
+                className="h-9 bg-white"
+                type="text"
+                id="piva"
+                placeholder="P.IVA"
+              />
+            </div>
+
+            <div>
+              <Label className="flex mb-2">
+                Date of birth (per ora inserirla altrimenti penso non funzioni l'insert nel DB)
               </Label>
               <Input
                 className="h-9 bg-white"
@@ -185,6 +209,7 @@ export default function ProfilePage({ searchParams }) {
               <Button className="mt-6">Save</Button>
             </div>
           </div>
+          <div>{profileStatus}</div>
         </div>
       </form>
     </>

@@ -68,7 +68,7 @@ public class APIController {
     @PostMapping("/set-login-token")
     public ResponseEntity<String> setLoginToken(@RequestBody String token, HttpServletResponse response) {
         Cookie tokenCookie = new Cookie("token", token);
-        tokenCookie.setSecure(true); 
+        tokenCookie.setSecure(true);
         tokenCookie.setHttpOnly(true);
         tokenCookie.setMaxAge(100000000);
         tokenCookie.setPath("/");
@@ -92,14 +92,16 @@ public class APIController {
     }
 
     // @GetMapping("/get-login-token")
-    // public ResponseEntity<String> getLoginToken(@CookieValue("token") String tokenFromCookie) {
-    //     return new ResponseEntity<String>(tokenFromCookie, HttpStatus.OK);
+    // public ResponseEntity<String> getLoginToken(@CookieValue("token") String
+    // tokenFromCookie) {
+    // return new ResponseEntity<String>(tokenFromCookie, HttpStatus.OK);
     // }
 
     @PostMapping("/register")
     public ResponseEntity<UserAccount> createUserAccount(@RequestBody UserAccount entity) {
         jdbcTemplate.execute("INSERT INTO useraccount VALUES('" + entity.getId() + "', '" + entity.getFirstName()
-                + "', '" + entity.getLastName() + "', '" + entity.getUsername() + "', '" + entity.getPassword() + "', '"
+                + "', '" + entity.getLastName() + "', '" + entity.getUsername() + "', '" + entity.getPassword()
+                + "', '"
                 + entity.getBirthDate() + "', '" + entity.getEmail() + "')");
 
         return new ResponseEntity<UserAccount>(entity, HttpStatus.CREATED);
