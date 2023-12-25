@@ -61,7 +61,9 @@ export default async function Home() {
         <div className="grid grid-rows-auto grid-cols-4 gap-x-14">
           {chiara.map((number) => (
             <>
-              <CardAuction key={number} isHomepage={true} />
+              <Link href="/auction-details">
+                <CardAuction key={number} isHomepage={true} />
+              </Link>
             </>
           ))}
         </div>
