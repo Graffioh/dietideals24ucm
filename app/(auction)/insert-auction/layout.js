@@ -6,8 +6,8 @@ import Footer from "../../components/footer.js";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "homeUCM",
-  description: "Home page for DietiDeals24UCM",
+  title: "Insert auction",
+  description: "Insert auction page for DietiDeals24UCM",
 };
 
 export default function InsertAuctionLayout({ children}) {

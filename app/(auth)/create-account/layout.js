@@ -6,7 +6,7 @@ import Footer from "../../components/footer.js";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "createAccountUCM",
+  title: "Create account",
   description: "Create Account page for DietiDeals24UCM",
 };
 
