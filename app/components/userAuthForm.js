@@ -64,8 +64,9 @@ export function UserAuthForm({ className, createOrLogin }) {
             body: JSON.stringify(responseTokenText),
           }
         );
-        
-        router.push("/");
+          
+        // router.push("/");
+        window.location.href = "/";
 
         setError("");
       } else {
@@ -180,7 +181,7 @@ export function UserAuthForm({ className, createOrLogin }) {
           </span>
         </div>
       </div>
-      <Button variant="Github" type="button" >
+      <Button variant="Github" type="button">
         <Image
           src={githubIcon}
           alt="My SVG"

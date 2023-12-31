@@ -4,16 +4,18 @@ import com.ucm.serverdietideals24.Models.*;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -68,8 +70,8 @@ public class APIController {
     @PostMapping("/set-login-token")
     public ResponseEntity<String> setLoginToken(@RequestBody String token, HttpServletResponse response) {
         Cookie tokenCookie = new Cookie("token", token);
-        tokenCookie.setSecure(true);
-        tokenCookie.setHttpOnly(true);
+        tokenCookie.setSecure(false);
+        tokenCookie.setHttpOnly(false);
         tokenCookie.setMaxAge(100000000);
         tokenCookie.setPath("/");
 
@@ -94,8 +96,8 @@ public class APIController {
     @GetMapping("/delete-login-token")
     public ResponseEntity<String> deleteLoginToken(HttpServletResponse response) {
         Cookie tokenCookie = new Cookie("token", null);
-        tokenCookie.setSecure(true);
-        tokenCookie.setHttpOnly(true);
+        tokenCookie.setSecure(false);
+        tokenCookie.setHttpOnly(false);
         tokenCookie.setMaxAge(0);
         tokenCookie.setPath("/");
 
@@ -104,11 +106,14 @@ public class APIController {
         return new ResponseEntity<String>("Cookie token delete successfully.", HttpStatus.OK);
     }
 
-    // @GetMapping("/get-login-token")
-    // public ResponseEntity<String> getLoginToken(@CookieValue("token") String
-    // tokenFromCookie) {
-    // return new ResponseEntity<String>(tokenFromCookie, HttpStatus.OK);
-    // }
+    @GetMapping("/get-login-token")
+    public ResponseEntity<String> getLoginToken(@CookieValue(name = "token", required = false) String tokenFromCookie) {
+        if (tokenFromCookie != null) {
+            return new ResponseEntity<String>(tokenFromCookie, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("no-token", HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PostMapping("/register")
     public ResponseEntity<UserAccount> createUserAccount(@RequestBody UserAccount entity) {

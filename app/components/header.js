@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -108,6 +109,8 @@ async function logOut() {
       method: "GET",
       credentials: "include",
     });
+    
+    window.location.href = "/";
   } catch (e) {
     console.log({ e });
   }
@@ -235,12 +238,31 @@ function ModifyProfileSectionMobile() {
 
 // **************************************************************
 
-export default function Header({ headerType }) {
+// **************************************************************
+
+export default function Header({ headerType, token }) {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
 
   function handleHamburger() {
     setIsHamburgerOpen(!isHamburgerOpen);
   }
+
+  // const [token, setToken] = useState("");
+
+  // useEffect(() => {
+  //   async function getAndSetToken() {
+  //     const res = await fetch("http://localhost:8080/get-login-token", {
+  //       method: "GET",
+  //       credentials: "include",
+  //       next: { revalidate: 2 },
+  //     });
+  //     const resText = await res.text();
+
+  //     setToken(resText);
+  //   }
+
+  //   getAndSetToken();
+  // }, []);
 
   return (
     <>
@@ -250,10 +272,12 @@ export default function Header({ headerType }) {
           <Logo />
         </div>
 
-        {headerType === "headerLoggedFull" && <LoggedFullSection />}
+        {headerType === "headerLoggedFull" &&
+          token !== "no-token" &&
+          token !== "" && <LoggedFullSection />}
         {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
         {headerType === "headerNotifications" && <PrivateProfileSection />}
-        {headerType === "headerNotLogged" && <NotLoggedSection />}
+        {(token === "no-token" || token === "") && <NotLoggedSection />}
         {headerType === "headerModifyProfile" && <ModifyProfileSection />}
         {headerType === "headerEmpty"}
       </div>
