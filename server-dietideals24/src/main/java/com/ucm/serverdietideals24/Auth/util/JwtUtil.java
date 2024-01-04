@@ -13,16 +13,16 @@ public class JwtUtil {
     private static final SecretKey sk = Keys.hmacShaKeyFor(keyBytes);
     // private static final long EXPIRATION_TIME = 864_000_000; // 10 days
     
-    public static String generateToken(String email) {
+    public static String generateToken(String subject) {
         return Jwts.builder()
-                .subject(email)
+                .subject(subject)
                 // .issuedAt(new Date())
                 // .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(sk)
                 .compact();
     }
 
-    public static String extractEmailViaToken(String token) {
+    public static String extractSubjectViaToken(String token) {
         return Jwts.parser()
                 .verifyWith(sk)
                 .build()

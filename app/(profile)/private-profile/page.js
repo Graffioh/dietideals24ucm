@@ -46,7 +46,7 @@ export default function ProfilePage({ searchParams }) {
 
     const inputs = event.currentTarget;
     const userInfoFromInputs = {
-      id: 888,
+      id: 1000,
       firstName: inputs.firstName.value,
       lastName: inputs.lastName.value,
       username: inputs.username.value,
@@ -106,32 +106,72 @@ export default function ProfilePage({ searchParams }) {
               />
             </div>
 
-            <div>
-              <Label className="flex mb-2">
-                Username<div className="text-red-500">*</div>
-              </Label>
-              <Input
-                className="h-9 bg-white"
-                type="text"
-                id="username"
-                placeholder="Username"
-                required
-              />
-            </div>
+            {searchParams.fromProvider === "github" ? (
+              <>
+                <div>
+                  <Label className="flex mb-2">
+                    Username<div className="text-red-500">*</div>
+                  </Label>
+                  <Input
+                    className="h-9 bg-white"
+                    type="text"
+                    id="username"
+                    placeholder="Username"
+                    value={searchParams.username}
+                    required
+                    readOnly
+                  />
+                </div>
+              </>
+            ) : (
+              <div>
+                <Label className="flex mb-2">
+                  Username<div className="text-red-500">*</div>
+                </Label>
+                <Input
+                  className="h-9 bg-white"
+                  type="text"
+                  id="username"
+                  placeholder="Username"
+                  required
+                />
+              </div>
+            )}
 
-            <div>
-              <Label className="flex mb-2">
-                Email<div className="text-red-500">*</div>
-              </Label>
-              <Input
-                className="h-9 bg-white"
-                type="email"
-                id="email"
-                placeholder="Email"
-                defaultValue={searchParams.email}
-                required
-              />
-            </div>
+            {searchParams.fromProvider === "google" ? (
+              <>
+                <div>
+                  <Label className="flex mb-2">
+                    Email<div className="text-red-500">*</div>
+                  </Label>
+                  <Input
+                    className="h-9 bg-white"
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    defaultValue={searchParams.email}
+                    required
+                    readOnly
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <Label className="flex mb-2">
+                    Email<div className="text-red-500">*</div>
+                  </Label>
+                  <Input
+                    className="h-9 bg-white"
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    defaultValue={searchParams.email}
+                    required
+                  />
+                </div>
+              </>
+            )}
 
             <div>
               <Label className="flex mb-2">
@@ -142,15 +182,12 @@ export default function ProfilePage({ searchParams }) {
                 type="password"
                 id="password"
                 placeholder="Password"
-                value={searchParams.password}
                 required
               />
             </div>
 
             <div>
-              <Label className="flex mb-2">
-                 P.IVA 
-              </Label>
+              <Label className="flex mb-2">P.IVA</Label>
               <Input
                 className="h-9 bg-white"
                 type="text"
@@ -161,7 +198,8 @@ export default function ProfilePage({ searchParams }) {
 
             <div>
               <Label className="flex mb-2">
-                Date of birth (per ora inserirla altrimenti penso non funzioni l'insert nel DB)
+                Date of birth (per ora inserirla altrimenti penso non funzioni
+                l'insert nel DB)
               </Label>
               <Input
                 className="h-9 bg-white"

@@ -64,7 +64,7 @@ export function UserAuthForm({ className, createOrLogin }) {
             body: JSON.stringify(responseTokenText),
           }
         );
-          
+
         // router.push("/");
         window.location.href = "/";
 
@@ -181,7 +181,11 @@ export function UserAuthForm({ className, createOrLogin }) {
           </span>
         </div>
       </div>
-      <Button variant="Github" type="button">
+      <Link className={cn(
+              buttonVariants({
+                variant: "Github",
+              })
+            )} href="http://localhost:8080/oauth2/authorization/github">
         <Image
           src={githubIcon}
           alt="My SVG"
@@ -190,8 +194,12 @@ export function UserAuthForm({ className, createOrLogin }) {
           className="mr-2"
         />
         Github
-      </Button>
-      <Button variant="Google" type="button">
+      </Link>
+      <Link className={cn(
+              buttonVariants({
+                variant: "Google",
+              })
+            )} href="http://localhost:8080/oauth2/authorization/google">
         <Image
           src={googleIcon}
           alt="My SVG"
@@ -200,7 +208,7 @@ export function UserAuthForm({ className, createOrLogin }) {
           className="mr-2"
         />
         Google
-      </Button>
+      </Link>
       <Button variant="Facebook" type="button">
         <div className="flex ml-3">
           <Image

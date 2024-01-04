@@ -9,7 +9,11 @@ function getTokenFromCookie() {
     : '"no-token"';
 
   // return token without "..."
-  return tokenCookieStr.substring(1, tokenCookieStr.length - 1);
+    if (tokenCookieStr[0] == '"') {
+      return tokenCookieStr.substring(1, tokenCookieStr.length - 1);
+    } else {
+      return tokenCookieStr;
+    }
 }
 
 export default async function middleware(req) {

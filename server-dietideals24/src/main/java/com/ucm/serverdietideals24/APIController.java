@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +34,7 @@ import com.ucm.serverdietideals24.Auth.util.*;
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class APIController {
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     @GetMapping("/users")
     public List<UserAccount> fetchAllUsers() {
@@ -46,8 +48,15 @@ public class APIController {
                 new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
     }
 
+    @GetMapping("/oauth-user")
+    // public Map<String, Object> oauthUser(@AuthenticationPrincipal OAuth2User principal) {
+    //     return Collections.singletonMap("name", principal.getAttribute("name"));
+    public OAuth2User oauthUser(@AuthenticationPrincipal OAuth2User principal) {
+        return principal;
+    }
+
     @PostMapping("/generate-login-token")
-    public ResponseEntity<String> generateLoginToken(@RequestBody LoginRequest loginReq) {
+    public ResponseEntity<String> generateLoginToken(@RequestBody UserFromLoginForm loginReq) {
         int userId = -1;
 
         try {
@@ -79,18 +88,14 @@ public class APIController {
 
         return new ResponseEntity<String>("Cookie token set successfully.", HttpStatus.OK);
     }
-
-    @PostMapping("/get-email-from-token")
-    public ResponseEntity<String> getEmailFromToken(@RequestBody String token) {
-        String email = "";
-
-        try {
-            email = JwtUtil.extractEmailViaToken(token);
-        } catch (Exception e) {
-            return new ResponseEntity<String>("none", HttpStatus.INTERNAL_SERVER_ERROR);
+    
+    @GetMapping("/get-login-token")
+    public ResponseEntity<String> getLoginToken(@CookieValue(name = "token", required = false) String tokenFromCookie) {
+        if (tokenFromCookie != null) {
+            return new ResponseEntity<String>(tokenFromCookie, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("no-token", HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<String>(email, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/delete-login-token")
@@ -106,13 +111,17 @@ public class APIController {
         return new ResponseEntity<String>("Cookie token delete successfully.", HttpStatus.OK);
     }
 
-    @GetMapping("/get-login-token")
-    public ResponseEntity<String> getLoginToken(@CookieValue(name = "token", required = false) String tokenFromCookie) {
-        if (tokenFromCookie != null) {
-            return new ResponseEntity<String>(tokenFromCookie, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<String>("no-token", HttpStatus.NOT_FOUND);
+    @PostMapping("/get-subject-from-token")
+    public ResponseEntity<String> getEmailFromToken(@RequestBody String token) {
+        String subject = "";
+
+        try {
+            subject = JwtUtil.extractSubjectViaToken(token);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("none", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return new ResponseEntity<String>(subject, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/register")
