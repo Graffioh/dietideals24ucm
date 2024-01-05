@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -102,8 +103,26 @@ function LoggedFullSection() {
   );
 }
 
-function OnlyNotificationsSection() {
-  return <NotificationsDropdown notifications={notifications} />;
+async function logOut() {
+  try {
+    await fetch("http://localhost:8080/delete-login-token", {
+      method: "GET",
+      credentials: "include",
+    });
+    
+    window.location.href = "/";
+  } catch (e) {
+    console.log({ e });
+  }
+}
+
+function PrivateProfileSection() {
+  return (
+    <div className="flex">
+      <NotificationsDropdown notifications={notifications} />
+      <Button onClick={logOut}>Log out</Button>
+    </div>
+  );
 }
 
 function NotLoggedSection() {
@@ -186,7 +205,7 @@ function LoggedFullSectionMobile() {
   );
 }
 
-function OnlyNotificationsSectionMobile() {
+function PrivateProfileSectionMobile() {
   return (
     <Link href="/" className="text-white">
       <div>Notifications</div>
@@ -219,12 +238,31 @@ function ModifyProfileSectionMobile() {
 
 // **************************************************************
 
-export default function Header({ headerType }) {
+// **************************************************************
+
+export default function Header({ headerType, token }) {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
 
   function handleHamburger() {
     setIsHamburgerOpen(!isHamburgerOpen);
   }
+
+  // const [token, setToken] = useState("");
+
+  // useEffect(() => {
+  //   async function getAndSetToken() {
+  //     const res = await fetch("http://localhost:8080/get-login-token", {
+  //       method: "GET",
+  //       credentials: "include",
+  //       next: { revalidate: 2 },
+  //     });
+  //     const resText = await res.text();
+
+  //     setToken(resText);
+  //   }
+
+  //   getAndSetToken();
+  // }, []);
 
   return (
     <>
@@ -234,10 +272,12 @@ export default function Header({ headerType }) {
           <Logo />
         </div>
 
-        {headerType === "headerLoggedFull" && <LoggedFullSection />}
+        {headerType === "headerLoggedFull" &&
+          token !== "no-token" &&
+          token !== "" && <LoggedFullSection />}
         {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
-        {headerType === "headerNotifications" && <OnlyNotificationsSection />}
-        {headerType === "headerNotLogged" && <NotLoggedSection />}
+        {headerType === "headerNotifications" && <PrivateProfileSection />}
+        {(token === "no-token" || token === "") && <NotLoggedSection />}
         {headerType === "headerModifyProfile" && <ModifyProfileSection />}
         {headerType === "headerEmpty"}
       </div>
@@ -280,7 +320,7 @@ export default function Header({ headerType }) {
                 <LoggedPartialSectionMobile />
               )}
               {headerType === "headerNotifications" && (
-                <OnlyNotificationsSectionMobile />
+                <PrivateProfileSectionMobile />
               )}
               {headerType === "headerNotLogged" && <NotLoggedSectionMobile />}
               {headerType === "headerModifyProfile" && (

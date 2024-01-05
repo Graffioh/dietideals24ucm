@@ -6,8 +6,8 @@ import Footer from "../../components/footer.js";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "profileUCM",
-  description: "Profile page for DietiDeals24UCM",
+  title: "Public profile",
+  description: "Public profile page for DietiDeals24UCM",
 };
 
 export default function ProfileLayout({ children }) {

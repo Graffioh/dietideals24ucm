@@ -4,24 +4,79 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import { cookies } from "next/headers";
+
 import CardAuction from "../../components/cardAuction";
 import AuctionPagination from "../../components/auctionPagination";
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
   const matteo = [1, 2, 3, 4, 5, 6, 7, 8];
 
+  function getTokenFromCookie() {
+    const nextCookies = cookies();
+
+    const tokenCookieStr = nextCookies.has("token")
+      ? nextCookies.get("token").value
+      : '"no-token"';
+
+    // return token without "..."
+    return tokenCookieStr.replaceAll('"', "");
+  }
+
+  async function getCurrentUserSubjectFromToken(token) {
+    try {
+      const subjectFromToken = await fetch(
+        "http://localhost:8080/get-subject-from-token",
+        {
+          method: "POST",
+          credentials: "include",
+          body: token,
+        }
+      );
+
+      return subjectFromToken.text();
+    } catch (e) {
+      console.log({ e });
+    }
+  }
+
+  async function getCurrentUser(userInfo) {
+    if (userInfo.includes("@")) {
+      const userResponse = await fetch(
+        "http:/localhost:8080/user-from-email?email=" + userInfo
+      );
+      
+      const user = await userResponse.json();
+
+      return user;
+    } else {
+      const userResponse = await fetch(
+        "http:/localhost:8080/user-from-username?username=" + userInfo
+      );
+
+      const user = await userResponse.json();
+
+      return user;
+    }
+  }
+
+  const token = getTokenFromCookie();
+
+  const subject = await getCurrentUserSubjectFromToken(token);
+  
+  const currentUser = await getCurrentUser(subject);
+  
   return (
     <>
       <div className="flex mt-16 ml-[15em] mr-[15em]">
         <div className="mt-2 mr-10">
-          {/* <Button className="w-20 h-20">C</Button> */}
           <Avatar className="h-32 w-32">
             <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
             <AvatarFallback>gojo</AvatarFallback>
           </Avatar>
         </div>
         <div className="flex-col w-full">
-          <h1 className="font-bold text-5xl mb-4">USERNAME</h1>
+          <h1 className="font-bold text-5xl mb-4">{currentUser.username}</h1>
           <Textarea className="" placeholder="BIO HERE" />
         </div>
       </div>
