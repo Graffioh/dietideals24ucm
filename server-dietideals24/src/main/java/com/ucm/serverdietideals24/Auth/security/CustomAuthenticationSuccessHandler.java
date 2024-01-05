@@ -1,24 +1,15 @@
-package com.ucm.serverdietideals24.Auth;
+package com.ucm.serverdietideals24.Auth.security;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Driver;
 import java.util.NoSuchElementException;
 
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import com.ucm.serverdietideals24.Auth.util.JwtUtil;
 import com.ucm.serverdietideals24.Models.UserAccount;
@@ -29,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
@@ -45,13 +38,6 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         response.addCookie(tokenCookie);
 
-        // Use .env
-        final String jdbcUrl = "jdbc:postgresql://ep-wild-violet-14823380.eu-central-1.aws.neon.tech/dietideals24DB?user=Graffioh&password=8g4dRXucyKPG&sslmode=require";
-        final String username = "Graffioh";
-        final String password = "8g4dRXucyKPG";
-        final DataSource dataSource = DataSourceBuilder.create().url(jdbcUrl)
-                .username(username).password(password).build();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         
         Boolean isUserInDB = false;
         Boolean isEmail = false;
