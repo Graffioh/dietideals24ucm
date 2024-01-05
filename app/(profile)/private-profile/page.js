@@ -9,6 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { hash } from "bcryptjs";
 
+import useSWR from "swr";
+
+import { useCookies } from "next-client-cookies";
+
 export default function ProfilePage({ searchParams }) {
   const [profileStatus, setProfileStatus] = useState("");
 
@@ -46,7 +50,7 @@ export default function ProfilePage({ searchParams }) {
 
     const inputs = event.currentTarget;
     const userInfoFromInputs = {
-      id: 1000,
+      id: Date.now(),
       firstName: inputs.firstName.value,
       lastName: inputs.lastName.value,
       username: inputs.username.value,
@@ -67,6 +71,43 @@ export default function ProfilePage({ searchParams }) {
     // POST
     await createUserAccount(userInfoFromInputs);
   }
+
+  // GET INFO FROM CURRENT LOGGED USER
+  // *******************
+  const token = useCookies().get("token");
+
+  const userInfoFetcher = (url) =>
+    fetch(url, { method: "POST", credentials: "include", body: token }).then(
+      (res) => res.text()
+    );
+
+  const {
+    data: subject,
+    error: subjectError,
+    isLoading: subjectIsLoading,
+  } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
+  
+  console.log("SUBJECT: " + subject)
+
+  const fetcher = (url) => fetch(url).then((res) => res.json());
+
+  const ciao = "ciao"
+
+  const {
+    data: currentUser,
+    error: currentUserError,
+    isLoading: currentUserIsLoading,
+  } = useSWR(
+    subject != null && subject.includes("@")
+      ? "http://localhost:8080/user-from-email?email=" + subject
+      : "http://localhost:8080/user-from-username?username=" + subject,
+    fetcher
+  );
+
+
+  // *******************
+
+  if (currentUserIsLoading) return <div>Loading...</div>;
 
   return (
     <>
@@ -89,6 +130,7 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="firstName"
                 placeholder="Name"
+                defaultValue={currentUser.firstName}
                 required
               />
             </div>
@@ -102,6 +144,7 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="lastName"
                 placeholder="Surname"
+                defaultValue={currentUser.lastName}
                 required
               />
             </div>
@@ -117,7 +160,7 @@ export default function ProfilePage({ searchParams }) {
                     type="text"
                     id="username"
                     placeholder="Username"
-                    value={searchParams.username}
+                    defaultValue={searchParams.username}
                     required
                     readOnly
                   />
@@ -133,6 +176,7 @@ export default function ProfilePage({ searchParams }) {
                   type="text"
                   id="username"
                   placeholder="Username"
+                  defaultValue={currentUser.username}
                   required
                 />
               </div>
@@ -166,7 +210,7 @@ export default function ProfilePage({ searchParams }) {
                     type="email"
                     id="email"
                     placeholder="Email"
-                    defaultValue={searchParams.email}
+                    defaultValue={currentUser.email}
                     required
                   />
                 </div>
@@ -182,6 +226,7 @@ export default function ProfilePage({ searchParams }) {
                 type="password"
                 id="password"
                 placeholder="Password"
+                defaultValue={currentUser.password}
                 required
               />
             </div>
@@ -193,6 +238,7 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="piva"
                 placeholder="P.IVA"
+                defaultValue={currentUser.piva}
               />
             </div>
 
@@ -206,6 +252,8 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="birthDate"
                 placeholder="Date"
+                // defaultValue={currentUser.birthDate.split("T")[0]}
+                defaultValue={currentUser.birthDate}
               />
             </div>
 
@@ -216,6 +264,7 @@ export default function ProfilePage({ searchParams }) {
                 type="tel"
                 id="phoneNumber"
                 placeholder="Phone Number"
+                defaultValue={currentUser.telephoneNumber}
               />
             </div>
 
@@ -225,6 +274,7 @@ export default function ProfilePage({ searchParams }) {
                 className="bg-white"
                 placeholder="Type your description here."
                 id="biography"
+                defaultValue={currentUser.biography}
               />
             </div>
 
@@ -235,6 +285,7 @@ export default function ProfilePage({ searchParams }) {
                 type="url"
                 id="website"
                 placeholder="Website"
+                defaultValue={currentUser.website}
               />
             </div>
           </div>

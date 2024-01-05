@@ -13,18 +13,18 @@ export const metadata = {
 };
 
 export default function HomeLayout({ children }) {
-    const nextCookies = cookies();
+  const nextCookies = cookies();
 
-    const tokenCookieStr = nextCookies.has("token")
-      ? nextCookies.get("token").value
-      : '"no-token"';
+  const tokenCookieStr = nextCookies.has("token")
+    ? nextCookies.get("token").value
+    : '"no-token"';
 
-    // return token without "..."
-    const token =  tokenCookieStr.substring(1, tokenCookieStr.length - 1);
+  // return token without "..."
+  const token =  tokenCookieStr.replaceAll('"', "");
 
   return (
     <div className="relative flex min-h-screen flex-col">
-      <Header headerType={"headerLoggedFull"} token={token}/>
+      <Header headerType={"headerLoggedFull"} token={token} />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>

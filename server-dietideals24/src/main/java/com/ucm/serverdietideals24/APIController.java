@@ -39,9 +39,15 @@ public class APIController {
                 new BeanPropertyRowMapper<UserAccount>(UserAccount.class));
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user-from-email")
     public UserAccount fetchUserBasedOnEmail(@RequestParam String email) {
         return jdbcTemplate.query("SELECT * FROM useraccount WHERE email = '" + email + "'",
+                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+    }
+
+    @GetMapping("/user-from-username")
+    public UserAccount fetchUserBasedOnUsername(@RequestParam String username) {
+        return jdbcTemplate.query("SELECT * FROM useraccount WHERE username = '" + username + "'",
                 new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
     }
 
@@ -89,6 +95,7 @@ public class APIController {
     @GetMapping("/get-login-token")
     public ResponseEntity<String> getLoginToken(@CookieValue(name = "token", required = false) String tokenFromCookie) {
         if (tokenFromCookie != null) {
+            tokenFromCookie.replace("\"", "");
             return new ResponseEntity<String>(tokenFromCookie, HttpStatus.OK);
         } else {
             return new ResponseEntity<String>("no-token", HttpStatus.NOT_FOUND);
@@ -109,9 +116,11 @@ public class APIController {
     }
 
     @PostMapping("/get-subject-from-token")
-    public ResponseEntity<String> getEmailFromToken(@RequestBody String token) {
+    public ResponseEntity<String> getSubjectFromToken(@RequestBody String token) {
         String subject = "";
 
+        System.err.println(token);
+        
         try {
             subject = JwtUtil.extractSubjectViaToken(token);
         } catch (Exception e) {

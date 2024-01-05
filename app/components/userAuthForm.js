@@ -29,7 +29,7 @@ export function UserAuthForm({ className, createOrLogin }) {
 
     try {
       const userFromEmailResponse = await fetch(
-        "http://localhost:8080/user?email=" + userInfoFromInputs.email.value
+        "http://localhost:8080/user-from-email?email=" + userInfoFromInputs.email.value
       );
 
       const userFromEmail = await userFromEmailResponse.json();
