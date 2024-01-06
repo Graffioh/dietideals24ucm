@@ -15,7 +15,7 @@ import lombok.NonNull;
 @Data
 public class UserAccount {
     @NonNull
-    private Integer id;
+    private Long id;
 
     @NonNull
     private String firstName, lastName, username, password, email; 

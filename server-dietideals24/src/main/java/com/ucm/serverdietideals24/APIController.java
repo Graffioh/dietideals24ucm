@@ -4,6 +4,7 @@ import com.ucm.serverdietideals24.Models.*;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -52,15 +53,16 @@ public class APIController {
     }
 
     @GetMapping("/oauth-user")
-    // public Map<String, Object> oauthUser(@AuthenticationPrincipal OAuth2User principal) {
-    //     return Collections.singletonMap("name", principal.getAttribute("name"));
+    // public Map<String, Object> oauthUser(@AuthenticationPrincipal OAuth2User
+    // principal) {
+    // return Collections.singletonMap("name", principal.getAttribute("name"));
     public OAuth2User oauthUser(@AuthenticationPrincipal OAuth2User principal) {
         return principal;
     }
 
     @PostMapping("/generate-login-token")
     public ResponseEntity<String> generateLoginToken(@RequestBody UserFromLoginForm loginReq) {
-        int userId = -1;
+        Long userId = -1L;
 
         try {
             userId = jdbcTemplate.query(
@@ -91,11 +93,10 @@ public class APIController {
 
         return new ResponseEntity<String>("Cookie token set successfully.", HttpStatus.OK);
     }
-    
+
     @GetMapping("/get-login-token")
     public ResponseEntity<String> getLoginToken(@CookieValue(name = "token", required = false) String tokenFromCookie) {
         if (tokenFromCookie != null) {
-            tokenFromCookie.replace("\"", "");
             return new ResponseEntity<String>(tokenFromCookie, HttpStatus.OK);
         } else {
             return new ResponseEntity<String>("no-token", HttpStatus.NOT_FOUND);
@@ -119,8 +120,6 @@ public class APIController {
     public ResponseEntity<String> getSubjectFromToken(@RequestBody String token) {
         String subject = "";
 
-        System.err.println(token);
-        
         try {
             subject = JwtUtil.extractSubjectViaToken(token);
         } catch (Exception e) {
@@ -140,10 +139,14 @@ public class APIController {
         return new ResponseEntity<UserAccount>(entity, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update-profile/{id}")
-    public UserAccount updateUserAccount(@PathVariable String id, @RequestBody UserAccount entity) {
-
-        return entity;
+    @PutMapping("/update-profile")
+    public void updateUserAccount(@RequestParam String id, @RequestBody UserAccount entity) {
+        jdbcTemplate.update("UPDATE useraccount SET firstName = '" + entity.getFirstName() + "', lastName = '"
+                + entity.getLastName() + "', username = '" + entity.getUsername() + "', password = '"
+                + entity.getPassword() + "', birthDate = '" + entity.getBirthDate() + "', email = '" + entity.getEmail()
+                + "', piva = '" + entity.getPiva() + "', telephoneNumber = '" + entity.getTelephoneNumber()
+                + "', biography = '" + entity.getBiography() + "', website = '" + entity.getWebsite() + "' WHERE id = '"
+                + id + "'");
     }
 
 }
