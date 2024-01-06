@@ -29,7 +29,8 @@ export function UserAuthForm({ className, createOrLogin }) {
 
     try {
       const userFromEmailResponse = await fetch(
-        "http://localhost:8080/user-from-email?email=" + userInfoFromInputs.email.value
+        "http://localhost:8080/user-from-email?email=" +
+          userInfoFromInputs.email.value
       );
 
       const userFromEmail = await userFromEmailResponse.json();
@@ -181,11 +182,14 @@ export function UserAuthForm({ className, createOrLogin }) {
           </span>
         </div>
       </div>
-      <Link className={cn(
-              buttonVariants({
-                variant: "Github",
-              })
-            )} href="http://localhost:8080/oauth2/authorization/github">
+      <Link
+        className={cn(
+          buttonVariants({
+            variant: "Github",
+          })
+        )}
+        href="http://localhost:8080/oauth2/authorization/github"
+      >
         <Image
           src={githubIcon}
           alt="My SVG"
@@ -195,11 +199,14 @@ export function UserAuthForm({ className, createOrLogin }) {
         />
         Github
       </Link>
-      <Link className={cn(
-              buttonVariants({
-                variant: "Google",
-              })
-            )} href="http://localhost:8080/oauth2/authorization/google">
+      <Link
+        className={cn(
+          buttonVariants({
+            variant: "Google",
+          })
+        )}
+        href="http://localhost:8080/oauth2/authorization/google"
+      >
         <Image
           src={googleIcon}
           alt="My SVG"

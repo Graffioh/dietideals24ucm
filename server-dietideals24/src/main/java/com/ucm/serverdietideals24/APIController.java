@@ -4,8 +4,8 @@ import com.ucm.serverdietideals24.Models.*;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.ucm.serverdietideals24.Auth.util.*;
 
@@ -34,32 +34,47 @@ public class APIController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    // User from DB
+    // *************************************************************
     @GetMapping("/users")
-    public List<UserAccount> fetchAllUsers() {
-        return jdbcTemplate.query("SELECT * FROM useraccount",
+    public ResponseEntity<List<UserAccount>> fetchAllUsers() {
+        try {
+            List<UserAccount> users = jdbcTemplate.query("SELECT * FROM useraccount",
                 new BeanPropertyRowMapper<UserAccount>(UserAccount.class));
+            
+            return new ResponseEntity<List<UserAccount>>(users, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<List<UserAccount>>(new ArrayList<UserAccount>(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/user-from-email")
-    public UserAccount fetchUserBasedOnEmail(@RequestParam String email) {
-        return jdbcTemplate.query("SELECT * FROM useraccount WHERE email = '" + email + "'",
+    public ResponseEntity<UserAccount> fetchUserBasedOnEmail(@RequestParam String email) {
+        try {
+            UserAccount user = jdbcTemplate.query("SELECT * FROM useraccount WHERE email = '" + email + "'",
                 new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+            
+            return new ResponseEntity<UserAccount>(user, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<UserAccount>(new UserAccount(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/user-from-username")
-    public UserAccount fetchUserBasedOnUsername(@RequestParam String username) {
-        return jdbcTemplate.query("SELECT * FROM useraccount WHERE username = '" + username + "'",
-                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+    public ResponseEntity<UserAccount> fetchUserBasedOnUsername(@RequestParam String username) {
+        try {
+            UserAccount user = jdbcTemplate.query("SELECT * FROM useraccount WHERE username = '" + username + "'",
+                    new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+            
+            return new ResponseEntity<UserAccount>(user, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<UserAccount>(new UserAccount(), HttpStatus.BAD_REQUEST);
+        }
     }
+    // *************************************************************
 
-    @GetMapping("/oauth-user")
-    // public Map<String, Object> oauthUser(@AuthenticationPrincipal OAuth2User
-    // principal) {
-    // return Collections.singletonMap("name", principal.getAttribute("name"));
-    public OAuth2User oauthUser(@AuthenticationPrincipal OAuth2User principal) {
-        return principal;
-    }
-
+    // JWT Token handling
+    // *************************************************************
     @PostMapping("/generate-login-token")
     public ResponseEntity<String> generateLoginToken(@RequestBody UserFromLoginForm loginReq) {
         Long userId = -1L;
@@ -128,6 +143,14 @@ public class APIController {
 
         return new ResponseEntity<String>(subject, HttpStatus.ACCEPTED);
     }
+    // *************************************************************
+
+    // Auth
+    // *************************************************************
+    @GetMapping("/oauth-user")
+    public OAuth2User oauthUser(@AuthenticationPrincipal OAuth2User principal) {
+        return principal;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<UserAccount> createUserAccount(@RequestBody UserAccount entity) {
@@ -148,5 +171,6 @@ public class APIController {
                 + "', biography = '" + entity.getBiography() + "', website = '" + entity.getWebsite() + "' WHERE id = '"
                 + id + "'");
     }
+    // *************************************************************
 
 }

@@ -23,5 +23,5 @@ export default async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/insert-auction", "/private-profile", "/public-profile"],
+  matcher: ["/insert-auction", "/public-profile"],
 };

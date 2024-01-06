@@ -1,6 +1,5 @@
 package com.ucm.serverdietideals24.Auth.util;
 
-import java.util.Date;
 import javax.crypto.SecretKey;
 
 import io.jsonwebtoken.Jwts;

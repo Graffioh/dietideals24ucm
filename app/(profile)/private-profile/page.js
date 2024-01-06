@@ -47,7 +47,7 @@ export default function ProfilePage({ searchParams }) {
 
   async function onSubmit(event) {
     event.preventDefault();
-    
+
     const inputs = event.currentTarget;
     const userInfoFromInputs = {
       id: Date.now(),
@@ -58,19 +58,21 @@ export default function ProfilePage({ searchParams }) {
       birthDate: inputs.birthDate.value,
       email: inputs.email.value,
       piva: inputs.piva ? inputs.piva.value : "",
-      telephoneNumber: inputs.telephoneNumber ? inputs.telephoneNumber.value : "",
+      telephoneNumber: inputs.telephoneNumber
+        ? inputs.telephoneNumber.value
+        : "",
       biography: inputs.biography ? inputs.biography.value : "",
       website: inputs.website ? inputs.website.value : "",
     };
 
     const tokenResponse = await fetch("http://localhost:8080/get-login-token", {
       method: "GET",
-      credentials: "include"
+      credentials: "include",
     });
     const token = await tokenResponse.text();
 
-    token.replaceAll("\"", "");
-    
+    token.replaceAll('"', "");
+
     if (token != "no-token") {
       const currentSubjectResponse = await fetch(
         "http://localhost:8080/get-subject-from-token",
@@ -78,7 +80,7 @@ export default function ProfilePage({ searchParams }) {
       );
 
       const currentSubject = await currentSubjectResponse.text();
-      
+
       const currentUserResponse = currentSubject.includes("@")
         ? await fetch(
             "http://localhost:8080/user-from-email?email=" + currentSubject
@@ -89,14 +91,14 @@ export default function ProfilePage({ searchParams }) {
           );
 
       const currentUser = await currentUserResponse.json();
-      
+
       // UPDATE
       const fff = await fetch(
         "http://localhost:8080/update-profile?id=" + currentUser.id,
         {
           method: "PUT",
           body: JSON.stringify(userInfoFromInputs),
-          headers: {"Content-Type": "application/json"}
+          headers: { "Content-Type": "application/json" },
         }
       );
     } else {
@@ -108,34 +110,41 @@ export default function ProfilePage({ searchParams }) {
   // GET INFO FROM CURRENT LOGGED USER
   // *******************
   const token = useCookies().get("token");
+  
+  let currentUser = null;
 
-  const userInfoFetcher = (url) =>
-    fetch(url, { method: "POST", credentials: "include", body: token }).then(
-      (res) => res.text()
+  if (token) {
+    const userInfoFetcher = (url) =>
+      fetch(url, { method: "POST", credentials: "include", body: token }).then(
+        (res) => res.text()
+      );
+
+    const {
+      data: subject,
+      error: subjectError,
+      isLoading: subjectIsLoading,
+    } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
+
+    const fetcher = (url) => fetch(url).then((res) => res.json());
+
+    const {
+      data: currentUserData,
+      error: currentUserError,
+      isLoading: currentUserIsLoading,
+    } = useSWR(
+      subject != null && subject.includes("@")
+        ? "http://localhost:8080/user-from-email?email=" + subject
+        : "http://localhost:8080/user-from-username?username=" + subject,
+      fetcher
     );
 
-  const {
-    data: subject,
-    error: subjectError,
-    isLoading: subjectIsLoading,
-  } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
+    currentUser = currentUserData
 
-  const fetcher = (url) => fetch(url).then((res) => res.json());
-
-  const {
-    data: currentUser,
-    error: currentUserError,
-    isLoading: currentUserIsLoading,
-  } = useSWR(
-    subject != null && subject.includes("@")
-      ? "http://localhost:8080/user-from-email?email=" + subject
-      : "http://localhost:8080/user-from-username?username=" + subject,
-    fetcher
-  );
+    if (currentUserIsLoading) return <div>Loading...</div>;
+  }
 
   // *******************
 
-  if (currentUserIsLoading) return <div>Loading...</div>;
 
   return (
     <>
@@ -158,7 +167,7 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="firstName"
                 placeholder="Name"
-                defaultValue={currentUser.firstName}
+                defaultValue={currentUser ? currentUser.firstName : ""}
                 required
               />
             </div>
@@ -172,7 +181,7 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="lastName"
                 placeholder="Surname"
-                defaultValue={currentUser.lastName}
+                defaultValue={currentUser ? currentUser.lastName : ""}
                 required
               />
             </div>
@@ -204,7 +213,7 @@ export default function ProfilePage({ searchParams }) {
                   type="text"
                   id="username"
                   placeholder="Username"
-                  defaultValue={currentUser.username}
+                  defaultValue={currentUser ? currentUser.username : ""}
                   required
                 />
               </div>
@@ -238,7 +247,7 @@ export default function ProfilePage({ searchParams }) {
                     type="email"
                     id="email"
                     placeholder="Email"
-                    defaultValue={currentUser.email}
+                    defaultValue={currentUser ? currentUser.email : searchParams.email}
                     required
                   />
                 </div>
@@ -254,7 +263,7 @@ export default function ProfilePage({ searchParams }) {
                 type="password"
                 id="password"
                 placeholder="Password"
-                defaultValue={currentUser.password}
+                defaultValue={currentUser ? currentUser.password : ""}
                 required
               />
             </div>
@@ -266,7 +275,7 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="piva"
                 placeholder="P.IVA"
-                defaultValue={currentUser.piva}
+                defaultValue={currentUser ? currentUser.piva : ""}
               />
             </div>
 
@@ -281,7 +290,7 @@ export default function ProfilePage({ searchParams }) {
                 id="birthDate"
                 placeholder="Date"
                 // defaultValue={currentUser.birthDate.split("T")[0]}
-                defaultValue={currentUser.birthDate}
+                defaultValue={currentUser ? currentUser.birthDate : ""}
               />
             </div>
 
@@ -292,7 +301,7 @@ export default function ProfilePage({ searchParams }) {
                 type="tel"
                 id="phoneNumber"
                 placeholder="Phone Number"
-                defaultValue={currentUser.telephoneNumber}
+                defaultValue={currentUser ? currentUser.telephoneNumber : ""}
               />
             </div>
 
@@ -302,7 +311,7 @@ export default function ProfilePage({ searchParams }) {
                 className="bg-white"
                 placeholder="Type your description here."
                 id="biography"
-                defaultValue={currentUser.biography}
+                defaultValue={currentUser ? currentUser.biography : ""}
               />
             </div>
 
@@ -313,7 +322,7 @@ export default function ProfilePage({ searchParams }) {
                 type="url"
                 id="website"
                 placeholder="Website"
-                defaultValue={currentUser.website}
+                defaultValue={currentUser ? currentUser.website : ""}
               />
             </div>
           </div>
