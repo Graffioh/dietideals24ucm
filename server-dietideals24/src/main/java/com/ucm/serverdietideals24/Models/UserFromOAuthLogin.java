@@ -12,8 +12,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import lombok.Builder;
 import lombok.Data;
 
-@Data
 @Builder
+@Data
 public class UserFromOAuthLogin implements UserDetails, OidcUser {
 
     String userId, email, name, imageUrl;

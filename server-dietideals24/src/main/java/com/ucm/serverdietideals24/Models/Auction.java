@@ -5,7 +5,6 @@ import java.util.Date;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -17,13 +16,13 @@ enum AuctionType {
 enum AuctionCategory {
     Appliances, BeautyAndHealth, BooksAndMagazines, BoatingAndBoats,
     CarsMotorcyclesAndOtherVehicles, ClothingAndAccessories, Collectibles, CoinsAndBanknotes, Comics, Computers,
-    Electronics, Gardening, HomeFurnitureAndDIY, Infancy, Lighting, MoviesAndDVDs, MusicCDsAndVinyl, PhotographyAndVideo,
+    Electronics, Gardening, HomeFurnitureAndDIY, Infancy, Lighting, MoviesAndDVDs, MusicCDsAndVinyl,
+    PhotographyAndVideo,
     SportsAndLeisure, Stamps, TicketsAndEvents, Toys, TravelAccessories, VideoGamesAndConsoles, WatchesAndJewelry
 }
 
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Data
 public class Auction {
     @NonNull
@@ -48,7 +47,7 @@ public class Auction {
     private Float baseStartAuction, raiseThreshold;
 
     private Timestamp offerTimer;
-    
+
     // Fixed time auction
     private Date expireDate;
 
