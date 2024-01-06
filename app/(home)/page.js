@@ -45,10 +45,8 @@ export default async function Home() {
     <>
       {/* <TestPagesNavigation /> */}
 
-      <div>Subject: {subject}</div>
-
       <div className="flex flex-col justify-center items-center">
-        {/* <div className="grid grid-rows-auto grid-cols-4 gap-x-14">
+        <div className="grid grid-rows-auto grid-cols-4 gap-x-14">
           {chiara.map((number) => (
             <>
               <Link href="/auction-details">
@@ -60,7 +58,7 @@ export default async function Home() {
 
         <div className="my-5 mt-10">
           <AuctionPagination />
-        </div> */}
+        </div>
       </div>
     </>
   );
