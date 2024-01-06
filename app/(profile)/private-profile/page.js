@@ -47,7 +47,7 @@ export default function ProfilePage({ searchParams }) {
 
   async function onSubmit(event) {
     event.preventDefault();
-
+    
     const inputs = event.currentTarget;
     const userInfoFromInputs = {
       id: Date.now(),
@@ -57,19 +57,52 @@ export default function ProfilePage({ searchParams }) {
       password: inputs.password.value,
       birthDate: inputs.birthDate.value,
       email: inputs.email.value,
+      piva: inputs.piva ? inputs.piva.value : "",
+      telephoneNumber: inputs.telephoneNumber ? inputs.telephoneNumber.value : "",
+      biography: inputs.biography ? inputs.biography.value : "",
+      website: inputs.website ? inputs.website.value : "",
     };
 
-    // distinguish between POST and UPDATE
-    // UPDATE =
-    //  1) fetch all users and check if the username in the input field is already in the database
-    //  1.1) check if username in input field == username of the current logged account
-    // else POST
+    const tokenResponse = await fetch("http://localhost:8080/get-login-token", {
+      method: "GET",
+      credentials: "include"
+    });
+    const token = await tokenResponse.text();
 
-    // UPDATE
-    //setProfileStatus("Profile updated successfully.");
+    token.replaceAll("\"", "");
+    
+    if (token != "no-token") {
+      const currentSubjectResponse = await fetch(
+        "http://localhost:8080/get-subject-from-token",
+        { method: "POST", body: token }
+      );
 
-    // POST
-    await createUserAccount(userInfoFromInputs);
+      const currentSubject = await currentSubjectResponse.text();
+      
+      const currentUserResponse = currentSubject.includes("@")
+        ? await fetch(
+            "http://localhost:8080/user-from-email?email=" + currentSubject
+          )
+        : await fetch(
+            "http://localhost:8080/user-from-username?username=" +
+              currentSubject
+          );
+
+      const currentUser = await currentUserResponse.json();
+      
+      // UPDATE
+      const fff = await fetch(
+        "http://localhost:8080/update-profile?id=" + currentUser.id,
+        {
+          method: "PUT",
+          body: JSON.stringify(userInfoFromInputs),
+          headers: {"Content-Type": "application/json"}
+        }
+      );
+    } else {
+      // POST
+      await createUserAccount(userInfoFromInputs);
+    }
   }
 
   // GET INFO FROM CURRENT LOGGED USER
@@ -86,12 +119,8 @@ export default function ProfilePage({ searchParams }) {
     error: subjectError,
     isLoading: subjectIsLoading,
   } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
-  
-  console.log("SUBJECT: " + subject)
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
-
-  const ciao = "ciao"
 
   const {
     data: currentUser,
@@ -103,7 +132,6 @@ export default function ProfilePage({ searchParams }) {
       : "http://localhost:8080/user-from-username?username=" + subject,
     fetcher
   );
-
 
   // *******************
 
