@@ -62,7 +62,7 @@ public class APIController {
 
     @PostMapping("/generate-login-token")
     public ResponseEntity<String> generateLoginToken(@RequestBody UserFromLoginForm loginReq) {
-        int userId = -1;
+        Long userId = -1L;
 
         try {
             userId = jdbcTemplate.query(
