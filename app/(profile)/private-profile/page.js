@@ -8,10 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { hash } from "bcryptjs";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 import useSWR from "swr";
 
 import { useCookies } from "next-client-cookies";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage({ searchParams }) {
   const [profileStatus, setProfileStatus] = useState("");
@@ -101,16 +103,20 @@ export default function ProfilePage({ searchParams }) {
           headers: { "Content-Type": "application/json" },
         }
       );
+
+      setProfileStatus("Account updated successfully.");
     } else {
       // POST
       await createUserAccount(userInfoFromInputs);
+
+      window.location.href = "/";
     }
   }
 
   // GET INFO FROM CURRENT LOGGED USER
   // *******************
   const token = useCookies().get("token");
-  
+
   let currentUser = null;
 
   if (token) {
@@ -138,13 +144,12 @@ export default function ProfilePage({ searchParams }) {
       fetcher
     );
 
-    currentUser = currentUserData
+    currentUser = currentUserData;
 
     if (currentUserIsLoading) return <div>Loading...</div>;
   }
 
   // *******************
-
 
   return (
     <>
@@ -247,8 +252,11 @@ export default function ProfilePage({ searchParams }) {
                     type="email"
                     id="email"
                     placeholder="Email"
-                    defaultValue={currentUser ? currentUser.email : searchParams.email}
+                    defaultValue={
+                      currentUser ? currentUser.email : searchParams.email
+                    }
                     required
+                    readOnly={currentUser ? true : false}
                   />
                 </div>
               </>
@@ -265,33 +273,38 @@ export default function ProfilePage({ searchParams }) {
                 placeholder="Password"
                 defaultValue={currentUser ? currentUser.password : ""}
                 required
-              />
-            </div>
-
-            <div>
-              <Label className="flex mb-2">P.IVA</Label>
-              <Input
-                className="h-9 bg-white"
-                type="text"
-                id="piva"
-                placeholder="P.IVA"
-                defaultValue={currentUser ? currentUser.piva : ""}
+                readOnly={currentUser ? true : false}
               />
             </div>
 
             <div>
               <Label className="flex mb-2">
-                Date of birth (per ora inserirla altrimenti penso non funzioni
-                l'insert nel DB)
+                Date of birth (YYYY-MM-dd)<div className="text-red-500">*</div>
               </Label>
               <Input
                 className="h-9 bg-white"
                 type="text"
                 id="birthDate"
                 placeholder="Date"
-                // defaultValue={currentUser.birthDate.split("T")[0]}
-                defaultValue={currentUser ? currentUser.birthDate : ""}
+                defaultValue={
+                  currentUser ? currentUser.birthDate.split("T")[0] : ""
+                }
+                required
               />
+            </div>
+
+            <div className="flex">
+              <div className="flex-col grow">
+                <Label>P.IVA</Label>
+                <Input
+                  className="h-9 bg-white flex grow"
+                  type="text"
+                  id="piva"
+                  placeholder="P.IVA"
+                  defaultValue={currentUser ? currentUser.piva : ""}
+                />
+              </div>
+              <InfoCircledIcon className="mt-8 ml-2" width={18} height={18} />
             </div>
 
             <div>
