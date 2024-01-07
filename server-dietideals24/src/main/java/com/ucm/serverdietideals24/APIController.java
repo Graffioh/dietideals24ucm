@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import com.ucm.serverdietideals24.Auth.util.*;
+import com.ucm.serverdietideals24.DAO.UserAccountDAO;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
@@ -33,16 +34,18 @@ public class APIController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private UserAccountDAO userAccountDAO;
+
     // User from DB
     // *************************************************************
     @GetMapping("/users")
     public ResponseEntity<List<UserAccount>> fetchAllUsers() {
         try {
-            List<UserAccount> users = jdbcTemplate.query("SELECT * FROM useraccount",
-                new BeanPropertyRowMapper<UserAccount>(UserAccount.class));
-            
+            List<UserAccount> users = userAccountDAO.getAll();
+
             return new ResponseEntity<List<UserAccount>>(users, HttpStatus.OK);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<List<UserAccount>>(new ArrayList<UserAccount>(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -50,11 +53,10 @@ public class APIController {
     @GetMapping("/user-from-email")
     public ResponseEntity<UserAccount> fetchUserBasedOnEmail(@RequestParam String email) {
         try {
-            UserAccount user = jdbcTemplate.query("SELECT * FROM useraccount WHERE email = '" + email + "'",
-                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
-            
+            UserAccount user = userAccountDAO.getBasedOnEmail(email);
+
             return new ResponseEntity<UserAccount>(user, HttpStatus.OK);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<UserAccount>(new UserAccount(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -62,11 +64,10 @@ public class APIController {
     @GetMapping("/user-from-username")
     public ResponseEntity<UserAccount> fetchUserBasedOnUsername(@RequestParam String username) {
         try {
-            UserAccount user = jdbcTemplate.query("SELECT * FROM useraccount WHERE username = '" + username + "'",
-                    new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
-            
+            UserAccount user = userAccountDAO.getBasedOnUsername(username);
+
             return new ResponseEntity<UserAccount>(user, HttpStatus.OK);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<UserAccount>(new UserAccount(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -153,22 +154,14 @@ public class APIController {
 
     @PostMapping("/register")
     public ResponseEntity<UserAccount> createUserAccount(@RequestBody UserAccount entity) {
-        jdbcTemplate.execute("INSERT INTO useraccount VALUES('" + entity.getId() + "', '" + entity.getFirstName()
-                + "', '" + entity.getLastName() + "', '" + entity.getUsername() + "', '" + entity.getPassword()
-                + "', '"
-                + entity.getBirthDate() + "', '" + entity.getEmail() + "')");
+        userAccountDAO.create(entity);
 
         return new ResponseEntity<UserAccount>(entity, HttpStatus.CREATED);
     }
 
     @PutMapping("/update-profile")
     public void updateUserAccount(@RequestParam String id, @RequestBody UserAccount entity) {
-        jdbcTemplate.update("UPDATE useraccount SET firstName = '" + entity.getFirstName() + "', lastName = '"
-                + entity.getLastName() + "', username = '" + entity.getUsername() + "', password = '"
-                + entity.getPassword() + "', birthDate = '" + entity.getBirthDate() + "', email = '" + entity.getEmail()
-                + "', piva = '" + entity.getPiva() + "', telephoneNumber = '" + entity.getTelephoneNumber()
-                + "', biography = '" + entity.getBiography() + "', website = '" + entity.getWebsite() + "' WHERE id = '"
-                + id + "'");
+        userAccountDAO.update(id, entity);
     }
     // *************************************************************
 
