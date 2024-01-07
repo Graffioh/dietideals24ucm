@@ -1,33 +1,29 @@
-package com.ucm.serverdietideals24;
-
-import com.ucm.serverdietideals24.Models.*;
-
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Cookie;
+package com.ucm.serverdietideals24.Controller;
 
 import java.util.NoSuchElementException;
 
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.ucm.serverdietideals24.Auth.util.*;
+import com.ucm.serverdietideals24.Auth.util.JwtUtil;
+import com.ucm.serverdietideals24.DAO.UserAccountDAO;
+import com.ucm.serverdietideals24.Models.UserFromLoginForm;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-public class APIController {
+public class JWTTokenController {
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private UserAccountDAO userAccountDAO;
 
     // JWT Token handling
     // *************************************************************
@@ -36,12 +32,9 @@ public class APIController {
         Long userId = -1L;
 
         try {
-            userId = jdbcTemplate.query(
-                    "SELECT id FROM useraccount WHERE email = '" + loginReq.getEmail() + "' AND password = '"
-                            + loginReq.getPassword() + "'",
-                    new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst().getId();
+            userId = userAccountDAO.getIdViaEmailAndPassword(loginReq.getEmail(), loginReq.getPassword());
         } catch (NoSuchElementException e) {
-            System.out.println("Error, invalid email or password sento to login route.");
+            System.out.println("Error, invalid email or password sent to login route.");
         }
 
         if (userId != -1) {
@@ -98,14 +91,6 @@ public class APIController {
         }
 
         return new ResponseEntity<String>(subject, HttpStatus.ACCEPTED);
-    }
-    // *************************************************************
-
-    // Auth
-    // *************************************************************
-    @GetMapping("/oauth-user")
-    public OAuth2User oauthUser(@AuthenticationPrincipal OAuth2User principal) {
-        return principal;
     }
     // *************************************************************
 

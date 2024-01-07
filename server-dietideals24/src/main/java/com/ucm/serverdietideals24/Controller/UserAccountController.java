@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +24,8 @@ import com.ucm.serverdietideals24.Models.UserAccount;
 public class UserAccountController {
     @Autowired
     private UserAccountDAO userAccountDAO;
-    
-   // User from DB
+
+    // User from DB
     // *************************************************************
     @GetMapping("/users")
     public ResponseEntity<List<UserAccount>> fetchAllUsers() {
@@ -39,7 +41,7 @@ public class UserAccountController {
     @GetMapping("/user-from-email")
     public ResponseEntity<UserAccount> fetchUserBasedOnEmail(@RequestParam String email) {
         try {
-            UserAccount user = userAccountDAO.getBasedOnEmail(email);
+            UserAccount user = userAccountDAO.getViaEmail(email);
 
             return new ResponseEntity<UserAccount>(user, HttpStatus.OK);
         } catch (Exception e) {
@@ -50,7 +52,7 @@ public class UserAccountController {
     @GetMapping("/user-from-username")
     public ResponseEntity<UserAccount> fetchUserBasedOnUsername(@RequestParam String username) {
         try {
-            UserAccount user = userAccountDAO.getBasedOnUsername(username);
+            UserAccount user = userAccountDAO.getViaUsername(username);
 
             return new ResponseEntity<UserAccount>(user, HttpStatus.OK);
         } catch (Exception e) {
@@ -69,6 +71,11 @@ public class UserAccountController {
     public void updateUserAccount(@RequestParam String id, @RequestBody UserAccount entity) {
         userAccountDAO.update(id, entity);
     }
-    // ************************************************************* 
+    // *************************************************************
+
+    @GetMapping("/oauth-user")
+    public OAuth2User oauthUser(@AuthenticationPrincipal OAuth2User principal) {
+        return principal;
+    }
 
 }

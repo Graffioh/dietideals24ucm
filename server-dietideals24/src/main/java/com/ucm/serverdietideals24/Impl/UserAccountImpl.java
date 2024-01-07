@@ -22,13 +22,13 @@ public class UserAccountImpl implements UserAccountDAO {
     }
 
     @Override
-    public UserAccount getBasedOnEmail(String email) {
+    public UserAccount getViaEmail(String email) {
         return jdbcTemplate.query("SELECT * FROM useraccount WHERE email = '" + email + "'",
                 new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
     }
 
     @Override
-    public UserAccount getBasedOnUsername(String username) {
+    public UserAccount getViaUsername(String username) {
         return jdbcTemplate.query("SELECT * FROM useraccount WHERE username = '" + username + "'",
                 new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
     }
@@ -49,5 +49,13 @@ public class UserAccountImpl implements UserAccountDAO {
                 + "', piva = '" + user.getPiva() + "', telephoneNumber = '" + user.getTelephoneNumber()
                 + "', biography = '" + user.getBiography() + "', website = '" + user.getWebsite() + "' WHERE id = '"
                 + id + "'");
+    }
+
+    @Override
+    public Long getIdViaEmailAndPassword(String email, String password) {
+        return jdbcTemplate.query(
+                "SELECT id FROM useraccount WHERE email = '" + email + "' AND password = '"
+                        + password + "'",
+                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst().getId();
     }
 }

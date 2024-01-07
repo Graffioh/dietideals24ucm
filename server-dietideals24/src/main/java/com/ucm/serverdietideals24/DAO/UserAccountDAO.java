@@ -7,9 +7,11 @@ import com.ucm.serverdietideals24.Models.UserAccount;
 public interface UserAccountDAO {
     public List<UserAccount> getAll();
 
-    public UserAccount getBasedOnEmail(String email);
+    public UserAccount getViaEmail(String email);
 
-    public UserAccount getBasedOnUsername(String username);
+    public UserAccount getViaUsername(String username);
+
+    public Long getIdViaEmailAndPassword(String email, String password);
 
     public void create(UserAccount user);
 
