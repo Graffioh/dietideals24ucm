@@ -40,6 +40,31 @@ export default function ProfilePage({ searchParams }) {
         body: JSON.stringify(userWithHashedPassword),
       });
 
+      const responseToken = await fetch(
+        "http://localhost:8080/generate-login-token",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userWithHashedPassword),
+        }
+      );
+
+      const responseTokenText = await responseToken.text();
+
+      const responseCookie = await fetch(
+        "http://localhost:8080/set-login-token",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(responseTokenText),
+        }
+      );
+
       setProfileStatus("Account created successfully.");
     } catch (e) {
       setProfileStatus("Error while creating account");
