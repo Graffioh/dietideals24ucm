@@ -23,6 +23,9 @@ export function UserAuthForm({ className, createOrLogin }) {
 
   // LOGIN
   // **************************
+
+  // Login handled via token stored in the browser, if you login you store the token,
+  // if there is not token you need to login
   async function onSubmitLogin(event) {
     event.preventDefault();
     const userInfoFromInputs = event.currentTarget;
@@ -66,7 +69,6 @@ export function UserAuthForm({ className, createOrLogin }) {
           }
         );
 
-        // router.push("/");
         window.location.href = "/";
 
         setError("");
@@ -86,7 +88,7 @@ export function UserAuthForm({ className, createOrLogin }) {
     setEmail(event.target.value);
   }
 
-  // When create account is clicked, pass the mail to private profile page
+  // When "create account" is clicked, pass the email to private profile page and continue with account creation
   async function pushEmailAsUrlParameter(event) {
     event.preventDefault();
 

@@ -9,37 +9,37 @@ import CardAuction from "../components/cardAuction";
 export default async function Home() {
   const chiara = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
-  function getTokenFromCookie() {
-    const nextCookies = cookies();
+  // function getTokenFromCookie() {
+  //   const nextCookies = cookies();
 
-    const tokenCookieStr = nextCookies.has("token")
-      ? nextCookies.get("token").value
-      : '"no-token"';
+  //   const tokenCookieStr = nextCookies.has("token")
+  //     ? nextCookies.get("token").value
+  //     : '"no-token"';
 
-    // return token without "..."
-    return tokenCookieStr.replaceAll('"', "");
-  }
+  //   // return token without "..."
+  //   return tokenCookieStr.replaceAll('"', "");
+  // }
 
-  async function getCurrentUserSubjectFromToken(token) {
-    try {
-      const subjectFromToken = await fetch(
-        "http://localhost:8080/get-subject-from-token",
-        {
-          method: "POST",
-          credentials: "include",
-          body: token,
-        }
-      );
+  // async function getCurrentUserSubjectFromToken(token) {
+  //   try {
+  //     const subjectFromToken = await fetch(
+  //       "http://localhost:8080/get-subject-from-token",
+  //       {
+  //         method: "POST",
+  //         credentials: "include",
+  //         body: token,
+  //       }
+  //     );
 
-      return subjectFromToken.text();
-    } catch (e) {
-      console.log({ e });
-    }
-  }
+  //     return subjectFromToken.text();
+  //   } catch (e) {
+  //     console.log({ e });
+  //   }
+  // }
 
-  const token = getTokenFromCookie();
+  // const token = getTokenFromCookie();
 
-  const subject = await getCurrentUserSubjectFromToken(token);
+  // const subject = await getCurrentUserSubjectFromToken(token);
 
   return (
     <>
