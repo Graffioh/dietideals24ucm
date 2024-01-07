@@ -8,10 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { hash } from "bcryptjs";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 import useSWR from "swr";
 
 import { useCookies } from "next-client-cookies";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage({ searchParams }) {
   const [profileStatus, setProfileStatus] = useState("");
@@ -38,6 +40,31 @@ export default function ProfilePage({ searchParams }) {
         body: JSON.stringify(userWithHashedPassword),
       });
 
+      const responseToken = await fetch(
+        "http://localhost:8080/generate-login-token",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userWithHashedPassword),
+        }
+      );
+
+      const responseTokenText = await responseToken.text();
+
+      const responseCookie = await fetch(
+        "http://localhost:8080/set-login-token",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(responseTokenText),
+        }
+      );
+
       setProfileStatus("Account created successfully.");
     } catch (e) {
       setProfileStatus("Error while creating account");
@@ -47,7 +74,7 @@ export default function ProfilePage({ searchParams }) {
 
   async function onSubmit(event) {
     event.preventDefault();
-    
+
     const inputs = event.currentTarget;
     const userInfoFromInputs = {
       id: Date.now(),
@@ -58,19 +85,21 @@ export default function ProfilePage({ searchParams }) {
       birthDate: inputs.birthDate.value,
       email: inputs.email.value,
       piva: inputs.piva ? inputs.piva.value : "",
-      telephoneNumber: inputs.telephoneNumber ? inputs.telephoneNumber.value : "",
+      telephoneNumber: inputs.telephoneNumber
+        ? inputs.telephoneNumber.value
+        : "",
       biography: inputs.biography ? inputs.biography.value : "",
       website: inputs.website ? inputs.website.value : "",
     };
 
     const tokenResponse = await fetch("http://localhost:8080/get-login-token", {
       method: "GET",
-      credentials: "include"
+      credentials: "include",
     });
     const token = await tokenResponse.text();
 
-    token.replaceAll("\"", "");
-    
+    token.replaceAll('"', "");
+
     if (token != "no-token") {
       const currentSubjectResponse = await fetch(
         "http://localhost:8080/get-subject-from-token",
@@ -78,7 +107,7 @@ export default function ProfilePage({ searchParams }) {
       );
 
       const currentSubject = await currentSubjectResponse.text();
-      
+
       const currentUserResponse = currentSubject.includes("@")
         ? await fetch(
             "http://localhost:8080/user-from-email?email=" + currentSubject
@@ -89,19 +118,23 @@ export default function ProfilePage({ searchParams }) {
           );
 
       const currentUser = await currentUserResponse.json();
-      
+
       // UPDATE
       const fff = await fetch(
         "http://localhost:8080/update-profile?id=" + currentUser.id,
         {
           method: "PUT",
           body: JSON.stringify(userInfoFromInputs),
-          headers: {"Content-Type": "application/json"}
+          headers: { "Content-Type": "application/json" },
         }
       );
+
+      setProfileStatus("Account updated successfully.");
     } else {
       // POST
       await createUserAccount(userInfoFromInputs);
+
+      window.location.href = "/";
     }
   }
 
@@ -109,33 +142,39 @@ export default function ProfilePage({ searchParams }) {
   // *******************
   const token = useCookies().get("token");
 
-  const userInfoFetcher = (url) =>
-    fetch(url, { method: "POST", credentials: "include", body: token }).then(
-      (res) => res.text()
+  let currentUser = null;
+
+  if (token) {
+    const userInfoFetcher = (url) =>
+      fetch(url, { method: "POST", credentials: "include", body: token }).then(
+        (res) => res.text()
+      );
+
+    const {
+      data: subject,
+      error: subjectError,
+      isLoading: subjectIsLoading,
+    } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
+
+    const fetcher = (url) => fetch(url).then((res) => res.json());
+
+    const {
+      data: currentUserData,
+      error: currentUserError,
+      isLoading: currentUserIsLoading,
+    } = useSWR(
+      subject != null && subject.includes("@")
+        ? "http://localhost:8080/user-from-email?email=" + subject
+        : "http://localhost:8080/user-from-username?username=" + subject,
+      fetcher
     );
 
-  const {
-    data: subject,
-    error: subjectError,
-    isLoading: subjectIsLoading,
-  } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
+    currentUser = currentUserData;
 
-  const fetcher = (url) => fetch(url).then((res) => res.json());
-
-  const {
-    data: currentUser,
-    error: currentUserError,
-    isLoading: currentUserIsLoading,
-  } = useSWR(
-    subject != null && subject.includes("@")
-      ? "http://localhost:8080/user-from-email?email=" + subject
-      : "http://localhost:8080/user-from-username?username=" + subject,
-    fetcher
-  );
+    if (currentUserIsLoading) return <div>Loading...</div>;
+  }
 
   // *******************
-
-  if (currentUserIsLoading) return <div>Loading...</div>;
 
   return (
     <>
@@ -158,7 +197,7 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="firstName"
                 placeholder="Name"
-                defaultValue={currentUser.firstName}
+                defaultValue={currentUser ? currentUser.firstName : ""}
                 required
               />
             </div>
@@ -172,7 +211,7 @@ export default function ProfilePage({ searchParams }) {
                 type="text"
                 id="lastName"
                 placeholder="Surname"
-                defaultValue={currentUser.lastName}
+                defaultValue={currentUser ? currentUser.lastName : ""}
                 required
               />
             </div>
@@ -204,7 +243,7 @@ export default function ProfilePage({ searchParams }) {
                   type="text"
                   id="username"
                   placeholder="Username"
-                  defaultValue={currentUser.username}
+                  defaultValue={currentUser ? currentUser.username : ""}
                   required
                 />
               </div>
@@ -238,8 +277,11 @@ export default function ProfilePage({ searchParams }) {
                     type="email"
                     id="email"
                     placeholder="Email"
-                    defaultValue={currentUser.email}
+                    defaultValue={
+                      currentUser ? currentUser.email : searchParams.email
+                    }
                     required
+                    readOnly={currentUser ? true : false}
                   />
                 </div>
               </>
@@ -254,35 +296,40 @@ export default function ProfilePage({ searchParams }) {
                 type="password"
                 id="password"
                 placeholder="Password"
-                defaultValue={currentUser.password}
+                defaultValue={currentUser ? currentUser.password : ""}
                 required
-              />
-            </div>
-
-            <div>
-              <Label className="flex mb-2">P.IVA</Label>
-              <Input
-                className="h-9 bg-white"
-                type="text"
-                id="piva"
-                placeholder="P.IVA"
-                defaultValue={currentUser.piva}
+                readOnly={currentUser ? true : false}
               />
             </div>
 
             <div>
               <Label className="flex mb-2">
-                Date of birth (per ora inserirla altrimenti penso non funzioni
-                l'insert nel DB)
+                Date of birth (YYYY-MM-dd)<div className="text-red-500">*</div>
               </Label>
               <Input
                 className="h-9 bg-white"
                 type="text"
                 id="birthDate"
                 placeholder="Date"
-                // defaultValue={currentUser.birthDate.split("T")[0]}
-                defaultValue={currentUser.birthDate}
+                defaultValue={
+                  currentUser ? currentUser.birthDate.split("T")[0] : ""
+                }
+                required
               />
+            </div>
+
+            <div className="flex">
+              <div className="flex-col grow">
+                <Label>P.IVA</Label>
+                <Input
+                  className="h-9 bg-white flex grow"
+                  type="text"
+                  id="piva"
+                  placeholder="P.IVA"
+                  defaultValue={currentUser ? currentUser.piva : ""}
+                />
+              </div>
+              <InfoCircledIcon className="mt-8 ml-2" width={18} height={18} />
             </div>
 
             <div>
@@ -292,7 +339,7 @@ export default function ProfilePage({ searchParams }) {
                 type="tel"
                 id="phoneNumber"
                 placeholder="Phone Number"
-                defaultValue={currentUser.telephoneNumber}
+                defaultValue={currentUser ? currentUser.telephoneNumber : ""}
               />
             </div>
 
@@ -302,7 +349,7 @@ export default function ProfilePage({ searchParams }) {
                 className="bg-white"
                 placeholder="Type your description here."
                 id="biography"
-                defaultValue={currentUser.biography}
+                defaultValue={currentUser ? currentUser.biography : ""}
               />
             </div>
 
@@ -313,7 +360,7 @@ export default function ProfilePage({ searchParams }) {
                 type="url"
                 id="website"
                 placeholder="Website"
-                defaultValue={currentUser.website}
+                defaultValue={currentUser ? currentUser.website : ""}
               />
             </div>
           </div>
