@@ -14,8 +14,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function DatePicker() {
+export default function DatePicker({ handleBirthDate, currentUserBirthDate }) {
   const [date, setDate] = useState("");
+  
+  console.log(currentUserBirthDate)
+
+  React.useEffect(() => {
+    setDate(currentUserBirthDate);
+  }, [currentUserBirthDate]);
 
   return (
     <Popover>
@@ -28,14 +34,17 @@ export default function DatePicker() {
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? format(date, "yyy-MM-dd") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={(date) => {
+            handleBirthDate(date);
+            setDate(date);
+          }}
           initialFocus
         />
       </PopoverContent>
