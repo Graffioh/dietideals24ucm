@@ -25,6 +25,7 @@
     "date-fns": "^2.30.0",
     "google-auth-library": "^9.4.1",
     "lucide-react": "^0.293.0",
+    "moment": "^2.30.1",
     "next": "14.0.3",
     "next-client-cookies": "^1.1.0",
     "react": "^18",
