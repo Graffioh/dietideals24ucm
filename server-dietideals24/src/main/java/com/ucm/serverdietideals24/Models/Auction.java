@@ -9,37 +9,34 @@ import lombok.NoArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
-enum AuctionType {
-    English, FixedTime, Descending
-}
+import com.ucm.serverdietideals24.Models.Enums.AuctionType;
+import com.ucm.serverdietideals24.Models.Enums.AuctionCategory;
 
-enum AuctionCategory {
-    Appliances, BeautyAndHealth, BooksAndMagazines, BoatingAndBoats,
-    CarsMotorcyclesAndOtherVehicles, ClothingAndAccessories, Collectibles, CoinsAndBanknotes, Comics, Computers,
-    Electronics, Gardening, HomeFurnitureAndDIY, Infancy, Lighting, MoviesAndDVDs, MusicCDsAndVinyl,
-    PhotographyAndVideo,
-    SportsAndLeisure, Stamps, TicketsAndEvents, Toys, TravelAccessories, VideoGamesAndConsoles, WatchesAndJewelry
-}
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class Auction {
     @NonNull
-    private Integer id;
+    private Long id;
 
     @NonNull
     private String auctionDescription, auctionName, auctionQuality;
-    private String auctionImages;
 
     @NonNull
     private Float currentOffer;
 
     @NonNull
-    private String auctionType;
+    private AuctionType auctionType;
 
     @NonNull
     private AuctionCategory auctionCategory;
+
+    @NonNull
+    private Long idUserAccount;
+
+    @NonNull
+    private String auctionImages;
 
     private ArrayList<Offer> offers;
 
@@ -52,7 +49,11 @@ public class Auction {
     private Date expireDate;
 
     // Descending auction
-    private Float startPrice, decrementAmount, minimumPrice;
+    private Float startPrice, decrementAmount;
 
-    private Timestamp fixedTime, timer;
+    private Timestamp expireTime, timer;
+
+    // Descendind and Fixed time auction
+    private Float minimumPrice;
+
 }

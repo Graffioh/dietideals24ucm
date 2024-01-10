@@ -13,10 +13,11 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 import useSWR from "swr";
 
 import { useCookies } from "next-client-cookies";
-import { useRouter } from "next/navigation";
+import DatePicker from "@/app/components/datePicker";
 
 export default function ProfilePage({ searchParams }) {
   const [profileStatus, setProfileStatus] = useState("");
+  const [birthDate, setBirthDate] = useState("");
 
   async function createUserAccount(user) {
     try {
@@ -82,7 +83,8 @@ export default function ProfilePage({ searchParams }) {
       lastName: inputs.lastName.value,
       username: inputs.username.value,
       password: inputs.password.value,
-      birthDate: inputs.birthDate.value,
+      // birthDate: inputs.birthDate.value,
+      birthDate: birthDate,
       email: inputs.email.value,
       piva: inputs.piva ? inputs.piva.value : "",
       telephoneNumber: inputs.telephoneNumber
@@ -156,7 +158,8 @@ export default function ProfilePage({ searchParams }) {
       isLoading: subjectIsLoading,
     } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
 
-    const fetcher = (url) => fetch(url).then((res) => res.json());
+    const fetcher = (url) =>
+      fetch(url, { next: { revalidate: 3 } }).then((res) => res.json());
 
     const {
       data: currentUserData,
@@ -175,6 +178,25 @@ export default function ProfilePage({ searchParams }) {
   }
 
   // *******************
+
+  function isUserAdult(birthDateString) {
+    // Assumendo che birthDateString sia nel formato 'YYYY-MM-DD'
+    var birthDate = new Date(birthDateString);
+    var currentDate = new Date();
+
+    var age = currentDate.getFullYear() - birthDate.getFullYear();
+    var m = currentDate.getMonth() - birthDate.getMonth();
+
+    if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age >= 18;
+  }
+
+  function handleBirthDate(date) {
+    setBirthDate(date);
+  }
 
   return (
     <>
@@ -316,53 +338,67 @@ export default function ProfilePage({ searchParams }) {
                 }
                 required
               />
+              {/* <DatePicker handleBirthDate={handleBirthDate} currentUserBirthDate={currentUser ? "2000-10-10" : "2001-09-11"}/> */}
             </div>
 
-            <div className="flex">
-              <div className="flex-col grow">
-                <Label>P.IVA</Label>
-                <Input
-                  className="h-9 bg-white flex grow"
-                  type="text"
-                  id="piva"
-                  placeholder="P.IVA"
-                  defaultValue={currentUser ? currentUser.piva : ""}
-                />
+            {currentUser &&
+            isUserAdult(currentUser.birthDate.split("T")[0].slice(0, 4)) ? (
+              <div className="flex">
+                <div className="flex-col grow">
+                  <Label>P.IVA</Label>
+                  <Input
+                    className="h-9 bg-white flex grow"
+                    type="text"
+                    id="piva"
+                    placeholder="P.IVA"
+                    defaultValue={currentUser ? currentUser.piva : ""}
+                  />
+                </div>
+                <InfoCircledIcon className="mt-8 ml-2" width={18} height={18} />
               </div>
-              <InfoCircledIcon className="mt-8 ml-2" width={18} height={18} />
-            </div>
+            ) : (
+              <div></div>
+            )}
 
-            <div>
-              <Label className="flex mb-2">Phone Number</Label>
-              <Input
-                className="h-9 bg-white"
-                type="tel"
-                id="phoneNumber"
-                placeholder="Phone Number"
-                defaultValue={currentUser ? currentUser.telephoneNumber : ""}
-              />
-            </div>
+            {currentUser ? (
+              <>
+                <div>
+                  <Label className="flex mb-2">Phone Number</Label>
+                  <Input
+                    className="h-9 bg-white"
+                    type="tel"
+                    id="phoneNumber"
+                    placeholder="Phone Number"
+                    defaultValue={
+                      currentUser ? currentUser.telephoneNumber : ""
+                    }
+                  />
+                </div>
 
-            <div>
-              <Label className="flex mb-2">Bio</Label>
-              <Textarea
-                className="bg-white"
-                placeholder="Type your description here."
-                id="biography"
-                defaultValue={currentUser ? currentUser.biography : ""}
-              />
-            </div>
+                <div>
+                  <Label className="flex mb-2">Bio</Label>
+                  <Textarea
+                    className="bg-white"
+                    placeholder="Type your description here."
+                    id="biography"
+                    defaultValue={currentUser ? currentUser.biography : ""}
+                  />
+                </div>
 
-            <div>
-              <Label className="flex mb-2">Website</Label>
-              <Input
-                className="h-9 bg-white"
-                type="url"
-                id="website"
-                placeholder="Website"
-                defaultValue={currentUser ? currentUser.website : ""}
-              />
-            </div>
+                <div>
+                  <Label className="flex mb-2">Website</Label>
+                  <Input
+                    className="h-9 bg-white"
+                    type="url"
+                    id="website"
+                    placeholder="Website"
+                    defaultValue={currentUser ? currentUser.website : ""}
+                  />
+                </div>
+              </>
+            ) : (
+              <div></div>
+            )}
           </div>
 
           <div className="flex">

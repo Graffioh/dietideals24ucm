@@ -62,9 +62,12 @@ public class UserAccountController {
 
     @PostMapping("/register")
     public ResponseEntity<UserAccount> createUserAccount(@RequestBody UserAccount entity) {
-        userAccountDAO.create(entity);
-
-        return new ResponseEntity<UserAccount>(entity, HttpStatus.CREATED);
+        try {
+            userAccountDAO.create(entity);
+            return new ResponseEntity<UserAccount>(entity, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<UserAccount>(new UserAccount(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/update-profile")
