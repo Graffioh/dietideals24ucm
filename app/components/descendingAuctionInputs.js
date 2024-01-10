@@ -1,7 +1,13 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
-export default function DescendingAuctionInputs() {
+export default function DescendingAuctionInputs({
+  onStartPriceChange,
+  onDecrementAmountChange,
+  onFixedTimeChange,
+  onTimerChange,
+  onDescendingMinimumPriceChange,
+}) {
   return (
     <>
       <div>
@@ -14,6 +20,7 @@ export default function DescendingAuctionInputs() {
           type="number"
           placeholder="Start price"
           className="bg-white"
+          onChange={(e) => {onStartPriceChange(e.target.value)}}
         ></Input>
       </div>
 
@@ -27,6 +34,7 @@ export default function DescendingAuctionInputs() {
           type="time"
           placeholder="Expire time"
           className="bg-white"
+          onChange={(e) => {onFixedTimeChange(e.target.value)}}
         ></Input>
       </div>
 
@@ -40,6 +48,7 @@ export default function DescendingAuctionInputs() {
           type="number"
           placeholder="Decrement amount"
           className="bg-white"
+          onChange={(e) => {onDecrementAmountChange(e.target.value)}}
         ></Input>
       </div>
 
@@ -50,9 +59,10 @@ export default function DescendingAuctionInputs() {
           </Label>
         </div>
         <Input
-          type="number"
+          type="time"
           placeholder="Decrement timer"
           className="bg-white"
+          onChange={(e) => {onTimerChange(e.target.value)}}
         ></Input>
       </div>
 
@@ -66,6 +76,7 @@ export default function DescendingAuctionInputs() {
           type="number"
           placeholder="Secret minimum price"
           className="bg-white"
+          onChange={(e) => {onDescendingMinimumPriceChange(e.target.value)}}
         ></Input>
       </div>
     </>
