@@ -20,7 +20,7 @@ import {
 
 const auctions = [
   {
-    value: "fixed",
+    value: "fixedtime",
     label: "Fixed time Auction",
   },
   {
@@ -33,7 +33,7 @@ const auctions = [
   },
 ];
 
-export default function ComboboxAuctions({ setAuctionFromCombobox }) {
+export default function ComboboxAuctions({ onAuctionTypeChange }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
@@ -64,7 +64,7 @@ export default function ComboboxAuctions({ setAuctionFromCombobox }) {
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
                   setOpen(false);
-                  setAuctionFromCombobox(currentValue);
+                  onAuctionTypeChange(currentValue);
                 }}
               >
                 <Check

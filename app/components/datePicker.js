@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
@@ -14,14 +14,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function DatePicker({ handleBirthDate, currentUserBirthDate }) {
+export default function DatePicker({ handleDate }) {
   const [date, setDate] = useState("");
-  
-  console.log(currentUserBirthDate)
 
-  React.useEffect(() => {
-    setDate(currentUserBirthDate);
-  }, [currentUserBirthDate]);
+  // set default value
+  // useEffect(() => {
+  //   setDate(currentDate);
+  // }, [currentDate]);
 
   return (
     <Popover>
@@ -42,10 +41,13 @@ export default function DatePicker({ handleBirthDate, currentUserBirthDate }) {
           mode="single"
           selected={date}
           onSelect={(date) => {
-            handleBirthDate(date);
+            handleDate(date);
             setDate(date);
           }}
           initialFocus
+          // defaultMonth={new Date(new Date().getFullYear(), new Date().getMonth())}
+          fromMonth={new Date(new Date().getFullYear(), new Date().getMonth())}
+          toDate={new Date(2026, 9, 11)}
         />
       </PopoverContent>
     </Popover>
