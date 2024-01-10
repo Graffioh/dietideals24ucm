@@ -1,11 +1,15 @@
-import { useState} from "react";
+import { useState } from "react";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 import DatePicker from "./datePicker";
 
-export default function FixedTimeAuctionInputs() {
+export default function FixedTimeAuctionInputs({
+  onExpireDateChange,
+  onExpireTimeChange,
+  onFixedTimeMinimumPriceChange,
+}) {
   const [date, setDate] = useState("");
 
   return (
@@ -15,7 +19,7 @@ export default function FixedTimeAuctionInputs() {
         <Label className="mb-2">
           Expire date<span className="text-red-500">*</span>
         </Label>
-        <DatePicker />
+        <DatePicker handleDate={onExpireDateChange} />
       </div>
 
       <div>
@@ -24,7 +28,12 @@ export default function FixedTimeAuctionInputs() {
             Expire time<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input type="time" placeholder="Time" className="bg-white"></Input>
+        <Input
+          type="time"
+          placeholder="Time"
+          className="bg-white"
+          onChange={(e) => onExpireTimeChange(e.target.value)}
+        ></Input>
       </div>
 
       <div>
@@ -37,6 +46,7 @@ export default function FixedTimeAuctionInputs() {
           type="number"
           placeholder="Minimum threshold price"
           className="bg-white"
+          onChange={(e) => onFixedTimeMinimumPriceChange(e.target.value)}
         ></Input>
       </div>
     </>
