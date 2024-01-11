@@ -24,7 +24,7 @@ export default function AuctionDetailsPage() {
       <div className="flex flex-col max-w-2xl mt-10 ml-auto mr-20">
         <div className="flex flex-col bg-stone-200 rounded-xl mb-60 ml-20 mr-20 shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
           <div className="absolute ml-[10.5em] mt-[32em]">
-            <Button className="p-7 text-lg">Create Auction</Button>
+            <Button className="p-7 text-lg">Place offer</Button>
           </div>
           <div className="absolute ml-5 mt-[10em]">
             <Label className="flex mb-2">
