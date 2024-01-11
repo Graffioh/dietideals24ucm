@@ -83,7 +83,6 @@ export default function ProfilePage({ searchParams }) {
       lastName: inputs.lastName.value,
       username: inputs.username.value,
       password: inputs.password.value,
-      // birthDate: inputs.birthDate.value,
       birthDate: birthDate,
       email: inputs.email.value,
       piva: inputs.piva ? inputs.piva.value : "",
@@ -328,7 +327,7 @@ export default function ProfilePage({ searchParams }) {
               <Label className="flex mb-2">
                 Date of birth (YYYY-MM-dd)<div className="text-red-500">*</div>
               </Label>
-              <Input
+              {/* <Input
                 className="h-9 bg-white"
                 type="text"
                 id="birthDate"
@@ -337,8 +336,8 @@ export default function ProfilePage({ searchParams }) {
                   currentUser ? currentUser.birthDate.split("T")[0] : ""
                 }
                 required
-              />
-              {/* <DatePicker handleBirthDate={handleBirthDate} currentUserBirthDate={currentUser ? "2000-10-10" : "2001-09-11"}/> */}
+              /> */}
+              <DatePicker handleParentDate={handleBirthDate} defaultDate={currentUser ? new Date(currentUser.birthDate) : ""} isBirthDate={true}/>
             </div>
 
             {currentUser &&

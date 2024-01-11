@@ -14,14 +14,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function DatePicker({ handleDate }) {
-  const [date, setDate] = useState("");
-
-  // set default value
-  // useEffect(() => {
-  //   setDate(currentDate);
-  // }, [currentDate]);
-
+export default function DatePicker({handleParentDate, defaultDate, isBirthDate }) {
+  const [date, setDate] = useState(defaultDate);
+  
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -37,18 +32,35 @@ export default function DatePicker({ handleDate }) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={(date) => {
-            handleDate(date);
-            setDate(date);
-          }}
-          initialFocus
-          // defaultMonth={new Date(new Date().getFullYear(), new Date().getMonth())}
-          fromMonth={new Date(new Date().getFullYear(), new Date().getMonth())}
-          toDate={new Date(2026, 9, 11)}
-        />
+        {isBirthDate ? (
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={(date) => {
+              handleParentDate(date);
+              setDate(date);
+            }}
+            initialFocus
+            captionLayout="dropdown-buttons"
+            fromYear={1940}
+            toYear={2024}
+          />
+        ) : (
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={(date) => {
+              handleParentDate(date);
+              setDate(date);
+            }}
+            initialFocus
+            // defaultMonth={new Date(new Date().getFullYear(), new Date().getMonth())}
+            fromMonth={
+              new Date(new Date().getFullYear(), new Date().getMonth())
+            }
+            toDate={new Date(2026, 9, 11)}
+          />
+        )}
       </PopoverContent>
     </Popover>
   );
