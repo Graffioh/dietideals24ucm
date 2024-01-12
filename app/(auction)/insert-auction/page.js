@@ -200,6 +200,7 @@ export default function InsertAuctionPage() {
                   </Label>
                 </div>
                 <Input
+                  maxLength={20}
                   type="text"
                   placeholder="Title"
                   className="bg-white"

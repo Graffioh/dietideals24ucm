@@ -173,7 +173,8 @@ export default function ProfilePage({ searchParams }) {
 
     currentUser = currentUserData;
 
-    if (currentUserIsLoading) return <div>Loading...</div>;
+    if (currentUserIsLoading)
+      return <div className="flex justify-center items-center">Loading...</div>;
   }
 
   // *******************
@@ -337,7 +338,11 @@ export default function ProfilePage({ searchParams }) {
                 }
                 required
               /> */}
-              <DatePicker handleParentDate={handleBirthDate} defaultDate={currentUser ? new Date(currentUser.birthDate) : ""} isBirthDate={true}/>
+              <DatePicker
+                handleParentDate={handleBirthDate}
+                defaultDate={currentUser ? new Date(currentUser.birthDate) : ""}
+                isBirthDate={true}
+              />
             </div>
 
             {currentUser &&

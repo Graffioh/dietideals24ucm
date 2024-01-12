@@ -29,6 +29,7 @@ public class AuctionController {
 
             return new ResponseEntity<List<Auction>>(auctions, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<List<Auction>>(new ArrayList<Auction>(), HttpStatus.BAD_REQUEST);
         }
     }

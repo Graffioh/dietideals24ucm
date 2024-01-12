@@ -2,12 +2,10 @@ import Link from "next/link";
 
 import { cookies } from "next/headers";
 
-import TestPagesNavigation from "../components/testpagesNavigation";
 import AuctionPagination from "../components/auctionPagination";
 import CardAuction from "../components/cardAuction";
 
 export default async function Home() {
-  const chiara = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
   // function getTokenFromCookie() {
   //   const nextCookies = cookies();
@@ -37,23 +35,65 @@ export default async function Home() {
   //   }
   // }
 
+  // async function getCurrentUserFromSubject(subject) {
+  //   let url = "";
+
+  //   if (subject.includes("@")) {
+  //     url = "http://localhost:8080/user-from-email?email=" + subject;
+  //   } else {
+  //     url = "http://localhost:8080/user-from-username?username=" + subject;
+  //   }
+
+  //   try {
+  //     const userResponse = await fetch(url);
+  //     const user = await userResponse.json();
+
+  //     return user;
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
+
+  async function getAllAuctions() {
+    try {
+      const auctionsResponse = await fetch("http://localhost:8080/auctions", {
+        next: { revalidate: 3 },
+      });
+      const auctions = await auctionsResponse.json();
+
+      return auctions;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   // const token = getTokenFromCookie();
 
   // const subject = await getCurrentUserSubjectFromToken(token);
 
+  // const user = await getCurrentUserFromSubject(subject);
+
+  const auctions = await getAllAuctions();
+
   return (
     <>
-      {/* <TestPagesNavigation /> */}
-
       <div className="flex flex-col justify-center items-center">
         <div className="grid grid-rows-auto grid-cols-4 gap-x-14">
-          {chiara.map((number) => (
-            <>
-              <Link href="/auction-details">
-                <CardAuction key={number} isHomepage={true} />
-              </Link>
-            </>
-          ))}
+          {auctions ? (
+            auctions.map((auction) => (
+              <>
+                <Link href={"/auction-details?id="+ auction.id}>
+                  <CardAuction
+                    key={auction.id}
+                    isHomepage={true}
+                    auction={auction}
+                  />
+                </Link>
+              </>
+            ))
+          ) : (
+            <div></div>
+          )}
         </div>
 
         <div className="my-5 mt-10">
