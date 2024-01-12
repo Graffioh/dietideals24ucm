@@ -1,5 +1,3 @@
-import facebookIcon from "../../../images/facebook-logo.svg";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,17 +5,35 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 
-export default function AuctionDetailsPage() {
+export default async function AuctionDetailsPage({ searchParams }) {
+  async function getCurrentAuctionBasedOnId(id) {
+    try {
+      const auctionResponse = await fetch(
+        "http://localhost:8080/auction-from-id?id=" + id,
+        {
+          next: { revalidate: 3 },
+        }
+      );
+      const auction = await auctionResponse.json();
+      
+      return auction;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const currentAuction = await getCurrentAuctionBasedOnId(searchParams.id);
+
   return (
     <>
       <div className="absolute ml-[10em] mt-14">
         <div className="flex flex-col">
-          <Label className="flex text-2xl">NAME</Label>
+          <Label className="flex text-2xl">{currentAuction.auctionName}</Label>
           <div className="">
             <img
-                className="object-cover w-96 h-128 mt-5 rounded-lg flex items-center"
-                src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
-              />
+              className="object-cover w-96 h-128 mt-5 rounded-lg flex items-center"
+              src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+            />
           </div>
         </div>
       </div>
@@ -35,6 +51,7 @@ export default function AuctionDetailsPage() {
               type="text"
               id="current-offer"
               placeholder="Placeholder"
+              defaultValue={currentAuction.currentOffer}
             />
           </div>
           <div className="absolute ml-[19em] mt-[10em]">
