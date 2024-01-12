@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
-import DatePicker from "./datePicker";
+import DatePicker from "../datePicker";
 
-export default function FixedTimeAuctionInputs({
+export default function FixedTimeInsertAuctionInputs({
   onExpireDateChange,
   onExpireTimeChange,
   onFixedTimeMinimumPriceChange,

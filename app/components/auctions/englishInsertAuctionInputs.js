@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
-export default function EnglishAuctionInputs({
+export default function EnglishInsertAuctionInputs({
   onBaseStartAuctionChange,
   onRaiseThresholdChange,
   onOfferTimerChange,

@@ -12,9 +12,9 @@ import ComboboxCategories from "@/app/components/comboboxCategories";
 import ComboboxAuctions from "@/app/components/comboboxAuctions.js";
 import ComboboxQuality from "@/app/components/comboboxQualities.js";
 
-import FixedTimeAuctionInputs from "@/app/components/fixedTimeAuctionInputs";
-import EnglishAuctionInputs from "@/app/components/englishAuctionInputs";
-import DescendingAuctionInputs from "@/app/components/descendingAuctionInputs";
+import FixedTimeInsertAuctionInputs from "@/app/components/auctions/fixedTimeInsertAuctionInputs";
+import EnglishInsertAuctionInputs from "@/app/components/auctions/englishInsertAuctionInputs";
+import DescendingInsertAuctionInputs from "@/app/components/auctions/descendingInsertAuctionInputs";
 
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
@@ -233,7 +233,7 @@ export default function InsertAuctionPage() {
 
           <div className="flex flex-col space-y-6 md:ml-4 mt-4 mb-4">
             {auctionType === "fixedtime" && (
-              <FixedTimeAuctionInputs
+              <FixedTimeInsertAuctionInputs
                 onExpireDateChange={handleExpireDateChange}
                 onExpireTimeChange={handleExpireTimeChange}
                 onFixedTimeMinimumPriceChange={
@@ -242,7 +242,7 @@ export default function InsertAuctionPage() {
               />
             )}
             {auctionType === "descending" && (
-              <DescendingAuctionInputs
+              <DescendingInsertAuctionInputs
                 onStartPriceChange={handleStartPrice}
                 onDecrementAmountChange={handleDecrementAmount}
                 onFixedTimeChange={handleExpireTime}
@@ -251,7 +251,7 @@ export default function InsertAuctionPage() {
               />
             )}
             {auctionType === "english" && (
-              <EnglishAuctionInputs
+              <EnglishInsertAuctionInputs
                 onBaseStartAuctionChange={handleBaseStartAuction}
                 onRaiseThresholdChange={handleRaiseThreshold}
                 onOfferTimerChange={handleOfferTimer}
