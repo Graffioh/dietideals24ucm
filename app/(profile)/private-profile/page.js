@@ -15,9 +15,15 @@ import useSWR from "swr";
 import { useCookies } from "next-client-cookies";
 import DatePicker from "@/app/components/datePicker";
 
+import { useRouter } from "next/navigation";
+
+import CustomAlertDialog from "@/app/components/customAlertDialog";
+
 export default function ProfilePage({ searchParams }) {
   const [profileStatus, setProfileStatus] = useState("");
   const [birthDate, setBirthDate] = useState("");
+
+  const router = useRouter();
 
   async function createUserAccount(user) {
     try {
@@ -406,8 +412,8 @@ export default function ProfilePage({ searchParams }) {
           </div>
 
           <div className="flex">
-            <div className="mx-5 mb-10">
-              <Button className="mr-6 mt-6">Cancel</Button>
+            <div className="mx-5 mb-10 mt-6">
+              <CustomAlertDialog />
             </div>
             <div className="mx-2">
               <Button className="mt-6">Save</Button>
