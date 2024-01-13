@@ -40,7 +40,7 @@ const notifications = [
 function Logo() {
   return (
     <div className="mb-3">
-      <Link href="/" className="font-bold text-2xl">
+      <Link href="/home" className="font-bold text-2xl">
         DIETIDEALS24
       </Link>
     </div>
@@ -165,7 +165,7 @@ function ModifyProfileSection() {
 function LoggedPartialSectionMobile() {
   return (
     <div className="flex justify-center flex-col gap-4">
-      <Link href="/" className="text-white">
+      <Link href="/home" className="text-white">
         <div>Notifications</div>
       </Link>
 
@@ -190,7 +190,7 @@ function LoggedFullSectionMobile() {
           Insert auction
         </Link>
 
-        <Link href="/" className="text-white">
+        <Link href="/home" className="text-white">
           <div>Notifications</div>
         </Link>
 
@@ -207,7 +207,7 @@ function LoggedFullSectionMobile() {
 
 function PrivateProfileSectionMobile() {
   return (
-    <Link href="/" className="text-white">
+    <Link href="/home" className="text-white">
       <div>Notifications</div>
     </Link>
   );
@@ -225,11 +225,11 @@ function NotLoggedSectionMobile() {
 function ModifyProfileSectionMobile() {
   return (
     <div className="flex flex-col justify-center gap-4">
-      <Link href="/" className="text-white">
+      <Link href="/home" className="text-white">
         <div>Modify</div>
       </Link>
 
-      <Link href="/" className="text-white">
+      <Link href="/home" className="text-white">
         <div>Notifications</div>
       </Link>
     </div>

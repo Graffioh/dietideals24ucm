@@ -30,7 +30,7 @@ import {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={(e) => {e.preventDefault(); router.push("/")}}>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={(e) => {e.preventDefault(); router.push("/home")}}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

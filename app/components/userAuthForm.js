@@ -69,7 +69,7 @@ export function UserAuthForm({ className, createOrLogin }) {
           }
         );
 
-        window.location.href = "/";
+        window.location.href = "/home";
 
         setError("");
       } else {

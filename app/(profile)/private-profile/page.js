@@ -141,7 +141,7 @@ export default function ProfilePage({ searchParams }) {
       // POST
       await createUserAccount(userInfoFromInputs);
 
-      window.location.href = "/";
+      window.location.href = "/home";
     }
   }
 
