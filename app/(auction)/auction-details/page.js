@@ -1,14 +1,29 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
 import Image from "next/image";
+import { cookies } from "next/headers";
 import DescendingAuctionDetailsInputs from "@/app/components/auctions/descendingAuctionDetailsInputs";
 import EnglishAuctionDetailsInputs from "@/app/components/auctions/englishAuctionDetailsInputs";
 import FixedTimeAuctionDetailsInputs from "@/app/components/auctions/fixedTimeAuctionDetailsInputs";
+import PlaceOfferDialog from "@/app/components/placeOfferDialog";
+import { cn } from "@/lib/utils";
 
 export default async function AuctionDetailsPage({ searchParams }) {
+  function getTokenFromCookie() {
+    const nextCookies = cookies();
+
+    const tokenCookieStr = nextCookies.has("token")
+      ? nextCookies.get("token").value
+      : '"no-token"';
+
+    // return token without "..."
+    return tokenCookieStr.replaceAll('"', "");
+  }
+
   async function getCurrentAuctionBasedOnId(id) {
     try {
       const auctionResponse = await fetch(
@@ -27,6 +42,8 @@ export default async function AuctionDetailsPage({ searchParams }) {
 
   const currentAuction = await getCurrentAuctionBasedOnId(searchParams.id);
 
+  const token = getTokenFromCookie();
+
   return (
     <>
       <div className="absolute ml-[10em] mt-14">
@@ -42,7 +59,6 @@ export default async function AuctionDetailsPage({ searchParams }) {
       </div>
       <div className="flex flex-col max-w-2xl mt-10 ml-auto mr-20">
         <div className="flex flex-col bg-stone-200 rounded-xl mb-60 ml-20 mr-20 shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
-
           {currentAuction.auctionType === "descending" && (
             <DescendingAuctionDetailsInputs currentAuction={currentAuction} />
           )}
@@ -70,6 +86,22 @@ export default async function AuctionDetailsPage({ searchParams }) {
                 placeholder="Type your description here."
                 readOnly
               />
+            </div>
+
+            <div className="absolute mt-[32em]">
+              {token === "no-token" ? (
+                <Link className={cn(
+                  buttonVariants({
+                    variant: "default",
+                    size: "default",
+                    className: "p-7 text-lg",
+                  })
+                )} href="/login">
+                  Place offer
+                </Link>
+              ) : (
+                <PlaceOfferDialog />
+              )}
             </div>
           </div>
         </div>

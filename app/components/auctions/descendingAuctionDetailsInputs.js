@@ -5,9 +5,6 @@ import { Input } from "@/components/ui/input";
 export default function DescendingAuctionDetailsInputs({ currentAuction }) {
   return (
     <>
-      <div className="absolute ml-[10.5em] mt-[32em]">
-        <Button className="p-7 text-lg">Place offer</Button>
-      </div>
       <div className="absolute ml-5 mt-[10em]">
         <Label className="flex mb-2">
           Current offer<div className="text-red-500"></div>

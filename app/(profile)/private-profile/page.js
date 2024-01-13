@@ -17,7 +17,7 @@ import DatePicker from "@/app/components/datePicker";
 
 import { useRouter } from "next/navigation";
 
-import CustomAlertDialog from "@/app/components/customAlertDialog";
+import CancelAlertDialog from "@/app/components/cancelAlertDialog";
 
 export default function ProfilePage({ searchParams }) {
   const [profileStatus, setProfileStatus] = useState("");
@@ -413,7 +413,7 @@ export default function ProfilePage({ searchParams }) {
 
           <div className="flex">
             <div className="mx-5 mb-10 mt-6">
-              <CustomAlertDialog />
+              <CancelAlertDialog />
             </div>
             <div className="mx-2">
               <Button className="mt-6">Save</Button>
