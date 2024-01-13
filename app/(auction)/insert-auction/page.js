@@ -143,6 +143,8 @@ export default function InsertAuctionPage() {
         headers: { "Content-Type": "application/json" },
       }
     );
+
+    window.location.href = "/home";
   }
 
   return (

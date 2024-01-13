@@ -12,7 +12,7 @@ import {
   import { Button } from "@/components/ui/button"
   import { useRouter } from "next/navigation"
   
-  export default function CustomAlertDialog() {
+  export default function CancelAlertDialog() {
     const router = useRouter();
 
     return (
