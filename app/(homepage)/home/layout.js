@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
 
 import { Inter } from "next/font/google";
-import "../globals.css";
-import Header from "../components/header.js";
-import Footer from "../components/footer.js";
+import "../../globals.css";
+import Header from "../../components/header.js";
+import Footer from "../../components/footer.js";
 
 const inter = Inter({ subsets: ["latin"] });
 
