@@ -19,7 +19,7 @@ export default function FixedTimeInsertAuctionInputs({
         <Label className="mb-2">
           Expire date<span className="text-red-500">*</span>
         </Label>
-        <DatePicker defaultDate={new Date()} handleParentDate={onExpireDateChange} isBirthDate={false}/>
+        <DatePicker handleParentDate={onExpireDateChange} defaultDate={""} isBirthDate={false}/>
       </div>
 
       <div>
