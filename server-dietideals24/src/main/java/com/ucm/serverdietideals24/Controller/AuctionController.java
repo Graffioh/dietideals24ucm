@@ -41,6 +41,7 @@ public class AuctionController {
 
             return new ResponseEntity<Auction>(auction, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<Auction>(new Auction(), HttpStatus.BAD_REQUEST);
         }
     }

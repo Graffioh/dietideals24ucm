@@ -34,6 +34,7 @@ public class UserAccountController {
 
             return new ResponseEntity<List<UserAccount>>(users, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<List<UserAccount>>(new ArrayList<UserAccount>(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -45,6 +46,7 @@ public class UserAccountController {
 
             return new ResponseEntity<UserAccount>(user, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<UserAccount>(new UserAccount(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -56,6 +58,7 @@ public class UserAccountController {
 
             return new ResponseEntity<UserAccount>(user, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<UserAccount>(new UserAccount(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -66,13 +69,18 @@ public class UserAccountController {
             userAccountDAO.create(entity);
             return new ResponseEntity<UserAccount>(entity, HttpStatus.CREATED);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<UserAccount>(new UserAccount(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/update-profile")
     public void updateUserAccount(@RequestParam String id, @RequestBody UserAccount entity) {
-        userAccountDAO.update(id, entity);
+        try {
+            userAccountDAO.update(id, entity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     // *************************************************************
 
@@ -80,5 +88,4 @@ public class UserAccountController {
     public OAuth2User oauthUser(@AuthenticationPrincipal OAuth2User principal) {
         return principal;
     }
-
 }
