@@ -103,9 +103,9 @@ export default async function ProfilePage() {
               placeholder="Search..."
             ></input>
             <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7">
-              {matteo.map((number) => (
+              {/* {matteo.map((number) => (
                 <CardAuction key={number} isHomepage={false} />
-              ))}
+              ))} */}
             </div>
           </div>
           <div className="mb-5 flex justify-center items-center">

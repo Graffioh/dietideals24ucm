@@ -1,4 +1,17 @@
 export default function CardAuction({ isHomepage, auction }) {
+  console.log("AUCTION: " + auction)
+  const fixedTimeDeadline = new Date(auction.expireDate);
+  const englishDeadline = new Date(auction.offerTimer);
+  const descendingDeadline = new Date(auction.expireTime);
+
+  const formattedFixedTimeDeadline = fixedTimeDeadline.getFullYear() + "/" + fixedTimeDeadline.getDate() + "/" + fixedTimeDeadline.getDay();
+  const formattedEnglishDeadline = englishDeadline.getHours() + ":" + englishDeadline.getMinutes() + ":" + englishDeadline.getSeconds();
+  const formattedDescendingDeadline = descendingDeadline.getMinutes() + ":" + descendingDeadline.getSeconds();
+
+  // console.log("FIXED DEADLINE: " + fixedTimeDeadline.getDay() + "/" + fixedTimeDeadline.getDate() + "/" + fixedTimeDeadline.getFullYear());
+  // console.log("ENGLISH DEADLINE: " + englishDeadline.getHours() + ":" + englishDeadline.getMinutes() + ":" + englishDeadline.getSeconds());
+  // console.log("DESCENDING DEADLINE: " + descendingDeadline.getHours() + ":" + descendingDeadline.getMinutes() + ":" + descendingDeadline.getSeconds());
+
   return (
     <>
       {isHomepage ? (
@@ -16,11 +29,24 @@ export default function CardAuction({ isHomepage, auction }) {
             <div className="absolute bottom-2 left-0 right-0 text-base flex flex-col">
               <div>{auction.auctionName}</div>
 
-              <div></div>
-
               <div className="flex justify-between">
                 <div className="text-2xl ml-8">€ {auction.currentOffer}</div>
-                <div className="text-xl mr-8 mt-0.5">00.00.00</div>
+                {auction.auctionType === "fixedtime" && (
+                  <div className="text-xl mr-8 mt-0.5">
+                    {formattedFixedTimeDeadline}
+                  </div>
+                )}
+                {auction.auctionType === "english" && (
+                  <div className="text-xl mr-8 mt-0.5">
+                    {formattedEnglishDeadline}
+                  </div>
+                )}
+                {auction.auctionType === "descending" && (
+                  <div className="text-xl mr-8 mt-0.5">
+                    {formattedDescendingDeadline}
+                  </div>
+                )}
+                {/* <div className="text-xl mr-8 mt-0.5">00.00</div> */}
               </div>
             </div>
           </button>

@@ -74,7 +74,7 @@ export default async function Home() {
   // const user = await getCurrentUserFromSubject(subject);
 
   const auctions = await getAllAuctions();
-
+  
   return (
     <>
       <div className="flex flex-col justify-center items-center">
