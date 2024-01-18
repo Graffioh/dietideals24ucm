@@ -124,7 +124,7 @@ export default function InsertAuctionPage() {
       offers: [],
       baseStartAuction: baseStartAuction,
       raiseThreshold: raiseThreshold,
-      offerTimer: moment(offerTimer, "H:mm"),
+      offerTimer: moment(offerTimer, "HH:mm:ss").format("HH:mm:ss"),
       expireDate: expireDate,
       minimumPrice:
         auctionType == "fixedtime"
@@ -132,7 +132,7 @@ export default function InsertAuctionPage() {
           : descendingMinimumPrice,
       startPrice: startPrice,
       decrementAmount: decrementAmount,
-      expireTime: moment(expireTime, "H:mm"),
+      expireTime: moment(expireTime, "HH:mm:ss").format("HH:mm:ss"),
       timer: moment(timer, "H:mm"),
     };
 
@@ -150,6 +150,14 @@ export default function InsertAuctionPage() {
 
   return (
     <>
+      <Button
+        onClick={(e) => {
+          e.preventDefault();
+          console.log("MOMENT PARSING: " + moment(expireTime, "H:mm"));
+        }}
+      >
+        TEST
+      </Button>
       <form onSubmit={onSubmit}>
         <div className="flex flex-col md:flex-row items-center mt-12">
           <div className="mx-3 mb-6 md:m-6 md:mr-20 md:ml-48 grid md:grid-cols-2 gap-2">

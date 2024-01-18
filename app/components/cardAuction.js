@@ -1,12 +1,42 @@
+"use client";
+
+import AuctionTimer from "./auctionTimer";
+
 export default function CardAuction({ isHomepage, auction }) {
-  console.log("AUCTION: " + auction)
+  function generateFixedTimeDeadline(deadline, time) {
+    const deadlineTime = time
+      ? time.split(":")
+      : "";
+    const hours = parseInt(deadlineTime[0]);
+    const minutes = parseInt(deadlineTime[1]);
+    const seconds = parseInt(deadlineTime[2]);
+    deadline.setHours(hours, minutes, seconds);
+
+    return deadline;
+  }
+
   const fixedTimeDeadline = new Date(auction.expireDate);
+  const fixedTimeDeadlineTimer = generateFixedTimeDeadline(fixedTimeDeadline, auction.expireTime);
+
   const englishDeadline = new Date(auction.offerTimer);
+  const englishDeadlineTimer = generateFixedTimeDeadline(englishDeadline, auction.offerTimer);
+
   const descendingDeadline = new Date(auction.expireTime);
 
-  const formattedFixedTimeDeadline = fixedTimeDeadline.getFullYear() + "/" + fixedTimeDeadline.getDate() + "/" + fixedTimeDeadline.getDay();
-  const formattedEnglishDeadline = englishDeadline.getHours() + ":" + englishDeadline.getMinutes() + ":" + englishDeadline.getSeconds();
-  const formattedDescendingDeadline = descendingDeadline.getMinutes() + ":" + descendingDeadline.getSeconds();
+  // const formattedFixedTimeDeadline =
+  //   fixedTimeDeadline.getFullYear() +
+  //   "/" +
+  //   fixedTimeDeadline.getDate() +
+  //   "/" +
+  //   fixedTimeDeadline.getDay();
+  // const formattedEnglishDeadline =
+  //   englishDeadline.getHours() +
+  //   ":" +
+  //   englishDeadline.getMinutes() +
+  //   ":" +
+  //   englishDeadline.getSeconds();
+  // const formattedDescendingDeadline =
+  //   descendingDeadline.getMinutes() + ":" + descendingDeadline.getSeconds();
 
   // console.log("FIXED DEADLINE: " + fixedTimeDeadline.getDay() + "/" + fixedTimeDeadline.getDate() + "/" + fixedTimeDeadline.getFullYear());
   // console.log("ENGLISH DEADLINE: " + englishDeadline.getHours() + ":" + englishDeadline.getMinutes() + ":" + englishDeadline.getSeconds());
@@ -33,17 +63,19 @@ export default function CardAuction({ isHomepage, auction }) {
                 <div className="text-2xl ml-8">€ {auction.currentOffer}</div>
                 {auction.auctionType === "fixedtime" && (
                   <div className="text-xl mr-8 mt-0.5">
-                    {formattedFixedTimeDeadline}
+                    {/* {formattedFixedTimeDeadline} */}
+                    <AuctionTimer deadline={fixedTimeDeadlineTimer} />
                   </div>
                 )}
                 {auction.auctionType === "english" && (
                   <div className="text-xl mr-8 mt-0.5">
-                    {formattedEnglishDeadline}
+                    {/* {formattedEnglishDeadline} */}
+                    <AuctionTimer deadline={englishDeadlineTimer} />
                   </div>
                 )}
                 {auction.auctionType === "descending" && (
                   <div className="text-xl mr-8 mt-0.5">
-                    {formattedDescendingDeadline}
+                    {/* {formattedDescendingDeadline} */}
                   </div>
                 )}
                 {/* <div className="text-xl mr-8 mt-0.5">00.00</div> */}
