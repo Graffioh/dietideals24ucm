@@ -25,11 +25,11 @@ export default function CardAuction({ isHomepage, auction }) {
     auction.offerTimer
   );
 
-  const descendingDeadline = new Date();
-  const descendingDeadlineTimer = generateDeadline(
-    descendingDeadline,
-    auction.expireTime
-  );
+  // const descendingDeadline = new Date();
+  // const descendingDeadlineTimer = generateDeadline(
+  //   descendingDeadline,
+  //   auction.decrementTimer
+  // );
 
   return (
     <>
@@ -61,9 +61,10 @@ export default function CardAuction({ isHomepage, auction }) {
                   </div>
                 )}
                 {auction.auctionType === "descending" && (
-                  <div className="text-xl mr-8 mt-0.5">
-                    <AuctionTimer deadline={descendingDeadlineTimer} />
-                  </div>
+                  // <div className="text-xl mr-8 mt-0.5">
+                  //   <AuctionTimer deadline={descendingDeadlineTimer} />
+                  // </div>
+                  <div></div>
                 )}
                 {/* <div className="text-xl mr-8 mt-0.5">00.00</div> */}
               </div>

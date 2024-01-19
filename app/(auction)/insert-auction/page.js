@@ -77,7 +77,7 @@ export default function InsertAuctionPage() {
   const [startPrice, setStartPrice] = useState("");
   const [decrementAmount, setDecrementAmount] = useState("");
   const [expireTime, setExpireTime] = useState("");
-  const [timer, setTimer] = useState("");
+  const [decrementTimer, setDecrementTimer] = useState("");
   const [descendingMinimumPrice, setDescendingMinimumPrice] = useState("");
 
   function handleStartPrice(startPrice) {
@@ -92,8 +92,8 @@ export default function InsertAuctionPage() {
     setExpireTime(expireTime);
   }
 
-  function handleTimer(timer) {
-    setTimer(timer);
+  function handleDecrementTimer(timer) {
+    setDecrementTimer(timer);
   }
 
   function handleDescendingMinimumPrice(descendingMinimumPrice) {
@@ -133,7 +133,7 @@ export default function InsertAuctionPage() {
       startPrice: startPrice,
       decrementAmount: decrementAmount,
       expireTime: expireTime ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss") : null,
-      timer: moment(timer, "H:mm"),
+      decrementTimer: decrementTimer ? moment(decrementTimer, "HH:mm:ss").format("HH:mm:ss") : null,
     };
 
     const insertAuctionResponse = await fetch(
@@ -231,8 +231,7 @@ export default function InsertAuctionPage() {
               <DescendingInsertAuctionInputs
                 onStartPriceChange={handleStartPrice}
                 onDecrementAmountChange={handleDecrementAmount}
-                onFixedTimeChange={handleExpireTime}
-                onTimerChange={handleTimer}
+                onDecrementTimerChange={handleDecrementTimer}
                 onDescendingMinimumPriceChange={handleDescendingMinimumPrice}
               />
             )}

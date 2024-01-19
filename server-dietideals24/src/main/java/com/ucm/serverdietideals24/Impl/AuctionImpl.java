@@ -55,14 +55,14 @@ public class AuctionImpl implements AuctionDAO {
 
         } else {
             jdbcTemplate.execute(
-                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, timer, decrementAmount, minimumPrice, expireTime, idUserAccount, auctionType) VALUES ('"
+                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, decrementTimer, decrementAmount, minimumPrice, idUserAccount, auctionType) VALUES ('"
                             + auction.getId() + "', '" + auction.getAuctionDescription()
                             + "', '" + auction.getAuctionName() + "', '" + auction.getAuctionCategory() + "', '"
                             + auction.getAuctionQuality() + "', '"
                             + auction.getCurrentOffer() + "', '" + auction.getAuctionImages() + "', '"
-                            + auction.getStartPrice() + "', '" + auction.getTimer()
+                            + auction.getStartPrice() + "', '" + auction.getDecrementTimer()
                             + "', '" + auction.getDecrementAmount() + "', '" + auction.getMinimumPrice() + "', '"
-                            + auction.getExpireTime() + "', '" + auction.getIdUserAccount() + "', '"
+                            + auction.getIdUserAccount() + "', '"
                             + auction.getAuctionType() + "')");
         }
     }
