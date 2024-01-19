@@ -1,4 +1,36 @@
+"use client";
+
+import AuctionTimer from "./auctionTimer";
+
 export default function CardAuction({ isHomepage, auction }) {
+  function generateDeadline(deadline, time) {
+    const deadlineTime = time ? time.split(":") : "";
+    const hours = parseInt(deadlineTime[0]);
+    const minutes = parseInt(deadlineTime[1]);
+    const seconds = parseInt(deadlineTime[2]);
+    deadline.setHours(hours, minutes, seconds);
+
+    return deadline;
+  }
+
+  const fixedTimeDeadline = new Date(auction.expireDate);
+  const fixedTimeDeadlineTimer = generateDeadline(
+    fixedTimeDeadline,
+    auction.expireTime
+  );
+
+  const englishDeadline = new Date();
+  const englishDeadlineTimer = generateDeadline(
+    englishDeadline,
+    auction.offerTimer
+  );
+
+  // const descendingDeadline = new Date();
+  // const descendingDeadlineTimer = generateDeadline(
+  //   descendingDeadline,
+  //   auction.decrementTimer
+  // );
+
   return (
     <>
       {isHomepage ? (
@@ -16,11 +48,25 @@ export default function CardAuction({ isHomepage, auction }) {
             <div className="absolute bottom-2 left-0 right-0 text-base flex flex-col">
               <div>{auction.auctionName}</div>
 
-              <div></div>
-
               <div className="flex justify-between">
                 <div className="text-2xl ml-8">€ {auction.currentOffer}</div>
-                <div className="text-xl mr-8 mt-0.5">00.00.00</div>
+                {auction.auctionType === "fixedtime" && (
+                  <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2">
+                    <AuctionTimer deadline={fixedTimeDeadlineTimer} />
+                  </div>
+                )}
+                {auction.auctionType === "english" && (
+                  <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2">
+                    <AuctionTimer deadline={englishDeadlineTimer} />
+                  </div>
+                )}
+                {auction.auctionType === "descending" && (
+                  // <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2">
+                  //   <AuctionTimer deadline={descendingDeadlineTimer} />
+                  // </div>
+                  <div></div>
+                )}
+                {/* <div className="text-xl mr-8 mt-0.5">00.00</div> */}
               </div>
             </div>
           </button>

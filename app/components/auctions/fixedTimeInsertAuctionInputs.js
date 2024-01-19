@@ -19,7 +19,11 @@ export default function FixedTimeInsertAuctionInputs({
         <Label className="mb-2">
           Expire date<span className="text-red-500">*</span>
         </Label>
-        <DatePicker handleParentDate={onExpireDateChange} defaultDate={""} isBirthDate={false}/>
+        <DatePicker
+          handleParentDate={onExpireDateChange}
+          defaultDate={""}
+          isBirthDate={false}
+        />
       </div>
 
       <div>
@@ -32,7 +36,9 @@ export default function FixedTimeInsertAuctionInputs({
           type="time"
           placeholder="Time"
           className="bg-white"
-          onChange={(e) => onExpireTimeChange(e.target.value)}
+          onChange={(e) => {
+            onExpireTimeChange(e.target.value);
+          }}
         ></Input>
       </div>
 

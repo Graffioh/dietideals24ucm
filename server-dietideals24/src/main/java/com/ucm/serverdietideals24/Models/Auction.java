@@ -2,7 +2,7 @@ package com.ucm.serverdietideals24.Models;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.sql.Timestamp;
+import java.sql.Time;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -43,17 +43,18 @@ public class Auction {
     // English auction
     private Float baseStartAuction, raiseThreshold;
 
-    private Timestamp offerTimer;
+    private Time offerTimer;
 
     // Fixed time auction
     private Date expireDate;
 
+    private Time expireTime;
+
     // Descending auction
     private Float startPrice, decrementAmount;
 
-    private Timestamp expireTime, timer;
+    private Time decrementTimer;
 
-    // Descendind and Fixed time auction
+    // Descending and Fixed time auction
     private Float minimumPrice;
-
 }

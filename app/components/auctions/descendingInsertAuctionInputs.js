@@ -4,8 +4,7 @@ import { Input } from "@/components/ui/input";
 export default function DescendingInsertAuctionInputs({
   onStartPriceChange,
   onDecrementAmountChange,
-  onFixedTimeChange,
-  onTimerChange,
+  onDecrementTimerChange,
   onDescendingMinimumPriceChange,
 }) {
   return (
@@ -24,7 +23,7 @@ export default function DescendingInsertAuctionInputs({
         ></Input>
       </div>
 
-      <div>
+      {/* <div>
         <div className="w-72 min-w-screen flex mb-2">
           <Label>
             Expire time<span className="text-red-500">*</span>
@@ -36,7 +35,7 @@ export default function DescendingInsertAuctionInputs({
           className="bg-white"
           onChange={(e) => {onFixedTimeChange(e.target.value)}}
         ></Input>
-      </div>
+      </div> */}
 
       <div>
         <div className="w-72 min-w-screen flex mb-2">
@@ -62,7 +61,7 @@ export default function DescendingInsertAuctionInputs({
           type="time"
           placeholder="Decrement timer"
           className="bg-white"
-          onChange={(e) => {onTimerChange(e.target.value)}}
+          onChange={(e) => {onDecrementTimerChange(e.target.value)}}
         ></Input>
       </div>
 

@@ -30,6 +30,18 @@ export default function FixedTimeAuctionDetailsInputs({ currentAuction }) {
           readOnly
         />
       </div>
+      <div className="absolute ml-[19em] mt-[15em]">
+        <Label className="flex mb-2">
+          Expire date<div className="text-red-500"></div>
+        </Label>
+        <Input
+          className="max-w-[20em] h-9 bg-white"
+          type="text"
+          id="expire-time"
+          placeholder="Placeholder"
+          readOnly
+        />
+      </div>
     </>
   );
 }
