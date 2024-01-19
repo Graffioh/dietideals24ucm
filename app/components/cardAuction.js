@@ -3,10 +3,8 @@
 import AuctionTimer from "./auctionTimer";
 
 export default function CardAuction({ isHomepage, auction }) {
-  function generateFixedTimeDeadline(deadline, time) {
-    const deadlineTime = time
-      ? time.split(":")
-      : "";
+  function generateDeadline(deadline, time) {
+    const deadlineTime = time ? time.split(":") : "";
     const hours = parseInt(deadlineTime[0]);
     const minutes = parseInt(deadlineTime[1]);
     const seconds = parseInt(deadlineTime[2]);
@@ -16,31 +14,22 @@ export default function CardAuction({ isHomepage, auction }) {
   }
 
   const fixedTimeDeadline = new Date(auction.expireDate);
-  const fixedTimeDeadlineTimer = generateFixedTimeDeadline(fixedTimeDeadline, auction.expireTime);
+  const fixedTimeDeadlineTimer = generateDeadline(
+    fixedTimeDeadline,
+    auction.expireTime
+  );
 
-  const englishDeadline = new Date(auction.offerTimer);
-  const englishDeadlineTimer = generateFixedTimeDeadline(englishDeadline, auction.offerTimer);
+  const englishDeadline = new Date();
+  const englishDeadlineTimer = generateDeadline(
+    englishDeadline,
+    auction.offerTimer
+  );
 
-  const descendingDeadline = new Date(auction.expireTime);
-
-  // const formattedFixedTimeDeadline =
-  //   fixedTimeDeadline.getFullYear() +
-  //   "/" +
-  //   fixedTimeDeadline.getDate() +
-  //   "/" +
-  //   fixedTimeDeadline.getDay();
-  // const formattedEnglishDeadline =
-  //   englishDeadline.getHours() +
-  //   ":" +
-  //   englishDeadline.getMinutes() +
-  //   ":" +
-  //   englishDeadline.getSeconds();
-  // const formattedDescendingDeadline =
-  //   descendingDeadline.getMinutes() + ":" + descendingDeadline.getSeconds();
-
-  // console.log("FIXED DEADLINE: " + fixedTimeDeadline.getDay() + "/" + fixedTimeDeadline.getDate() + "/" + fixedTimeDeadline.getFullYear());
-  // console.log("ENGLISH DEADLINE: " + englishDeadline.getHours() + ":" + englishDeadline.getMinutes() + ":" + englishDeadline.getSeconds());
-  // console.log("DESCENDING DEADLINE: " + descendingDeadline.getHours() + ":" + descendingDeadline.getMinutes() + ":" + descendingDeadline.getSeconds());
+  const descendingDeadline = new Date();
+  const descendingDeadlineTimer = generateDeadline(
+    descendingDeadline,
+    auction.expireTime
+  );
 
   return (
     <>
@@ -63,19 +52,17 @@ export default function CardAuction({ isHomepage, auction }) {
                 <div className="text-2xl ml-8">€ {auction.currentOffer}</div>
                 {auction.auctionType === "fixedtime" && (
                   <div className="text-xl mr-8 mt-0.5">
-                    {/* {formattedFixedTimeDeadline} */}
                     <AuctionTimer deadline={fixedTimeDeadlineTimer} />
                   </div>
                 )}
                 {auction.auctionType === "english" && (
                   <div className="text-xl mr-8 mt-0.5">
-                    {/* {formattedEnglishDeadline} */}
                     <AuctionTimer deadline={englishDeadlineTimer} />
                   </div>
                 )}
                 {auction.auctionType === "descending" && (
                   <div className="text-xl mr-8 mt-0.5">
-                    {/* {formattedDescendingDeadline} */}
+                    <AuctionTimer deadline={descendingDeadlineTimer} />
                   </div>
                 )}
                 {/* <div className="text-xl mr-8 mt-0.5">00.00</div> */}
