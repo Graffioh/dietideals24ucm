@@ -56,7 +56,7 @@ export default function AuctionTimer({ deadline }) {
     <div>
       {Object.keys(timeLeft).length > 0
         ? `${formatTimeLeft(timeLeft)}`
-        : "Auction ended"}
+        : <div className="text-red-500 text-lg font-medium">Auction ended</div>}
     </div>
   );
 }

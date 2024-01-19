@@ -3,7 +3,6 @@ package com.ucm.serverdietideals24.Models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Time;
-import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

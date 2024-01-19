@@ -51,17 +51,17 @@ export default function CardAuction({ isHomepage, auction }) {
               <div className="flex justify-between">
                 <div className="text-2xl ml-8">€ {auction.currentOffer}</div>
                 {auction.auctionType === "fixedtime" && (
-                  <div className="text-xl mr-8 mt-0.5">
+                  <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2">
                     <AuctionTimer deadline={fixedTimeDeadlineTimer} />
                   </div>
                 )}
                 {auction.auctionType === "english" && (
-                  <div className="text-xl mr-8 mt-0.5">
+                  <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2">
                     <AuctionTimer deadline={englishDeadlineTimer} />
                   </div>
                 )}
                 {auction.auctionType === "descending" && (
-                  // <div className="text-xl mr-8 mt-0.5">
+                  // <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2">
                   //   <AuctionTimer deadline={descendingDeadlineTimer} />
                   // </div>
                   <div></div>
