@@ -38,7 +38,6 @@ export default function FixedTimeInsertAuctionInputs({
           className="bg-white"
           onChange={(e) => {
             onExpireTimeChange(e.target.value);
-            console.log("EXPIRE TIME FROM INPUT: " + e.target.value);
           }}
         ></Input>
       </div>

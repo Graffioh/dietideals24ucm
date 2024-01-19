@@ -124,7 +124,7 @@ export default function InsertAuctionPage() {
       offers: [],
       baseStartAuction: baseStartAuction,
       raiseThreshold: raiseThreshold,
-      offerTimer: moment(offerTimer, "HH:mm:ss").format("HH:mm:ss"),
+      offerTimer: offerTimer ? moment(offerTimer, "HH:mm:ss").format("HH:mm:ss") : null,
       expireDate: expireDate,
       minimumPrice:
         auctionType == "fixedtime"
@@ -132,7 +132,7 @@ export default function InsertAuctionPage() {
           : descendingMinimumPrice,
       startPrice: startPrice,
       decrementAmount: decrementAmount,
-      expireTime: moment(expireTime, "HH:mm:ss").format("HH:mm:ss"),
+      expireTime: expireTime ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss") : null,
       timer: moment(timer, "H:mm"),
     };
 
@@ -153,7 +153,7 @@ export default function InsertAuctionPage() {
       <Button
         onClick={(e) => {
           e.preventDefault();
-          console.log("MOMENT PARSING: " + moment(expireTime, "H:mm"));
+          console.log("OFFER TIMER MOMENT PARSING: " + offerTimer);
         }}
       >
         TEST
