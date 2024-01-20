@@ -11,9 +11,8 @@ import {
     return (
       <div className="flex items-center justify-between px-2">
         <div className="flex items-center space-x-6 lg:space-x-8">
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page 69 of{" "}
-            420
+          <div className="flex items-center justify-center text-sm font-medium">
+            Page 1 of ?
           </div>
           <div className="flex items-center space-x-2">
             <Button

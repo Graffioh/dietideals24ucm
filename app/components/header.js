@@ -76,7 +76,7 @@ function LoggedFullSection() {
         <Searchbar />
       </div>
 
-      <div className="mt-0.5 mr-7 flex justify-between">
+      <div className="mt-0.5 mr-4 flex justify-between">
         <Link
           href="/insert-auction"
           className={cn(
@@ -118,7 +118,7 @@ async function logOut() {
 
 function PrivateProfileSection() {
   return (
-    <div className="flex">
+    <div className="flex mr-4">
       <NotificationsDropdown notifications={notifications} />
       <Button onClick={logOut}>Log out</Button>
     </div>
@@ -145,7 +145,7 @@ function NotLoggedSection() {
 // Modify profile icon and notifications
 function ModifyProfileSection() {
   return (
-    <div className="mr-7 flex  justify-between mb-2">
+    <div className="mr-4 flex justify-between mb-2">
       <Link href="/private-profile">
         <Button variant="ghost" className="">
           <Pencil1Icon width="23" height="23" />
