@@ -21,7 +21,7 @@ const formatTimeLeft = (timeLeft) => {
   if (timeLeft.days > 0) parts.push(`${timeLeft.days}d`);
   if (timeLeft.hours > 0) parts.push(`${timeLeft.hours}h`);
   if (timeLeft.minutes > 0) parts.push(`${timeLeft.minutes}m`);
-  parts.push(`${timeLeft.seconds}s`);
+  if (timeLeft.days <= 0) parts.push(`${timeLeft.seconds}s`);
   return parts.join(" ");
 };
 
