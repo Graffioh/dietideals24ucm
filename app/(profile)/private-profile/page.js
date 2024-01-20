@@ -89,7 +89,7 @@ export default function ProfilePage({ searchParams }) {
       lastName: inputs.lastName.value,
       username: inputs.username.value,
       password: inputs.password.value,
-      birthDate: birthDate,
+      birthDate: currentUser ? currentUser.birthDate : birthDate,
       email: inputs.email.value,
       piva: inputs.piva ? inputs.piva.value : "",
       telephoneNumber: inputs.telephoneNumber
@@ -186,7 +186,6 @@ export default function ProfilePage({ searchParams }) {
   // *******************
 
   function isUserAdult(birthDateString) {
-    // Assumendo che birthDateString sia nel formato 'YYYY-MM-DD'
     var birthDate = new Date(birthDateString);
     var currentDate = new Date();
 
@@ -352,7 +351,7 @@ export default function ProfilePage({ searchParams }) {
             </div>
 
             {currentUser &&
-            isUserAdult(currentUser.birthDate.split("T")[0].slice(0, 4)) ? (
+            isUserAdult(currentUser.birthDate ? currentUser.birthDate.split("T")[0].slice(0, 4) : new Date()) ? (
               <div className="flex">
                 <div className="flex-col grow">
                   <Label>P.IVA</Label>
