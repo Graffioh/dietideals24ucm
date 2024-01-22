@@ -8,7 +8,7 @@ const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [currentUserIsLoading, setcurrentUserIsLoading] = useState(true);
   // const [isError, setIsError] = useState(false);
 
   const token = useCookies().get("token");
@@ -47,7 +47,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     if (user) {
       setCurrentUser(user);
-      setIsLoading(false);
+      setcurrentUserIsLoading(false);
     }
     // if (error) {
     //   console.error('Error fetching user:', error);
@@ -56,12 +56,8 @@ export const UserProvider = ({ children }) => {
     // }
   }, [user]);
 
-  if (isLoading) {
-    return <div className="flex justify-center items-center">Loading...</div>;
-  }
-
   return (
-    <UserContext.Provider value={{ currentUser }}>
+    <UserContext.Provider value={{ currentUser, currentUserIsLoading }}>
       {children}
     </UserContext.Provider>
   );

@@ -18,7 +18,7 @@ import { useUserContext } from "@/app/(auth)/userProvider";
 export default function ProfilePage({ searchParams }) {
   const [profileStatus, setProfileStatus] = useState("");
   const [birthDate, setBirthDate] = useState("");
-  const { currentUser } = useUserContext();
+  const { currentUser, currentUserIsLoading } = useUserContext();
 
   async function createUserAccount(user) {
     try {
@@ -130,6 +130,10 @@ export default function ProfilePage({ searchParams }) {
 
   function handleBirthDate(date) {
     setBirthDate(date);
+  }
+  
+  if(currentUserIsLoading) {
+    return <div>Loading...</div>
   }
 
   return (

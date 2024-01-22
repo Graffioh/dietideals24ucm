@@ -23,7 +23,7 @@ import { v4 as uuidv4 } from "uuid";
 import AddAuctionImageBox from "@/app/components/addAuctionImageBox";
 
 export default function InsertAuctionPage() {
-  const { currentUser } = useUserContext();
+  const { currentUser, currentUserIsLoading } = useUserContext();
 
   // Category combobox state
   const [category, setCategory] = useState("");
