@@ -12,6 +12,8 @@ import ComboboxCategories from "@/app/components/comboboxCategories";
 import ComboboxAuctions from "@/app/components/comboboxAuctions.js";
 import ComboboxQuality from "@/app/components/comboboxQualities.js";
 
+import { useUserContext } from "@/app/(auth)/userProvider";
+
 import FixedTimeInsertAuctionInputs from "@/app/components/auctions/fixedTimeInsertAuctionInputs";
 import EnglishInsertAuctionInputs from "@/app/components/auctions/englishInsertAuctionInputs";
 import DescendingInsertAuctionInputs from "@/app/components/auctions/descendingInsertAuctionInputs";
@@ -21,6 +23,8 @@ import { v4 as uuidv4 } from "uuid";
 import AddAuctionImageBox from "@/app/components/addAuctionImageBox";
 
 export default function InsertAuctionPage() {
+  const { currentUser, currentUserIsLoading } = useUserContext();
+
   // Category combobox state
   const [category, setCategory] = useState("");
 
@@ -119,7 +123,7 @@ export default function InsertAuctionPage() {
       currentOffer: 0,
       auctionType: auctionType,
       auctionCategory: "Electronics",
-      idUserAccount: 888, // mettere currentUser.id
+      idUserAccount: currentUser.id,
       auctionImages: "no-images", // mettere le foto prese dalla selezione
       offers: [],
       baseStartAuction: baseStartAuction,

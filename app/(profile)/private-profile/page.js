@@ -10,20 +10,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { hash } from "bcryptjs";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 
-import useSWR from "swr";
-
-import { useCookies } from "next-client-cookies";
 import DatePicker from "@/app/components/datePicker";
 
-import { useRouter } from "next/navigation";
-
 import CancelAlertDialog from "@/app/components/cancelAlertDialog";
+import { useUserContext } from "@/app/(auth)/userProvider";
 
 export default function ProfilePage({ searchParams }) {
   const [profileStatus, setProfileStatus] = useState("");
   const [birthDate, setBirthDate] = useState("");
-
-  const router = useRouter();
+  const { currentUser, currentUserIsLoading } = useUserContext();
 
   async function createUserAccount(user) {
     try {
@@ -99,33 +94,7 @@ export default function ProfilePage({ searchParams }) {
       website: inputs.website ? inputs.website.value : "",
     };
 
-    const tokenResponse = await fetch("http://localhost:8080/get-login-token", {
-      method: "GET",
-      credentials: "include",
-    });
-    const token = await tokenResponse.text();
-
-    token.replaceAll('"', "");
-
-    if (token != "no-token") {
-      const currentSubjectResponse = await fetch(
-        "http://localhost:8080/get-subject-from-token",
-        { method: "POST", body: token }
-      );
-
-      const currentSubject = await currentSubjectResponse.text();
-
-      const currentUserResponse = currentSubject.includes("@")
-        ? await fetch(
-            "http://localhost:8080/user-from-email?email=" + currentSubject
-          )
-        : await fetch(
-            "http://localhost:8080/user-from-username?username=" +
-              currentSubject
-          );
-
-      const currentUser = await currentUserResponse.json();
-
+    if (currentUser) {
       // UPDATE
       const fff = await fetch(
         "http://localhost:8080/update-profile?id=" + currentUser.id,
@@ -145,46 +114,6 @@ export default function ProfilePage({ searchParams }) {
     }
   }
 
-  // GET INFO FROM CURRENT LOGGED USER
-  // *******************
-  const token = useCookies().get("token");
-
-  let currentUser = null;
-
-  if (token) {
-    const userInfoFetcher = (url) =>
-      fetch(url, { method: "POST", credentials: "include", body: token }).then(
-        (res) => res.text()
-      );
-
-    const {
-      data: subject,
-      error: subjectError,
-      isLoading: subjectIsLoading,
-    } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
-
-    const fetcher = (url) =>
-      fetch(url, { next: { revalidate: 3 } }).then((res) => res.json());
-
-    const {
-      data: currentUserData,
-      error: currentUserError,
-      isLoading: currentUserIsLoading,
-    } = useSWR(
-      subject != null && subject.includes("@")
-        ? "http://localhost:8080/user-from-email?email=" + subject
-        : "http://localhost:8080/user-from-username?username=" + subject,
-      fetcher
-    );
-
-    currentUser = currentUserData;
-
-    if (currentUserIsLoading)
-      return <div className="flex justify-center items-center">Loading...</div>;
-  }
-
-  // *******************
-
   function isUserAdult(birthDateString) {
     var birthDate = new Date(birthDateString);
     var currentDate = new Date();
@@ -201,6 +130,10 @@ export default function ProfilePage({ searchParams }) {
 
   function handleBirthDate(date) {
     setBirthDate(date);
+  }
+  
+  if(currentUserIsLoading) {
+    return <div>Loading...</div>
   }
 
   return (
@@ -351,7 +284,11 @@ export default function ProfilePage({ searchParams }) {
             </div>
 
             {currentUser &&
-            isUserAdult(currentUser.birthDate ? currentUser.birthDate.split("T")[0].slice(0, 4) : new Date()) ? (
+            isUserAdult(
+              currentUser.birthDate
+                ? currentUser.birthDate.split("T")[0].slice(0, 4)
+                : new Date()
+            ) ? (
               <div className="flex">
                 <div className="flex-col grow">
                   <Label>P.IVA</Label>
