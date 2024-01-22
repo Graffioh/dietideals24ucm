@@ -10,12 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { hash } from "bcryptjs";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 
-import useSWR from "swr";
-
-import { useCookies } from "next-client-cookies";
 import DatePicker from "@/app/components/datePicker";
-
-import { useRouter } from "next/navigation";
 
 import CancelAlertDialog from "@/app/components/cancelAlertDialog";
 import { useUserContext } from "@/app/(auth)/userProvider";
@@ -24,8 +19,6 @@ export default function ProfilePage({ searchParams }) {
   const [profileStatus, setProfileStatus] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const { currentUser } = useUserContext();
-
-  console.log("USER: " + currentUser);
 
   async function createUserAccount(user) {
     try {
