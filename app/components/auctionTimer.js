@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import useSWR from "swr";
 
 const calculateTimeLeft = (deadline) => {
   const difference = +new Date(deadline) - +new Date();
@@ -25,7 +26,7 @@ const formatTimeLeft = (timeLeft) => {
   return parts.join(" ");
 };
 
-export default function AuctionTimer({ deadline }) {
+export default function AuctionTimer({ deadline, id }) {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(deadline));
   const [hasMounted, setHasMounted] = useState(false);
   const [auctionEnded, setAuctionEnded] = useState(false);
@@ -41,7 +42,22 @@ export default function AuctionTimer({ deadline }) {
         setAuctionEnded(true);
         clearInterval(timer);
 
-        // sendAuctionEndRequest();
+        // set isOver attribute in DB to true
+        fetch("http://localhost:8080/auction-isover?id=" + id, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+          })
+          .then(() => {
+            console.log("Auction has ended");
+          })
+          .catch((error) => {
+            console.error("Failed to fetch: ", error);
+          });
       }
     }, 1000);
 
@@ -54,9 +70,11 @@ export default function AuctionTimer({ deadline }) {
 
   return (
     <div>
-      {Object.keys(timeLeft).length > 0
-        ? `${formatTimeLeft(timeLeft)}`
-        : <div className="text-red-500 text-lg font-medium">Auction ended</div>}
+      {Object.keys(timeLeft).length > 0 ? (
+        `${formatTimeLeft(timeLeft)}`
+      ) : (
+        <div className="text-red-500 text-lg font-medium">Auction ended</div>
+      )}
     </div>
   );
 }

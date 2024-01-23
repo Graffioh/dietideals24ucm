@@ -37,6 +37,8 @@ public class Auction {
 
     @NonNull
     private String auctionImages;
+    
+    private Boolean isOver;
 
     private ArrayList<Offer> offers;
 

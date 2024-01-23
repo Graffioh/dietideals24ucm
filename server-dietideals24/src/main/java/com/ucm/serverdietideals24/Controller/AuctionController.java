@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ucm.serverdietideals24.Models.Auction;
 import com.ucm.serverdietideals24.DAO.AuctionDAO;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
@@ -59,10 +62,14 @@ public class AuctionController {
 
     }
 
-    // @PutMapping("/update-profile")
-    // public void updateUserAccount(@RequestParam String id, @RequestBody
-    // UserAccount entity) {
-    // userAccountDAO.update(id, entity);
-    // }
+    @PutMapping("/auction-isover")
+    public void setAuctionIsOver(@RequestParam Long id) {
+        try {
+            auctionDAO.updateIsOver(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
