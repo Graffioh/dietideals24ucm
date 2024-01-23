@@ -11,4 +11,6 @@ public interface AuctionDAO {
     public Auction getViaId(Long id);
 
     public void create(Auction auction);
+
+    public void updateIsOver(Long id);
 }

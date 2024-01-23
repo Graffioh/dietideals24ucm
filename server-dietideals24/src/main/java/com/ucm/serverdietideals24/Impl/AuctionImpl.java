@@ -66,5 +66,10 @@ public class AuctionImpl implements AuctionDAO {
                             + auction.getAuctionType() + "')");
         }
     }
+    
+    @Override
+    public void updateIsOver(Long id) {
+        jdbcTemplate.update("UPDATE auction SET isOver = 'true' WHERE id = " + id);
+    }
 
 }
