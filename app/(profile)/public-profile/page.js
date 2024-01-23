@@ -12,7 +12,7 @@ export default async function ProfilePage() {
   // const matteo = [1, 2, 3, 4, 5, 6, 7, 8];
   
   const currentUser = await getCurrentUserServer();
-
+  
   return (
     <>
       <div className="flex mt-16 ml-[15em] mr-[15em]">
@@ -24,7 +24,7 @@ export default async function ProfilePage() {
         </div>
         <div className="flex-col w-full">
           <h1 className="font-bold text-5xl mb-4">{currentUser ? currentUser.username : "none"}</h1>
-          <Textarea className="" placeholder="BIO HERE" />
+          <Textarea className="" placeholder="BIO HERE" defaultValue={currentUser ? currentUser.biography : "none"} />
         </div>
       </div>
 

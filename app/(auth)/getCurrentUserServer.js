@@ -3,12 +3,12 @@ import { cookies } from "next/headers";
 export default async function getCurrentUserServer() {
   const nextCookies = cookies();
 
-  const token = nextCookies.has("token")
+  const tokenFromCookies = nextCookies.has("token")
     ? nextCookies.get("token").value
     : '"no-token"';
 
   // return token without "
-  token.replaceAll('"', "");
+  const token = tokenFromCookies.replaceAll('"', "");
 
   try {
     const subjectFromToken = await fetch(
