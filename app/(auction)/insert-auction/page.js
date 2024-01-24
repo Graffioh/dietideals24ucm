@@ -154,14 +154,14 @@ export default function InsertAuctionPage() {
 
   return (
     <>
-      {/* <Button
+      <Button
         onClick={(e) => {
           e.preventDefault();
-          console.log("OFFER TIMER MOMENT PARSING: " + offerTimer);
+          console.log("DECREMENT TIMER: " + decrementTimer);
         }}
       >
         TEST
-      </Button> */}
+      </Button>
 
       <form onSubmit={onSubmit}>
         <div className="flex flex-col md:flex-row items-center mt-12">

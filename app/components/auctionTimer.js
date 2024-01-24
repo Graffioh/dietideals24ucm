@@ -26,10 +26,13 @@ const formatTimeLeft = (timeLeft) => {
   return parts.join(" ");
 };
 
-export default function AuctionTimer({ deadline, id }) {
+export default function AuctionTimer({ deadline, id, auctionType }) {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(deadline));
   const [hasMounted, setHasMounted] = useState(false);
   const [auctionEnded, setAuctionEnded] = useState(false);
+  
+  console.log("ID: " + id)
+  console.log("DEADLINE: " + deadline)
 
   useEffect(() => {
     setHasMounted(true);
@@ -38,7 +41,11 @@ export default function AuctionTimer({ deadline, id }) {
       const newTimeLeft = calculateTimeLeft(deadline);
       setTimeLeft(newTimeLeft);
 
-      if (Object.keys(newTimeLeft).length === 0 && !auctionEnded) {
+      if (auctionType === "descending" && Object.keys(newTimeLeft).length === 0 && !auctionEnded) {
+        setAuctionEnded(true);
+        clearInterval(timer);
+        console.log("YO")
+      } else if (Object.keys(newTimeLeft).length === 0 && !auctionEnded) {
         setAuctionEnded(true);
         clearInterval(timer);
 
