@@ -1,5 +1,6 @@
 package com.ucm.serverdietideals24.DAO;
 
+import java.sql.Time;
 import java.util.List;
 
 import com.ucm.serverdietideals24.Models.Auction;
@@ -8,9 +9,15 @@ import com.ucm.serverdietideals24.Models.Auction;
 public interface AuctionDAO {
     public List<Auction> getAll();
 
+    public List<Auction> getAllDescendingAuctions();
+
     public Auction getViaId(Long id);
 
     public void create(Auction auction);
 
     public void updateIsOver(Long id);
+
+    public void updateCurrentOffer(Long id, Float newCurrentOffer);
+
+    public void updateCurrentDecrementTimer(Long id, Time newTimerValue);
 }
