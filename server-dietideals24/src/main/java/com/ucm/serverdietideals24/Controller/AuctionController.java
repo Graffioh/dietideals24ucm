@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ucm.serverdietideals24.Models.Auction;
 import com.ucm.serverdietideals24.DAO.AuctionDAO;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")

@@ -110,8 +110,10 @@ export default function AuctionTimer({ deadline, auction }) {
         ) : (
           <div className="text-red-500 text-lg font-medium">Auction ended</div>
         )
-      ) : (
+      ) : auction.isOver ? (
         <div className="text-red-500 text-lg font-medium">Auction ended</div>
+      ) : (
+        <div className="text-red-500 text-lg font-medium"></div>
       )}
     </div>
   );
