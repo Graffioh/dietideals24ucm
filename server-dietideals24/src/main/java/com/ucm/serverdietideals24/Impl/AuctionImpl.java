@@ -1,5 +1,6 @@
 package com.ucm.serverdietideals24.Impl;
 
+import java.sql.Time;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,21 +56,36 @@ public class AuctionImpl implements AuctionDAO {
 
         } else {
             jdbcTemplate.execute(
-                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, decrementTimer, decrementAmount, minimumPrice, idUserAccount, auctionType) VALUES ('"
+                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, baseDecrementTimer, decrementAmount, minimumPrice, idUserAccount, auctionType, currentDecrementTimer) VALUES ('"
                             + auction.getId() + "', '" + auction.getAuctionDescription()
                             + "', '" + auction.getAuctionName() + "', '" + auction.getAuctionCategory() + "', '"
                             + auction.getAuctionQuality() + "', '"
-                            + auction.getCurrentOffer() + "', '" + auction.getAuctionImages() + "', '"
-                            + auction.getStartPrice() + "', '" + auction.getDecrementTimer()
+                            + auction.getStartPrice() + "', '" + auction.getAuctionImages() + "', '"
+                            + auction.getStartPrice() + "', '" + auction.getBaseDecrementTimer()
                             + "', '" + auction.getDecrementAmount() + "', '" + auction.getMinimumPrice() + "', '"
                             + auction.getIdUserAccount() + "', '"
-                            + auction.getAuctionType() + "')");
+                            + auction.getAuctionType() + "', '" + auction.getBaseDecrementTimer() + "')");
         }
     }
-    
+
     @Override
     public void updateIsOver(Long id) {
         jdbcTemplate.update("UPDATE auction SET isOver = 'true' WHERE id = " + id);
     }
 
+    @Override
+    public void updateCurrentOffer(Long id, Float newCurrentOffer) {
+        jdbcTemplate.update("UPDATE auction SET currentOffer = '" + newCurrentOffer + "' WHERE id = " + id);
+    }
+
+    @Override
+    public List<Auction> getAllDescendingAuctions() {
+        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'descending'",
+                new BeanPropertyRowMapper<Auction>(Auction.class));
+    }
+
+    @Override
+    public void updateCurrentDecrementTimer(Long id, Time newTimerValue) {
+        jdbcTemplate.update("UPDATE auction SET currentDecrementTimer = '" + newTimerValue + "' WHERE id = " + id);
+    }
 }

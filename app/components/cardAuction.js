@@ -25,11 +25,11 @@ export default function CardAuction({ isHomepage, auction }) {
     auction.offerTimer
   );
 
-  // const descendingDeadline = new Date();
-  // const descendingDeadlineTimer = generateDeadline(
-  //   descendingDeadline,
-  //   auction.decrementTimer
-  // );
+  const descendingDeadline = new Date();
+  const descendingDeadlineTimer = generateDeadline(
+    descendingDeadline,
+    auction.baseDecrementTimer
+  );
 
   return (
     <>
@@ -49,24 +49,22 @@ export default function CardAuction({ isHomepage, auction }) {
               <div>{auction.auctionName}</div>
 
               <div className="flex justify-between">
-                <div className="text-2xl ml-8">€ {auction.currentOffer}</div>
+                <div className="text-2xl ml-6">€{auction.currentOffer}</div>
                 {auction.auctionType === "fixedtime" && (
                   <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                    <AuctionTimer deadline={fixedTimeDeadlineTimer} id={auction.id} />
+                    <AuctionTimer deadline={fixedTimeDeadlineTimer} auction={auction} />
                   </div>
                 )}
                 {auction.auctionType === "english" && (
                   <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                    <AuctionTimer deadline={englishDeadlineTimer} id={auction.id} />
+                    <AuctionTimer deadline={englishDeadlineTimer} auction={auction} />
                   </div>
                 )}
                 {auction.auctionType === "descending" && (
-                  // <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                  //   <AuctionTimer deadline={descendingDeadlineTimer} id={auction.id} />
-                  // </div>
-                  <div></div>
+                  <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
+                     <AuctionTimer deadline={descendingDeadlineTimer} auction={auction}  />
+                  </div>
                 )}
-                {/* <div className="text-xl mr-8 mt-0.5">00.00</div> */}
               </div>
             </div>
           </button>

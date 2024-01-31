@@ -10,7 +10,7 @@ export default async function Home() {
   async function getAllAuctions() {
     try {
       const auctionsResponse = await fetch("http://localhost:8080/auctions", {
-        next: { revalidate: 1 },
+        next: { revalidate: 0 },
       });
       const auctions = await auctionsResponse.json();
 

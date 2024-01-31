@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import useSWR from "swr";
+import { Button } from "@/components/ui/button";
 
 const calculateTimeLeft = (deadline) => {
   const difference = +new Date(deadline) - +new Date();
@@ -26,7 +26,7 @@ const formatTimeLeft = (timeLeft) => {
   return parts.join(" ");
 };
 
-export default function AuctionTimer({ deadline, id }) {
+export default function AuctionTimer({ deadline, auction }) {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(deadline));
   const [hasMounted, setHasMounted] = useState(false);
   const [auctionEnded, setAuctionEnded] = useState(false);
@@ -36,14 +36,35 @@ export default function AuctionTimer({ deadline, id }) {
 
     const timer = setInterval(() => {
       const newTimeLeft = calculateTimeLeft(deadline);
-      setTimeLeft(newTimeLeft);
 
-      if (Object.keys(newTimeLeft).length === 0 && !auctionEnded) {
+      if (auction.auctionType !== "descending") {
+        setTimeLeft(newTimeLeft);
+      } else {
+        fetch("http://localhost:8080/auction-from-id?id=" + auction.id)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((auction) => {
+            setTimeLeft(auction.currentDecrementTimer);
+          })
+          .catch((error) => {
+            console.error("Fetch error: " + error.message);
+          });
+      }
+
+      if (
+        Object.keys(newTimeLeft).length === 0 &&
+        !auctionEnded &&
+        auction.auctionType !== "descending"
+      ) {
         setAuctionEnded(true);
         clearInterval(timer);
 
         // set isOver attribute in DB to true
-        fetch("http://localhost:8080/auction-isover?id=" + id, {
+        fetch("http://localhost:8080/set-auction-isover?id=" + auction.id, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
         })
@@ -58,6 +79,14 @@ export default function AuctionTimer({ deadline, id }) {
           .catch((error) => {
             console.error("Failed to fetch: ", error);
           });
+      } else if (
+        Object.keys(timeLeft).length === 0 &&
+        !auctionEnded &&
+        auction.auctionType === "descending" &&
+        auction.currentOffer === auction.minimumPrice
+      ) {
+        setAuctionEnded(true);
+        clearInterval(timer);
       }
     }, 1000);
 
@@ -68,12 +97,23 @@ export default function AuctionTimer({ deadline, id }) {
     return null;
   }
 
+  // mamma mia che immondizia che ho fatto qua
   return (
     <div>
       {Object.keys(timeLeft).length > 0 ? (
-        `${formatTimeLeft(timeLeft)}`
-      ) : (
+        auction.currentOffer !== auction.minimumPrice ? (
+          auction.auctionType === "descending" ? (
+            `${timeLeft}`
+          ) : (
+            `${formatTimeLeft(timeLeft)}`
+          )
+        ) : (
+          <div className="text-red-500 text-lg font-medium">Auction ended</div>
+        )
+      ) : auction.isOver ? (
         <div className="text-red-500 text-lg font-medium">Auction ended</div>
+      ) : (
+        <div className="text-red-500 text-lg font-medium"></div>
       )}
     </div>
   );

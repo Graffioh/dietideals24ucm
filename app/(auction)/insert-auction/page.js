@@ -81,7 +81,7 @@ export default function InsertAuctionPage() {
   const [startPrice, setStartPrice] = useState("");
   const [decrementAmount, setDecrementAmount] = useState("");
   const [expireTime, setExpireTime] = useState("");
-  const [decrementTimer, setDecrementTimer] = useState("");
+  const [baseDecrementTimer, setDecrementTimer] = useState("");
   const [descendingMinimumPrice, setDescendingMinimumPrice] = useState("");
 
   function handleStartPrice(startPrice) {
@@ -137,7 +137,7 @@ export default function InsertAuctionPage() {
       startPrice: startPrice,
       decrementAmount: decrementAmount,
       expireTime: expireTime ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss") : null,
-      decrementTimer: decrementTimer ? moment(decrementTimer, "HH:mm:ss").format("HH:mm:ss") : null,
+      baseDecrementTimer: baseDecrementTimer ? moment(baseDecrementTimer, "HH:mm:ss").format("HH:mm:ss") : null,
     };
 
     const insertAuctionResponse = await fetch(
@@ -154,15 +154,6 @@ export default function InsertAuctionPage() {
 
   return (
     <>
-      {/* <Button
-        onClick={(e) => {
-          e.preventDefault();
-          console.log("OFFER TIMER MOMENT PARSING: " + offerTimer);
-        }}
-      >
-        TEST
-      </Button> */}
-
       <form onSubmit={onSubmit}>
         <div className="flex flex-col md:flex-row items-center mt-12">
           <div className="mx-3 mb-6 md:m-6 md:mr-20 md:ml-48 grid md:grid-cols-2 gap-2">

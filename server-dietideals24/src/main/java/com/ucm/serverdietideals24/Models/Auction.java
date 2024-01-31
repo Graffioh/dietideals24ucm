@@ -55,7 +55,7 @@ public class Auction {
     // Descending auction
     private Float startPrice, decrementAmount;
 
-    private Time decrementTimer;
+    private Time baseDecrementTimer, currentDecrementTimer;
 
     // Descending and Fixed time auction
     private Float minimumPrice;
