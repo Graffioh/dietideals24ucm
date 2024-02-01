@@ -38,6 +38,18 @@ public class AuctionController {
         }
     }
 
+    @GetMapping("/auction-from-name")
+    public ResponseEntity<List<Auction>> fetchAuctionBasedOnName(@RequestParam String name) {
+        try {
+            List<Auction> auctions = auctionDAO.getViaName(name);
+
+            return new ResponseEntity<List<Auction>>(auctions, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<List<Auction>>(new ArrayList<Auction>(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/auction-from-id")
     public ResponseEntity<Auction> fetchAuctionBasedOnId(@RequestParam Long id) {
         try {

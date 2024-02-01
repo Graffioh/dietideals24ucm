@@ -2,7 +2,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { CookiesProvider } from "next-client-cookies/server";
+import { FilterProvider } from "./filterProvider";
 import { UserProvider } from "./(auth)/userProvider";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +21,9 @@ export default function RootLayout({ children }) {
       <body>
         <CookiesProvider>
           <UserProvider>
-            <main className="flex-1">{children}</main>
+            <FilterProvider>
+              <main className="flex-1">{children}</main>
+            </FilterProvider>
           </UserProvider>
         </CookiesProvider>
       </body>
