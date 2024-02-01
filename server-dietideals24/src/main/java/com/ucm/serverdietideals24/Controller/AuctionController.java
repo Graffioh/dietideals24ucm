@@ -90,13 +90,17 @@ public class AuctionController {
                 decreasePrice(auction);
                 setCurrentDecrementTimer(auction.getId(), auction.getBaseDecrementTimer());
             } else {
-                LocalTime cdtLocalTime = auction.getCurrentDecrementTimer().toLocalTime();
-                LocalTime cdtDecrementedLocalTime = cdtLocalTime.minusSeconds(1);
-                Time newDecrementTimerValue = Time.valueOf(cdtDecrementedLocalTime);
-                
-                setCurrentDecrementTimer(auction.getId(), newDecrementTimerValue);
+                setCurrentDecrementTimer(auction.getId(), decrementTimerBy1Second(auction));
             }
         }
+    }
+
+    private Time decrementTimerBy1Second(Auction auction) {
+        LocalTime cdtLocalTime = auction.getCurrentDecrementTimer().toLocalTime();
+        LocalTime cdtDecrementedLocalTime = cdtLocalTime.minusSeconds(1);
+        Time newDecrementTimerValue = Time.valueOf(cdtDecrementedLocalTime);
+
+        return newDecrementTimerValue;
     }
 
     private void setCurrentDecrementTimer(Long id, Time newTimerValue) {
