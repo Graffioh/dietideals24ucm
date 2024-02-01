@@ -3,6 +3,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 export default function DescendingAuctionDetailsInputs({ currentAuction }) {
+  
+  console.log(currentAuction)
+
   return (
     <>
       <div className="absolute ml-5 mt-[10em]">
@@ -18,30 +21,6 @@ export default function DescendingAuctionDetailsInputs({ currentAuction }) {
           readOnly
         />
       </div>
-      <div className="absolute ml-[19em] mt-[10em]">
-        <Label className="flex mb-2">
-          Expire time<div className="text-red-500"></div>
-        </Label>
-        <Input
-          className="max-w-[20em] h-9 bg-white"
-          type="text"
-          id="expire-time"
-          placeholder="Placeholder"
-          readOnly
-        />
-      </div>
-      <div className="absolute ml-5 mt-[15em]">
-        <Label className="flex mb-2">
-          Decrement amount<div className="text-red-500"></div>
-        </Label>
-        <Input
-          className="max-w-[20em] h-9 bg-white"
-          type="text"
-          id="Decrement-amount"
-          placeholder="Placeholder"
-          readOnly
-        />
-      </div>
       <div className="absolute ml-[19em] mt-[15em]">
         <Label className="flex mb-2">
           Decrement timer<div className="text-red-500"></div>
@@ -51,6 +30,7 @@ export default function DescendingAuctionDetailsInputs({ currentAuction }) {
           type="text"
           id="decrement-timer"
           placeholder="Placeholder"
+          defaultValue={currentAuction.currentDecrementTimer}
           readOnly
         />
       </div>

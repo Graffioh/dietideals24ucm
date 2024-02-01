@@ -27,18 +27,7 @@ export default function EnglishAuctionDetailsInputs({ currentAuction }) {
           type="text"
           id="expire-time"
           placeholder="Placeholder"
-          readOnly
-        />
-      </div>
-      <div className="absolute ml-5 mt-[15em]">
-        <Label className="flex mb-2">
-          Minimum threshold price<div className="text-red-500"></div>
-        </Label>
-        <Input
-          className="max-w-[20em] h-9 bg-white"
-          type="text"
-          id="Decrement-amount"
-          placeholder="Placeholder"
+          defaultValue={currentAuction.offerTimer}
           readOnly
         />
       </div>
