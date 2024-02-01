@@ -27,6 +27,7 @@ export default function FixedTimeAuctionDetailsInputs({ currentAuction }) {
           type="text"
           id="expire-time"
           placeholder="Placeholder"
+          defaultValue={currentAuction.expireTime}
           readOnly
         />
       </div>
@@ -39,6 +40,7 @@ export default function FixedTimeAuctionDetailsInputs({ currentAuction }) {
           type="text"
           id="expire-time"
           placeholder="Placeholder"
+          defaultValue={currentAuction.expireDate}
           readOnly
         />
       </div>
