@@ -95,21 +95,18 @@ export default function ProfilePage({ searchParams }) {
       website: inputs.website ? inputs.website.value : "",
     };
 
-    console.log("BIRTH DATE: ", userInfoFromInputs.birthDate)
-
-    if (currentUser) {
+    if (currentUser && currentUser.id) {
+      console.log("UPDATE");
       // UPDATE
-      await fetch(
-        "http://localhost:8080/update-profile?id=" + currentUser.id,
-        {
-          method: "PUT",
-          body: JSON.stringify(userInfoFromInputs),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      await fetch("http://localhost:8080/update-profile?id=" + currentUser.id, {
+        method: "PUT",
+        body: JSON.stringify(userInfoFromInputs),
+        headers: { "Content-Type": "application/json" },
+      });
 
       setProfileStatus("Account updated successfully.");
     } else {
+      console.log("POST");
       // POST
       await createUserAccount(userInfoFromInputs);
 
@@ -134,9 +131,9 @@ export default function ProfilePage({ searchParams }) {
   function handleBirthDate(date) {
     setBirthDate(date);
   }
-  
-  if(currentUserIsLoading) {
-    return <div>Loading...</div>
+
+  if (currentUserIsLoading) {
+    return <div>Loading...</div>;
   }
 
   return (
@@ -261,7 +258,7 @@ export default function ProfilePage({ searchParams }) {
                 placeholder="Password"
                 defaultValue={currentUser ? currentUser.password : ""}
                 required
-                readOnly={currentUser ? true : false}
+                readOnly={currentUser.id ? true : false}
               />
             </div>
 
