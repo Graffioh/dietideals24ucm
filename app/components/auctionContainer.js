@@ -1,40 +1,41 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useFilter } from "../filterProvider";
+import { useAuctionFilter } from "../providers/auctionFilterProvider";
 import useSWR from "swr";
 import Link from "next/link";
 import CardAuction from "./cardAuction";
 import AuctionPagination from "./auctionPagination";
-import { useState } from "react";
+
+const fetcher = (url) =>
+  fetch(url, { next: { revalidate: 0 } }).then((res) => res.json());
 
 export default function AuctionContainer() {
+  const { filteredAuctions } = useAuctionFilter();
 
-  const { searchInput } = useFilter();
-  const [auctions, setAuctions] = useState([]);
-
-  async function filterAuctionsViaSearchInput(searchInput) {
-    const auctionsResponse = await fetch(
-      searchInput === ""
-        ? "http://localhost:8080/auctions"
-        : "http://localhost:8080/auction-from-name?name=" + searchInput
-    );
-    const auctions = await auctionsResponse.json();
-    setAuctions(auctions);
-  }
+  const {
+    data: auctions,
+    error,
+    isLoading,
+  } = useSWR("http://localhost:8080/auctions", fetcher);
 
   return (
     <>
-      <Button
-        onClick={async () => {
-          await filterAuctionsViaSearchInput(searchInput);
-        }}
-      >
-        Search here
-      </Button>
       <div className="flex flex-col justify-center items-center">
         <div className="grid grid-rows-auto grid-cols-4 gap-x-14">
-          {auctions ? (
+          {filteredAuctions ? (
+            filteredAuctions.map((auction) => (
+              <>
+                <Link href={"/auction-details?id=" + auction.id}>
+                  <CardAuction
+                    key={auction.id}
+                    isHomepage={true}
+                    auction={auction}
+                  />
+                </Link>
+              </>
+            ))
+          ) : auctions ? (
             auctions.map((auction) => (
               <>
                 <Link href={"/auction-details?id=" + auction.id}>

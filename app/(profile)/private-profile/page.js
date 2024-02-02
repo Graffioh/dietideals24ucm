@@ -13,7 +13,7 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 import DatePicker from "@/app/components/datePicker";
 
 import CancelAlertDialog from "@/app/components/cancelAlertDialog";
-import { useUserContext } from "@/app/(auth)/userProvider";
+import { useUserContext } from "@/app/providers/userProvider";
 
 export default function ProfilePage({ searchParams }) {
   const [profileStatus, setProfileStatus] = useState("");

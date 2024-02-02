@@ -109,7 +109,7 @@ async function logOut() {
       method: "GET",
       credentials: "include",
     });
-    
+
     window.location.href = "/";
   } catch (e) {
     console.log({ e });
