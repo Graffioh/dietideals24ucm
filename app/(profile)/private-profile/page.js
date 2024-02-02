@@ -84,7 +84,8 @@ export default function ProfilePage({ searchParams }) {
       lastName: inputs.lastName.value,
       username: inputs.username.value,
       password: inputs.password.value,
-      birthDate: currentUser ? currentUser.birthDate : birthDate,
+      // birthDate: currentUser ? currentUser.birthDate : birthDate,
+      birthDate: birthDate,
       email: inputs.email.value,
       piva: inputs.piva ? inputs.piva.value : "",
       telephoneNumber: inputs.telephoneNumber
@@ -94,9 +95,11 @@ export default function ProfilePage({ searchParams }) {
       website: inputs.website ? inputs.website.value : "",
     };
 
+    console.log("BIRTH DATE: ", userInfoFromInputs.birthDate)
+
     if (currentUser) {
       // UPDATE
-      const fff = await fetch(
+      await fetch(
         "http://localhost:8080/update-profile?id=" + currentUser.id,
         {
           method: "PUT",
