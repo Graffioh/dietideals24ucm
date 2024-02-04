@@ -50,10 +50,10 @@ export default async function AuctionDetailsPage({ searchParams }) {
         <div className="flex flex-col">
           <Label className="flex text-2xl">{currentAuction.auctionName}</Label>
           <div className="">
-            <img
-              className="object-cover w-96 h-128 mt-5 rounded-lg flex items-center"
-              src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
-            />
+              <img
+                className="object-cover w-96 h-128 mt-5 rounded-lg flex items-center"
+                src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+              />
           </div>
         </div>
       </div>
@@ -71,6 +71,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
 
           <div className="flex justify-center">
             <div className="font-bold text-5xl rounded-full mt-5 mb-[10em]">
+            <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>
               <Avatar className="h-32 w-32">
                 <AvatarImage
                   src="https://github.com/shadcn.png"
@@ -78,6 +79,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
                 />
                 <AvatarFallback>gojo</AvatarFallback>
               </Avatar>
+            </Link>
             </div>
             <div className="absolute mt-[20em]">
               <Label className="flex mb-2">Description</Label>
