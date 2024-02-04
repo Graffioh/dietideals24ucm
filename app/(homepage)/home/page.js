@@ -6,7 +6,6 @@ import AuctionPagination from "../../components/auctionPagination";
 import CardAuction from "../../components/cardAuction";
 
 export default async function Home() {
-
   async function getAllAuctions() {
     try {
       const auctionsResponse = await fetch("http://localhost:8080/auctions", {
@@ -21,7 +20,15 @@ export default async function Home() {
   }
 
   const auctions = await getAllAuctions();
-  
+
+  if (!auctions) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex flex-col justify-center items-center">
@@ -29,7 +36,7 @@ export default async function Home() {
           {auctions ? (
             auctions.map((auction) => (
               <>
-                <Link href={"/auction-details?id="+ auction.id}>
+                <Link href={"/auction-details?id=" + auction.id}>
                   <CardAuction
                     key={auction.id}
                     isHomepage={true}
