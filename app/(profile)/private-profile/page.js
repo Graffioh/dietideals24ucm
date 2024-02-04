@@ -84,7 +84,8 @@ export default function ProfilePage({ searchParams }) {
       lastName: inputs.lastName.value,
       username: inputs.username.value,
       password: inputs.password.value,
-      birthDate: currentUser ? currentUser.birthDate : birthDate,
+      // birthDate: currentUser ? currentUser.birthDate : birthDate,
+      birthDate: birthDate,
       email: inputs.email.value,
       piva: inputs.piva ? inputs.piva.value : "",
       telephoneNumber: inputs.telephoneNumber
@@ -94,19 +95,18 @@ export default function ProfilePage({ searchParams }) {
       website: inputs.website ? inputs.website.value : "",
     };
 
-    if (currentUser) {
+    if (currentUser && currentUser.id) {
+      console.log("UPDATE");
       // UPDATE
-      const fff = await fetch(
-        "http://localhost:8080/update-profile?id=" + currentUser.id,
-        {
-          method: "PUT",
-          body: JSON.stringify(userInfoFromInputs),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      await fetch("http://localhost:8080/update-profile?id=" + currentUser.id, {
+        method: "PUT",
+        body: JSON.stringify(userInfoFromInputs),
+        headers: { "Content-Type": "application/json" },
+      });
 
       setProfileStatus("Account updated successfully.");
     } else {
+      console.log("POST");
       // POST
       await createUserAccount(userInfoFromInputs);
 
@@ -131,9 +131,13 @@ export default function ProfilePage({ searchParams }) {
   function handleBirthDate(date) {
     setBirthDate(date);
   }
-  
-  if(currentUserIsLoading) {
-    return <div>Loading...</div>
+
+  if (currentUserIsLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -258,7 +262,7 @@ export default function ProfilePage({ searchParams }) {
                 placeholder="Password"
                 defaultValue={currentUser ? currentUser.password : ""}
                 required
-                readOnly={currentUser ? true : false}
+                readOnly={currentUser.id ? true : false}
               />
             </div>
 

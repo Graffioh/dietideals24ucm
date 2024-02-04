@@ -1,16 +1,13 @@
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import CardAuction from "../../components/cardAuction";
 import AuctionPagination from "../../components/auctionPagination";
 import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
+import CardAuctionEmpty from "@/app/components/cardAuctionEmpty";
 
 export default async function ProfilePage() {
-  // const matteo = [1, 2, 3, 4, 5, 6, 7, 8];
-  
   const currentUser = await getCurrentUserServer();
   
   return (
@@ -50,9 +47,9 @@ export default async function ProfilePage() {
               placeholder="Search..."
             ></input>
             <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7">
-              {/* {matteo.map((number) => (
-                <CardAuction key={number} isHomepage={false} />
-              ))} */}
+              {[1,2,3,4,5,6,7,8].map((number) => (
+                <CardAuctionEmpty key={number} isHomepage={false} />
+              ))}
             </div>
           </div>
           <div className="mb-5 flex justify-center items-center">
