@@ -20,6 +20,8 @@ export default async function ProfilePage({ searchParams }) {
     return user;
   }
 
+  // if searchParams is not presen or if searchParams.id == currentUser.id, 
+  //   then display currentUser, otherwise display the queried user by id
   const publicProfileUser = searchParams.id
     ? currentUser.id !== searchParams.id
       ? await getUserById(searchParams.id)
@@ -45,6 +47,7 @@ export default async function ProfilePage({ searchParams }) {
             defaultValue={
               publicProfileUser ? publicProfileUser.biography : "none"
             }
+            readOnly={true}
           />
         </div>
       </div>
@@ -55,22 +58,23 @@ export default async function ProfilePage({ searchParams }) {
             <RadioGroup defaultValue="option-one">
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="option-one" id="option-one" />
-                <Label htmlFor="option-one">Option One</Label>
+                <Label htmlFor="option-one">Selling</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="option-two" id="option-two" />
-                <Label htmlFor="option-two">Option Two</Label>
+                <Label htmlFor="option-two">Buying</Label>
               </div>
             </RadioGroup>
           </div>
 
           <div className="mr-10 ml-10 mb-10">
-            <input
+            {/* <input
               className="flex ml-auto mt-4 border-2 border-gray-300 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500"
               type="text"
               placeholder="Search..."
-            ></input>
-            <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7">
+            ></input> */}
+            <div className="flex ml-auto mt-4 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500"> </div>
+            <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7 mt-2">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
                 <CardAuctionEmpty key={number} isHomepage={false} />
               ))}
