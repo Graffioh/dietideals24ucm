@@ -7,9 +7,25 @@ import AuctionPagination from "../../components/auctionPagination";
 import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
 import CardAuctionEmpty from "@/app/components/cardAuctionEmpty";
 
-export default async function ProfilePage() {
+export default async function ProfilePage({ searchParams }) {
   const currentUser = await getCurrentUserServer();
-  
+
+  async function getUserById(id) {
+    const userFromRes = await fetch(
+      "http://localhost:8080/user-from-id?id=" + id
+    );
+
+    const user = await userFromRes.json();
+
+    return user;
+  }
+
+  const publicProfileUser = searchParams.id
+    ? currentUser.id !== searchParams.id
+      ? await getUserById(searchParams.id)
+      : currentUser
+    : currentUser;
+
   return (
     <>
       <div className="flex mt-16 ml-[15em] mr-[15em]">
@@ -20,8 +36,16 @@ export default async function ProfilePage() {
           </Avatar>
         </div>
         <div className="flex-col w-full">
-          <h1 className="font-bold text-5xl mb-4">{currentUser ? currentUser.username : "none"}</h1>
-          <Textarea className="" placeholder="BIO HERE" defaultValue={currentUser ? currentUser.biography : "none"} />
+          <h1 className="font-bold text-5xl mb-4">
+            {publicProfileUser ? publicProfileUser.username : "none"}
+          </h1>
+          <Textarea
+            className=""
+            placeholder="BIO HERE"
+            defaultValue={
+              publicProfileUser ? publicProfileUser.biography : "none"
+            }
+          />
         </div>
       </div>
 
@@ -47,7 +71,7 @@ export default async function ProfilePage() {
               placeholder="Search..."
             ></input>
             <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7">
-              {[1,2,3,4,5,6,7,8].map((number) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
                 <CardAuctionEmpty key={number} isHomepage={false} />
               ))}
             </div>

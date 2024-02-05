@@ -39,6 +39,18 @@ public class UserAccountController {
         }
     }
 
+    @GetMapping("/user-from-id")
+    public ResponseEntity<UserAccount> fetchUserBasedOnId(@RequestParam Long id) {
+        try {
+            UserAccount user = userAccountDAO.getViaId(id);
+
+            return new ResponseEntity<UserAccount>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<UserAccount>(new UserAccount(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/user-from-email")
     public ResponseEntity<UserAccount> fetchUserBasedOnEmail(@RequestParam String email) {
         try {
