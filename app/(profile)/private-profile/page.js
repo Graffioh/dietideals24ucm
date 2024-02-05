@@ -84,8 +84,7 @@ export default function ProfilePage({ searchParams }) {
       lastName: inputs.lastName.value,
       username: inputs.username.value,
       password: inputs.password.value,
-      // birthDate: currentUser ? currentUser.birthDate : birthDate,
-      birthDate: birthDate,
+      birthDate: currentUser ? currentUser.birthDate : birthDate,
       email: inputs.email.value,
       piva: inputs.piva ? inputs.piva.value : "",
       telephoneNumber: inputs.telephoneNumber
@@ -97,6 +96,10 @@ export default function ProfilePage({ searchParams }) {
 
     if (currentUser && currentUser.id) {
       console.log("UPDATE");
+
+      console.log("BIRTHDATE: " + birthDate);
+      console.log("CURRENT USER BIRTHDATE: " + currentUser.birthDate);
+      console.log("INPUTS USER BIRTHDATE: " + userInfoFromInputs.birthDate);
       // UPDATE
       await fetch("http://localhost:8080/update-profile?id=" + currentUser.id, {
         method: "PUT",
@@ -132,7 +135,7 @@ export default function ProfilePage({ searchParams }) {
     setBirthDate(date);
   }
 
-  if (currentUserIsLoading) {
+  if (currentUserIsLoading && searchParams.type === "update") {
     return (
       <div className="flex justify-center items-center h-screen">
         Loading...
@@ -262,7 +265,7 @@ export default function ProfilePage({ searchParams }) {
                 placeholder="Password"
                 defaultValue={currentUser ? currentUser.password : ""}
                 required
-                readOnly={currentUser.id ? true : false}
+                readOnly={currentUser ? (currentUser.id ? true : false) : false}
               />
             </div>
 
@@ -282,8 +285,9 @@ export default function ProfilePage({ searchParams }) {
               /> */}
               <DatePicker
                 handleParentDate={handleBirthDate}
-                defaultDate={currentUser ? new Date(currentUser.birthDate) : ""}
+                defaultDate={currentUser ? new Date(currentUser.birthDate) : new Date()}
                 isBirthDate={true}
+                isReadOnly={currentUser ? true : false}
               />
             </div>
 

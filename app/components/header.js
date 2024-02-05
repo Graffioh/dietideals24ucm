@@ -57,7 +57,7 @@ function LoggedPartialSection() {
     <div className="mr-7 flex justify-between mb-2">
       <NotificationsDropdown notifications={notifications} />
 
-      <Link href="/private-profile" className="mt-0.5">
+      <Link href="/private-profile?type=update" className="mt-0.5">
         <Avatar className="h-9 w-9">
           <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
           <AvatarFallback>gojo</AvatarFallback>
@@ -146,7 +146,7 @@ function NotLoggedSection() {
 function ModifyProfileSection() {
   return (
     <div className="mr-4 flex justify-between mb-2">
-      <Link href="/private-profile">
+      <Link href="/private-profile?type=update">
         <Button variant="ghost" className="">
           <Pencil1Icon width="23" height="23" />
         </Button>
@@ -169,7 +169,7 @@ function LoggedPartialSectionMobile() {
         <div>Notifications</div>
       </Link>
 
-      <Link href="/private-profile" className="text-white">
+      <Link href="/private-profile?type=update" className="text-white">
         <div>Profile</div>
       </Link>
     </div>
@@ -195,7 +195,7 @@ function LoggedFullSectionMobile() {
         </Link>
 
         <Link
-          href="/private-profile"
+          href="/private-profile?type=update"
           className="text-white flex justify-center"
         >
           <div>Profile</div>
