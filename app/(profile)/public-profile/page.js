@@ -9,18 +9,29 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AuctionPagination from "../../components/auctionPagination";
 import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
 import CardAuctionEmpty from "@/app/components/cardAuctionEmpty";
+import CardAuction from "@/app/components/cardAuction";
 
 export default async function ProfilePage({ searchParams }) {
   const currentUser = await getCurrentUserServer();
 
   async function getUserById(id) {
-    const userFromRes = await fetch(
+    const userRes = await fetch(
       "http://localhost:8080/user-from-id?id=" + id
     );
 
-    const user = await userFromRes.json();
+    const user = await userRes.json();
 
     return user;
+  }
+
+  async function getAuctionByUserId(userId) {
+    const auctionsRes = await fetch(
+      "http://localhost:8080/auctions-from-userid?userId=" + userId
+    );
+
+    const auctions = await auctionsRes.json();
+
+    return auctions;
   }
 
   // if searchParams is not present or if searchParams.id == currentUser.id,
@@ -30,6 +41,8 @@ export default async function ProfilePage({ searchParams }) {
       ? await getUserById(searchParams.id)
       : currentUser
     : currentUser;
+
+  const auctionsFromUser = await getAuctionByUserId(searchParams.id ? searchParams.id : currentUser.id)
 
   return (
     <>
@@ -47,7 +60,7 @@ export default async function ProfilePage({ searchParams }) {
             </h1>
             {publicProfileUser.id === currentUser.id ? (
               <Link href="/private-profile?type=update">
-                <Button variant="ghost" className="mt-1.5 ml-2">
+                <Button variant="ghost" className="mt-2 ml-2 px-2">
                   <Pencil1Icon width="23" height="23" />
                 </Button>
               </Link>
@@ -92,8 +105,17 @@ export default async function ProfilePage({ searchParams }) {
             </div>
 
             <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7 mt-2">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
+              {/* {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
                 <CardAuctionEmpty key={number} isHomepage={false} />
+              ))} */}
+              {auctionsFromUser.map((auction) => (
+                <Link href={"/auction-details?id=" + auction.id}>
+                  <CardAuction
+                    key={auction.id}
+                    isHomepage={false}
+                    auction={auction}
+                  />
+                </Link>
               ))}
             </div>
           </div>
