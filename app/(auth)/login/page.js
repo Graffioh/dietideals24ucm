@@ -12,7 +12,7 @@ export default function LoginPage() {
         <UserAuthForm className="w-80 min-w-screen" createOrLogin={"Log In"} />
         <div className="flex">
           <p className="text-xs text-slate-500 mt-2">
-            If you don't have an account yet,
+            If you don&apos;t have an account yet,
           </p>
           <Link href="/create-account" className="font-bold text-xs mt-2 ml-1">
             create a new one here.
