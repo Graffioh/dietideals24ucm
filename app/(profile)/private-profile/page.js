@@ -291,29 +291,6 @@ export default function ProfilePage({ searchParams }) {
               />
             </div>
 
-            {currentUser &&
-            isUserAdult(
-              currentUser.birthDate
-                ? currentUser.birthDate.split("T")[0].slice(0, 4)
-                : new Date()
-            ) ? (
-              <div className="flex">
-                <div className="flex-col grow">
-                  <Label>P.IVA</Label>
-                  <Input
-                    className="h-9 bg-white flex grow"
-                    type="text"
-                    id="piva"
-                    placeholder="P.IVA"
-                    defaultValue={currentUser ? currentUser.piva : ""}
-                  />
-                </div>
-                <InfoCircledIcon className="mt-8 ml-2" width={18} height={18} />
-              </div>
-            ) : (
-              <div></div>
-            )}
-
             {currentUser ? (
               <>
                 <div>

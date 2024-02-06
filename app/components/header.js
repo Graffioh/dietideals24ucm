@@ -284,7 +284,7 @@ export default function Header({ headerType, token }) {
           token !== "no-token" &&
           token !== "" && <LoggedFullSection />}
         {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
-        {headerType === "headerPrivateProfilew" && <PrivateProfileSection />}
+        {headerType === "headerPrivateProfile" && <PrivateProfileSection />}
         {(token === "no-token" || token === "") && <NotLoggedSection />}
         {headerType === "headerModifyProfile" && <ModifyProfileSection />}
         {headerType === "headerNotifications" && <NotificationsSection />}
