@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import LoadingSpinner from "./loadingSpinner";
 
 const calculateTimeLeft = (deadline) => {
   const difference = +new Date(deadline) - +new Date();

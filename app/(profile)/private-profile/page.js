@@ -14,6 +14,7 @@ import DatePicker from "@/app/components/datePicker";
 
 import CancelAlertDialog from "@/app/components/cancelAlertDialog";
 import { useUserContext } from "@/app/(auth)/userProvider";
+import LoadingSpinner from "@/app/components/loadingSpinner";
 
 export default function ProfilePage({ searchParams }) {
   const [profileStatus, setProfileStatus] = useState("");
@@ -138,7 +139,7 @@ export default function ProfilePage({ searchParams }) {
   if (currentUserIsLoading && searchParams.type === "update") {
     return (
       <div className="flex justify-center items-center h-screen">
-        Loading...
+        <LoadingSpinner />
       </div>
     );
   }
@@ -285,7 +286,9 @@ export default function ProfilePage({ searchParams }) {
               /> */}
               <DatePicker
                 handleParentDate={handleBirthDate}
-                defaultDate={currentUser ? new Date(currentUser.birthDate) : new Date()}
+                defaultDate={
+                  currentUser ? new Date(currentUser.birthDate) : new Date()
+                }
                 isBirthDate={true}
                 isReadOnly={currentUser ? true : false}
               />
