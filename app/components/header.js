@@ -57,7 +57,7 @@ function LoggedPartialSection() {
     <div className="mr-7 flex justify-between mb-2">
       <NotificationsDropdown notifications={notifications} />
 
-      <Link href="/private-profile?type=update" className="mt-0.5">
+      <Link href="/public-profile" className="mt-0.5">
         <Avatar className="h-9 w-9">
           <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
           <AvatarFallback>gojo</AvatarFallback>
