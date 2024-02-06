@@ -13,40 +13,34 @@ export const UserProvider = ({ children }) => {
 
   const token = useCookies().get("token");
 
-  let user = null;
-
-  if (token) {
-    const userInfoFetcher = (url) =>
-      fetch(url, { method: "POST", credentials: "include", body: token }).then(
-        (res) => res.text()
-      );
-
-    const {
-      data: subject,
-      error: subjectError,
-      isLoading: subjectIsLoading,
-    } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
-
-    const fetcher = (url) =>
-      fetch(url, { next: { revalidate: 3 } }).then((res) => res.json());
-
-    const {
-      data: currentUserData,
-      error: currentUserError,
-      isLoading: currentUserIsLoading,
-    } = useSWR(
-      subject != null && subject.includes("@")
-        ? "http://localhost:8080/user-from-email?email=" + subject
-        : "http://localhost:8080/user-from-username?username=" + subject,
-      fetcher
+  const userInfoFetcher = (url) =>
+    fetch(url, { method: "POST", credentials: "include", body: token }).then(
+      (res) => res.text()
     );
 
-    user = currentUserData;
-  }
+  const {
+    data: subject,
+    error: subjectError,
+    isLoading: subjectIsLoading,
+  } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
+
+  const fetcher = (url) =>
+    fetch(url, { next: { revalidate: 3 } }).then((res) => res.json());
+
+  const {
+    data: currentUserData,
+    error,
+    isLoading,
+  } = useSWR(
+    subject != null && subject.includes("@")
+      ? "http://localhost:8080/user-from-email?email=" + subject
+      : "http://localhost:8080/user-from-username?username=" + subject,
+    fetcher
+  );
 
   useEffect(() => {
-    if (user) {
-      setCurrentUser(user);
+    if (currentUserData) {
+      setCurrentUser(currentUserData);
       setcurrentUserIsLoading(false);
     }
     // if (error) {
@@ -54,7 +48,7 @@ export const UserProvider = ({ children }) => {
     //   setIsError(true);
     //   setIsLoading(false);
     // }
-  }, [user]);
+  }, [currentUserData]);
 
   return (
     <UserContext.Provider value={{ currentUser, currentUserIsLoading }}>

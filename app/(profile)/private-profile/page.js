@@ -136,7 +136,7 @@ export default function ProfilePage({ searchParams }) {
     setBirthDate(date);
   }
 
-  if (currentUserIsLoading && searchParams.type === "update") {
+  if (currentUserIsLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <LoadingSpinner />

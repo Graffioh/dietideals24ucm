@@ -93,7 +93,7 @@ export default function AuctionTimer({ deadline, auction }) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [deadline]);
+  }, [deadline, auction.id, auction.auctionType, auction.currentOffer, auction.minimumPrice]);
 
   if (!hasMounted) {
     return (

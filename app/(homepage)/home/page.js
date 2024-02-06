@@ -25,7 +25,7 @@ export default async function Home() {
   if (!auctions) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <LoadingSpinner />;
+        <LoadingSpinner />
       </div>
     );
   }
