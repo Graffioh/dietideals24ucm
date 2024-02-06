@@ -7,6 +7,8 @@ import com.ucm.serverdietideals24.Models.UserAccount;
 public interface UserAccountDAO {
     public List<UserAccount> getAll();
 
+    public UserAccount getViaId(Long id);
+
     public UserAccount getViaEmail(String email);
 
     public UserAccount getViaUsername(String username);

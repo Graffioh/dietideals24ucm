@@ -22,6 +22,12 @@ public class UserAccountImpl implements UserAccountDAO {
     }
 
     @Override
+    public UserAccount getViaId(Long id) {
+        return jdbcTemplate.query("SELECT * FROM useraccount WHERE id = '" + id + "'",
+                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+    }
+
+    @Override
     public UserAccount getViaEmail(String email) {
         return jdbcTemplate.query("SELECT * FROM useraccount WHERE email = '" + email + "'",
                 new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();

@@ -1,5 +1,8 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Pencil1Icon } from "@radix-ui/react-icons";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -7,9 +10,27 @@ import AuctionPagination from "../../components/auctionPagination";
 import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
 import CardAuctionEmpty from "@/app/components/cardAuctionEmpty";
 
-export default async function ProfilePage() {
+export default async function ProfilePage({ searchParams }) {
   const currentUser = await getCurrentUserServer();
-  
+
+  async function getUserById(id) {
+    const userFromRes = await fetch(
+      "http://localhost:8080/user-from-id?id=" + id
+    );
+
+    const user = await userFromRes.json();
+
+    return user;
+  }
+
+  // if searchParams is not present or if searchParams.id == currentUser.id,
+  //   then display currentUser, otherwise display the queried user by id
+  const publicProfileUser = searchParams.id
+    ? currentUser.id !== searchParams.id
+      ? await getUserById(searchParams.id)
+      : currentUser
+    : currentUser;
+
   return (
     <>
       <div className="flex mt-16 ml-[15em] mr-[15em]">
@@ -20,8 +41,28 @@ export default async function ProfilePage() {
           </Avatar>
         </div>
         <div className="flex-col w-full">
-          <h1 className="font-bold text-5xl mb-4">{currentUser ? currentUser.username : "none"}</h1>
-          <Textarea className="" placeholder="BIO HERE" defaultValue={currentUser ? currentUser.biography : "none"} />
+          <div className="flex">
+            <h1 className="font-bold text-5xl mb-4">
+              {publicProfileUser ? publicProfileUser.username : "none"}
+            </h1>
+            {publicProfileUser.id === currentUser.id ? (
+              <Link href="/private-profile?type=update">
+                <Button variant="ghost" className="mt-1.5 ml-2">
+                  <Pencil1Icon width="23" height="23" />
+                </Button>
+              </Link>
+            ) : (
+              <div></div>
+            )}
+          </div>
+          <Textarea
+            className=""
+            placeholder="BIO HERE"
+            defaultValue={
+              publicProfileUser ? publicProfileUser.biography : "none"
+            }
+            readOnly={true}
+          />
         </div>
       </div>
 
@@ -31,23 +72,27 @@ export default async function ProfilePage() {
             <RadioGroup defaultValue="option-one">
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="option-one" id="option-one" />
-                <Label htmlFor="option-one">Option One</Label>
+                <Label htmlFor="option-one">Selling</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="option-two" id="option-two" />
-                <Label htmlFor="option-two">Option Two</Label>
+                <Label htmlFor="option-two">Buying</Label>
               </div>
             </RadioGroup>
           </div>
 
           <div className="mr-10 ml-10 mb-10">
-            <input
+            {/* <input
               className="flex ml-auto mt-4 border-2 border-gray-300 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500"
               type="text"
               placeholder="Search..."
-            ></input>
-            <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7">
-              {[1,2,3,4,5,6,7,8].map((number) => (
+            ></input> */}
+            <div className="flex ml-auto mt-4 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500">
+              {" "}
+            </div>
+
+            <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7 mt-2">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
                 <CardAuctionEmpty key={number} isHomepage={false} />
               ))}
             </div>
