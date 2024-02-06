@@ -27,7 +27,7 @@ export default function FixedTimeAuctionDetailsInputs({ currentAuction }) {
           type="text"
           id="expire-time"
           placeholder="Placeholder"
-          defaultValue={currentAuction.expireTime}
+          defaultValue={currentAuction.isOver ? "Auction ended" : currentAuction.expireTime}
           readOnly
         />
       </div>

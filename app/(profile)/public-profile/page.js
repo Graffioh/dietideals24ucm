@@ -1,5 +1,8 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Pencil1Icon } from "@radix-ui/react-icons";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -20,7 +23,7 @@ export default async function ProfilePage({ searchParams }) {
     return user;
   }
 
-  // if searchParams is not presen or if searchParams.id == currentUser.id, 
+  // if searchParams is not present or if searchParams.id == currentUser.id,
   //   then display currentUser, otherwise display the queried user by id
   const publicProfileUser = searchParams.id
     ? currentUser.id !== searchParams.id
@@ -38,9 +41,20 @@ export default async function ProfilePage({ searchParams }) {
           </Avatar>
         </div>
         <div className="flex-col w-full">
-          <h1 className="font-bold text-5xl mb-4">
-            {publicProfileUser ? publicProfileUser.username : "none"}
-          </h1>
+          <div className="flex">
+            <h1 className="font-bold text-5xl mb-4">
+              {publicProfileUser ? publicProfileUser.username : "none"}
+            </h1>
+            {publicProfileUser.id === currentUser.id ? (
+              <Link href="/private-profile?type=update">
+                <Button variant="ghost" className="mt-1.5 ml-2">
+                  <Pencil1Icon width="23" height="23" />
+                </Button>
+              </Link>
+            ) : (
+              <div></div>
+            )}
+          </div>
           <Textarea
             className=""
             placeholder="BIO HERE"
@@ -73,7 +87,10 @@ export default async function ProfilePage({ searchParams }) {
               type="text"
               placeholder="Search..."
             ></input> */}
-            <div className="flex ml-auto mt-4 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500"> </div>
+            <div className="flex ml-auto mt-4 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500">
+              {" "}
+            </div>
+
             <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7 mt-2">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
                 <CardAuctionEmpty key={number} isHomepage={false} />

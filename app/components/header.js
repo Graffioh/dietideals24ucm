@@ -157,6 +157,14 @@ function ModifyProfileSection() {
   );
 }
 
+function NotificationsSection() {
+  return (
+    <div className="mr-4 flex justify-between mb-2">
+      <NotificationsDropdown notifications={notifications} />
+    </div>
+  );
+}
+
 // *******************************
 // Various header sections MOBILE
 // *******************************
@@ -276,9 +284,10 @@ export default function Header({ headerType, token }) {
           token !== "no-token" &&
           token !== "" && <LoggedFullSection />}
         {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
-        {headerType === "headerNotifications" && <PrivateProfileSection />}
+        {headerType === "headerPrivateProfilew" && <PrivateProfileSection />}
         {(token === "no-token" || token === "") && <NotLoggedSection />}
         {headerType === "headerModifyProfile" && <ModifyProfileSection />}
+        {headerType === "headerNotifications" && <NotificationsSection />}
         {headerType === "headerEmpty"}
       </div>
 
@@ -319,7 +328,7 @@ export default function Header({ headerType, token }) {
               {headerType === "headerLoggedPartial" && (
                 <LoggedPartialSectionMobile />
               )}
-              {headerType === "headerNotifications" && (
+              {headerType === "headerPrivateProfile" && (
                 <PrivateProfileSectionMobile />
               )}
               {headerType === "headerNotLogged" && <NotLoggedSectionMobile />}
