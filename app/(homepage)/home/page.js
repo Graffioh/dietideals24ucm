@@ -23,9 +23,11 @@ export default async function Home() {
   const auctions = await getAllAuctions();
 
   if (!auctions) {
-    <div className="flex justify-center items-center h-screen">
-      <LoadingSpinner />;
-    </div>
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner />;
+      </div>
+    );
   }
 
   return (
