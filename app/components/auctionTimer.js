@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import LoadingSpinner from "./loadingSpinner";
 
 const calculateTimeLeft = (deadline) => {
   const difference = +new Date(deadline) - +new Date();
@@ -32,7 +33,6 @@ export default function AuctionTimer({ deadline, auction }) {
   const [auctionEnded, setAuctionEnded] = useState(false);
 
   useEffect(() => {
-    setHasMounted(true);
 
     const timer = setInterval(() => {
       const newTimeLeft = calculateTimeLeft(deadline);
@@ -88,13 +88,19 @@ export default function AuctionTimer({ deadline, auction }) {
         setAuctionEnded(true);
         clearInterval(timer);
       }
+
+    setHasMounted(true);
     }, 1000);
 
     return () => clearInterval(timer);
   }, [deadline]);
 
   if (!hasMounted) {
-    return null;
+    return (
+        <div className="flex justify-center mt-1">
+          <LoadingSpinner />
+        </div>
+    );
   }
 
   // mamma mia che immondizia che ho fatto qua

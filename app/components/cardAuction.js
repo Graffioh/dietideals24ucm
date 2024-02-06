@@ -52,17 +52,26 @@ export default function CardAuction({ isHomepage, auction }) {
                 <div className="text-2xl ml-6">€{auction.currentOffer}</div>
                 {auction.auctionType === "fixedtime" && (
                   <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                    <AuctionTimer deadline={fixedTimeDeadlineTimer} auction={auction} />
+                    <AuctionTimer
+                      deadline={fixedTimeDeadlineTimer}
+                      auction={auction}
+                    />
                   </div>
                 )}
                 {auction.auctionType === "english" && (
                   <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                    <AuctionTimer deadline={englishDeadlineTimer} auction={auction} />
+                    <AuctionTimer
+                      deadline={englishDeadlineTimer}
+                      auction={auction}
+                    />
                   </div>
                 )}
                 {auction.auctionType === "descending" && (
                   <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                     <AuctionTimer deadline={descendingDeadlineTimer} auction={auction}  />
+                    <AuctionTimer
+                      deadline={descendingDeadlineTimer}
+                      auction={auction}
+                    />
                   </div>
                 )}
               </div>

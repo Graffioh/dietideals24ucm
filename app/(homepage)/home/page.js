@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 
 import AuctionPagination from "../../components/auctionPagination";
 import CardAuction from "../../components/cardAuction";
+import LoadingSpinner from "@/app/components/loadingSpinner";
 
 export default async function Home() {
   async function getAllAuctions() {
@@ -24,7 +25,7 @@ export default async function Home() {
   if (!auctions) {
     return (
       <div className="flex justify-center items-center h-screen">
-        Loading...
+        <LoadingSpinner />;
       </div>
     );
   }
