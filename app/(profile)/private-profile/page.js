@@ -87,7 +87,6 @@ export default function ProfilePage({ searchParams }) {
       password: inputs.password.value,
       birthDate: currentUser ? currentUser.birthDate : birthDate,
       email: inputs.email.value,
-      piva: inputs.piva ? inputs.piva.value : "",
       telephoneNumber: inputs.telephoneNumber
         ? inputs.telephoneNumber.value
         : "",

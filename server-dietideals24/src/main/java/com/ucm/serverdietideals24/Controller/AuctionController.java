@@ -38,6 +38,18 @@ public class AuctionController {
         }
     }
 
+    @GetMapping("/auctions-from-userid")
+    public ResponseEntity<List<Auction>> fetchAllAuctionsBasedOnUserId(@RequestParam Long userId) {
+        try {
+            List<Auction> auctions = auctionDAO.getAllViaUserId(userId);
+
+            return new ResponseEntity<List<Auction>>(auctions, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<List<Auction>>(new ArrayList<Auction>(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/auction-from-id")
     public ResponseEntity<Auction> fetchAuctionBasedOnId(@RequestParam Long id) {
         try {
