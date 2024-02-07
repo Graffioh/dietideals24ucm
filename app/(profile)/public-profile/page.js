@@ -34,9 +34,11 @@ export default async function ProfilePage({ searchParams }) {
   // if searchParams is not present or if searchParams.id == currentUser.id,
   //   then display currentUser, otherwise display the queried user by id
   const publicProfileUser = searchParams.id
-    ? currentUser.id !== searchParams.id
-      ? await getUserById(searchParams.id)
-      : currentUser
+    ? currentUser
+      ? currentUser.id !== searchParams.id
+        ? await getUserById(searchParams.id)
+        : currentUser
+      : {}
     : currentUser;
 
   const auctionsFromUser = await getAuctionByUserId(
@@ -78,46 +80,46 @@ export default async function ProfilePage({ searchParams }) {
         </div>
       </div>
 
-      <div className="flex bg-stone-200 mt-10 mb-20 mx-32 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
-        <div className="flex flex-col flex-grow">
-          <div className="flex absolute ml-8 mt-7">
-            <RadioGroup defaultValue="option-one">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option-one" id="option-one" />
-                <Label htmlFor="option-one">Selling</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option-two" id="option-two" />
-                <Label htmlFor="option-two">Buying</Label>
-              </div>
-            </RadioGroup>
-          </div>
+      <div className="flex flex-col bg-stone-200 mt-10 mb-20 mx-32 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
+        <div className="mt-6 ml-11">
+          <RadioGroup defaultValue="option-one">
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="option-one" id="option-one" />
+              <Label htmlFor="option-one">Selling</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="option-two" id="option-two" />
+              <Label htmlFor="option-two">Buying</Label>
+            </div>
+          </RadioGroup>
+        </div>
 
-          <div className="mr-10 ml-10 mb-10">
-            {/* <input
+        {/* <input
               className="flex ml-auto mt-4 border-2 border-gray-300 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500"
               type="text"
               placeholder="Search..."
             ></input> */}
-            <div className="flex ml-auto mt-4 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500">
-              {" "}
-            </div>
+        <div className="flex ml-auto mt-4 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500">
+          {" "}
+        </div>
 
-            <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7 mt-2">
-              {auctionsFromUser.map((auction) => (
-                <Link href={"/auction-details?id=" + auction.id} key={auction.id}>
-                  <CardAuction
-                    key={auction.id}
-                    isHomepage={false}
-                    auction={auction}
-                  />
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="mb-5 flex justify-center items-center">
-            <AuctionPagination />
-          </div>
+        <div className="grid grid-rows-2 grid-cols-4 grid-flow-col gap-10 mx-12">
+          {auctionsFromUser.map((auction) => (
+            <Link
+              href={"/auction-details?id=" + auction.id}
+              key={auction.id}
+              className="w-64"
+            >
+              <CardAuction
+                key={auction.id}
+                isHomepage={false}
+                auction={auction}
+              />
+            </Link>
+          ))}
+        </div>
+        <div className="my-5 flex justify-center items-center">
+          <AuctionPagination />
         </div>
       </div>
     </>
