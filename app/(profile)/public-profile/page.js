@@ -105,7 +105,7 @@ export default async function ProfilePage({ searchParams }) {
 
             <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7 mt-2">
               {auctionsFromUser.map((auction) => (
-                <Link href={"/auction-details?id=" + auction.id}>
+                <Link href={"/auction-details?id=" + auction.id} key={auction.id}>
                   <CardAuction
                     key={auction.id}
                     isHomepage={false}
