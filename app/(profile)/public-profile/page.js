@@ -8,16 +8,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import AuctionPagination from "../../components/auctionPagination";
 import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
-import CardAuctionEmpty from "@/app/components/cardAuctionEmpty";
 import CardAuction from "@/app/components/cardAuction";
 
 export default async function ProfilePage({ searchParams }) {
   const currentUser = await getCurrentUserServer();
 
   async function getUserById(id) {
-    const userRes = await fetch(
-      "http://localhost:8080/user-from-id?id=" + id
-    );
+    const userRes = await fetch("http://localhost:8080/user-from-id?id=" + id);
 
     const user = await userRes.json();
 
@@ -42,7 +39,9 @@ export default async function ProfilePage({ searchParams }) {
       : currentUser
     : currentUser;
 
-  const auctionsFromUser = await getAuctionByUserId(searchParams.id ? searchParams.id : currentUser.id)
+  const auctionsFromUser = await getAuctionByUserId(
+    searchParams.id ? searchParams.id : currentUser.id
+  );
 
   return (
     <>
@@ -79,9 +78,9 @@ export default async function ProfilePage({ searchParams }) {
         </div>
       </div>
 
-      <div className="flex justify-center">
-        <div className="bg-stone-200 flex flex-col mt-10 mb-20 relative rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
-          <div className="flex flex-col absolute ml-8 mt-7">
+      <div className="flex bg-stone-200 mt-10 mb-20 mx-32 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
+        <div className="flex flex-col flex-grow">
+          <div className="flex absolute ml-8 mt-7">
             <RadioGroup defaultValue="option-one">
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="option-one" id="option-one" />
@@ -105,9 +104,6 @@ export default async function ProfilePage({ searchParams }) {
             </div>
 
             <div className="grid grid-rows-2 md:grid-flow-col gap-5 px-7 pt-7 mt-2">
-              {/* {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
-                <CardAuctionEmpty key={number} isHomepage={false} />
-              ))} */}
               {auctionsFromUser.map((auction) => (
                 <Link href={"/auction-details?id=" + auction.id}>
                   <CardAuction

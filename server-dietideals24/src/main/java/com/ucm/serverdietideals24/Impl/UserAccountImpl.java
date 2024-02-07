@@ -52,7 +52,7 @@ public class UserAccountImpl implements UserAccountDAO {
         jdbcTemplate.update("UPDATE useraccount SET firstName = '" + user.getFirstName() + "', lastName = '"
                 + user.getLastName() + "', username = '" + user.getUsername() + "', password = '"
                 + user.getPassword() + "', birthDate = '" + user.getBirthDate() + "', email = '" + user.getEmail()
-                + "', piva = '" + user.getPiva() + "', telephoneNumber = '" + user.getTelephoneNumber()
+                + "', telephoneNumber = '" + user.getTelephoneNumber()
                 + "', biography = '" + user.getBiography() + "', website = '" + user.getWebsite() + "' WHERE id = '"
                 + id + "'");
     }
