@@ -27,7 +27,7 @@ export default function EnglishAuctionDetailsInputs({ currentAuction }) {
           type="text"
           id="expire-time"
           placeholder="Placeholder"
-          defaultValue={currentAuction.offerTimer}
+          defaultValue={currentAuction.currentOfferTimer}
           readOnly
         />
       </div>

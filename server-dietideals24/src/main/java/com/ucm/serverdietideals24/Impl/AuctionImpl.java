@@ -36,18 +36,30 @@ public class AuctionImpl implements AuctionDAO {
     }
 
     @Override
+    public List<Auction> getAllDescendingAuctions() {
+        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'descending'",
+                new BeanPropertyRowMapper<Auction>(Auction.class));
+    }
+
+    @Override
+    public List<Auction> getAllEnglishAuctions() {
+        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'english'",
+                new BeanPropertyRowMapper<Auction>(Auction.class));
+    }
+
+    @Override
     public void create(Auction auction) {
         // Different query based on auction type
         if (auction.getAuctionType().toString() == "english") {
             jdbcTemplate.execute(
-                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, baseStartAuction, raiseThreshold, idUserAccount, offerTimer, auctionType) VALUES ('"
+                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, baseStartAuction, raiseThreshold, idUserAccount, baseOfferTimer, auctionType, currentOfferTimer) VALUES ('"
                             + auction.getId() + "', '" + auction.getAuctionDescription()
                             + "', '" + auction.getAuctionName() + "', '" + auction.getAuctionCategory() + "', '"
                             + auction.getAuctionQuality() + "', '"
                             + auction.getCurrentOffer() + "', '" + auction.getAuctionImages() + "', '"
                             + auction.getBaseStartAuction() + "', '" + auction.getRaiseThreshold() + "', '"
                             + auction.getIdUserAccount() + "', '"
-                            + auction.getOfferTimer() + "', '" + auction.getAuctionType() + "')");
+                            + auction.getBaseOfferTimer() + "', '" + auction.getAuctionType() + "', '" + auction.getBaseOfferTimer() + "')");
         } else if (auction.getAuctionType().toString() == "fixedtime") {
             jdbcTemplate.execute(
                     "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, expireDate, minimumPrice, expireTime, idUserAccount, auctionType) VALUES ('"
@@ -85,13 +97,12 @@ public class AuctionImpl implements AuctionDAO {
     }
 
     @Override
-    public List<Auction> getAllDescendingAuctions() {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'descending'",
-                new BeanPropertyRowMapper<Auction>(Auction.class));
+    public void updateCurrentDecrementTimer(Long id, Time newTimerValue) {
+        jdbcTemplate.update("UPDATE auction SET currentDecrementTimer = '" + newTimerValue + "' WHERE id = " + id);
     }
 
     @Override
-    public void updateCurrentDecrementTimer(Long id, Time newTimerValue) {
-        jdbcTemplate.update("UPDATE auction SET currentDecrementTimer = '" + newTimerValue + "' WHERE id = " + id);
+    public void updateCurrentOfferTimer(Long id, Time newTimerValue) {
+        jdbcTemplate.update("UPDATE auction SET currentOfferTimer = '" + newTimerValue + "' WHERE id = " + id);
     }
 }

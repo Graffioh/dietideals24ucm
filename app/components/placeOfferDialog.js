@@ -14,8 +14,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export default function PlaceOfferDialog({ auctionId }) {
+export default function PlaceOfferDialog({ auction }) {
   // query to create offer here
+  // ...
+  
+  // if english auction, whenever an offer is placed correctly, reset the timer
+  async function handleEnglishAuctionOfferTimer() {
+    await fetch(
+      "http://localhost:8080/auctions/" +
+        auction.id +
+        "/current-offertimer?newTimerValue=" +
+        auction.baseOfferTimer,
+      { method: "PUT", headers: { "Content-Type": "application/json" } }
+    );
+  }
+  
+  // if descending auction, whenever an offer is placed correctly, end the auction
+  // ...
 
   return (
     <AlertDialog>
@@ -36,7 +51,7 @@ export default function PlaceOfferDialog({ auctionId }) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Place</AlertDialogAction>
+          <AlertDialogAction onClick={auction.auctionType === "english" ? handleEnglishAuctionOfferTimer : null}>Place</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
