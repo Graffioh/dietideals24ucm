@@ -33,8 +33,8 @@ export const UserProvider = ({ children }) => {
     isLoading,
   } = useSWR(
     subject != null && subject.includes("@")
-      ? "http://localhost:8080/user-from-email?email=" + subject
-      : "http://localhost:8080/user-from-username?username=" + subject,
+      ? "http://localhost:8080/users/email?email=" + subject
+      : "http://localhost:8080/users/username?username=" + subject,
     fetcher
   );
 
