@@ -45,7 +45,7 @@ public class Auction {
     // English auction
     private Float baseStartAuction, raiseThreshold;
 
-    private Time offerTimer;
+    private Time baseOfferTimer, currentOfferTimer;
 
     // Fixed time auction
     private Date expireDate;

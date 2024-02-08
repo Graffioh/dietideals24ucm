@@ -22,7 +22,7 @@ export default function CardAuction({ isHomepage, auction }) {
   const englishDeadline = new Date();
   const englishDeadlineTimer = generateDeadline(
     englishDeadline,
-    auction.offerTimer
+    auction.baseOfferTimer
   );
 
   const descendingDeadline = new Date();

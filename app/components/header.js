@@ -83,7 +83,7 @@ function LoggedFullSection() {
             buttonVariants({
               variant: "default",
               size: "default",
-              className: "h-9 mt-0.5",
+              className: "h-9",
             })
           )}
         >

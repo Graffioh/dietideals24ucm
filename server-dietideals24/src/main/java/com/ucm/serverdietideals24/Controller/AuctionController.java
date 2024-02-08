@@ -111,14 +111,6 @@ public class AuctionController {
         }
     }
 
-    private Time decrementTimerBy1Second(Auction auction) {
-        LocalTime cdtLocalTime = auction.getCurrentDecrementTimer().toLocalTime();
-        LocalTime cdtDecrementedLocalTime = cdtLocalTime.minusSeconds(1);
-        Time newDecrementTimerValue = Time.valueOf(cdtDecrementedLocalTime);
-
-        return newDecrementTimerValue;
-    }
-
     private void setCurrentDecrementTimer(Long id, Time newTimerValue) {
         try {
             auctionDAO.updateCurrentDecrementTimer(id, newTimerValue);
@@ -141,5 +133,37 @@ public class AuctionController {
                 auctionDAO.updateIsOver(auction.getId());
             }
         }
+    }
+
+    @Scheduled(fixedRate = 1000)
+    public void englishAuctionTimerReduction() {
+        List<Auction> auctions = auctionDAO.getAllEnglishAuctions();
+
+        for (Auction auction : auctions) {
+            if (auction.getCurrentOfferTimer().equals(Time.valueOf("00:00:00"))) {
+                setCurrentOfferTimer(auction.getId(), auction.getBaseOfferTimer());
+            } else {
+                setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
+            }
+        }
+    }
+
+    @PutMapping("/{id}/current-offertimer")
+    public ResponseEntity<Void> setCurrentOfferTimer(@PathVariable Long id, @RequestParam Time newTimerValue) {
+        try {
+            auctionDAO.updateCurrentOfferTimer(id, newTimerValue);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    private Time decrementTimerBy1Second(Auction auction) {
+        LocalTime cdtLocalTime = auction.getAuctionType().name() == "descending" ? auction.getCurrentDecrementTimer().toLocalTime() : auction.getCurrentOfferTimer().toLocalTime();
+        LocalTime cdtDecrementedLocalTime = cdtLocalTime.minusSeconds(1);
+        Time newDecrementTimerValue = Time.valueOf(cdtDecrementedLocalTime);
+
+        return newDecrementTimerValue;
     }
 }

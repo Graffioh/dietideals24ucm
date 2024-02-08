@@ -61,7 +61,7 @@ export default async function ProfilePage({ searchParams }) {
             </h1>
             {publicProfileUser.id === currentUser.id ? (
               <Link href="/private-profile?type=update">
-                <Button variant="ghost" className="mt-2 px-2 ml-2 border-2 border-black">
+                <Button variant="ghost" className="mt-2 px-2 ml-2">
                   <Pencil1Icon width="23" height="23" />
                 </Button>
               </Link>

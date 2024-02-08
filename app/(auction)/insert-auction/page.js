@@ -42,7 +42,7 @@ export default function InsertAuctionPage() {
   // ***************************************
   const [baseStartAuction, setBaseStartAuction] = useState("");
   const [raiseThreshold, setRaiseThreshold] = useState("");
-  const [offerTimer, setOfferTimer] = useState("");
+  const [baseOfferTimer, setBaseOfferTimer] = useState("");
 
   function handleBaseStartAuction(baseStartAuction) {
     setBaseStartAuction(baseStartAuction);
@@ -52,8 +52,8 @@ export default function InsertAuctionPage() {
     setRaiseThreshold(raiseThreshold);
   }
 
-  function handleOfferTimer(offerTimer) {
-    setOfferTimer(offerTimer);
+  function handleBaseOfferTimer(baseOfferTimer) {
+    setBaseOfferTimer(baseOfferTimer);
   }
   // ***************************************
 
@@ -128,7 +128,7 @@ export default function InsertAuctionPage() {
       offers: [],
       baseStartAuction: baseStartAuction,
       raiseThreshold: raiseThreshold,
-      offerTimer: offerTimer ? moment(offerTimer, "HH:mm:ss").format("HH:mm:ss") : null,
+      baseOfferTimer: baseOfferTimer ? moment(baseOfferTimer, "HH:mm:ss").format("HH:mm:ss") : null,
       expireDate: expireDate,
       minimumPrice:
         auctionType == "fixedtime"
@@ -140,7 +140,7 @@ export default function InsertAuctionPage() {
       baseDecrementTimer: baseDecrementTimer ? moment(baseDecrementTimer, "HH:mm:ss").format("HH:mm:ss") : null,
     };
 
-    const insertAuctionResponse = await fetch(
+    await fetch(
       "http://localhost:8080/auctions",
       {
         method: "POST",
@@ -235,7 +235,7 @@ export default function InsertAuctionPage() {
               <EnglishInsertAuctionInputs
                 onBaseStartAuctionChange={handleBaseStartAuction}
                 onRaiseThresholdChange={handleRaiseThreshold}
-                onOfferTimerChange={handleOfferTimer}
+                onBaseOfferTimerChange={handleBaseOfferTimer}
               />
             )}
           </div>

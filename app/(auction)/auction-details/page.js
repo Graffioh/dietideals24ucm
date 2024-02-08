@@ -103,7 +103,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
                   Place offer
                 </Link>
               ) : (
-                <PlaceOfferDialog />
+                <PlaceOfferDialog auction={currentAuction}/>
               )}
             </div>
           </div>

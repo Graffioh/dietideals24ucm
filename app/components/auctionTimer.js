@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import LoadingSpinner from "./loadingSpinner";
 
-const calculateTimeLeft = (deadline) => {
+const calculateTimeLeftBasedOnDate = (deadline) => {
   const difference = +new Date(deadline) - +new Date();
   let timeLeft = {};
 
@@ -28,78 +28,100 @@ const formatTimeLeft = (timeLeft) => {
 };
 
 export default function AuctionTimer({ deadline, auction }) {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(deadline));
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeftBasedOnDate(deadline));
   const [hasMounted, setHasMounted] = useState(false);
   const [auctionEnded, setAuctionEnded] = useState(false);
 
   useEffect(() => {
-
     const timer = setInterval(() => {
-      const newTimeLeft = calculateTimeLeft(deadline);
 
-      if (auction.auctionType !== "descending") {
-        setTimeLeft(newTimeLeft);
-      } else {
-        fetch("http://localhost:8080/auctions/" + auction.id)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-          })
-          .then((auction) => {
-            setTimeLeft(auction.currentDecrementTimer);
-          })
-          .catch((error) => {
-            console.error("Fetch error: " + error.message);
-          });
+      // SET TIMER
+      switch (auction.auctionType) {
+        case "fixedtime":
+          setTimeLeft(calculateTimeLeftBasedOnDate(deadline));
+          break;
+
+        case "english":
+          fetch("http://localhost:8080/auctions/" + auction.id)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then((auction) => {
+              setTimeLeft(auction.currentOfferTimer);
+            })
+            .catch((error) => {
+              console.error("Fetch error: " + error.message);
+            });
+          break;
+
+        case "descending":
+          fetch("http://localhost:8080/auctions/" + auction.id)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then((auction) => {
+              setTimeLeft(auction.currentDecrementTimer);
+            })
+            .catch((error) => {
+              console.error("Fetch error: " + error.message);
+            });
+          break;
       }
 
-      if (
-        Object.keys(newTimeLeft).length === 0 &&
-        !auctionEnded &&
-        auction.auctionType !== "descending"
-      ) {
-        setAuctionEnded(true);
-        clearInterval(timer);
+      // SET END
+      if (Object.keys(timeLeft).length === 0 && !auctionEnded) {
+        switch (auction.auctionType) {
+          case "fixedtime":
+            setAuctionEnded(true);
+            clearInterval(timer);
 
-        // set isOver attribute in DB to true
-        fetch("http://localhost:8080/auctions/" + auction.id + "/is-over", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
+            // set isOver attribute in DB to true
+            fetch("http://localhost:8080/auctions/" + auction.id + "/is-over", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+              })
+              .then(() => {
+                console.log("Auction has ended");
+              })
+              .catch((error) => {
+                console.error("Failed to fetch: ", error);
+              });
+            break;
+
+          case "english":
+            break;
+
+          case "descending":
+            if (auction.currentOffer === auction.minimumPrice) {
+              setAuctionEnded(true);
+              clearInterval(timer);
             }
-          })
-          .then(() => {
-            console.log("Auction has ended");
-          })
-          .catch((error) => {
-            console.error("Failed to fetch: ", error);
-          });
-      } else if (
-        Object.keys(timeLeft).length === 0 &&
-        !auctionEnded &&
-        auction.auctionType === "descending" &&
-        auction.currentOffer === auction.minimumPrice
-      ) {
-        setAuctionEnded(true);
-        clearInterval(timer);
+            break;
+        }
       }
 
-    setHasMounted(true);
+      setHasMounted(true);
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [deadline, auction.id, auction.auctionType, auction.currentOffer, auction.minimumPrice]);
+  }, [deadline, auction]);
 
   if (!hasMounted) {
     return (
-        <div className="flex justify-center mt-1">
-          <LoadingSpinner />
-        </div>
+      <div className="flex justify-center mt-1">
+        <LoadingSpinner />
+      </div>
     );
   }
 
@@ -108,7 +130,7 @@ export default function AuctionTimer({ deadline, auction }) {
     <div>
       {Object.keys(timeLeft).length > 0 ? (
         auction.currentOffer !== auction.minimumPrice ? (
-          auction.auctionType === "descending" ? (
+          auction.auctionType !== "fixedtime" ? (
             `${timeLeft}`
           ) : (
             `${formatTimeLeft(timeLeft)}`
