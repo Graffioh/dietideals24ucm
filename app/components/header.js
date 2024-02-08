@@ -54,7 +54,7 @@ function Logo() {
 // Only notifications and profile icon
 function LoggedPartialSection() {
   return (
-    <div className="mr-7 flex justify-between mb-2">
+    <div className="mr-3 flex justify-between mb-2">
       <NotificationsDropdown notifications={notifications} />
 
       <Link href="/public-profile" className="mt-0.5">
@@ -76,14 +76,14 @@ function LoggedFullSection() {
         <Searchbar />
       </div>
 
-      <div className="mt-0.5 mr-4 flex justify-between">
+      <div className=" mr-3 flex justify-between">
         <Link
           href="/insert-auction"
           className={cn(
             buttonVariants({
               variant: "default",
               size: "default",
-              className: "h-9",
+              className: "h-9 mt-0.5",
             })
           )}
         >
