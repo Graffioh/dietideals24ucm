@@ -37,7 +37,7 @@ export default async function Home() {
           {auctions ? (
             auctions.map((auction) => (
               <>
-                <Link href={"/auction-details?id=" + auction.id}>
+                <Link href={"/auction-details?id=" + auction.id + "&auctionuserid=" + auction.idUserAccount}>
                   <CardAuction
                     key={auction.id}
                     isHomepage={true}

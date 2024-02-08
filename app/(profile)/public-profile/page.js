@@ -106,7 +106,7 @@ export default async function ProfilePage({ searchParams }) {
         <div className="grid grid-rows-2 grid-cols-4 grid-flow-col gap-10 mx-12">
           {auctionsFromUser.map((auction) => (
             <Link
-              href={"/auction-details?id=" + auction.id}
+              href={"/auction-details?id=" + auction.id + "&auctionuserid=" + auction.idUserAccount}
               key={auction.id}
               className="w-64"
             >

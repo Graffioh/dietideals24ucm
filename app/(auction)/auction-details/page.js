@@ -11,6 +11,7 @@ import EnglishAuctionDetailsInputs from "@/app/components/auctions/englishAuctio
 import FixedTimeAuctionDetailsInputs from "@/app/components/auctions/fixedTimeAuctionDetailsInputs";
 import PlaceOfferDialog from "@/app/components/placeOfferDialog";
 import { cn } from "@/lib/utils";
+import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
 
 export default async function AuctionDetailsPage({ searchParams }) {
   function getTokenFromCookie() {
@@ -44,16 +45,21 @@ export default async function AuctionDetailsPage({ searchParams }) {
 
   const token = getTokenFromCookie();
 
+  const currentUser = await getCurrentUserServer();
+
+  console.log("USER ID: " + currentUser.id)
+  console.log("SEARCHPARAMS ID: " + searchParams.auctionuserid)
+
   return (
     <>
       <div className="absolute ml-[10em] mt-14">
         <div className="flex flex-col">
           <Label className="flex text-2xl">{currentAuction.auctionName}</Label>
           <div className="">
-              <img
-                className="object-cover w-96 h-128 mt-5 rounded-lg flex items-center"
-                src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
-              />
+            <img
+              className="object-cover w-96 h-128 mt-5 rounded-lg flex items-center"
+              src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+            />
           </div>
         </div>
       </div>
@@ -71,15 +77,15 @@ export default async function AuctionDetailsPage({ searchParams }) {
 
           <div className="flex justify-center">
             <div className="font-bold text-5xl rounded-full mt-5 mb-[10em]">
-            <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>
-              <Avatar className="h-32 w-32">
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@avatar"
-                />
-                <AvatarFallback>gojo</AvatarFallback>
-              </Avatar>
-            </Link>
+              <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>
+                <Avatar className="h-32 w-32">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@avatar"
+                  />
+                  <AvatarFallback>gojo</AvatarFallback>
+                </Avatar>
+              </Link>
             </div>
             <div className="absolute mt-[20em]">
               <Label className="flex mb-2">Description</Label>
@@ -93,17 +99,22 @@ export default async function AuctionDetailsPage({ searchParams }) {
 
             <div className="absolute mt-[32em]">
               {token === "no-token" ? (
-                <Link className={cn(
-                  buttonVariants({
-                    variant: "default",
-                    size: "default",
-                    className: "p-7 text-lg",
-                  })
-                )} href="/login">
+                <Link
+                  className={cn(
+                    buttonVariants({
+                      variant: "default",
+                      size: "default",
+                      className: "p-7 text-lg",
+                    })
+                  )}
+                  href="/login"
+                >
                   Place offer
                 </Link>
+              ) : searchParams.auctionuserid != currentUser.id ? (
+                <PlaceOfferDialog auction={currentAuction} />
               ) : (
-                <PlaceOfferDialog auction={currentAuction}/>
+                <div></div>
               )}
             </div>
           </div>
