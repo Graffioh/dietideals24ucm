@@ -141,7 +141,7 @@ export default function InsertAuctionPage() {
     };
 
     const insertAuctionResponse = await fetch(
-      "http://localhost:8080/insert-auction",
+      "http://localhost:8080/auctions",
       {
         method: "POST",
         body: JSON.stringify(auctionFromInputs),

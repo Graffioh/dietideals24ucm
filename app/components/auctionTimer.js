@@ -40,7 +40,7 @@ export default function AuctionTimer({ deadline, auction }) {
       if (auction.auctionType !== "descending") {
         setTimeLeft(newTimeLeft);
       } else {
-        fetch("http://localhost:8080/auction-from-id?id=" + auction.id)
+        fetch("http://localhost:8080/auctions/" + auction.id)
           .then((response) => {
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
@@ -64,7 +64,7 @@ export default function AuctionTimer({ deadline, auction }) {
         clearInterval(timer);
 
         // set isOver attribute in DB to true
-        fetch("http://localhost:8080/set-auction-isover?id=" + auction.id, {
+        fetch("http://localhost:8080/auctions/" + auction.id + "/is-over", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
         })
