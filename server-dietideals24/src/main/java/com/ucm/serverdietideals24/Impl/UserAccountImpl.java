@@ -48,7 +48,7 @@ public class UserAccountImpl implements UserAccountDAO {
     }
 
     @Override
-    public void update(String id, UserAccount user) {
+    public void update(Long id, UserAccount user) {
         jdbcTemplate.update("UPDATE useraccount SET firstName = '" + user.getFirstName() + "', lastName = '"
                 + user.getLastName() + "', username = '" + user.getUsername() + "', password = '"
                 + user.getPassword() + "', birthDate = '" + user.getBirthDate() + "', email = '" + user.getEmail()

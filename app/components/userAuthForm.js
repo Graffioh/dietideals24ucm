@@ -32,7 +32,7 @@ export function UserAuthForm({ className, createOrLogin }) {
 
     try {
       const userFromEmailResponse = await fetch(
-        "http://localhost:8080/user-from-email?email=" +
+        "http://localhost:8080/users/email?email=" +
           userInfoFromInputs.email.value
       );
 

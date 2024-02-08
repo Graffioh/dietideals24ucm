@@ -101,7 +101,7 @@ export default function ProfilePage({ searchParams }) {
       console.log("CURRENT USER BIRTHDATE: " + currentUser.birthDate);
       console.log("INPUTS USER BIRTHDATE: " + userInfoFromInputs.birthDate);
       // UPDATE
-      await fetch("http://localhost:8080/update-profile?id=" + currentUser.id, {
+      await fetch("http://localhost:8080/users/update-profile/" + currentUser.id, {
         method: "PUT",
         body: JSON.stringify(userInfoFromInputs),
         headers: { "Content-Type": "application/json" },

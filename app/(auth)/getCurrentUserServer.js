@@ -24,7 +24,7 @@ export default async function getCurrentUserServer() {
 
     if (userInfo.includes("@")) {
       const userResponse = await fetch(
-        "http:/localhost:8080/user-from-email?email=" + userInfo
+        "http:/localhost:8080/users/email?email=" + userInfo
       );
 
       const user = await userResponse.json();
@@ -32,7 +32,7 @@ export default async function getCurrentUserServer() {
       return user;
     } else {
       const userResponse = await fetch(
-        "http:/localhost:8080/user-from-username?username=" + userInfo
+        "http:/localhost:8080/users/username?username=" + userInfo
       );
 
       const user = await userResponse.json();

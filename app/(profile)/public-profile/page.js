@@ -14,7 +14,7 @@ export default async function ProfilePage({ searchParams }) {
   const currentUser = await getCurrentUserServer();
 
   async function getUserById(id) {
-    const userRes = await fetch("http://localhost:8080/user-from-id?id=" + id);
+    const userRes = await fetch("http://localhost:8080/users/" + id);
 
     const user = await userRes.json();
 
@@ -23,7 +23,7 @@ export default async function ProfilePage({ searchParams }) {
 
   async function getAuctionByUserId(userId) {
     const auctionsRes = await fetch(
-      "http://localhost:8080/auctions-from-userid?userId=" + userId
+      "http://localhost:8080/auctions/user/" + userId
     );
 
     const auctions = await auctionsRes.json();
