@@ -21,6 +21,7 @@ import DescendingInsertAuctionInputs from "@/app/components/auctions/descendingI
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import AddAuctionImageBox from "@/app/components/addAuctionImageBox";
+import { toast } from "sonner";
 
 export default function InsertAuctionPage() {
   const { currentUser, currentUserIsLoading } = useUserContext();
@@ -105,6 +106,7 @@ export default function InsertAuctionPage() {
   }
   // ***************************************
 
+  const createAuctionButtonRef = useRef(null)
   const hiddenFileInput = useRef(null);
 
   const handleFileUploadClick = () => {
@@ -128,7 +130,9 @@ export default function InsertAuctionPage() {
       offers: [],
       baseStartAuction: baseStartAuction,
       raiseThreshold: raiseThreshold,
-      baseOfferTimer: baseOfferTimer ? moment(baseOfferTimer, "HH:mm:ss").format("HH:mm:ss") : null,
+      baseOfferTimer: baseOfferTimer
+        ? moment(baseOfferTimer, "HH:mm:ss").format("HH:mm:ss")
+        : null,
       expireDate: expireDate,
       minimumPrice:
         auctionType == "fixedtime"
@@ -136,11 +140,15 @@ export default function InsertAuctionPage() {
           : descendingMinimumPrice,
       startPrice: startPrice,
       decrementAmount: decrementAmount,
-      expireTime: expireTime ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss") : null,
-      baseDecrementTimer: baseDecrementTimer ? moment(baseDecrementTimer, "HH:mm:ss").format("HH:mm:ss") : null,
+      expireTime: expireTime
+        ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss")
+        : null,
+      baseDecrementTimer: baseDecrementTimer
+        ? moment(baseDecrementTimer, "HH:mm:ss").format("HH:mm:ss")
+        : null,
     };
 
-    await fetch(
+    const createAuctionResponse = await fetch(
       "http://localhost:8080/auctions",
       {
         method: "POST",
@@ -149,7 +157,22 @@ export default function InsertAuctionPage() {
       }
     );
 
-    window.location.href = "/home";
+    if (createAuctionResponse.ok) {
+      toast.success("The auction has been created.", {
+        position: "bottom-center",
+      });
+
+      createAuctionButtonRef.current.style.opacity = "0.5"
+      createAuctionButtonRef.current.disabled = true
+
+      setTimeout(() => {
+        window.location.href = "http://localhost:3000/home";
+      }, 1000);
+    } else {
+      toast.error("The auction has not been created, a problem occurred.", {
+        position: "bottom-center",
+      });
+    }
   }
 
   return (
@@ -242,7 +265,7 @@ export default function InsertAuctionPage() {
         </div>
 
         <div className="flex justify-center items-center mb-4">
-          <Button className="p-7 text-lg">Create Auction</Button>
+          <Button ref={createAuctionButtonRef} className="p-7 text-lg">Create Auction</Button>
         </div>
       </form>
     </>

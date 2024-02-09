@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { hash } from "bcryptjs";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { toast } from "sonner";
 
 import DatePicker from "@/app/components/datePicker";
 
@@ -17,7 +17,6 @@ import { useUserContext } from "@/app/(auth)/userProvider";
 import LoadingSpinner from "@/app/components/loadingSpinner";
 
 export default function ProfilePage({ searchParams }) {
-  const [profileStatus, setProfileStatus] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const { currentUser, currentUserIsLoading } = useUserContext();
 
@@ -35,7 +34,7 @@ export default function ProfilePage({ searchParams }) {
         email: user.email,
       };
 
-      const response = await fetch("http://localhost:8080/register", {
+      await fetch("http://localhost:8080/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,21 +55,18 @@ export default function ProfilePage({ searchParams }) {
 
       const responseTokenText = await responseToken.text();
 
-      const responseCookie = await fetch(
-        "http://localhost:8080/set-login-token",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(responseTokenText),
-        }
-      );
-
-      setProfileStatus("Account created successfully.");
+      await fetch("http://localhost:8080/set-login-token", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(responseTokenText),
+      });
     } catch (e) {
-      setProfileStatus("Error while creating account");
+      toast.error("Error while creating the account!", {
+        position: "bottom-center",
+      });
       console.log({ e });
     }
   }
@@ -95,25 +91,29 @@ export default function ProfilePage({ searchParams }) {
     };
 
     if (currentUser && currentUser.id) {
-      console.log("UPDATE");
-
-      console.log("BIRTHDATE: " + birthDate);
-      console.log("CURRENT USER BIRTHDATE: " + currentUser.birthDate);
-      console.log("INPUTS USER BIRTHDATE: " + userInfoFromInputs.birthDate);
       // UPDATE
-      await fetch("http://localhost:8080/users/update-profile/" + currentUser.id, {
-        method: "PUT",
-        body: JSON.stringify(userInfoFromInputs),
-        headers: { "Content-Type": "application/json" },
-      });
+      await fetch(
+        "http://localhost:8080/users/update-profile/" + currentUser.id,
+        {
+          method: "PUT",
+          body: JSON.stringify(userInfoFromInputs),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-      setProfileStatus("Account updated successfully.");
+      toast.success("Account updated successfully.", {
+        position: "bottom-center",
+      });
     } else {
       console.log("POST");
       // POST
       await createUserAccount(userInfoFromInputs);
 
       window.location.href = "/home";
+
+      toast.success("Account created successfully.", {
+        position: "bottom-center",
+      });
     }
   }
 
@@ -342,7 +342,6 @@ export default function ProfilePage({ searchParams }) {
               <Button className="mt-6">Save</Button>
             </div>
           </div>
-          <div>{profileStatus}</div>
         </div>
       </form>
     </>
