@@ -9,6 +9,7 @@ import com.ucm.serverdietideals24.Models.Auction;
 public interface AuctionDAO {
     public List<Auction> getAll();
     public List<Auction> getAllViaUserId(Long userId);
+    public List<Auction> getAllPaginated(int pageNumber);
 
     public Auction getViaId(Long id);
 

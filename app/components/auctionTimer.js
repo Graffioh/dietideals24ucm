@@ -28,13 +28,14 @@ const formatTimeLeft = (timeLeft) => {
 };
 
 export default function AuctionTimer({ deadline, auction }) {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeftBasedOnDate(deadline));
+  const [timeLeft, setTimeLeft] = useState(
+    calculateTimeLeftBasedOnDate(deadline)
+  );
   const [hasMounted, setHasMounted] = useState(false);
   const [auctionEnded, setAuctionEnded] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
-
       // SET TIMER
       switch (auction.auctionType) {
         case "fixedtime":
@@ -117,7 +118,16 @@ export default function AuctionTimer({ deadline, auction }) {
     return () => clearInterval(timer);
   }, [deadline, auction]);
 
-  if (!hasMounted) {
+  if (typeof(timeLeft) === "object" && auction.auctionType !== "fixedtime") {
+    return (
+      <div className="flex justify-center mt-1">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+  
+  // not necessary but it's for consistency with other laoding timers
+  if(!hasMounted) {
     return (
       <div className="flex justify-center mt-1">
         <LoadingSpinner />
