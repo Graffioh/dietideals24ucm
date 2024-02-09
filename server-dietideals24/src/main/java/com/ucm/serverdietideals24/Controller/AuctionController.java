@@ -41,6 +41,18 @@ public class AuctionController {
         }
     }
 
+    @GetMapping("/paginated")
+    public ResponseEntity<List<Auction>> fetchPagedAuctions(@RequestParam int page) {
+        try {
+            List<Auction> auctions = auctionDAO.getAllPaginated(page);
+
+            return ResponseEntity.ok(auctions);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Auction>> fetchAllAuctionsBasedOnUserId(@PathVariable Long userId) {
         try {
@@ -97,6 +109,17 @@ public class AuctionController {
         }
     }
 
+    @PutMapping("/{id}/current-offertimer")
+    public ResponseEntity<Void> setCurrentOfferTimer(@PathVariable Long id, @RequestParam Time newTimerValue) {
+        try {
+            auctionDAO.updateCurrentOfferTimer(id, newTimerValue);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @Scheduled(fixedRate = 1000)
     public void descendingAuctionOfferReduction() {
         List<Auction> auctions = auctionDAO.getAllDescendingAuctions();
@@ -107,6 +130,19 @@ public class AuctionController {
                 setCurrentDecrementTimer(auction.getId(), auction.getBaseDecrementTimer());
             } else {
                 setCurrentDecrementTimer(auction.getId(), decrementTimerBy1Second(auction));
+            }
+        }
+    }
+
+    @Scheduled(fixedRate = 1000)
+    public void englishAuctionTimerReduction() {
+        List<Auction> auctions = auctionDAO.getAllEnglishAuctions();
+
+        for (Auction auction : auctions) {
+            if (auction.getCurrentOfferTimer().equals(Time.valueOf("00:00:00"))) {
+                setCurrentOfferTimer(auction.getId(), auction.getBaseOfferTimer());
+            } else {
+                setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
             }
         }
     }
@@ -132,30 +168,6 @@ public class AuctionController {
             } else {
                 auctionDAO.updateIsOver(auction.getId());
             }
-        }
-    }
-
-    @Scheduled(fixedRate = 1000)
-    public void englishAuctionTimerReduction() {
-        List<Auction> auctions = auctionDAO.getAllEnglishAuctions();
-
-        for (Auction auction : auctions) {
-            if (auction.getCurrentOfferTimer().equals(Time.valueOf("00:00:00"))) {
-                setCurrentOfferTimer(auction.getId(), auction.getBaseOfferTimer());
-            } else {
-                setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
-            }
-        }
-    }
-
-    @PutMapping("/{id}/current-offertimer")
-    public ResponseEntity<Void> setCurrentOfferTimer(@PathVariable Long id, @RequestParam Time newTimerValue) {
-        try {
-            auctionDAO.updateCurrentOfferTimer(id, newTimerValue);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

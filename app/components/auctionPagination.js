@@ -7,7 +7,7 @@ import {
   
   import { Button } from "@/components/ui/button"
   
-  export default function AuctionPagination() {
+  export default function AuctionPagination({onPreviousPageChange, onNextPageChange}) {
     return (
       <div className="flex items-center justify-between px-2">
         <div className="flex items-center space-x-6 lg:space-x-8">
@@ -15,34 +15,36 @@ import {
             Page 1 of ?
           </div>
           <div className="flex items-center space-x-2">
-            <Button
+            {/* <Button
               variant="outline"
               className="hidden h-8 w-8 p-0 lg:flex"
             >
               <span className="sr-only">Go to first page</span>
               <DoubleArrowLeftIcon className="h-4 w-4" />
-            </Button>
+            </Button> */}
             <Button
               variant="outline"
-              className="h-8 w-8 p-0"
+              className="h-8 w-8 p-0 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]"
+              onClick={onPreviousPageChange}
             >
               <span className="sr-only">Go to previous page</span>
               <ChevronLeftIcon className="h-4 w-4" />
             </Button>
             <Button
               variant="outline"
-              className="h-8 w-8 p-0"
+              className="h-8 w-8 p-0 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]"
+              onClick={onNextPageChange}
             >
               <span className="sr-only">Go to next page</span>
               <ChevronRightIcon className="h-4 w-4" />
             </Button>
-            <Button
+            {/* <Button
               variant="outline"
               className="hidden h-8 w-8 p-0 lg:flex"
             >
               <span className="sr-only">Go to last page</span>
               <DoubleArrowRightIcon className="h-4 w-4" />
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

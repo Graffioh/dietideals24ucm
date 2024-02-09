@@ -1,28 +1,64 @@
-import Link from "next/link";
+"use client";
 
-import { cookies } from "next/headers";
+import { useState } from "react";
+
+import Link from "next/link";
 
 import AuctionPagination from "../../components/auctionPagination";
 import CardAuction from "../../components/cardAuction";
 import LoadingSpinner from "@/app/components/loadingSpinner";
+import useSWR from "swr";
 
-export default async function Home() {
-  async function getAllAuctions() {
-    try {
-      const auctionsResponse = await fetch("http://localhost:8080/auctions", {
-        next: { revalidate: 0 },
-      });
-      const auctions = await auctionsResponse.json();
+export default function Home() {
+  // async function getAllAuctions() {
+  //   try {
+  //     const auctionsResponse = await fetch("http://localhost:8080/auctions", {
+  //       next: { revalidate: 0 },
+  //     });
+  //     const auctions = await auctionsResponse.json();
 
-      return auctions;
-    } catch (e) {
-      console.log(e);
+  //     return auctions;
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
+  //
+  // const auctions = await getAllAuctions();
+
+  // if (!auctions) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen">
+  //       <LoadingSpinner />
+  //     </div>
+  //   );
+  // }
+
+  const [pageIndex, setPageIndex] = useState(1);
+
+  const fetcher = (url) =>
+    fetch(url, { next: { revalidate: 1 } }).then((res) => res.json());
+
+  const {
+    data: paginatedAuctions,
+    isLoading: paginatedAuctionsIsLoading,
+  } = useSWR(
+    "http://localhost:8080/auctions/paginated?page=" + pageIndex,
+    fetcher
+  );
+
+  function handlePreviousPageChange() {
+    if (pageIndex > 1) {
+      setPageIndex(pageIndex - 1);
     }
   }
 
-  const auctions = await getAllAuctions();
+  function handleNextPageChange() {
+    if(paginatedAuctions.length === 20) {
+      setPageIndex(pageIndex + 1);
+    }
+  }
 
-  if (!auctions) {
+  if (paginatedAuctionsIsLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <LoadingSpinner />
@@ -34,10 +70,17 @@ export default async function Home() {
     <>
       <div className="flex flex-col justify-center items-center">
         <div className="grid grid-rows-auto grid-cols-4 gap-x-14">
-          {auctions ? (
-            auctions.map((auction) => (
+          {paginatedAuctions ? (
+            paginatedAuctions.map((auction) => (
               <>
-                <Link href={"/auction-details?id=" + auction.id + "&auctionuserid=" + auction.idUserAccount}>
+                <Link
+                  href={
+                    "/auction-details?id=" +
+                    auction.id +
+                    "&auctionuserid=" +
+                    auction.idUserAccount
+                  }
+                >
                   <CardAuction
                     key={auction.id}
                     isHomepage={true}
@@ -52,7 +95,10 @@ export default async function Home() {
         </div>
 
         <div className="my-5 mt-10">
-          <AuctionPagination />
+          <AuctionPagination
+            onPreviousPageChange={handlePreviousPageChange}
+            onNextPageChange={handleNextPageChange}
+          />
         </div>
       </div>
     </>
