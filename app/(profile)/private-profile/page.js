@@ -33,8 +33,8 @@ export default function ProfilePage({ searchParams }) {
         birthDate: user.birthDate,
         email: user.email,
       };
-
-      await fetch("http://localhost:8080/register", {
+      
+      const registerResponse = await fetch("http://localhost:8080/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,14 +55,18 @@ export default function ProfilePage({ searchParams }) {
 
       const responseTokenText = await responseToken.text();
 
-      await fetch("http://localhost:8080/set-login-token", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(responseTokenText),
-      });
+      const setLoginTokenResponse = await fetch(
+        "http://localhost:8080/set-login-token",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(responseTokenText),
+        }
+      );
+
     } catch (e) {
       toast.error("Error while creating the account!", {
         position: "bottom-center",
@@ -135,13 +139,13 @@ export default function ProfilePage({ searchParams }) {
     setBirthDate(date);
   }
 
-  if (currentUserIsLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <LoadingSpinner />
-      </div>
-    );
-  }
+  // if (currentUserIsLoading) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen">
+  //       <LoadingSpinner />
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
