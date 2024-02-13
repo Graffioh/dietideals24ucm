@@ -14,27 +14,19 @@ export default async function ProfilePage({ searchParams }) {
   const currentUser = await getCurrentUserServer();
 
   async function getUserById(id) {
-    const user = fetch(process.env.NEXT_PUBLIC_BASEURL + "/users/" + id)
-      .then((userResponse) => {
-        return userResponse.json();
-      })
-      .catch((e) => {
-        console.error("Error while fetching user by id: ", e);
-      });
+    const userRes = await fetch(process.env.NEXT_PUBLIC_BASEURL + "/users/" + id);
+
+    const user = await userRes.json();
 
     return user;
   }
 
-  async function getAuctionsByUserId(userId) {
-    const auctions = fetch(
+  async function getAuctionByUserId(userId) {
+    const auctionsRes = await fetch(
       process.env.NEXT_PUBLIC_BASEURL + "/auctions/user/" + userId
-    )
-      .then((auctionsResponse) => {
-        return auctionsResponse.json();
-      })
-      .catch((e) => {
-        console.error("Error while fetching auctions from user id: ", e);
-      });
+    );
+
+    const auctions = await auctionsRes.json();
 
     return auctions;
   }
@@ -49,7 +41,7 @@ export default async function ProfilePage({ searchParams }) {
       : {}
     : currentUser;
 
-  const auctionsFromUser = await getAuctionsByUserId(
+  const auctionsFromUser = await getAuctionByUserId(
     searchParams.id ? searchParams.id : currentUser.id
   );
 
@@ -114,12 +106,7 @@ export default async function ProfilePage({ searchParams }) {
         <div className="grid grid-rows-2 grid-cols-4 grid-flow-col gap-10 mx-12">
           {auctionsFromUser.map((auction) => (
             <Link
-              href={
-                "/auction-details?id=" +
-                auction.id +
-                "&auctionuserid=" +
-                auction.idUserAccount
-              }
+              href={"/auction-details?id=" + auction.id + "&auctionuserid=" + auction.idUserAccount}
               key={auction.id}
               className="w-64"
             >
