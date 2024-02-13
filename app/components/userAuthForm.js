@@ -31,12 +31,17 @@ export function UserAuthForm({ className, createOrLogin }) {
     const userInfoFromInputs = event.currentTarget;
 
     try {
-      const userFromEmailResponse = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" +
+      const userFromEmail = fetch(
+        process.env.NEXT_PUBLIC_BASEURL +
+          "/users/email?email=" +
           userInfoFromInputs.email.value
-      );
-
-      const userFromEmail = await userFromEmailResponse.json();
+      )
+        .then((userFromEmailResponse) => {
+          return userFromEmailResponse.json();
+        })
+        .catch((e) => {
+          console.error("Error while fetching user from email: ", e);
+        });
 
       const passwordCorrect = await compare(
         userInfoFromInputs.password.value,

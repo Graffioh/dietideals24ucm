@@ -10,37 +10,46 @@ export default async function getCurrentUserServer() {
   // return token without "
   const token = tokenFromCookies.replaceAll('"', "");
 
-  try {
-    const subjectFromToken = await fetch(
-      process.env.NEXT_PUBLIC_BASEURL + "/get-subject-from-token",
-      {
-        method: "POST",
-        credentials: "include",
-        body: token,
-      }
-    );
-
-    const userInfo = await subjectFromToken.text();
-
-    if (userInfo.includes("@")) {
-      const userResponse = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + userInfo
-      );
-
-      const user = await userResponse.json();
-
-      return user;
-    } else {
-      const userResponse = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/users/username?username=" + userInfo
-      );
-
-      const user = await userResponse.json();
-
-      return user;
+  const userInfo = fetch(
+    process.env.NEXT_PUBLIC_BASEURL + "/get-subject-from-token",
+    {
+      method: "POST",
+      credentials: "include",
+      body: token,
     }
-  } catch (e) {
-    console.log({ e });
-    return undefined;
+  )
+    .then((subject) => {
+      return subject.text();
+    })
+    .catch((e) => {
+      console.error("Error while fetching subject from token: " + e);
+    });
+
+  if (userInfo.includes("@")) {
+    const user = fetch(
+      process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + userInfo
+    )
+      .then((userResponse) => {
+        return userResponse.json();
+      })
+      .catch((e) => {
+        console.error("Error while fetching user from email: " + e);
+        return undefined;
+      });
+
+    return user;
+  } else {
+    const user = fetch(
+      process.env.NEXT_PUBLIC_BASEURL + "/users/username?username=" + userInfo
+    )
+      .then((userResponse) => {
+        return userResponse.json();
+      })
+      .catch((e) => {
+        console.error("Error while fetching user from username: " + e);
+        return undefined;
+      });
+
+    return user;
   }
 }

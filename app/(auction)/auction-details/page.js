@@ -25,30 +25,22 @@ export default async function AuctionDetailsPage({ searchParams }) {
     return tokenCookieStr.replaceAll('"', "");
   }
 
-  async function getCurrentAuctionBasedOnId(id) {
-    try {
-      const auctionResponse = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + id,
-        {
-          next: { revalidate: 3 },
-        }
-      );
-      const auction = await auctionResponse.json();
-
-      return auction;
-    } catch (e) {
-      console.log(e);
+  const currentAuction = fetch(
+    process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + searchParams.id,
+    {
+      next: { revalidate: 1 },
     }
-  }
-
-  const currentAuction = await getCurrentAuctionBasedOnId(searchParams.id);
+  )
+    .then((auctionResponse) => {
+      return auctionResponse.json();
+    })
+    .catch((e) => {
+      console.error("Error while fetching auction from id: " + e);
+    });
 
   const token = getTokenFromCookie();
 
   const currentUser = await getCurrentUserServer();
-
-  console.log("USER ID: " + currentUser.id)
-  console.log("SEARCHPARAMS ID: " + searchParams.auctionuserid)
 
   return (
     <>
