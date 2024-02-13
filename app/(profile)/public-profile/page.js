@@ -14,7 +14,7 @@ export default async function ProfilePage({ searchParams }) {
   const currentUser = await getCurrentUserServer();
 
   async function getUserById(id) {
-    const userRes = await fetch("http://localhost:8080/users/" + id);
+    const userRes = await fetch(process.env.NEXT_PUBLIC_BASEURL + "/users/" + id);
 
     const user = await userRes.json();
 
@@ -23,7 +23,7 @@ export default async function ProfilePage({ searchParams }) {
 
   async function getAuctionByUserId(userId) {
     const auctionsRes = await fetch(
-      "http://localhost:8080/auctions/user/" + userId
+      process.env.NEXT_PUBLIC_BASEURL + "/auctions/user/" + userId
     );
 
     const auctions = await auctionsRes.json();

@@ -21,7 +21,7 @@ export default function PlaceOfferDialog({ auction }) {
   // if english auction, whenever an offer is placed correctly, reset the timer
   async function handleEnglishAuctionOfferTimer() {
     await fetch(
-      "http://localhost:8080/auctions/" +
+      process.env.NEXT_PUBLIC_BASEURL + "/auctions/" +
         auction.id +
         "/current-offertimer?newTimerValue=" +
         auction.baseOfferTimer,

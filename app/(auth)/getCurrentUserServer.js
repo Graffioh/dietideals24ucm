@@ -12,7 +12,7 @@ export default async function getCurrentUserServer() {
 
   try {
     const subjectFromToken = await fetch(
-      "http://localhost:8080/get-subject-from-token",
+      process.env.NEXT_PUBLIC_BASEURL + "/get-subject-from-token",
       {
         method: "POST",
         credentials: "include",
@@ -24,7 +24,7 @@ export default async function getCurrentUserServer() {
 
     if (userInfo.includes("@")) {
       const userResponse = await fetch(
-        "http:/localhost:8080/users/email?email=" + userInfo
+        process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + userInfo
       );
 
       const user = await userResponse.json();
@@ -32,7 +32,7 @@ export default async function getCurrentUserServer() {
       return user;
     } else {
       const userResponse = await fetch(
-        "http:/localhost:8080/users/username?username=" + userInfo
+        process.env.NEXT_PUBLIC_BASEURL + "/users/username?username=" + userInfo
       );
 
       const user = await userResponse.json();

@@ -32,7 +32,7 @@ export function UserAuthForm({ className, createOrLogin }) {
 
     try {
       const userFromEmailResponse = await fetch(
-        "http://localhost:8080/users/email?email=" +
+        process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" +
           userInfoFromInputs.email.value
       );
 
@@ -45,7 +45,7 @@ export function UserAuthForm({ className, createOrLogin }) {
 
       if (passwordCorrect) {
         const responseToken = await fetch(
-          "http://localhost:8080/generate-login-token",
+          process.env.NEXT_PUBLIC_BASEURL + "/generate-login-token",
           {
             method: "POST",
             headers: {
@@ -58,7 +58,7 @@ export function UserAuthForm({ className, createOrLogin }) {
         const responseTokenText = await responseToken.text();
 
         const responseCookie = await fetch(
-          "http://localhost:8080/set-login-token",
+          process.env.NEXT_PUBLIC_BASEURL + "/set-login-token",
           {
             method: "POST",
             credentials: "include",
@@ -190,7 +190,7 @@ export function UserAuthForm({ className, createOrLogin }) {
             variant: "Github",
           })
         )}
-        href="http://localhost:8080/oauth2/authorization/github"
+        href={process.env.NEXT_PUBLIC_BASEURL + "/oauth2/authorization/github"}
       >
         <Image
           src={githubIcon}
@@ -207,7 +207,7 @@ export function UserAuthForm({ className, createOrLogin }) {
             variant: "Google",
           })
         )}
-        href="http://localhost:8080/oauth2/authorization/google"
+        href={process.env.NEXT_PUBLIC_BASEURL + "/oauth2/authorization/google"}
       >
         <Image
           src={googleIcon}

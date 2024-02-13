@@ -105,7 +105,7 @@ function LoggedFullSection() {
 
 async function logOut() {
   try {
-    await fetch("http://localhost:8080/delete-login-token", {
+    await fetch(process.env.NEXT_PUBLIC_BASEURL + "/delete-login-token", {
       method: "GET",
       credentials: "include",
     });

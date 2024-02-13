@@ -43,7 +43,7 @@ export default function AuctionTimer({ deadline, auction }) {
           break;
 
         case "english":
-          fetch("http://localhost:8080/auctions/" + auction.id)
+          fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + auction.id)
             .then((response) => {
               if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -59,7 +59,7 @@ export default function AuctionTimer({ deadline, auction }) {
           break;
 
         case "descending":
-          fetch("http://localhost:8080/auctions/" + auction.id)
+          fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + auction.id)
             .then((response) => {
               if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -83,7 +83,7 @@ export default function AuctionTimer({ deadline, auction }) {
             clearInterval(timer);
 
             // set isOver attribute in DB to true
-            fetch("http://localhost:8080/auctions/" + auction.id + "/is-over", {
+            fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + auction.id + "/is-over", {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
             })

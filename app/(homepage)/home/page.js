@@ -42,7 +42,7 @@ export default function Home() {
     data: paginatedAuctions,
     isLoading: paginatedAuctionsIsLoading,
   } = useSWR(
-    "http://localhost:8080/auctions/paginated?page=" + pageIndex,
+    process.env.NEXT_PUBLIC_BASEURL + "/auctions/paginated?page=" + pageIndex,
     fetcher
   );
 

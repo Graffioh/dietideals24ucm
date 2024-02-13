@@ -34,7 +34,7 @@ export default function ProfilePage({ searchParams }) {
         email: user.email,
       };
       
-      const registerResponse = await fetch("http://localhost:8080/users/register", {
+      const registerResponse = await fetch(process.env.NEXT_PUBLIC_BASEURL + "/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export default function ProfilePage({ searchParams }) {
       });
 
       const responseToken = await fetch(
-        "http://localhost:8080/generate-login-token",
+        process.env.NEXT_PUBLIC_BASEURL + "/generate-login-token",
         {
           method: "POST",
           headers: {
@@ -56,7 +56,7 @@ export default function ProfilePage({ searchParams }) {
       const responseTokenText = await responseToken.text();
 
       const setLoginTokenResponse = await fetch(
-        "http://localhost:8080/set-login-token",
+        process.env.NEXT_PUBLIC_BASEURL + "/set-login-token",
         {
           method: "POST",
           credentials: "include",
@@ -97,7 +97,7 @@ export default function ProfilePage({ searchParams }) {
     if (currentUser && currentUser.id) {
       // UPDATE
       await fetch(
-        "http://localhost:8080/users/update-profile/" + currentUser.id,
+        process.env.NEXT_PUBLIC_BASEURL + "/users/update-profile/" + currentUser.id,
         {
           method: "PUT",
           body: JSON.stringify(userInfoFromInputs),

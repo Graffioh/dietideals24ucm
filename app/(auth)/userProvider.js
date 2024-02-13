@@ -22,7 +22,7 @@ export const UserProvider = ({ children }) => {
     data: subject,
     error: subjectError,
     isLoading: subjectIsLoading,
-  } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
+  } = useSWR(process.env.NEXT_PUBLIC_BASEURL + "/get-subject-from-token", userInfoFetcher);
 
   const fetcher = (url) =>
     fetch(url, { next: { revalidate: 3 } }).then((res) => res.json());
@@ -33,8 +33,8 @@ export const UserProvider = ({ children }) => {
     isLoading,
   } = useSWR(
     subject != null && subject.includes("@")
-      ? "http://localhost:8080/users/email?email=" + subject
-      : "http://localhost:8080/users/username?username=" + subject,
+      ? process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + subject
+      : process.env.NEXT_PUBLIC_BASEURL + "/users/username?username=" + subject,
     fetcher
   );
 

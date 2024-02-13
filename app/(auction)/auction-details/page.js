@@ -28,7 +28,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
   async function getCurrentAuctionBasedOnId(id) {
     try {
       const auctionResponse = await fetch(
-        "http://localhost:8080/auctions/" + id,
+        process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + id,
         {
           next: { revalidate: 3 },
         }
