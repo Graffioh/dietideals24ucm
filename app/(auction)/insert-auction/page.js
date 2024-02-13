@@ -172,103 +172,103 @@ export default function InsertAuctionPage() {
 
       console.error("Error while creating auction: " + e);
     }
-
-    return (
-      <>
-        <form onSubmit={onSubmit}>
-          <div className="flex flex-col md:flex-row items-center mt-12">
-            <div className="mx-3 mb-6 md:m-6 md:mr-20 md:ml-48 grid md:grid-cols-2 gap-2">
-              <AddAuctionImageBox
-                handleFileUploadClick={handleFileUploadClick}
-                hiddenFileInput={hiddenFileInput}
-              />
-
-              <AddAuctionImageBox
-                handleFileUploadClick={handleFileUploadClick}
-                hiddenFileInput={hiddenFileInput}
-              />
-
-              <AddAuctionImageBox
-                handleFileUploadClick={handleFileUploadClick}
-                hiddenFileInput={hiddenFileInput}
-              />
-            </div>
-
-            <div className="flex flex-col mx-2">
-              <div className="w-72 min-w-screen flex flex-col space-y-3">
-                <div>
-                  <div className="flex mb-2">
-                    <Label>
-                      Title<span className="text-red-500">*</span>
-                    </Label>
-                  </div>
-                  <Input
-                    maxLength={20}
-                    type="text"
-                    placeholder="Title"
-                    className="bg-white"
-                    id="title"
-                  ></Input>
-                </div>
-
-                <div>
-                  <div className="mb-2">
-                    <Label>
-                      Description<span className="text-red-500">*</span>
-                    </Label>
-                  </div>
-                  <Textarea
-                    placeholder="Type your description here."
-                    className="bg-white"
-                    id="description"
-                  />
-                </div>
-              </div>
-
-              <div className="mt-6 flex flex-col space-y-6">
-                <ComboboxCategories></ComboboxCategories>
-                <ComboboxAuctions
-                  onAuctionTypeChange={setAuctionTypeFromCombobox}
-                ></ComboboxAuctions>
-                <ComboboxQuality></ComboboxQuality>
-              </div>
-            </div>
-
-            <div className="flex flex-col space-y-6 md:ml-4 mt-4 mb-4">
-              {auctionType === "fixedtime" && (
-                <FixedTimeInsertAuctionInputs
-                  onExpireDateChange={handleExpireDateChange}
-                  onExpireTimeChange={handleExpireTimeChange}
-                  onFixedTimeMinimumPriceChange={
-                    handleFixedTimeMinimumPriceChange
-                  }
-                />
-              )}
-              {auctionType === "descending" && (
-                <DescendingInsertAuctionInputs
-                  onStartPriceChange={handleStartPrice}
-                  onDecrementAmountChange={handleDecrementAmount}
-                  onDecrementTimerChange={handleDecrementTimer}
-                  onDescendingMinimumPriceChange={handleDescendingMinimumPrice}
-                />
-              )}
-              {auctionType === "english" && (
-                <EnglishInsertAuctionInputs
-                  onBaseStartAuctionChange={handleBaseStartAuction}
-                  onRaiseThresholdChange={handleRaiseThreshold}
-                  onBaseOfferTimerChange={handleBaseOfferTimer}
-                />
-              )}
-            </div>
-          </div>
-
-          <div className="flex justify-center items-center mb-4">
-            <Button ref={createAuctionButtonRef} className="p-7 text-lg">
-              Create Auction
-            </Button>
-          </div>
-        </form>
-      </>
-    );
   }
+
+  return (
+    <>
+      <form onSubmit={onSubmit}>
+        <div className="flex flex-col md:flex-row items-center mt-12">
+          <div className="mx-3 mb-6 md:m-6 md:mr-20 md:ml-48 grid md:grid-cols-2 gap-2">
+            <AddAuctionImageBox
+              handleFileUploadClick={handleFileUploadClick}
+              hiddenFileInput={hiddenFileInput}
+            />
+
+            <AddAuctionImageBox
+              handleFileUploadClick={handleFileUploadClick}
+              hiddenFileInput={hiddenFileInput}
+            />
+
+            <AddAuctionImageBox
+              handleFileUploadClick={handleFileUploadClick}
+              hiddenFileInput={hiddenFileInput}
+            />
+          </div>
+
+          <div className="flex flex-col mx-2">
+            <div className="w-72 min-w-screen flex flex-col space-y-3">
+              <div>
+                <div className="flex mb-2">
+                  <Label>
+                    Title<span className="text-red-500">*</span>
+                  </Label>
+                </div>
+                <Input
+                  maxLength={20}
+                  type="text"
+                  placeholder="Title"
+                  className="bg-white"
+                  id="title"
+                ></Input>
+              </div>
+
+              <div>
+                <div className="mb-2">
+                  <Label>
+                    Description<span className="text-red-500">*</span>
+                  </Label>
+                </div>
+                <Textarea
+                  placeholder="Type your description here."
+                  className="bg-white"
+                  id="description"
+                />
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-col space-y-6">
+              <ComboboxCategories></ComboboxCategories>
+              <ComboboxAuctions
+                onAuctionTypeChange={setAuctionTypeFromCombobox}
+              ></ComboboxAuctions>
+              <ComboboxQuality></ComboboxQuality>
+            </div>
+          </div>
+
+          <div className="flex flex-col space-y-6 md:ml-4 mt-4 mb-4">
+            {auctionType === "fixedtime" && (
+              <FixedTimeInsertAuctionInputs
+                onExpireDateChange={handleExpireDateChange}
+                onExpireTimeChange={handleExpireTimeChange}
+                onFixedTimeMinimumPriceChange={
+                  handleFixedTimeMinimumPriceChange
+                }
+              />
+            )}
+            {auctionType === "descending" && (
+              <DescendingInsertAuctionInputs
+                onStartPriceChange={handleStartPrice}
+                onDecrementAmountChange={handleDecrementAmount}
+                onDecrementTimerChange={handleDecrementTimer}
+                onDescendingMinimumPriceChange={handleDescendingMinimumPrice}
+              />
+            )}
+            {auctionType === "english" && (
+              <EnglishInsertAuctionInputs
+                onBaseStartAuctionChange={handleBaseStartAuction}
+                onRaiseThresholdChange={handleRaiseThreshold}
+                onBaseOfferTimerChange={handleBaseOfferTimer}
+              />
+            )}
+          </div>
+        </div>
+
+        <div className="flex justify-center items-center mb-4">
+          <Button ref={createAuctionButtonRef} className="p-7 text-lg">
+            Create Auction
+          </Button>
+        </div>
+      </form>
+    </>
+  );
 }

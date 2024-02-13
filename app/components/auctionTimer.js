@@ -54,7 +54,9 @@ export default function AuctionTimer({ deadline, auction }) {
               setTimeLeft(auction.currentOfferTimer);
             })
             .catch((error) => {
-              console.error("Error while fetching auctions (english): " + error.message);
+              console.error(
+                "Error while fetching auctions (english): " + error.message
+              );
             });
           break;
 
@@ -70,7 +72,9 @@ export default function AuctionTimer({ deadline, auction }) {
               setTimeLeft(auction.currentDecrementTimer);
             })
             .catch((error) => {
-              console.error("Error while fetching auctions (descending): " + error.message);
+              console.error(
+                "Error while fetching auctions (descending): " + error.message
+              );
             });
           break;
       }
@@ -83,10 +87,16 @@ export default function AuctionTimer({ deadline, auction }) {
             clearInterval(timer);
 
             // set isOver attribute in DB to true
-            fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + auction.id + "/is-over", {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-            })
+            fetch(
+              process.env.NEXT_PUBLIC_BASEURL +
+                "/auctions/" +
+                auction.id +
+                "/is-over",
+              {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+              }
+            )
               .then((response) => {
                 if (!response.ok) {
                   throw new Error("Network response was not ok");
@@ -96,17 +106,44 @@ export default function AuctionTimer({ deadline, auction }) {
                 console.log("Auction has ended");
               })
               .catch((error) => {
-              console.error("Error while setting is over (fixedtime): " + error.message);
+                console.error(
+                  "Error while setting is over (fixedtime): " + error.message
+                );
               });
             break;
 
           case "english":
+            // wait for place offer functionality
             break;
 
           case "descending":
             if (auction.currentOffer === auction.minimumPrice) {
               setAuctionEnded(true);
               clearInterval(timer);
+
+              fetch(
+                process.env.NEXT_PUBLIC_BASEURL +
+                  "/auctions/" +
+                  auction.id +
+                  "/is-over",
+                {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                }
+              )
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                  }
+                })
+                .then(() => {
+                  console.log("Auction has ended");
+                })
+                .catch((error) => {
+                  console.error(
+                    "Error while setting is over (fixedtime): " + error.message
+                  );
+                });
             }
             break;
         }
@@ -118,16 +155,16 @@ export default function AuctionTimer({ deadline, auction }) {
     return () => clearInterval(timer);
   }, [deadline, auction]);
 
-  if (typeof(timeLeft) === "object" && auction.auctionType !== "fixedtime") {
+  if (typeof timeLeft === "object" && auction.auctionType !== "fixedtime") {
     return (
       <div className="flex justify-center mt-1">
         <LoadingSpinner />
       </div>
     );
   }
-  
+
   // not necessary but it's for consistency with other laoding timers
-  if(!hasMounted) {
+  if (!hasMounted) {
     return (
       <div className="flex justify-center mt-1">
         <LoadingSpinner />
@@ -138,7 +175,7 @@ export default function AuctionTimer({ deadline, auction }) {
   // mamma mia che immondizia che ho fatto qua
   return (
     <div>
-      {Object.keys(timeLeft).length > 0 ? (
+      {/* {Object.keys(timeLeft).length > 0 ? (
         auction.currentOffer !== auction.minimumPrice ? (
           auction.auctionType !== "fixedtime" ? (
             `${timeLeft}`
@@ -152,6 +189,14 @@ export default function AuctionTimer({ deadline, auction }) {
         <div className="text-red-500 text-lg font-medium">Auction ended</div>
       ) : (
         <div className="text-red-500 text-lg font-medium"></div>
+      )} */}
+
+      {auctionEnded || Object.keys(timeLeft).length === 0 ? (
+        <div className="text-red-500 text-lg font-medium">Auction ended</div>
+      ) : auction.auctionType === "fixedtime" ? (
+        `${formatTimeLeft(timeLeft)}`
+      ) : (
+        `${timeLeft}`
       )}
     </div>
   );
