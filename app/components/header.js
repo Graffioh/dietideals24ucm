@@ -119,7 +119,6 @@ async function logOut() {
 function PrivateProfileSection() {
   return (
     <div className="flex mr-4">
-      <NotificationsDropdown notifications={notifications} />
       <Button onClick={logOut}>Log out</Button>
     </div>
   );
@@ -143,19 +142,19 @@ function NotLoggedSection() {
 }
 
 // Modify profile icon and notifications
-function ModifyProfileSection() {
-  return (
-    <div className="mr-4 flex justify-between mb-2">
-      <Link href="/private-profile?type=update">
-        <Button variant="ghost" className="">
-          <Pencil1Icon width="23" height="23" />
-        </Button>
-      </Link>
+// function ModifyProfileSection() {
+//   return (
+//     <div className="mr-4 flex justify-between mb-2">
+//       <Link href="/private-profile?type=update">
+//         <Button variant="ghost" className="">
+//           <Pencil1Icon width="23" height="23" />
+//         </Button>
+//       </Link>
 
-      <NotificationsDropdown notifications={notifications} />
-    </div>
-  );
-}
+//       <NotificationsDropdown notifications={notifications} />
+//     </div>
+//   );
+// }
 
 function NotificationsSection() {
   return (
@@ -230,19 +229,19 @@ function NotLoggedSectionMobile() {
 }
 
 // Modify profile icon and notifications
-function ModifyProfileSectionMobile() {
-  return (
-    <div className="flex flex-col justify-center gap-4">
-      <Link href="/home" className="text-white">
-        <div>Modify</div>
-      </Link>
+// function ModifyProfileSectionMobile() {
+//   return (
+//     <div className="flex flex-col justify-center gap-4">
+//       <Link href="/home" className="text-white">
+//         <div>Modify</div>
+//       </Link>
 
-      <Link href="/home" className="text-white">
-        <div>Notifications</div>
-      </Link>
-    </div>
-  );
-}
+//       <Link href="/home" className="text-white">
+//         <div>Notifications</div>
+//       </Link>
+//     </div>
+//   );
+// }
 
 // **************************************************************
 
@@ -286,7 +285,6 @@ export default function Header({ headerType, token }) {
         {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
         {headerType === "headerPrivateProfile" && <PrivateProfileSection />}
         {(token === "no-token" || token === "") && <NotLoggedSection />}
-        {headerType === "headerModifyProfile" && <ModifyProfileSection />}
         {headerType === "headerNotifications" && <NotificationsSection />}
         {headerType === "headerEmpty"}
       </div>
@@ -332,9 +330,6 @@ export default function Header({ headerType, token }) {
                 <PrivateProfileSectionMobile />
               )}
               {headerType === "headerNotLogged" && <NotLoggedSectionMobile />}
-              {headerType === "headerModifyProfile" && (
-                <ModifyProfileSectionMobile />
-              )}
               {headerType === "headerEmpty"}
             </ul>
           </div>
