@@ -33,45 +33,53 @@ export default function ProfilePage({ searchParams }) {
         birthDate: user.birthDate,
         email: user.email,
       };
-      
-      const registerResponse = await fetch(process.env.NEXT_PUBLIC_BASEURL + "/users/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userWithHashedPassword),
-      });
 
-      const responseToken = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/generate-login-token",
-        {
+      try {
+        await fetch(process.env.NEXT_PUBLIC_BASEURL + "/users/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(userWithHashedPassword),
-        }
-      );
+        });
+      } catch (e) {
+        console.error("Error in /register: " + e);
+      }
 
-      const responseTokenText = await responseToken.text();
+      try {
+        const responseToken = await fetch(
+          process.env.NEXT_PUBLIC_BASEURL + "/generate-login-token",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userWithHashedPassword),
+          }
+        );
 
-      const setLoginTokenResponse = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/set-login-token",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(responseTokenText),
-        }
-      );
+        const responseTokenText = await responseToken.text();
 
+        await fetch(
+          process.env.NEXT_PUBLIC_BASEURL + "/set-login-token",
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(responseTokenText),
+          }
+        );
+      } catch (e) {
+        console.error("Error while generating/setting the token: " + e);
+      }
     } catch (e) {
       toast.error("Error while creating the account!", {
         position: "bottom-center",
       });
-      console.log({ e });
+
+      console.error("Error while creating the account: " + e);
     }
   }
 
@@ -97,7 +105,9 @@ export default function ProfilePage({ searchParams }) {
     if (currentUser && currentUser.id) {
       // UPDATE
       await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/users/update-profile/" + currentUser.id,
+        process.env.NEXT_PUBLIC_BASEURL +
+          "/users/update-profile/" +
+          currentUser.id,
         {
           method: "PUT",
           body: JSON.stringify(userInfoFromInputs),

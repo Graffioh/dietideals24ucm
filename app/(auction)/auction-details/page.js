@@ -37,7 +37,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
 
       return auction;
     } catch (e) {
-      console.log(e);
+      console.error("Error while fetching auctions from id: " + e);
     }
   }
 
@@ -46,9 +46,6 @@ export default async function AuctionDetailsPage({ searchParams }) {
   const token = getTokenFromCookie();
 
   const currentUser = await getCurrentUserServer();
-
-  console.log("USER ID: " + currentUser.id)
-  console.log("SEARCHPARAMS ID: " + searchParams.auctionuserid)
 
   return (
     <>

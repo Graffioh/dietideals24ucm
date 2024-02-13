@@ -9,7 +9,6 @@ const UserContext = createContext(null);
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentUserIsLoading, setcurrentUserIsLoading] = useState(true);
-  // const [isError, setIsError] = useState(false);
 
   const token = useCookies().get("token");
 
@@ -21,16 +20,24 @@ export const UserProvider = ({ children }) => {
   const {
     data: subject,
     error: subjectError,
-    isLoading: subjectIsLoading,
-  } = useSWR(process.env.NEXT_PUBLIC_BASEURL + "/get-subject-from-token", userInfoFetcher);
+  } = useSWR(
+    process.env.NEXT_PUBLIC_BASEURL + "/get-subject-from-token",
+    userInfoFetcher
+  );
+
+  if (subjectError) {
+    console.error(
+      "Error while fetching subject from token in user provider: " +
+        subjectError
+    );
+  }
 
   const fetcher = (url) =>
     fetch(url, { next: { revalidate: 3 } }).then((res) => res.json());
 
   const {
     data: currentUserData,
-    error,
-    isLoading,
+    error: currentUserError,
   } = useSWR(
     subject != null && subject.includes("@")
       ? process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + subject
@@ -38,16 +45,18 @@ export const UserProvider = ({ children }) => {
     fetcher
   );
 
+  if (currentUserError) {
+    console.error(
+      "Error while fetching user from email or username in user provider: " +
+        currentUserError
+    );
+  }
+
   useEffect(() => {
     if (currentUserData) {
       setCurrentUser(currentUserData);
       setcurrentUserIsLoading(false);
     }
-    // if (error) {
-    //   console.error('Error fetching user:', error);
-    //   setIsError(true);
-    //   setIsLoading(false);
-    // }
   }, [currentUserData]);
 
   return (

@@ -106,7 +106,7 @@ export default function InsertAuctionPage() {
   }
   // ***************************************
 
-  const createAuctionButtonRef = useRef(null)
+  const createAuctionButtonRef = useRef(null);
   const hiddenFileInput = useRef(null);
 
   const handleFileUploadClick = () => {
@@ -148,30 +148,29 @@ export default function InsertAuctionPage() {
         : null,
     };
 
-    const createAuctionResponse = await fetch(
-      process.env.NEXT_PUBLIC_BASEURL + "/auctions",
-      {
+    try {
+      await fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions", {
         method: "POST",
         body: JSON.stringify(auctionFromInputs),
         headers: { "Content-Type": "application/json" },
-      }
-    );
+      });
 
-    if (createAuctionResponse.ok) {
       toast.success("The auction has been created.", {
         position: "bottom-center",
       });
 
-      createAuctionButtonRef.current.style.opacity = "0.5"
-      createAuctionButtonRef.current.disabled = true
+      createAuctionButtonRef.current.style.opacity = "0.5";
+      createAuctionButtonRef.current.disabled = true;
 
       setTimeout(() => {
         window.location.href = "http://localhost:3000/home";
       }, 1000);
-    } else {
+    } catch (e) {
       toast.error("The auction has not been created, a problem occurred.", {
         position: "bottom-center",
       });
+
+      console.error("Error while creating auction: " + e);
     }
   }
 
@@ -265,7 +264,9 @@ export default function InsertAuctionPage() {
         </div>
 
         <div className="flex justify-center items-center mb-4">
-          <Button ref={createAuctionButtonRef} className="p-7 text-lg">Create Auction</Button>
+          <Button ref={createAuctionButtonRef} className="p-7 text-lg">
+            Create Auction
+          </Button>
         </div>
       </form>
     </>
