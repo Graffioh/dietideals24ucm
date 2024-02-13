@@ -54,7 +54,7 @@ export default function AuctionTimer({ deadline, auction }) {
               setTimeLeft(auction.currentOfferTimer);
             })
             .catch((error) => {
-              console.error("Fetch error: " + error.message);
+              console.error("Error while fetching auctions (english): " + error.message);
             });
           break;
 
@@ -70,7 +70,7 @@ export default function AuctionTimer({ deadline, auction }) {
               setTimeLeft(auction.currentDecrementTimer);
             })
             .catch((error) => {
-              console.error("Fetch error: " + error.message);
+              console.error("Error while fetching auctions (descending): " + error.message);
             });
           break;
       }
@@ -96,7 +96,7 @@ export default function AuctionTimer({ deadline, auction }) {
                 console.log("Auction has ended");
               })
               .catch((error) => {
-                console.error("Failed to fetch: ", error);
+              console.error("Error while setting is over (fixedtime): " + error.message);
               });
             break;
 

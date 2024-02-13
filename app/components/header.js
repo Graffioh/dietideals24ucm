@@ -112,7 +112,7 @@ async function logOut() {
     
     window.location.href = "/";
   } catch (e) {
-    console.log({ e });
+    console.error("Error while deleting token in log out: " + e);
   }
 }
 

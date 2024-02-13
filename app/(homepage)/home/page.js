@@ -10,29 +10,6 @@ import LoadingSpinner from "@/app/components/loadingSpinner";
 import useSWR from "swr";
 
 export default function Home() {
-  // async function getAllAuctions() {
-  //   try {
-  //     const auctionsResponse = await fetch("http://localhost:8080/auctions", {
-  //       next: { revalidate: 0 },
-  //     });
-  //     const auctions = await auctionsResponse.json();
-
-  //     return auctions;
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
-  //
-  // const auctions = await getAllAuctions();
-
-  // if (!auctions) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <LoadingSpinner />
-  //     </div>
-  //   );
-  // }
-
   const [pageIndex, setPageIndex] = useState(1);
 
   const fetcher = (url) =>
@@ -40,11 +17,18 @@ export default function Home() {
 
   const {
     data: paginatedAuctions,
+    error: paginatedAuctionsError,
     isLoading: paginatedAuctionsIsLoading,
   } = useSWR(
     process.env.NEXT_PUBLIC_BASEURL + "/auctions/paginated?page=" + pageIndex,
     fetcher
   );
+
+  if (paginatedAuctionsError) {
+    console.error(
+      "Error while fetching paginated auctions: " + paginatedAuctionsError
+    );
+  }
 
   function handlePreviousPageChange() {
     if (pageIndex > 1) {
@@ -53,7 +37,7 @@ export default function Home() {
   }
 
   function handleNextPageChange() {
-    if(paginatedAuctions.length === 20) {
+    if (paginatedAuctions.length === 20) {
       setPageIndex(pageIndex + 1);
     }
   }
