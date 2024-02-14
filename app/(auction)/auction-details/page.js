@@ -17,8 +17,8 @@ export default async function AuctionDetailsPage({ searchParams }) {
   function getTokenFromCookie() {
     const nextCookies = cookies();
 
-    const tokenCookieStr = nextCookies.has("token")
-      ? nextCookies.get("token").value
+    const tokenCookieStr = nextCookies.has("auth-token")
+      ? nextCookies.get("auth-token").value
       : '"no-token"';
 
     // return token without "..."
@@ -43,7 +43,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
 
   const currentAuction = await getCurrentAuctionBasedOnId(searchParams.id);
 
-  const token = getTokenFromCookie();
+  const authToken = getTokenFromCookie();
 
   const currentUser = await getCurrentUserServer();
 
@@ -95,7 +95,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
             </div>
 
             <div className="absolute mt-[32em]">
-              {token === "no-token" ? (
+              {authToken === "no-token" ? (
                 <Link
                   className={cn(
                     buttonVariants({

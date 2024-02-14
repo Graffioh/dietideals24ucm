@@ -10,10 +10,10 @@ export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentUserIsLoading, setcurrentUserIsLoading] = useState(true);
 
-  const token = useCookies().get("token");
+  const authToken = useCookies().get("auth-token");
 
   const userInfoFetcher = (url) =>
-    fetch(url, { method: "POST", credentials: "include", body: token }).then(
+    fetch(url, { method: "POST", credentials: "include", body: authToken }).then(
       (res) => res.text()
     );
 
@@ -27,7 +27,7 @@ export const UserProvider = ({ children }) => {
 
   if (subjectError) {
     console.error(
-      "Error while fetching subject from token in user provider: " +
+      "Error while fetching subject from auth token in user provider: " +
         subjectError
     );
   }

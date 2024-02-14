@@ -16,12 +16,12 @@ export const metadata = {
 export default async function HomeLayout({ children }) {
   const nextCookies = cookies();
 
-  const tokenCookieStr = nextCookies.has("token")
-    ? nextCookies.get("token").value
+  const tokenCookieStr = nextCookies.has("auth-token")
+    ? nextCookies.get("auth-token").value
     : '"no-token"';
 
   // return token without "..."
-  const token = tokenCookieStr.replaceAll('"', "");
+  const authToken = tokenCookieStr.replaceAll('"', "");
 
   const currentUser = await getCurrentUserServer();
 
@@ -46,7 +46,7 @@ export default async function HomeLayout({ children }) {
             ? "headerLoggedFull"
             : "headerLoggedPartial"
         }
-        token={token}
+        token={authToken}
       />
       <main className="flex-1">{children}</main>
       <Footer />

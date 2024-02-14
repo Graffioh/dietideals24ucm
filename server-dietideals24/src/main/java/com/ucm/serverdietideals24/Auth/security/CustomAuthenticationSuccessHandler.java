@@ -31,7 +31,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // Everytime we login/register via Oauth, add token to cookies
         String token = JwtUtil.generateToken(emailOrUsernameFromOAuth);
-        Cookie tokenCookie = new Cookie("token", token);
+        Cookie tokenCookie = new Cookie("auth-token", token);
         tokenCookie.setSecure(false);
         tokenCookie.setHttpOnly(false);
         tokenCookie.setMaxAge(1000000000);

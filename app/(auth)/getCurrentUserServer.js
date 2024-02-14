@@ -3,12 +3,12 @@ import { cookies } from "next/headers";
 export default async function getCurrentUserServer() {
   const nextCookies = cookies();
 
-  const tokenFromCookies = nextCookies.has("token")
-    ? nextCookies.get("token").value
+  const tokenFromCookies = nextCookies.has("auth-token")
+    ? nextCookies.get("auth-token").value
     : '"no-token"';
 
   // return token without "
-  const token = tokenFromCookies.replaceAll('"', "");
+  const authToken = tokenFromCookies.replaceAll('"', "");
 
   try {
     const subjectFromToken = await fetch(
@@ -16,7 +16,7 @@ export default async function getCurrentUserServer() {
       {
         method: "POST",
         credentials: "include",
-        body: token,
+        body: authToken,
       }
     );
 
@@ -50,7 +50,7 @@ export default async function getCurrentUserServer() {
       }
     }
   } catch (e) {
-    console.error("Erorr while fetching from token: " + e);
+    console.error("Erorr while fetching from auth token: " + e);
     return undefined;
   }
 }

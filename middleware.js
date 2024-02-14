@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
 function getTokenFromCookie() {
   const nextCookies = cookies();
 
-  const tokenCookieStr = nextCookies.has("token")
-    ? nextCookies.get("token").value
+  const tokenCookieStr = nextCookies.has("auth-token")
+    ? nextCookies.get("auth-token").value
     : '"no-token"';
 
   // return token without "..."
@@ -13,9 +13,9 @@ function getTokenFromCookie() {
 }
 
 export default async function middleware(req) {
-  const token = getTokenFromCookie();
+  const authToken = getTokenFromCookie();
 
-  if (token === "no-token") {
+  if (authToken === "no-token") {
     return NextResponse.redirect(new URL("/login", req.url));
   } else {
     return NextResponse.next();

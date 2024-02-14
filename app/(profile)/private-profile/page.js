@@ -72,7 +72,7 @@ export default function ProfilePage({ searchParams }) {
           }
         );
       } catch (e) {
-        console.error("Error while generating/setting the token: " + e);
+        console.error("Error while generating/setting the auth token: " + e);
       }
     } catch (e) {
       toast.error("Error while creating the account!", {
