@@ -86,6 +86,8 @@ public class JWTTokenController {
 
         try {
             subject = JwtUtil.extractSubjectViaToken(token);
+        } catch (NoSuchElementException nsee) {
+            return new ResponseEntity<String>("none", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>("none", HttpStatus.INTERNAL_SERVER_ERROR);
