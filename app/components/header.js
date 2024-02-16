@@ -161,7 +161,10 @@ function LoggedPartialSectionMobile() {
         <div>Notifications</div>
       </Link>
 
-      <Link href="/private-profile?type=update" className="hover:text-stone-400">
+      <Link
+        href="/private-profile?type=update"
+        className="hover:text-stone-400"
+      >
         <div>Profile</div>
       </Link>
     </div>
@@ -172,13 +175,19 @@ function LoggedPartialSectionMobile() {
 function LoggedFullSectionMobile() {
   return (
     <>
-      <div className="">
-        <ComboboxCategories />
-        <Searchbar />
+      <div>
+        <div className="mb-3">
+          <ComboboxCategories />
+        </div>
+        <div>
+          <Searchbar />
+        </div>
       </div>
 
       <div className="flex justify-center flex-col gap-4 mt-4">
-        <Link href="/insert-auction" className="hover:text-stone-400">Insert auction</Link>
+        <Link href="/insert-auction" className="hover:text-stone-400">
+          Insert auction
+        </Link>
 
         <Link href="/home" className="hover:text-stone-400">
           <div>Notifications</div>
@@ -198,7 +207,13 @@ function LoggedFullSectionMobile() {
 function PrivateProfileSectionMobile() {
   return (
     <div>
-      <Button onClick={logOut} className="mb-1 ml-1.5 hover:text-stone-400" variant="none">Log out</Button>
+      <Button
+        onClick={logOut}
+        className="mb-1 ml-1.5 hover:text-stone-400"
+        variant="none"
+      >
+        Log out
+      </Button>
       <Link href="/home" className="hover:text-stone-400">
         <div>Notifications</div>
       </Link>
@@ -207,7 +222,11 @@ function PrivateProfileSectionMobile() {
 }
 
 function NotLoggedSectionMobile() {
-  return <Link href="/login" className="hover:text-stone-400">Log In</Link>;
+  return (
+    <Link href="/login" className="hover:text-stone-400">
+      Log In
+    </Link>
+  );
 }
 
 // **************************************************************
@@ -239,7 +258,7 @@ export default function Header({ headerType, token }) {
         {headerType === "headerEmpty"}
       </div>
 
-      {/* Mobile */}
+      {/* Mobile (thx chatgpt) */}
       {headerType === "headerEmpty" ? (
         <div className="bg-white md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
           <div className="mt-1">
@@ -281,7 +300,7 @@ export default function Header({ headerType, token }) {
             <div
               className={`menu ${
                 isHamburgerOpen ? "flex" : "hidden"
-              } flex-col items-center absolute top-full right-0 bg-white shadow-md mt-2 py-4 w-48`}
+              } flex-col items-center absolute top-full right-0 bg-white shadow-md mt-2 py-4 w-64 rounded`}
             >
               <div className="flex flex-col items-center">
                 {headerType === "headerLoggedFull" &&
