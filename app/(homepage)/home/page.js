@@ -53,7 +53,7 @@ export default function Home() {
   return (
     <>
       <div className="flex flex-col justify-center items-center">
-        <div className="grid grid-rows-auto grid-cols-4 gap-x-14">
+        <div className="grid md:grid-rows-auto md:grid-cols-4 grid-cols-1 md:gap-x-14">
           {paginatedAuctions ? (
             paginatedAuctions.map((auction) => (
               <>
@@ -82,6 +82,8 @@ export default function Home() {
           <AuctionPagination
             onPreviousPageChange={handlePreviousPageChange}
             onNextPageChange={handleNextPageChange}
+            pageNumber={pageIndex}
+            maxPageNumber={Math.ceil(paginatedAuctions.length / 20)}
           />
         </div>
       </div>

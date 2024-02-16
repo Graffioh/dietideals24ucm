@@ -7,12 +7,12 @@ import {
   
   import { Button } from "@/components/ui/button"
   
-  export default function AuctionPagination({onPreviousPageChange, onNextPageChange}) {
+  export default function AuctionPagination({onPreviousPageChange, onNextPageChange, pageNumber, maxPageNumber}) {
     return (
       <div className="flex items-center justify-between px-2">
         <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="flex items-center justify-center text-sm font-medium">
-            Page 1 of ?
+            Page {pageNumber} of {maxPageNumber}
           </div>
           <div className="flex items-center space-x-2">
             {/* <Button
