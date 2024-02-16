@@ -84,7 +84,6 @@ public class AuctionController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Auction());
         }
-
     }
 
     @PutMapping("/{id}/is-over")
@@ -131,6 +130,8 @@ public class AuctionController {
             } else {
                 setCurrentDecrementTimer(auction.getId(), decrementTimerBy1Second(auction));
             }
+
+            // System.out.println("ID: " + auction.getId() + " | DECREMENT TIMER: " + auction.getCurrentDecrementTimer());
         }
     }
 
@@ -155,6 +156,16 @@ public class AuctionController {
         }
     }
 
+    private Time decrementTimerBy1Second(Auction auction) {
+        LocalTime cdtLocalTime = auction.getAuctionType().name().equals("descending")
+                ? auction.getCurrentDecrementTimer().toLocalTime()
+                : auction.getCurrentOfferTimer().toLocalTime();
+        LocalTime cdtDecrementedLocalTime = cdtLocalTime.minusSeconds(1);
+        Time newDecrementTimerValue = Time.valueOf(cdtDecrementedLocalTime);
+
+        return newDecrementTimerValue;
+    }
+
     private void decreasePrice(Auction auction) {
         if (auction.getIsOver() == false) {
             if (auction.getCurrentOffer() > auction.getMinimumPrice()) {
@@ -169,13 +180,5 @@ public class AuctionController {
                 auctionDAO.updateIsOver(auction.getId());
             }
         }
-    }
-
-    private Time decrementTimerBy1Second(Auction auction) {
-        LocalTime cdtLocalTime = auction.getAuctionType().name() == "descending" ? auction.getCurrentDecrementTimer().toLocalTime() : auction.getCurrentOfferTimer().toLocalTime();
-        LocalTime cdtDecrementedLocalTime = cdtLocalTime.minusSeconds(1);
-        Time newDecrementTimerValue = Time.valueOf(cdtDecrementedLocalTime);
-
-        return newDecrementTimerValue;
     }
 }

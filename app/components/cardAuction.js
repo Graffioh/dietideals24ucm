@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import AuctionTimer from "./auctionTimer";
 
 export default function CardAuction({ isHomepage, auction }) {
@@ -31,6 +32,29 @@ export default function CardAuction({ isHomepage, auction }) {
     auction.baseDecrementTimer
   );
 
+  const [currentOffer, setCurrentOffer] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchCurrentOffer(auction.id)
+      .then((fetchedData) => {
+        setCurrentOffer(fetchedData);
+      });
+    }, 1000);
+
+    return () => clearInterval(interval); // Clear interval on component unmount
+  }, [auction.id]); // Empty dependency array means this effect runs once on mount
+
+  async function fetchCurrentOffer(auctionid) {
+    const currentUpdatedAuction = await fetch(
+      "http://localhost:8080/auctions/" + auctionid
+    );
+
+    const updatedAuction = await currentUpdatedAuction.json();
+
+    return updatedAuction.currentOffer;
+  }
+
   return (
     <>
       {isHomepage ? (
@@ -49,7 +73,8 @@ export default function CardAuction({ isHomepage, auction }) {
               <div>{auction.auctionName}</div>
 
               <div className="flex justify-between">
-                <div className="text-2xl ml-6">€{auction.currentOffer}</div>
+                {/* <div className="text-2xl ml-6">€{auction.currentOffer}</div> */}
+                <div className="text-2xl ml-6">€{currentOffer}</div>
                 {auction.auctionType === "fixedtime" && (
                   <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
                     <AuctionTimer
@@ -93,7 +118,7 @@ export default function CardAuction({ isHomepage, auction }) {
               <div>{auction.auctionName}</div>
 
               <div className="flex justify-between">
-              <div className="text-2xl ml-6">€{auction.currentOffer}</div>
+                <div className="text-2xl ml-6">€{auction.currentOffer}</div>
                 {auction.auctionType === "fixedtime" && (
                   <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
                     <AuctionTimer
