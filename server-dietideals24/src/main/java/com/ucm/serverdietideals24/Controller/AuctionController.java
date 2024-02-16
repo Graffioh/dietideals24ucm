@@ -130,8 +130,6 @@ public class AuctionController {
             } else {
                 setCurrentDecrementTimer(auction.getId(), decrementTimerBy1Second(auction));
             }
-
-            // System.out.println("ID: " + auction.getId() + " | DECREMENT TIMER: " + auction.getCurrentDecrementTimer());
         }
     }
 

@@ -36,8 +36,7 @@ export default function CardAuction({ isHomepage, auction }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchCurrentOffer(auction.id)
-      .then((fetchedData) => {
+      fetchCurrentOffer(auction.id).then((fetchedData) => {
         setCurrentOffer(fetchedData);
       });
     }, 1000);
@@ -75,30 +74,18 @@ export default function CardAuction({ isHomepage, auction }) {
               <div className="flex justify-between">
                 {/* <div className="text-2xl ml-6">€{auction.currentOffer}</div> */}
                 <div className="text-2xl ml-6">€{currentOffer}</div>
-                {auction.auctionType === "fixedtime" && (
-                  <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                    <AuctionTimer
-                      deadline={fixedTimeDeadlineTimer}
-                      auction={auction}
-                    />
-                  </div>
-                )}
-                {auction.auctionType === "english" && (
-                  <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                    <AuctionTimer
-                      deadline={englishDeadlineTimer}
-                      auction={auction}
-                    />
-                  </div>
-                )}
-                {auction.auctionType === "descending" && (
-                  <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                    <AuctionTimer
-                      deadline={descendingDeadlineTimer}
-                      auction={auction}
-                    />
-                  </div>
-                )}
+                <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
+                  <AuctionTimer
+                    deadline={
+                      auction.auctionType === "english"
+                        ? englishDeadlineTimer
+                        : auction.auctionType === "descending"
+                        ? descendingDeadlineTimer
+                        : fixedTimeDeadlineTimer
+                    }
+                    auction={auction}
+                  />
+                </div>
               </div>
             </div>
           </button>
