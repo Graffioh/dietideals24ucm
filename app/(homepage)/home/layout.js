@@ -48,7 +48,7 @@ export default async function HomeLayout({ children }) {
         }
         token={authToken}
       />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 z-0">{children}</main>
       <Footer />
     </div>
   );

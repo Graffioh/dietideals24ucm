@@ -109,7 +109,7 @@ async function logOut() {
       method: "GET",
       credentials: "include",
     });
-    
+
     window.location.href = "/";
   } catch (e) {
     console.error("Error while deleting auth token in log out: " + e);
@@ -141,21 +141,6 @@ function NotLoggedSection() {
   );
 }
 
-// Modify profile icon and notifications
-// function ModifyProfileSection() {
-//   return (
-//     <div className="mr-4 flex justify-between mb-2">
-//       <Link href="/private-profile?type=update">
-//         <Button variant="ghost" className="">
-//           <Pencil1Icon width="23" height="23" />
-//         </Button>
-//       </Link>
-
-//       <NotificationsDropdown notifications={notifications} />
-//     </div>
-//   );
-// }
-
 function NotificationsSection() {
   return (
     <div className="mr-4 flex justify-between mb-2">
@@ -172,11 +157,14 @@ function NotificationsSection() {
 function LoggedPartialSectionMobile() {
   return (
     <div className="flex justify-center flex-col gap-4">
-      <Link href="/home" className="text-white">
+      <Link href="/home" className="hover:text-stone-400">
         <div>Notifications</div>
       </Link>
 
-      <Link href="/private-profile?type=update" className="text-white">
+      <Link
+        href="/private-profile?type=update"
+        className="hover:text-stone-400"
+      >
         <div>Profile</div>
       </Link>
     </div>
@@ -187,23 +175,27 @@ function LoggedPartialSectionMobile() {
 function LoggedFullSectionMobile() {
   return (
     <>
-      <div className="flex flex-grow flex-col gap-6 justify-between mx-48 mb-2">
-        <ComboboxCategories />
-        <Searchbar />
+      <div>
+        <div className="mb-3">
+          <ComboboxCategories />
+        </div>
+        <div>
+          <Searchbar />
+        </div>
       </div>
 
       <div className="flex justify-center flex-col gap-4 mt-4">
-        <Link href="/insert-auction" className="text-white">
+        <Link href="/insert-auction" className="hover:text-stone-400">
           Insert auction
         </Link>
 
-        <Link href="/home" className="text-white">
+        <Link href="/home" className="hover:text-stone-400">
           <div>Notifications</div>
         </Link>
 
         <Link
           href="/private-profile?type=update"
-          className="text-white flex justify-center"
+          className="flex justify-center hover:text-stone-400"
         >
           <div>Profile</div>
         </Link>
@@ -214,34 +206,28 @@ function LoggedFullSectionMobile() {
 
 function PrivateProfileSectionMobile() {
   return (
-    <Link href="/home" className="text-white">
-      <div>Notifications</div>
-    </Link>
+    <div>
+      <Button
+        onClick={logOut}
+        className="mb-1 ml-1.5 hover:text-stone-400"
+        variant="none"
+      >
+        Log out
+      </Button>
+      <Link href="/home" className="hover:text-stone-400">
+        <div>Notifications</div>
+      </Link>
+    </div>
   );
 }
 
 function NotLoggedSectionMobile() {
   return (
-    <Link href="/login" className="text-white">
+    <Link href="/login" className="hover:text-stone-400">
       Log In
     </Link>
   );
 }
-
-// Modify profile icon and notifications
-// function ModifyProfileSectionMobile() {
-//   return (
-//     <div className="flex flex-col justify-center gap-4">
-//       <Link href="/home" className="text-white">
-//         <div>Modify</div>
-//       </Link>
-
-//       <Link href="/home" className="text-white">
-//         <div>Notifications</div>
-//       </Link>
-//     </div>
-//   );
-// }
 
 // **************************************************************
 
@@ -254,27 +240,10 @@ export default function Header({ headerType, token }) {
     setIsHamburgerOpen(!isHamburgerOpen);
   }
 
-  // const [token, setToken] = useState("");
-
-  // useEffect(() => {
-  //   async function getAndSetToken() {
-  //     const res = await fetch("http://localhost:8080/get-login-token", {
-  //       method: "GET",
-  //       credentials: "include",
-  //       next: { revalidate: 2 },
-  //     });
-  //     const resText = await res.text();
-
-  //     setToken(resText);
-  //   }
-
-  //   getAndSetToken();
-  // }, []);
-
   return (
     <>
       {/* Web */}
-      <div className="bg-white hidden m-2 md:flex justify-between top-0 border-b">
+      <div className="z-50 bg-white hidden m-2 md:flex justify-between top-0 border-b">
         <div className="mt-1">
           <Logo />
         </div>
@@ -289,7 +258,7 @@ export default function Header({ headerType, token }) {
         {headerType === "headerEmpty"}
       </div>
 
-      {/* Mobile */}
+      {/* Mobile (thx chatgpt) */}
       {headerType === "headerEmpty" ? (
         <div className="bg-white md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
           <div className="mt-1">
@@ -297,41 +266,58 @@ export default function Header({ headerType, token }) {
           </div>
         </div>
       ) : (
-        <div className="bg-white md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
+        <div className="z-50 bg-white md:hidden m-2 pb-1.5 flex justify-between sticky top-0 border-b">
           <div className="mt-1">
             <Logo />
           </div>
 
-          <div className="flex md:hidden" onClick={handleHamburger}>
-            {isHamburgerOpen ? (
-              <Button variant="ghost">
-                <Cross1Icon width="23" height="23" />
-              </Button>
-            ) : (
-              <Button variant="ghost">
-                <HamburgerMenuIcon width="23" height="23" />
-              </Button>
-            )}
-          </div>
+          <div className="relative">
+            {/* Hamburger Icon */}
+            <button
+              onClick={() => setIsHamburgerOpen(!isHamburgerOpen)}
+              className={`hamburger block mt-1.5 mr-2 z-10 relative focus:outline-none ${
+                isHamburgerOpen ? "open" : ""
+              }`}
+            >
+              <span
+                className={`hamburger-box block w-6 h-0.5 bg-black my-1.5 transition duration-300 ease-in-out ${
+                  isHamburgerOpen ? "rotate-45 translate-y-2" : ""
+                }`}
+              ></span>
+              <span
+                className={`hamburger-box block w-6 h-0.5 bg-black my-1.5 transition duration-300 ease-in-out ${
+                  isHamburgerOpen ? "opacity-0" : ""
+                }`}
+              ></span>
+              <span
+                className={`hamburger-box block w-6 h-0.5 bg-black my-1.5 transition duration-300 ease-in-out ${
+                  isHamburgerOpen ? "-rotate-45 -translate-y-2" : ""
+                }`}
+              ></span>
+            </button>
 
-          <div
-            className={
-              isHamburgerOpen
-                ? "md:hidden absolute flex items-center justify-center bg-blue-950 min-h-[40vh] left-0 top-[100%] w-full rounded"
-                : "hidden"
-            }
-          >
-            <ul className="flex flex-col items-center">
-              {headerType === "headerLoggedFull" && <LoggedFullSectionMobile />}
-              {headerType === "headerLoggedPartial" && (
-                <LoggedPartialSectionMobile />
-              )}
-              {headerType === "headerPrivateProfile" && (
-                <PrivateProfileSectionMobile />
-              )}
-              {headerType === "headerNotLogged" && <NotLoggedSectionMobile />}
-              {headerType === "headerEmpty"}
-            </ul>
+            {/* Menu Options */}
+            <div
+              className={`menu ${
+                isHamburgerOpen ? "flex" : "hidden"
+              } flex-col items-center absolute top-full right-0 bg-white shadow-md mt-2 py-4 w-64 rounded`}
+            >
+              <div className="flex flex-col items-center">
+                {headerType === "headerLoggedFull" &&
+                  token !== "no-token" &&
+                  token !== "" && <LoggedFullSectionMobile />}
+                {headerType === "headerLoggedPartial" && (
+                  <LoggedPartialSectionMobile />
+                )}
+                {headerType === "headerPrivateProfile" && (
+                  <PrivateProfileSectionMobile />
+                )}
+                {(token === "no-token" || token === "") && (
+                  <NotLoggedSectionMobile />
+                )}
+                {headerType === "headerEmpty"}
+              </div>
+            </div>
           </div>
         </div>
       )}
