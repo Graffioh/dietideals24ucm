@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Link from "next/link";
 
@@ -11,6 +11,7 @@ import useSWR from "swr";
 
 export default function Home() {
   const [pageIndex, setPageIndex] = useState(1);
+  const [maxPageIndex, setMaxPageIndex] = useState("");
 
   const fetcher = (url) =>
     fetch(url, { next: { revalidate: 1 } }).then((res) => res.json());
@@ -29,6 +30,12 @@ export default function Home() {
       "Error while fetching paginated auctions: " + paginatedAuctionsError
     );
   }
+  
+  useEffect(() => {
+    if(paginatedAuctions) {
+      setMaxPageIndex(Math.ceil(paginatedAuctions.length / 20) + 1);
+    }
+  }, [paginatedAuctions])
 
   function handlePreviousPageChange() {
     if (pageIndex > 1) {
@@ -39,6 +46,7 @@ export default function Home() {
   function handleNextPageChange() {
     if (paginatedAuctions.length === 20) {
       setPageIndex(pageIndex + 1);
+      setMaxPageIndex(Math.ceil(paginatedAuctions.length / 20))
     }
   }
 
@@ -83,7 +91,7 @@ export default function Home() {
             onPreviousPageChange={handlePreviousPageChange}
             onNextPageChange={handleNextPageChange}
             pageNumber={pageIndex}
-            maxPageNumber={Math.ceil(paginatedAuctions.length / 20)}
+            maxPageNumber={maxPageIndex}
           />
         </div>
       </div>

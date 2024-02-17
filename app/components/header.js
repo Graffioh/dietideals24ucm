@@ -184,7 +184,7 @@ function LoggedFullSectionMobile() {
         </div>
       </div>
 
-      <div className="flex justify-center flex-col gap-4 mt-4">
+      <div className="flex flex-col justify-center items-center gap-4 mt-4">
         <Link href="/insert-auction" className="hover:text-stone-400">
           Insert auction
         </Link>
@@ -195,7 +195,7 @@ function LoggedFullSectionMobile() {
 
         <Link
           href="/private-profile?type=update"
-          className="flex justify-center hover:text-stone-400"
+          className="hover:text-stone-400"
         >
           <div>Profile</div>
         </Link>
