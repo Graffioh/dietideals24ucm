@@ -30,12 +30,12 @@ export default function Home() {
       "Error while fetching paginated auctions: " + paginatedAuctionsError
     );
   }
-  
+
   useEffect(() => {
-    if(paginatedAuctions) {
+    if (paginatedAuctions) {
       setMaxPageIndex(Math.ceil(paginatedAuctions.length / 20) + 1);
     }
-  }, [paginatedAuctions])
+  }, [paginatedAuctions]);
 
   function handlePreviousPageChange() {
     if (pageIndex > 1) {
@@ -46,7 +46,7 @@ export default function Home() {
   function handleNextPageChange() {
     if (paginatedAuctions.length === 20) {
       setPageIndex(pageIndex + 1);
-      setMaxPageIndex(Math.ceil(paginatedAuctions.length / 20))
+      setMaxPageIndex(Math.ceil(paginatedAuctions.length / 20));
     }
   }
 
@@ -64,22 +64,17 @@ export default function Home() {
         <div className="grid md:grid-rows-auto md:grid-cols-4 grid-cols-1 md:gap-x-14">
           {paginatedAuctions ? (
             paginatedAuctions.map((auction) => (
-              <>
-                <Link
-                  href={
-                    "/auction-details?id=" +
-                    auction.id +
-                    "&auctionuserid=" +
-                    auction.idUserAccount
-                  }
-                >
-                  <CardAuction
-                    key={auction.id}
-                    isHomepage={true}
-                    auction={auction}
-                  />
-                </Link>
-              </>
+              <Link
+                href={
+                  "/auction-details?id=" +
+                  auction.id +
+                  "&auctionuserid=" +
+                  auction.idUserAccount
+                }
+                key={auction.id}
+              >
+                <CardAuction isHomepage={true} auction={auction} />
+              </Link>
             ))
           ) : (
             <div></div>
