@@ -162,7 +162,7 @@ function LoggedPartialSectionMobile() {
       </Link>
 
       <Link
-        href="/private-profile?type=update"
+        href="/public-profile"
         className="hover:text-stone-400"
       >
         <div>Profile</div>
@@ -194,7 +194,7 @@ function LoggedFullSectionMobile() {
         </Link>
 
         <Link
-          href="/private-profile?type=update"
+          href="/public-profile"
           className="hover:text-stone-400"
         >
           <div>Profile</div>

@@ -27,7 +27,7 @@ export default function InsertAuctionPage() {
   const { currentUser, currentUserIsLoading } = useUserContext();
 
   // Category combobox state
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Category 1");
 
   // Auction combobox state
   const [auctionType, setAuctionType] = useState("");
@@ -37,7 +37,7 @@ export default function InsertAuctionPage() {
   }
 
   // Quality combobox state
-  const [quality, setQuality] = useState("");
+  const [quality, setQuality] = useState("Good");
 
   // English auction inputs state
   // ***************************************
@@ -47,25 +47,29 @@ export default function InsertAuctionPage() {
 
   function handleBaseStartAuction(baseStartAuction) {
     setBaseStartAuction(baseStartAuction);
+    validateEnglishAuctionInputs();
   }
 
   function handleRaiseThreshold(raiseThreshold) {
     setRaiseThreshold(raiseThreshold);
+    validateEnglishAuctionInputs();
   }
 
   function handleBaseOfferTimer(baseOfferTimer) {
     setBaseOfferTimer(baseOfferTimer);
+    validateEnglishAuctionInputs();
   }
   // ***************************************
 
   // Fixed Time auction inputs state
   // ***************************************
   const [expireDate, setExpireDate] = useState("");
-  // const [expireTime, setExpireTime] = useState("");
+  const [expireTime, setExpireTime] = useState("");
   const [fixedTimeMinimumPrice, setFixedTimeMinimumPrice] = useState("");
 
   function handleExpireDateChange(date) {
     setExpireDate(date);
+    validateFixedTimeAuctionInputs();
   }
 
   function handleExpireTimeChange(time) {
@@ -74,6 +78,7 @@ export default function InsertAuctionPage() {
 
   function handleFixedTimeMinimumPriceChange(price) {
     setFixedTimeMinimumPrice(price);
+    validateFixedTimeAuctionInputs();
   }
   // ***************************************
 
@@ -81,30 +86,63 @@ export default function InsertAuctionPage() {
   // ***************************************
   const [startPrice, setStartPrice] = useState("");
   const [decrementAmount, setDecrementAmount] = useState("");
-  const [expireTime, setExpireTime] = useState("");
   const [baseDecrementTimer, setDecrementTimer] = useState("");
   const [descendingMinimumPrice, setDescendingMinimumPrice] = useState("");
 
   function handleStartPrice(startPrice) {
     setStartPrice(startPrice);
+    validateDescendingAuctionInputs();
   }
 
   function handleDecrementAmount(decrementAmount) {
     setDecrementAmount(decrementAmount);
-  }
-
-  function handleExpireTime(expireTime) {
-    setExpireTime(expireTime);
+    validateDescendingAuctionInputs();
   }
 
   function handleDecrementTimer(timer) {
     setDecrementTimer(timer);
+    validateDescendingAuctionInputs();
   }
 
   function handleDescendingMinimumPrice(descendingMinimumPrice) {
     setDescendingMinimumPrice(descendingMinimumPrice);
+    validateDescendingAuctionInputs();
   }
   // ***************************************
+
+  const [areDescendingInputsValid, setAreDescendingInputsValid] = useState("");
+  const [areEnglishInputsValid, setAreEnglishInputsValid] = useState("");
+  const [areFixedTimeInputsValid, setAreFixedTimeInputsValid] = useState("");
+
+  function validateDescendingAuctionInputs() {
+    const validState =
+      category &&
+      auctionType &&
+      quality &&
+      startPrice &&
+      decrementAmount &&
+      baseDecrementTimer &&
+      descendingMinimumPrice;
+    setAreDescendingInputsValid(validState);
+  }
+
+  function validateFixedTimeAuctionInputs() {
+    const validState =
+      category && auctionType && quality && expireDate && fixedTimeMinimumPrice;
+    setAreFixedTimeInputsValid(validState);
+  }
+
+  function validateEnglishAuctionInputs() {
+    const validState =
+      category &&
+      auctionType &&
+      quality &&
+      baseStartAuction &&
+      raiseThreshold &&
+      baseOfferTimer;
+
+    setAreEnglishInputsValid(validState);
+  }
 
   const createAuctionButtonRef = useRef(null);
   const hiddenFileInput = useRef(null);
@@ -115,6 +153,11 @@ export default function InsertAuctionPage() {
 
   async function onSubmit(event) {
     event.preventDefault();
+
+    if (!areEnglishInputsValid && !areDescendingInputsValid && !areFixedTimeInputsValid) {
+      toast.error("Please fill all the fields before submitting!");
+      return;
+    }
 
     const inputs = event.currentTarget;
     const auctionFromInputs = {
