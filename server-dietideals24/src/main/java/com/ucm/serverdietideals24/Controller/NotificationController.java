@@ -59,7 +59,7 @@ public class NotificationController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Notification> createNotification(@RequestBody Long notiId) {
+    public ResponseEntity<Notification> deleteNotification(@RequestBody Long notiId) {
         // ...
         return null;
     }

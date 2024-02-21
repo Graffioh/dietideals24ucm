@@ -55,7 +55,7 @@ function Logo() {
 function LoggedPartialSection() {
   return (
     <div className="mr-3 flex justify-between mb-2">
-      <NotificationsDropdown notifications={notifications} />
+      <NotificationsDropdown />
 
       <Link href="/public-profile" className="mt-0.5">
         <Avatar className="h-9 w-9">
@@ -90,7 +90,7 @@ function LoggedFullSection() {
           Insert auction
         </Link>
 
-        <NotificationsDropdown notifications={notifications} />
+        <NotificationsDropdown />
 
         <Link href="/public-profile" className="mt-0.5 flex justify-center">
           <Avatar className="h-9 w-9">
@@ -144,7 +144,7 @@ function NotLoggedSection() {
 function NotificationsSection() {
   return (
     <div className="mr-4 flex justify-between mb-2">
-      <NotificationsDropdown notifications={notifications} />
+      <NotificationsDropdown />
     </div>
   );
 }

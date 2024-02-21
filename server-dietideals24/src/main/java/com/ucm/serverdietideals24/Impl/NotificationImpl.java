@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.ucm.serverdietideals24.DAO.NotificationDAO;
 import com.ucm.serverdietideals24.Models.Notification;
 
+@Repository
 public class NotificationImpl implements NotificationDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -27,8 +29,9 @@ public class NotificationImpl implements NotificationDAO {
 
     @Override
     public void create(Notification noti) {
-        jdbcTemplate.execute("INSERT INTO notification VALUES('" + noti.getId() + "', '" + noti.getAuctionName()
-                + "', '" + noti.getIdUserAccount() + "', '" + noti.getIdAuction() + "'");
+        jdbcTemplate.execute("INSERT INTO notification (id, auctionname, iduseraccount, idauction) VALUES('"
+                + noti.getId() + "', '" + noti.getAuctionName()
+                + "', '" + noti.getIdUserAccount() + "', '" + noti.getIdAuction() + "')");
     }
 
     @Override

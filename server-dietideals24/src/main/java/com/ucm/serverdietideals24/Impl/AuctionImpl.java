@@ -65,7 +65,8 @@ public class AuctionImpl implements AuctionDAO {
                             + auction.getCurrentOffer() + "', '" + auction.getAuctionImages() + "', '"
                             + auction.getBaseStartAuction() + "', '" + auction.getRaiseThreshold() + "', '"
                             + auction.getIdUserAccount() + "', '"
-                            + auction.getBaseOfferTimer() + "', '" + auction.getAuctionType() + "', '" + auction.getBaseOfferTimer() + "')");
+                            + auction.getBaseOfferTimer() + "', '" + auction.getAuctionType() + "', '"
+                            + auction.getBaseOfferTimer() + "')");
         } else if (auction.getAuctionType().toString() == "fixedtime") {
             jdbcTemplate.execute(
                     "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, expireDate, minimumPrice, expireTime, idUserAccount, auctionType) VALUES ('"

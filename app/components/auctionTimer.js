@@ -80,10 +80,7 @@ export default function AuctionTimer({ deadline, auction }) {
       }
 
       // SET END
-      if (Object.keys(timeLeft).length === 0 && !auctionEnded) {
-        // POST Request su Notifications (con attributi diversi in base al tipo di asta)
-        // ...
-
+      if (Object.keys(timeLeft).length === 0 && !auctionEnded && !auction.isOver) {
         switch (auction.auctionType) {
           case "fixedtime":
             setAuctionEnded(true);
@@ -111,6 +108,34 @@ export default function AuctionTimer({ deadline, auction }) {
               .catch((error) => {
                 console.error(
                   "Error while setting is over (fixedtime): " + error.message
+                );
+              });
+
+            const noti = {
+              id: Date.now(),
+              auctionName: auction.auctionName,
+              idUserAccount: auction.idUserAccount,
+              idAuction: auction.id,
+            };
+
+            fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(noti),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+              })
+              .then(() => {
+                console.log(
+                  "Notifications for auction ended created successfully"
+                );
+              })
+              .catch((error) => {
+                console.error(
+                  "Error while creating notification: " + error.message
                 );
               });
             break;
@@ -145,6 +170,39 @@ export default function AuctionTimer({ deadline, auction }) {
                 .catch((error) => {
                   console.error(
                     "Error while setting is over (fixedtime): " + error.message
+                  );
+                });
+
+              const noti = {
+                id: Date.now(),
+                auctionName: auction.auctionName,
+                idUserAccount: auction.idUserAccount,
+                idAuction: auction.id,
+              };
+
+              fetch(
+                process.env.NEXT_PUBLIC_BASEURL +
+                  "/notifications/create/" +
+                  auction.id,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: noti,
+                }
+              )
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                  }
+                })
+                .then(() => {
+                  console.log(
+                    "Notifications for auction ended created successfully"
+                  );
+                })
+                .catch((error) => {
+                  console.error(
+                    "Error while creating notification: " + error.message
                   );
                 });
             }
