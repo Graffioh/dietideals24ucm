@@ -1,0 +1,38 @@
+package com.ucm.serverdietideals24.Impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.ucm.serverdietideals24.DAO.NotificationDAO;
+import com.ucm.serverdietideals24.Models.Notification;
+
+public class NotificationImpl implements NotificationDAO {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public List<Notification> getAll() {
+        return jdbcTemplate.query("SELECT * FROM notification",
+                new BeanPropertyRowMapper<Notification>(Notification.class));
+    }
+
+    @Override
+    public List<Notification> getAllViaUserId(Long userId) {
+        return jdbcTemplate.query("SELECT * FROM notification WHERE idUserAccount = " + userId,
+                new BeanPropertyRowMapper<Notification>(Notification.class));
+    }
+
+    @Override
+    public void create(Notification noti) {
+        jdbcTemplate.execute("INSERT INTO notification VALUES('" + noti.getId() + "', '" + noti.getAuctionName()
+                + "', '" + noti.getIdUserAccount() + "', '" + noti.getIdAuction() + "'");
+    }
+
+    @Override
+    public void delete(Long notiId) {
+        // ...
+    }
+}

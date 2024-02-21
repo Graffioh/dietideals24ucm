@@ -81,6 +81,9 @@ export default function AuctionTimer({ deadline, auction }) {
 
       // SET END
       if (Object.keys(timeLeft).length === 0 && !auctionEnded) {
+        // POST Request su Notifications (con attributi diversi in base al tipo di asta)
+        // ...
+
         switch (auction.auctionType) {
           case "fixedtime":
             setAuctionEnded(true);
