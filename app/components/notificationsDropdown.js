@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { BellIcon } from "@radix-ui/react-icons";
+import { BellIcon, LapTimerIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
 import useSWR from "swr";
@@ -53,15 +53,25 @@ export default function NotificationsDropdown() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" className="mx-2">
+        {/* <Button variant="ghost" className="z-1 mx-2">
+            <BellIcon width="23" height="23" />
+          </Button> */}
+
+        <Button variant="ghost" className="relative">
           <BellIcon width="23" height="23" />
+          <div className="absolute w-2.5 h-2.5 top-2.5 right-4 bg-red-500 rounded-full" hidden={notiData.length <= 0}></div>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0 bg-white">
         <Command>
           <CommandGroup>
             {notiData.map((noti) => (
-              <div key={noti.id}>Auction: {noti.auctionName} has ended!</div>
+              <div className="flex border-b">
+                <LapTimerIcon className="mt-3 mx-3" width={22} height={22} />
+                <div className="" key={noti.id}>
+                  Auction: {noti.auctionName} has ended!
+                </div>
+              </div>
             ))}
           </CommandGroup>
         </Command>
