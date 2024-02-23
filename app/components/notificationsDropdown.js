@@ -29,7 +29,7 @@ export default function NotificationsDropdown() {
   const [open, setOpen] = React.useState(false);
 
   const fetcher = (url) =>
-    fetch(url, { next: { revalidate: 1 } }).then((res) => res.json());
+    fetch(url, { next: { revalidate: 0 } }).then((res) => res.json());
 
   const cuid = currentUser ? currentUser.id : -1;
 
@@ -61,7 +61,7 @@ export default function NotificationsDropdown() {
         <Command>
           <CommandGroup>
             {notiData.map((noti) => (
-              <div>Auction: {noti.auctionName} has ended!</div>
+              <div key={noti.id}>Auction: {noti.auctionName} has ended!</div>
             ))}
           </CommandGroup>
         </Command>

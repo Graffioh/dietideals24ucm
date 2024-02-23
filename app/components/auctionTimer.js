@@ -114,8 +114,9 @@ export default function AuctionTimer({ deadline, auction }) {
             const noti = {
               id: Date.now(),
               auctionName: auction.auctionName,
-              idUserAccount: auction.idUserAccount,
+              idOffer: 0,
               idAuction: auction.id,
+              idUserAccountSeller: auction.idUserAccount,
             };
 
             fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {

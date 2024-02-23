@@ -23,15 +23,15 @@ public class NotificationImpl implements NotificationDAO {
 
     @Override
     public List<Notification> getAllViaUserId(Long userId) {
-        return jdbcTemplate.query("SELECT * FROM notification WHERE idUserAccount = " + userId,
+        return jdbcTemplate.query("SELECT * FROM notification WHERE idUserAccountSeller = " + userId,
                 new BeanPropertyRowMapper<Notification>(Notification.class));
     }
 
     @Override
     public void create(Notification noti) {
-        jdbcTemplate.execute("INSERT INTO notification (id, auctionname, iduseraccount, idauction) VALUES('"
+        jdbcTemplate.execute("INSERT INTO notification (id, auctionname, idoffer, idauction, iduseraccountseller) VALUES('"
                 + noti.getId() + "', '" + noti.getAuctionName()
-                + "', '" + noti.getIdUserAccount() + "', '" + noti.getIdAuction() + "')");
+                + "', '0' , '" + noti.getIdAuction() + "', '" + noti.getIdUserAccountSeller() + "')");
     }
 
     @Override
