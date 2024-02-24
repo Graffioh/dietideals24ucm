@@ -10,7 +10,14 @@ import LoadingSpinner from "@/app/components/loadingSpinner";
 import useSWR from "swr";
 
 export default function Home() {
-  const [pageIndex, setPageIndex] = useState(1);
+  // Retrieve last page number from localStorage when the page is reloaded
+  const [pageIndex, setPageIndex] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedPageIndex = localStorage.getItem("pageIndex");
+      return storedPageIndex ? parseInt(storedPageIndex, 10) : 1;
+    }
+    return 1;
+  });
   const [maxPageIndex, setMaxPageIndex] = useState("");
 
   const fetcher = (url) =>
@@ -35,7 +42,9 @@ export default function Home() {
     if (paginatedAuctions) {
       setMaxPageIndex(Math.ceil(paginatedAuctions.length / 20) + 1);
     }
-  }, [paginatedAuctions]);
+
+    localStorage.setItem("pageIndex", pageIndex);
+  }, [pageIndex, paginatedAuctions]);
 
   function handlePreviousPageChange() {
     if (pageIndex > 1) {
