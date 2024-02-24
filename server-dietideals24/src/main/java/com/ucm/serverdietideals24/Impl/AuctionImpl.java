@@ -88,4 +88,5 @@ public class AuctionImpl implements AuctionDAO {
     public void updateCurrentDecrementTimer(Long id, Time newTimerValue) {
         jdbcTemplate.update("UPDATE auction SET currentDecrementTimer = '" + newTimerValue + "' WHERE id = " + id);
     }
+
 }

@@ -12,6 +12,7 @@ import FixedTimeAuctionDetailsInputs from "@/app/components/auctions/fixedTimeAu
 import PlaceOfferDialog from "@/app/components/placeOfferDialog";
 import { cn } from "@/lib/utils";
 
+
 export default async function AuctionDetailsPage({ searchParams }) {
   function getTokenFromCookie() {
     const nextCookies = cookies();
@@ -100,7 +101,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
                   Place offer
                 </Link>
               ) : (
-                <PlaceOfferDialog />
+                <PlaceOfferDialog auction={currentAuction} />
               )}
             </div>
           </div>

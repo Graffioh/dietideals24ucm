@@ -1,6 +1,7 @@
 package com.ucm.serverdietideals24.Models;
 
 import lombok.NoArgsConstructor;
+import io.micrometer.common.lang.NonNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,7 +9,15 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Offer {
-    private int id;
+    @NonNull
+    private Long id;
 
+    @NonNull
     private float offerAmount;
+
+    @NonNull
+    private Long idUserAccount;
+
+    @NonNull
+    private Long idAuction;
 }
