@@ -138,10 +138,6 @@ function NotificationsSection() {
 function LoggedPartialSectionMobile() {
   return (
     <div className="flex justify-center flex-col gap-4">
-      <Link href="/home" className="hover:text-stone-400">
-        <div>Notifications</div>
-      </Link>
-
       <Link
         href="/public-profile"
         className="hover:text-stone-400"
@@ -170,10 +166,6 @@ function LoggedFullSectionMobile() {
           Insert auction
         </Link>
 
-        <Link href="/home" className="hover:text-stone-400">
-          <div>Notifications</div>
-        </Link>
-
         <Link
           href="/public-profile"
           className="hover:text-stone-400"
@@ -195,9 +187,6 @@ function PrivateProfileSectionMobile() {
       >
         Log out
       </Button>
-      <Link href="/home" className="hover:text-stone-400">
-        <div>Notifications</div>
-      </Link>
     </div>
   );
 }
@@ -252,11 +241,15 @@ export default function Header({ headerType, token }) {
             <Logo />
           </div>
 
-          <div className="relative">
+          <div className="relative flex">
+            <div className="mt-1">
+              <NotificationsDropdown />
+            </div>
+
             {/* Hamburger Icon */}
             <button
               onClick={() => setIsHamburgerOpen(!isHamburgerOpen)}
-              className={`hamburger block mt-1.5 mr-2 z-10 relative focus:outline-none ${
+              className={`hamburger block mr-2 z-10 relative focus:outline-none ${
                 isHamburgerOpen ? "open" : ""
               }`}
             >
