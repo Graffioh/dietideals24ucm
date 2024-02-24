@@ -148,7 +148,7 @@ export default function ProfilePage({ searchParams }) {
       <div className="flex flex justify-center mb-10 mt-10">
         <Avatar className="h-32 w-32">
           <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
-          <AvatarFallback>gojo</AvatarFallback>
+          <AvatarFallback />
         </Avatar>
       </div>
 

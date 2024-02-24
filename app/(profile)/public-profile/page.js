@@ -16,7 +16,8 @@ export default async function ProfilePage({ searchParams }) {
   async function getUserById(id) {
     try {
       const userRes = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/users/" + id
+        process.env.NEXT_PUBLIC_BASEURL + "/users/" + id,
+        { next: { revalidate: 0 } }
       );
 
       const user = await userRes.json();
@@ -61,7 +62,7 @@ export default async function ProfilePage({ searchParams }) {
         <div className="mt-2 mr-10">
           <Avatar className="h-32 w-32">
             <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
-            <AvatarFallback>gojo</AvatarFallback>
+            <AvatarFallback />
           </Avatar>
         </div>
         <div className="flex-col w-full">
