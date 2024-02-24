@@ -18,25 +18,6 @@ import ComboboxCategories from "./comboboxCategories";
 import Searchbar from "./searchbar";
 import NotificationsDropdown from "./notificationsDropdown";
 
-const notifications = [
-  {
-    value: "public-profile",
-    label: "notification 1",
-  },
-  {
-    value: "private-profile",
-    label: "notification 2",
-  },
-  {
-    value: "insert-auction",
-    label: "notification 3",
-  },
-  {
-    value: "/",
-    label: "notification 4",
-  },
-];
-
 function Logo() {
   return (
     <div className="mb-3">
@@ -60,7 +41,7 @@ function LoggedPartialSection() {
       <Link href="/public-profile" className="mt-0.5">
         <Avatar className="h-9 w-9">
           <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
-          <AvatarFallback>gojo</AvatarFallback>
+          <AvatarFallback />
         </Avatar>
       </Link>
     </div>
@@ -95,7 +76,7 @@ function LoggedFullSection() {
         <Link href="/public-profile" className="mt-0.5 flex justify-center">
           <Avatar className="h-9 w-9">
             <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
-            <AvatarFallback>gojo</AvatarFallback>
+            <AvatarFallback />
           </Avatar>
         </Link>
       </div>

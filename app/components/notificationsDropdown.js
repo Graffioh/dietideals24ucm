@@ -39,7 +39,7 @@ export default function NotificationsDropdown() {
     isLoading: notiIsLoading,
   } = useSWR(
     process.env.NEXT_PUBLIC_BASEURL + "/notifications/" + cuid,
-    fetcher
+    fetcher, { refreshInterval: 100 }
   );
 
   if (notiIsLoading) {
@@ -51,7 +51,6 @@ export default function NotificationsDropdown() {
   }
 
   async function deleteNotification(notiId) {
-    console.log("NOTI ID: ", +notiId);
     try {
       const response = await fetch(
         process.env.NEXT_PUBLIC_BASEURL +
@@ -74,7 +73,7 @@ export default function NotificationsDropdown() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" className="relative">
+        <Button variant="ghost" className="mx-2 relative">
           <BellIcon width="23" height="23" />
           <div
             className="absolute w-2.5 h-2.5 top-2.5 right-4 bg-red-500 rounded-full"
@@ -85,24 +84,32 @@ export default function NotificationsDropdown() {
       <PopoverContent className="w-[300px] p-0 bg-white">
         <Command>
           <CommandGroup>
-            {notiData.map((noti) => (
-              <div className="flex border-b items-center justify-between">
-                <div className="flex items-center">
-                  <LapTimerIcon className="mx-3" width={22} height={22} />
-                  <div className="" key={noti.id}>
-                    Auction: {noti.auctionName} has ended!
+            {notiData.length > 0 ? (
+              notiData.map((noti) => (
+                <div key={noti.id} className="flex border-b items-center justify-between">
+                  <div className="flex items-center">
+                    <LapTimerIcon
+                      className="flex-none mx-3"
+                      width={22}
+                      height={22}
+                    />
+                    <div className="" key={noti.id}>
+                      Auction: <b>{noti.auctionName}</b> has ended!
+                    </div>
                   </div>
+                  <Button
+                    onClick={() => {
+                      deleteNotification(noti.id);
+                    }}
+                    className="m-2"
+                  >
+                    <CheckIcon width={22} height={22} />
+                  </Button>
                 </div>
-                <Button
-                  onClick={() => {
-                    deleteNotification(noti.id);
-                  }}
-                  className="m-2"
-                >
-                  <CheckIcon width={20} height={20}/>
-                </Button>
-              </div>
-            ))}
+              ))
+            ) : (
+              <div className="m-2">No notifications.</div>
+            )}
           </CommandGroup>
         </Command>
       </PopoverContent>

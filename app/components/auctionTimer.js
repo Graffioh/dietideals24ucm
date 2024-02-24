@@ -112,7 +112,7 @@ export default function AuctionTimer({ deadline, auction }) {
               });
 
             const noti = {
-              id: Date.now(),
+              id: auction.id + auction.idUserAccount,
               auctionName: auction.auctionName,
               idOffer: 0,
               idAuction: auction.id,
@@ -175,7 +175,7 @@ export default function AuctionTimer({ deadline, auction }) {
                 });
 
               const noti = {
-                id: Date.now(),
+                id: auction.id + auction.idUserAccount,
                 auctionName: auction.auctionName,
                 idUserAccount: auction.idUserAccount,
                 idAuction: auction.id,
