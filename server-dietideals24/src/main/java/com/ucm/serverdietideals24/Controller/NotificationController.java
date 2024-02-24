@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ucm.serverdietideals24.DAO.NotificationDAO;
@@ -59,8 +60,13 @@ public class NotificationController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Notification> deleteNotification(@RequestBody Long notiId) {
-        // ...
-        return null;
+    public ResponseEntity<Notification> deleteNotification(@RequestParam Long notiId) {
+        try {
+            notificationDAO.delete(notiId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

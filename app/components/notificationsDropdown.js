@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { BellIcon, LapTimerIcon } from "@radix-ui/react-icons";
+import { BellIcon, LapTimerIcon, CheckIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
 import useSWR from "swr";
@@ -50,27 +50,57 @@ export default function NotificationsDropdown() {
     );
   }
 
+  async function deleteNotification(notiId) {
+    console.log("NOTI ID: ", +notiId);
+    try {
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_BASEURL +
+          "/notifications/delete?notiId=" +
+          notiId,
+        { method: "DELETE", headers: { "Content-Type": "application/json" } }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("There was an error:", error);
+    }
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        {/* <Button variant="ghost" className="z-1 mx-2">
-            <BellIcon width="23" height="23" />
-          </Button> */}
-
         <Button variant="ghost" className="relative">
           <BellIcon width="23" height="23" />
-          <div className="absolute w-2.5 h-2.5 top-2.5 right-4 bg-red-500 rounded-full" hidden={notiData.length <= 0}></div>
+          <div
+            className="absolute w-2.5 h-2.5 top-2.5 right-4 bg-red-500 rounded-full"
+            hidden={notiData.length <= 0}
+          ></div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0 bg-white">
+      <PopoverContent className="w-[300px] p-0 bg-white">
         <Command>
           <CommandGroup>
             {notiData.map((noti) => (
-              <div className="flex border-b">
-                <LapTimerIcon className="mt-3 mx-3" width={22} height={22} />
-                <div className="" key={noti.id}>
-                  Auction: {noti.auctionName} has ended!
+              <div className="flex border-b items-center justify-between">
+                <div className="flex items-center">
+                  <LapTimerIcon className="mx-3" width={22} height={22} />
+                  <div className="" key={noti.id}>
+                    Auction: {noti.auctionName} has ended!
+                  </div>
                 </div>
+                <Button
+                  onClick={() => {
+                    deleteNotification(noti.id);
+                  }}
+                  className="m-2"
+                >
+                  <CheckIcon width={20} height={20}/>
+                </Button>
               </div>
             ))}
           </CommandGroup>

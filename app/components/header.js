@@ -48,7 +48,7 @@ function Logo() {
 }
 
 // *******************************
-// Various header sections WEB
+// Various header sections DESKTOP
 // *******************************
 
 // Only notifications and profile icon

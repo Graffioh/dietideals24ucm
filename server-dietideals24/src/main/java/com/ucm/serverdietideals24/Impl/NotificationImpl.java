@@ -36,6 +36,6 @@ public class NotificationImpl implements NotificationDAO {
 
     @Override
     public void delete(Long notiId) {
-        // ...
+        jdbcTemplate.execute("DELETE FROM notification WHERE id = " + notiId);
     }
 }
