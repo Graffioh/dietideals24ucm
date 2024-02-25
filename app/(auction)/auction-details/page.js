@@ -80,7 +80,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
                     src="https://github.com/shadcn.png"
                     alt="@avatar"
                   />
-                  <AvatarFallback>gojo</AvatarFallback>
+                  <AvatarFallback />
                 </Avatar>
               </Link>
             </div>

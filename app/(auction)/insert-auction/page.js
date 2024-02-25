@@ -47,17 +47,26 @@ export default function InsertAuctionPage() {
 
   function handleBaseStartAuction(baseStartAuction) {
     setBaseStartAuction(baseStartAuction);
-    validateEnglishAuctionInputs();
   }
 
   function handleRaiseThreshold(raiseThreshold) {
     setRaiseThreshold(raiseThreshold);
-    validateEnglishAuctionInputs();
   }
 
   function handleBaseOfferTimer(baseOfferTimer) {
     setBaseOfferTimer(baseOfferTimer);
-    validateEnglishAuctionInputs();
+  }
+
+  function validateEnglishAuctionInputs() {
+    const validState =
+      category &&
+      auctionType &&
+      quality &&
+      baseStartAuction &&
+      raiseThreshold &&
+      baseOfferTimer;
+
+    return validState;
   }
   // ***************************************
 
@@ -69,7 +78,6 @@ export default function InsertAuctionPage() {
 
   function handleExpireDateChange(date) {
     setExpireDate(date);
-    validateFixedTimeAuctionInputs();
   }
 
   function handleExpireTimeChange(time) {
@@ -78,7 +86,12 @@ export default function InsertAuctionPage() {
 
   function handleFixedTimeMinimumPriceChange(price) {
     setFixedTimeMinimumPrice(price);
-    validateFixedTimeAuctionInputs();
+  }
+
+  function validateFixedTimeAuctionInputs() {
+    const validState =
+      category && auctionType && quality && expireDate && fixedTimeMinimumPrice;
+    return validState;
   }
   // ***************************************
 
@@ -91,28 +104,19 @@ export default function InsertAuctionPage() {
 
   function handleStartPrice(startPrice) {
     setStartPrice(startPrice);
-    validateDescendingAuctionInputs();
   }
 
   function handleDecrementAmount(decrementAmount) {
     setDecrementAmount(decrementAmount);
-    validateDescendingAuctionInputs();
   }
 
   function handleDecrementTimer(timer) {
     setDecrementTimer(timer);
-    validateDescendingAuctionInputs();
   }
 
   function handleDescendingMinimumPrice(descendingMinimumPrice) {
     setDescendingMinimumPrice(descendingMinimumPrice);
-    validateDescendingAuctionInputs();
   }
-  // ***************************************
-
-  const [areDescendingInputsValid, setAreDescendingInputsValid] = useState("");
-  const [areEnglishInputsValid, setAreEnglishInputsValid] = useState("");
-  const [areFixedTimeInputsValid, setAreFixedTimeInputsValid] = useState("");
 
   function validateDescendingAuctionInputs() {
     const validState =
@@ -123,26 +127,9 @@ export default function InsertAuctionPage() {
       decrementAmount &&
       baseDecrementTimer &&
       descendingMinimumPrice;
-    setAreDescendingInputsValid(validState);
+    return validState;
   }
-
-  function validateFixedTimeAuctionInputs() {
-    const validState =
-      category && auctionType && quality && expireDate && fixedTimeMinimumPrice;
-    setAreFixedTimeInputsValid(validState);
-  }
-
-  function validateEnglishAuctionInputs() {
-    const validState =
-      category &&
-      auctionType &&
-      quality &&
-      baseStartAuction &&
-      raiseThreshold &&
-      baseOfferTimer;
-
-    setAreEnglishInputsValid(validState);
-  }
+  // ***************************************
 
   const createAuctionButtonRef = useRef(null);
   const hiddenFileInput = useRef(null);
@@ -154,7 +141,15 @@ export default function InsertAuctionPage() {
   async function onSubmit(event) {
     event.preventDefault();
 
-    if (!areEnglishInputsValid && !areDescendingInputsValid && !areFixedTimeInputsValid) {
+    const areFixedTimeInputsValid = validateFixedTimeAuctionInputs();
+    const areEnglishInputsValid = validateEnglishAuctionInputs();
+    const areDescendingInputsValid = validateDescendingAuctionInputs();
+
+    if (
+      !areEnglishInputsValid &&
+      !areDescendingInputsValid &&
+      !areFixedTimeInputsValid
+    ) {
       toast.error("Please fill all the fields before submitting!");
       return;
     }

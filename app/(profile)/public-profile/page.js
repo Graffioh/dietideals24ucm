@@ -16,7 +16,8 @@ export default async function ProfilePage({ searchParams }) {
   async function getUserById(id) {
     try {
       const userRes = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/users/" + id
+        process.env.NEXT_PUBLIC_BASEURL + "/users/" + id,
+        { next: { revalidate: 0 } }
       );
 
       const user = await userRes.json();
@@ -61,7 +62,7 @@ export default async function ProfilePage({ searchParams }) {
         <div className="mt-2 mr-10">
           <Avatar className="h-32 w-32">
             <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
-            <AvatarFallback>gojo</AvatarFallback>
+            <AvatarFallback />
           </Avatar>
         </div>
         <div className="flex-col w-full">
@@ -71,7 +72,7 @@ export default async function ProfilePage({ searchParams }) {
             </h1>
             {publicProfileUser.id === currentUser.id ? (
               <Link href="/private-profile?type=update">
-                <Button variant="ghost" className="mt-2 px-2 ml-2">
+                <Button variant="ghost" className="mt-1.5 ml-0.5">
                   <Pencil1Icon width="23" height="23" />
                 </Button>
               </Link>

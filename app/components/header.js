@@ -18,25 +18,6 @@ import ComboboxCategories from "./comboboxCategories";
 import Searchbar from "./searchbar";
 import NotificationsDropdown from "./notificationsDropdown";
 
-const notifications = [
-  {
-    value: "public-profile",
-    label: "notification 1",
-  },
-  {
-    value: "private-profile",
-    label: "notification 2",
-  },
-  {
-    value: "insert-auction",
-    label: "notification 3",
-  },
-  {
-    value: "/",
-    label: "notification 4",
-  },
-];
-
 function Logo() {
   return (
     <div className="mb-3">
@@ -48,19 +29,19 @@ function Logo() {
 }
 
 // *******************************
-// Various header sections WEB
+// Various header sections DESKTOP
 // *******************************
 
 // Only notifications and profile icon
 function LoggedPartialSection() {
   return (
     <div className="mr-3 flex justify-between mb-2">
-      <NotificationsDropdown notifications={notifications} />
+      <NotificationsDropdown />
 
       <Link href="/public-profile" className="mt-0.5">
         <Avatar className="h-9 w-9">
           <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
-          <AvatarFallback>gojo</AvatarFallback>
+          <AvatarFallback />
         </Avatar>
       </Link>
     </div>
@@ -90,12 +71,12 @@ function LoggedFullSection() {
           Insert auction
         </Link>
 
-        <NotificationsDropdown notifications={notifications} />
+        <NotificationsDropdown />
 
         <Link href="/public-profile" className="mt-0.5 flex justify-center">
           <Avatar className="h-9 w-9">
             <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
-            <AvatarFallback>gojo</AvatarFallback>
+            <AvatarFallback />
           </Avatar>
         </Link>
       </div>
@@ -144,7 +125,7 @@ function NotLoggedSection() {
 function NotificationsSection() {
   return (
     <div className="mr-4 flex justify-between mb-2">
-      <NotificationsDropdown notifications={notifications} />
+      <NotificationsDropdown />
     </div>
   );
 }
@@ -157,10 +138,6 @@ function NotificationsSection() {
 function LoggedPartialSectionMobile() {
   return (
     <div className="flex justify-center flex-col gap-4">
-      <Link href="/home" className="hover:text-stone-400">
-        <div>Notifications</div>
-      </Link>
-
       <Link
         href="/public-profile"
         className="hover:text-stone-400"
@@ -189,10 +166,6 @@ function LoggedFullSectionMobile() {
           Insert auction
         </Link>
 
-        <Link href="/home" className="hover:text-stone-400">
-          <div>Notifications</div>
-        </Link>
-
         <Link
           href="/public-profile"
           className="hover:text-stone-400"
@@ -214,9 +187,6 @@ function PrivateProfileSectionMobile() {
       >
         Log out
       </Button>
-      <Link href="/home" className="hover:text-stone-400">
-        <div>Notifications</div>
-      </Link>
     </div>
   );
 }
@@ -271,11 +241,15 @@ export default function Header({ headerType, token }) {
             <Logo />
           </div>
 
-          <div className="relative">
+          <div className="relative flex">
+            <div className="mt-1" hidden={token === "no-token" || token === "" || headerType === "headerEmpty"}>
+              <NotificationsDropdown />
+            </div>
+
             {/* Hamburger Icon */}
             <button
               onClick={() => setIsHamburgerOpen(!isHamburgerOpen)}
-              className={`hamburger block mt-1.5 mr-2 z-10 relative focus:outline-none ${
+              className={`hamburger block mr-2 z-10 relative focus:outline-none ${
                 isHamburgerOpen ? "open" : ""
               }`}
             >
@@ -312,10 +286,10 @@ export default function Header({ headerType, token }) {
                 {headerType === "headerPrivateProfile" && (
                   <PrivateProfileSectionMobile />
                 )}
+                {headerType === "headerEmpty"}
                 {(token === "no-token" || token === "") && (
                   <NotLoggedSectionMobile />
                 )}
-                {headerType === "headerEmpty"}
               </div>
             </div>
           </div>
