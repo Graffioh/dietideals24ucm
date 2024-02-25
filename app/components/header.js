@@ -242,7 +242,7 @@ export default function Header({ headerType, token }) {
           </div>
 
           <div className="relative flex">
-            <div className="mt-1">
+            <div className="mt-1" hidden={token === "no-token" || token === "" || headerType === "headerEmpty"}>
               <NotificationsDropdown />
             </div>
 
@@ -286,10 +286,10 @@ export default function Header({ headerType, token }) {
                 {headerType === "headerPrivateProfile" && (
                   <PrivateProfileSectionMobile />
                 )}
+                {headerType === "headerEmpty"}
                 {(token === "no-token" || token === "") && (
                   <NotLoggedSectionMobile />
                 )}
-                {headerType === "headerEmpty"}
               </div>
             </div>
           </div>
