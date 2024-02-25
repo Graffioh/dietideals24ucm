@@ -72,7 +72,7 @@ export default async function ProfilePage({ searchParams }) {
             </h1>
             {publicProfileUser.id === currentUser.id ? (
               <Link href="/private-profile?type=update">
-                <Button variant="ghost" className="mt-1.5 md:ml-0.5">
+                <Button variant="ghost" className="mt-1.5 md:mt-0 md:mb-0.5 md:ml-0.5">
                   <Pencil1Icon width="23" height="23" />
                 </Button>
               </Link>
@@ -114,7 +114,7 @@ export default async function ProfilePage({ searchParams }) {
           {" "}
         </div>
 
-        <div className="grid overflow-x-auto md:grid-rows-2 md:grid-cols-4 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
+        <div className="grid md:overflow-hidden overflow-x-auto md:grid-rows-2 md:grid-cols-4 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
           {auctionsFromUser.map((auction) => (
             <Link
               href={
