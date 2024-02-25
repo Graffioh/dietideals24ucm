@@ -32,6 +32,8 @@ export default function Home() {
     fetcher
   );
 
+  const paginatedAuctionsLength = paginatedAuctions ? paginatedAuctions.length : 0
+
   if (paginatedAuctionsError) {
     console.error(
       "Error while fetching paginated auctions: " + paginatedAuctionsError
@@ -40,7 +42,7 @@ export default function Home() {
 
   useEffect(() => {
     if (paginatedAuctions) {
-      setMaxPageIndex(Math.ceil(paginatedAuctions.length / 20) + 1);
+      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20) + 1);
     }
 
     localStorage.setItem("pageIndex", pageIndex);
@@ -53,9 +55,9 @@ export default function Home() {
   }
 
   function handleNextPageChange() {
-    if (paginatedAuctions.length === 20) {
+    if (paginatedAuctionsLength === 20) {
       setPageIndex(pageIndex + 1);
-      setMaxPageIndex(Math.ceil(paginatedAuctions.length / 20));
+      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20));
     }
   }
 

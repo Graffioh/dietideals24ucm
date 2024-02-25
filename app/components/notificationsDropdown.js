@@ -42,6 +42,8 @@ export default function NotificationsDropdown() {
     fetcher, { refreshInterval: 100 }
   );
 
+  const notiLength = notiData ? notiData.length : 0
+
   if (notiIsLoading) {
     return (
       <Button variant="ghost" className="mx-2">
@@ -77,14 +79,14 @@ export default function NotificationsDropdown() {
           <BellIcon width="23" height="23" />
           <div
             className="absolute w-2.5 h-2.5 top-2.5 right-4 bg-red-500 rounded-full"
-            hidden={notiData.length <= 0}
+            hidden={notiLength <= 0}
           ></div>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0 bg-white">
         <Command>
           <CommandGroup>
-            {notiData.length > 0 ? (
+            {notiLength > 0 ? (
               notiData.map((noti) => (
                 <div key={noti.id} className="flex border-b items-center justify-between">
                   <div className="flex items-center">

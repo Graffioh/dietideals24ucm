@@ -93,7 +93,7 @@ export default function CardAuction({ isHomepage, auction }) {
       ) : (
         // MOBILE
         <div className="">
-          <button className="relative bg-white w-64 h-56 flex justify-center rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
+          <button className="relative bg-white w-64 h-56 flex justify-center rounded-lg md:shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
             <div className="relative">
               <img
                 className="object-cover w-56 h-36 mt-5 rounded-lg flex items-center"
