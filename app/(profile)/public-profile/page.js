@@ -58,21 +58,21 @@ export default async function ProfilePage({ searchParams }) {
 
   return (
     <>
-      <div className="flex mt-16 ml-[15em] mr-[15em]">
-        <div className="mt-2 mr-10">
+      <div className="flex md:flex-row flex-col mt-16 md:ml-[15em] md:mr-[15em] items-center">
+        <div className="mt-2 md:mr-10">
           <Avatar className="h-32 w-32">
             <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
             <AvatarFallback />
           </Avatar>
         </div>
-        <div className="flex-col w-full">
-          <div className="flex">
-            <h1 className="font-bold text-5xl mb-4">
+        <div className="md:flex-col md:w-full mt-1 md:mt-0">
+          <div className="flex items-center mb-2 md:mb-0">
+            <h1 className="font-bold text-xl md:text-5xl md:mb-4">
               {publicProfileUser ? publicProfileUser.username : "none"}
             </h1>
             {publicProfileUser.id === currentUser.id ? (
               <Link href="/private-profile?type=update">
-                <Button variant="ghost" className="mt-1.5 ml-0.5">
+                <Button variant="ghost" className="mt-1.5 md:ml-0.5">
                   <Pencil1Icon width="23" height="23" />
                 </Button>
               </Link>
@@ -91,7 +91,7 @@ export default async function ProfilePage({ searchParams }) {
         </div>
       </div>
 
-      <div className="flex flex-col bg-stone-200 mt-10 mb-20 mx-32 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
+      <div className="flex flex-col bg-stone-200 mt-10 mb-20 md:mx-32 mx-4 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
         <div className="mt-6 ml-11">
           <RadioGroup defaultValue="option-one">
             <div className="flex items-center space-x-2">
@@ -114,7 +114,7 @@ export default async function ProfilePage({ searchParams }) {
           {" "}
         </div>
 
-        <div className="grid grid-rows-2 grid-cols-4 grid-flow-col gap-10 mx-12">
+        <div className="grid overflow-x-auto md:grid-rows-2 md:grid-cols-4 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
           {auctionsFromUser.map((auction) => (
             <Link
               href={
