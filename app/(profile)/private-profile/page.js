@@ -200,7 +200,13 @@ export default function ProfilePage({ searchParams }) {
                     : ""
                 }
                 required
-                readOnly={searchParams.fromProvider === "github"}
+                readOnly={
+                  searchParams.fromProvider === "github" || currentUser
+                    ? currentUser.provider === "github"
+                      ? true
+                      : false
+                    : false
+                }
               />
             </div>
 
@@ -222,8 +228,10 @@ export default function ProfilePage({ searchParams }) {
                 }
                 required
                 readOnly={
-                  searchParams.fromProvider === "google" && currentUser
-                    ? true
+                  searchParams.fromProvider === "google" || currentUser
+                    ? currentUser.provider === "google"
+                      ? true
+                      : false
                     : false
                 }
               />
