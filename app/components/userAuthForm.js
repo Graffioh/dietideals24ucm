@@ -92,7 +92,7 @@ export function UserAuthForm({ className, createOrLogin }) {
   async function pushEmailAsUrlParameter(event) {
     event.preventDefault();
 
-    router.push(event.target.href + "?email=" + email);
+    router.push(event.target.href + "?email=" + email + "&fromProvider=credentials");
   }
   // **************************
 

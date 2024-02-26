@@ -69,7 +69,6 @@ public class UserAccountController {
             UserAccount user = userAccountDAO.getViaUsername(username);
             return ResponseEntity.ok(user);
         } catch (Exception e) {
-            // e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserAccount());
         }
     }

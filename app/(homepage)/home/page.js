@@ -32,7 +32,9 @@ export default function Home() {
     fetcher
   );
 
-  const paginatedAuctionsLength = paginatedAuctions ? paginatedAuctions.length : 0
+  const paginatedAuctionsLength = paginatedAuctions
+    ? paginatedAuctions.length
+    : 0;
 
   if (paginatedAuctionsError) {
     console.error(
