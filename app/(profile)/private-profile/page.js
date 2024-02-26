@@ -93,9 +93,9 @@ export default function ProfilePage({ searchParams }) {
       username: inputs.username.value,
       password: inputs.password.value,
       birthDate: currentUser
-        ? currentUser.id
-          ? currentUser.birthDate
-          : birthDate
+        ? currentUser.birthDate
+        : birthDate
+        ? birthDate
         : new Date(),
       email: inputs.email.value,
       telephoneNumber: inputs.telephoneNumber
@@ -135,13 +135,13 @@ export default function ProfilePage({ searchParams }) {
     setBirthDate(date);
   }
 
-  // if (currentUserIsLoading) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <LoadingSpinner />
-  //     </div>
-  //   );
-  // }
+  if (currentUserIsLoading && !searchParams.fromProvider) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <>
