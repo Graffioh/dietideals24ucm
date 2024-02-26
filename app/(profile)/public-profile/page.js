@@ -55,7 +55,7 @@ export default async function ProfilePage({ searchParams }) {
   const auctionsFromUser = await getAuctionsByUserId(
     searchParams.id ? searchParams.id : currentUser.id
   );
-
+  
   return (
     <>
       <div className="flex md:flex-row flex-col mt-16 md:ml-[15em] md:mr-[15em] items-center">
@@ -72,7 +72,7 @@ export default async function ProfilePage({ searchParams }) {
             </h1>
             {publicProfileUser.id === currentUser.id ? (
               <Link href="/private-profile?type=update">
-                <Button variant="ghost" className="mt-1.5 md:mt-0 md:mb-0.5 md:ml-0.5">
+                <Button variant="ghost" className="mt-1.5 md:mt-0 md:mb-3 md:ml-0.5">
                   <Pencil1Icon width="23" height="23" />
                 </Button>
               </Link>

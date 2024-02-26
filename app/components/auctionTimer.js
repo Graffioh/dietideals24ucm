@@ -150,6 +150,8 @@ export default function AuctionTimer({ deadline, auction }) {
               setAuctionEnded(true);
               clearInterval(timer);
 
+              console.log(auction.id + "| currentOffer = " + auction.currentOffer + " | minimumPrice = " + auction.minimumPrice)
+
               fetch(
                 process.env.NEXT_PUBLIC_BASEURL +
                   "/auctions/" +
@@ -253,7 +255,7 @@ export default function AuctionTimer({ deadline, auction }) {
         <div className="text-red-500 text-lg font-medium"></div>
       )} */}
 
-      {auctionEnded || Object.keys(timeLeft).length === 0 ? (
+      {auctionEnded || Object.keys(timeLeft).length === 0 || auction.isOver ? (
         <div className="text-red-500 text-lg font-medium">Auction ended</div>
       ) : auction.auctionType === "fixedtime" ? (
         `${formatTimeLeft(timeLeft)}`

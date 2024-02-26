@@ -42,7 +42,7 @@ public class JWTTokenController {
             return new ResponseEntity<String>(token, HttpStatus.OK);
         }
 
-        return new ResponseEntity<String>("none", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<String>("no-token", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/set-login-token")
@@ -87,10 +87,10 @@ public class JWTTokenController {
         try {
             subject = JwtUtil.extractSubjectViaToken(token);
         } catch (NoSuchElementException nsee) {
-            return new ResponseEntity<String>("none", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<String>("no-token", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<String>("none", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<String>("no-token", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<String>(subject, HttpStatus.ACCEPTED);
