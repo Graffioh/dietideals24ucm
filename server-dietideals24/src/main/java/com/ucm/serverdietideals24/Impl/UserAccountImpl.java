@@ -41,10 +41,11 @@ public class UserAccountImpl implements UserAccountDAO {
 
     @Override
     public void create(UserAccount user) {
-        jdbcTemplate.execute("INSERT INTO useraccount VALUES('" + user.getId() + "', '" + user.getFirstName()
+        System.err.println("USER: " + user);
+        jdbcTemplate.execute("INSERT INTO useraccount (id, firstName, lastName, username, password, birthDate, email, provider) VALUES('" + user.getId() + "', '" + user.getFirstName()
                 + "', '" + user.getLastName() + "', '" + user.getUsername() + "', '" + user.getPassword()
                 + "', '"
-                + user.getBirthDate() + "', '" + user.getEmail() + "')");
+                + user.getBirthDate() + "', '" + user.getEmail() + "', '" + user.getProvider() + "')");
     }
 
     @Override
