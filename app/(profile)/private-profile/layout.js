@@ -3,6 +3,8 @@ import "../../globals.css";
 import Header from "../../components/header.js";
 import Footer from "../../components/footer.js";
 
+import { cookies } from "next/headers";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -11,9 +13,23 @@ export const metadata = {
 };
 
 export default function PrivateProfileLayout({ children }) {
+  function getTokenFromCookie() {
+    const nextCookies = cookies();
+
+    const tokenCookieStr = nextCookies.has("auth-token")
+      ? nextCookies.get("auth-token").value
+      : '"no-token"';
+
+    // return token without "..."
+    return tokenCookieStr.replaceAll('"', "");
+  }
+
+  const token = getTokenFromCookie();
+  
+  console.log(token)
   return (
     <div className="relative flex min-h-screen flex-col">
-      <Header headerType={"headerPrivateProfile"} />
+      <Header headerType={token !== "no-token" ? "headerPrivateProfile" : "headerEmpty"} />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>
