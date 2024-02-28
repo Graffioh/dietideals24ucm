@@ -8,11 +8,8 @@ import com.ucm.serverdietideals24.Models.Auction;
 
 public interface AuctionDAO {
     public List<Auction> getAll();
-
     public List<Auction> getAllViaUserId(Long userId);
     public List<Auction> getAllPaginated(int pageNumber);
-
-    public List<Auction> getViaName(String name);
 
     public Auction getViaId(Long id);
 
@@ -25,7 +22,5 @@ public interface AuctionDAO {
     public void updateCurrentOffer(Long id, Float newCurrentOffer);
 
     public void updateCurrentDecrementTimer(Long id, Time newTimerValue);
-
     public void updateCurrentOfferTimer(Long id, Time newTimerValue);
-
 }

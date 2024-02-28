@@ -13,9 +13,8 @@ import { toast } from "sonner";
 import DatePicker from "@/app/components/datePicker";
 
 import CancelAlertDialog from "@/app/components/cancelAlertDialog";
-
+import { useUserContext } from "@/app/(auth)/userProvider";
 import LoadingSpinner from "@/app/components/loadingSpinner";
-import { useUserContext } from "@/app/providers/userProvider";
 
 export default function ProfilePage({ searchParams }) {
   const [birthDate, setBirthDate] = useState("");

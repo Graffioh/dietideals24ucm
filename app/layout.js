@@ -2,8 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { CookiesProvider } from "next-client-cookies/server";
-import { AuctionFilterProvider } from "./providers/auctionFilterProvider";
-import { UserProvider } from "./providers/userProvider";
+import { UserProvider } from "./(auth)/userProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,10 +20,8 @@ export default function RootLayout({ children }) {
       <body>
         <CookiesProvider>
           <UserProvider>
-            <AuctionFilterProvider>
-              <main className="flex-1">{children}</main>
-              <Toaster />
-            </AuctionFilterProvider>
+            <main className="flex-1">{children}</main>
+            <Toaster />
           </UserProvider>
         </CookiesProvider>
       </body>

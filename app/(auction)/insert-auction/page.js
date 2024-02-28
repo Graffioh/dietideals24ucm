@@ -12,7 +12,7 @@ import ComboboxCategories from "@/app/components/comboboxCategories";
 import ComboboxAuctions from "@/app/components/comboboxAuctions.js";
 import ComboboxQuality from "@/app/components/comboboxQualities.js";
 
-import { useUserContext } from "@/app/providers/userProvider";
+import { useUserContext } from "@/app/(auth)/userProvider";
 
 import FixedTimeInsertAuctionInputs from "@/app/components/auctions/fixedTimeInsertAuctionInputs";
 import EnglishInsertAuctionInputs from "@/app/components/auctions/englishInsertAuctionInputs";
