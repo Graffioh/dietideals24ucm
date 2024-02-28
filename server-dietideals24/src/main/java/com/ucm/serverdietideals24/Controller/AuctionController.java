@@ -53,6 +53,18 @@ public class AuctionController {
         }
     }
 
+    @GetMapping("/paginated/user/{userId}")
+    public ResponseEntity<List<Auction>> fetchPagedAuctions(@PathVariable Long userId, @RequestParam int page) {
+        try {
+            List<Auction> auctions = auctionDAO.getAllPaginatedViaUserId(userId, page);
+
+            return ResponseEntity.ok(auctions);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Auction>> fetchAllAuctionsBasedOnUserId(@PathVariable Long userId) {
         try {

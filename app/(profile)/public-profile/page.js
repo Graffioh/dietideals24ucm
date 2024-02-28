@@ -9,6 +9,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AuctionPagination from "../../components/auctionPagination";
 import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
 import CardAuction from "@/app/components/cardAuction";
+import AuctionsContainerHomepage from "@/app/components/auctionsContainerHomepage";
+import AuctionsContainerPublicProfile from "@/app/components/auctionsContainerPublicProfile";
 
 export default async function ProfilePage({ searchParams }) {
   const currentUser = await getCurrentUserServer();
@@ -114,7 +116,7 @@ export default async function ProfilePage({ searchParams }) {
           {" "}
         </div>
 
-        <div className="grid md:overflow-hidden overflow-x-auto md:grid-rows-2 md:grid-cols-4 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
+        {/* <div className="grid md:overflow-hidden overflow-x-auto md:grid-rows-2 md:grid-cols-4 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
           {auctionsFromUser.map((auction) => (
             <Link
               href={
@@ -136,7 +138,8 @@ export default async function ProfilePage({ searchParams }) {
         </div>
         <div className="my-5 flex justify-center items-center">
           <AuctionPagination />
-        </div>
+        </div> */}
+        <AuctionsContainerPublicProfile />
       </div>
     </>
   );
