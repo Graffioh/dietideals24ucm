@@ -13,6 +13,7 @@ import PlaceOfferDialog from "@/app/components/placeOfferDialog";
 import { cn } from "@/lib/utils";
 import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
 
+
 export default async function AuctionDetailsPage({ searchParams }) {
   function getTokenFromCookie() {
     const nextCookies = cookies();

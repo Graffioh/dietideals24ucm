@@ -1,5 +1,5 @@
 "use client";
-
+import { useState, useRef } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,58 +15,104 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function PlaceOfferDialog({ auction }) {
-  // query to create offer here
-  // ...
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
-  // if english auction, whenever an offer is placed correctly, reset the timer
-  async function handleEnglishAuctionOfferTimer() {
-    try {
+  const offerAmountRef = useRef(null);
+
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    const offerAmount = offerAmountRef.current.value;
+    const offerFromInputs = {
+      id: Date.now(),
+      offerAmount: offerAmount,
+      idUserAccount: auction.idUserAccount,
+      idAuction: auction.id,
+    };
+
+    if (auction.currentOffer < offerAmount) {
+      alert("La tua offerta é stata piazzata correttamente");
+      await fetch("http://localhost:8080/insert-offer", {
+        method: "POST",
+        body: JSON.stringify(offerFromInputs),
+        headers: { "Content-Type": "application/json" },
+      });
+
       await fetch(
-        process.env.NEXT_PUBLIC_BASEURL +
-          "/auctions/" +
+        "http://localhost:8080/set-auction-currentoffer?id=" +
           auction.id +
-          "/current-offertimer?newTimerValue=" +
-          auction.baseOfferTimer,
-        { method: "PUT", headers: { "Content-Type": "application/json" } }
+          "&newCurrentOffer=" +
+          offerAmount,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        }
       );
-    } catch (e) {
-      console.error("Error while updating current offer timer (english): " + e);
+
+      setDialogOpen(false);
+    } else {
+      alert("Fai un offerta maggiore dell'offerta corrente");
+    }
+
+    if (auction.auctionType == "descending"){
+      fetch("http://localhost:8080/set-auction-isover?id=" + auction.id, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+          })
+          .then(() => {
+            console.log("Auction has ended");
+          })
+          .catch((error) => {
+            console.error("Failed to fetch: ", error);
+          });
     }
   }
 
-  // if descending auction, whenever an offer is placed correctly, end the auction
-  // ...
+  const openDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setDialogOpen(false);
+  };
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="default" className="p-7 text-lg">
-          Place Offer
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent className="w-64 flex flex-col items-center">
-        <AlertDialogHeader>
-          <AlertDialogTitle>Place an offer</AlertDialogTitle>
-          <AlertDialogDescription>
-            Current max offer: ...
-          </AlertDialogDescription>
-          <div className="flex justify-center">
-            <Input type="number" className="w-48" />
-          </div>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={
-              auction.auctionType === "english"
-                ? handleEnglishAuctionOfferTimer
-                : null
-            }
+    <>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button
+            variant="default"
+            className="p-7 text-lg"
+            onClick={openDialog}
           >
-            Place
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            Place Offer
+          </Button>
+        </AlertDialogTrigger>
+        {isDialogOpen && (
+          <AlertDialogContent className="w-64 flex flex-col items-center">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Place an offer</AlertDialogTitle>
+              <AlertDialogDescription>
+                Current max offer: {auction.currentOffer} €
+              </AlertDialogDescription>
+              <div className="flex justify-center">
+                <Input ref={offerAmountRef} type="number" className="w-48" />
+              </div>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={closeDialog}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={onSubmit}>Place</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        )}
+      </AlertDialog>
+    </>
   );
 }
