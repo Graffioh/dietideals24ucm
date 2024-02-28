@@ -39,9 +39,9 @@ export default function PlaceOfferDialog({ auction }) {
       });
 
       await fetch(
-        "http://localhost:8080/set-auction-currentoffer?id=" +
+        "http://localhost:8080/auctions/" +
           auction.id +
-          "&newCurrentOffer=" +
+          "/current-offer?newCurrentOffer=" +
           offerAmount,
         {
           method: "PUT",
@@ -54,22 +54,22 @@ export default function PlaceOfferDialog({ auction }) {
       alert("Fai un offerta maggiore dell'offerta corrente");
     }
 
-    if (auction.auctionType == "descending"){
-      fetch("http://localhost:8080/set-auction-isover?id=" + auction.id, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
+    if (auction.auctionType == "descending") {
+      fetch("http://localhost:8080/auctions/" + auction.id + "/is-over", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
         })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-          })
-          .then(() => {
-            console.log("Auction has ended");
-          })
-          .catch((error) => {
-            console.error("Failed to fetch: ", error);
-          });
+        .then(() => {
+          console.log("Auction has ended");
+        })
+        .catch((error) => {
+          console.error("Failed to fetch: ", error);
+        });
     }
   }
 

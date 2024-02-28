@@ -56,7 +56,7 @@ public class AuctionImpl implements AuctionDAO {
     @Override
     public void create(Auction auction) {
         // Different query based on auction type
-        if (auction.getAuctionType().toString() === "english") {
+        if (auction.getAuctionType().toString() == "english") {
             jdbcTemplate.execute(
                     "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, baseStartAuction, raiseThreshold, idUserAccount, baseOfferTimer, auctionType, currentOfferTimer) VALUES ('"
                             + auction.getId() + "', '" + auction.getAuctionDescription()
@@ -67,7 +67,7 @@ public class AuctionImpl implements AuctionDAO {
                             + auction.getIdUserAccount() + "', '"
                             + auction.getBaseOfferTimer() + "', '" + auction.getAuctionType() + "', '"
                             + auction.getBaseOfferTimer() + "')");
-        } else if (auction.getAuctionType().toString() === "fixedtime") {
+        } else if (auction.getAuctionType().toString() == "fixedtime") {
             jdbcTemplate.execute(
                     "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, expireDate, minimumPrice, expireTime, idUserAccount, auctionType) VALUES ('"
                             + auction.getId() + "', '" + auction.getAuctionDescription()

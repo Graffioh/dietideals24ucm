@@ -17,9 +17,6 @@ public class OfferController {
     @Autowired
     private OfferDAO offerDAO;
 
-
-
-
     @PostMapping("/insert-offer")
     public ResponseEntity<Offer> createOffer(@RequestBody Offer entity) {
         try {
