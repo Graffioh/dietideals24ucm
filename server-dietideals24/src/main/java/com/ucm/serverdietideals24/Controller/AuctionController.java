@@ -41,10 +41,21 @@ public class AuctionController {
         }
     }
 
-    @GetMapping("/paginated")
-    public ResponseEntity<List<Auction>> fetchPagedAuctions(@RequestParam int page) {
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Auction>> fetchAllAuctionsBasedOnUserId(@PathVariable Long userId) {
         try {
-            List<Auction> auctions = auctionDAO.getAllPaginated(page);
+            List<Auction> auctions = auctionDAO.getAllViaUserId(userId);
+            return ResponseEntity.ok(auctions);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+
+    @GetMapping("/auction-from-name")
+    public ResponseEntity<List<Auction>> fetchAuctionBasedOnName(@RequestParam String name) {
+        try {
+            List<Auction> auctions = auctionDAO.getViaName(name);
 
             return ResponseEntity.ok(auctions);
         } catch (Exception e) {
@@ -53,10 +64,11 @@ public class AuctionController {
         }
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Auction>> fetchAllAuctionsBasedOnUserId(@PathVariable Long userId) {
+    @GetMapping("/paginated")
+    public ResponseEntity<List<Auction>> fetchPagedAuctions(@RequestParam int page) {
         try {
-            List<Auction> auctions = auctionDAO.getAllViaUserId(userId);
+            List<Auction> auctions = auctionDAO.getAllPaginated(page);
+
             return ResponseEntity.ok(auctions);
         } catch (Exception e) {
             e.printStackTrace();
