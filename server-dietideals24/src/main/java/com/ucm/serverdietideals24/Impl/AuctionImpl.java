@@ -39,7 +39,8 @@ public class AuctionImpl implements AuctionDAO {
     @Override
     public List<Auction> getAllPaginatedViaUserId(Long userId, int pageNumber) {
         int offset = (pageNumber - 1) * 20;
-        return jdbcTemplate.query("SELECT * FROM auction ORDER BY id LIMIT 8 OFFSET " + offset + " WHERE idUserAccount = " + userId,
+        return jdbcTemplate.query(
+                "SELECT * FROM auction WHERE idUserAccount = " + userId + "ORDER BY id LIMIT 8 OFFSET " + offset,
                 new BeanPropertyRowMapper<Auction>(Auction.class));
     }
 

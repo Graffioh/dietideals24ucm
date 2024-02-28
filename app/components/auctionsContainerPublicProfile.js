@@ -8,8 +8,11 @@ import AuctionPagination from "./auctionPagination";
 import CardAuction from "./cardAuction";
 import LoadingSpinner from "./loadingSpinner";
 import useSWR from "swr";
+import { useUserContext } from "../(auth)/userProvider";
 
-export default function AuctionsContainerPublicProfile() {
+export default function AuctionsContainerPublicProfile({
+  publicProfileUserId,
+}) {
   // Retrieve last page number from localStorage when the page is reloaded
   const [pageIndex, setPageIndex] = useState(1);
   const [maxPageIndex, setMaxPageIndex] = useState("");
@@ -17,12 +20,31 @@ export default function AuctionsContainerPublicProfile() {
   const fetcher = (url) =>
     fetch(url, { next: { revalidate: 1 } }).then((res) => res.json());
 
+  console.log(publicProfileUserId);
+
+  const {
+    data: publicProfileUserData,
+    error: publicProfileUserError,
+    isLoading: publicProfileUserIsLoading,
+  } = useSWR(
+    publicProfileUserId
+      ? process.env.NEXT_PUBLIC_BASEURL + "/users/" + publicProfileUserId
+      : null,
+    fetcher
+  );
+
   const {
     data: paginatedAuctions,
     error: paginatedAuctionsError,
     isLoading: paginatedAuctionsIsLoading,
   } = useSWR(
-    process.env.NEXT_PUBLIC_BASEURL + "/auctions/paginated/user/" + userid + "?page=" + pageIndex,
+    publicProfileUserData && publicProfileUserData.id
+      ? process.env.NEXT_PUBLIC_BASEURL +
+          "/auctions/paginated/user/" +
+          publicProfileUserData.id +
+          "?page=" +
+          pageIndex
+      : null,
     fetcher
   );
 
@@ -49,24 +71,25 @@ export default function AuctionsContainerPublicProfile() {
   }
 
   function handleNextPageChange() {
-    if (paginatedAuctionsLength === 20) {
+    if (paginatedAuctionsLength === 8) {
       setPageIndex(pageIndex + 1);
       setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20));
     }
   }
 
-  if (paginatedAuctionsIsLoading) {
+  if (paginatedAuctionsIsLoading || publicProfileUserIsLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <LoadingSpinner />
       </div>
     );
   }
-
+  
   return (
     <>
-     <div className="grid md:overflow-hidden overflow-x-auto md:grid-rows-2 md:grid-cols-4 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
-          {auctionsFromUser.map((auction) => (
+      <div className="grid md:overflow-hidden overflow-x-auto md:grid-rows-2 md:grid-cols-4 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
+        {paginatedAuctions ? (
+          paginatedAuctions.map((auction) => (
             <Link
               href={
                 "/auction-details?id=" +
@@ -83,11 +106,19 @@ export default function AuctionsContainerPublicProfile() {
                 auction={auction}
               />
             </Link>
-          ))}
-        </div>
-        <div className="my-5 flex justify-center items-center">
-          <AuctionPagination />
-        </div>
+          ))
+        ) : (
+          <div></div>
+        )}
+      </div>
+      <div className="my-5 flex justify-center items-center">
+        <AuctionPagination
+          onPreviousPageChange={handlePreviousPageChange}
+          onNextPageChange={handleNextPageChange}
+          pageNumber={pageIndex}
+          maxPageNumber={maxPageIndex}
+        />
+      </div>
     </>
   );
 }

@@ -139,7 +139,7 @@ export default async function ProfilePage({ searchParams }) {
         <div className="my-5 flex justify-center items-center">
           <AuctionPagination />
         </div> */}
-        <AuctionsContainerPublicProfile />
+        <AuctionsContainerPublicProfile publicProfileUserId={searchParams.id ?? currentUser.id} />
       </div>
     </>
   );
