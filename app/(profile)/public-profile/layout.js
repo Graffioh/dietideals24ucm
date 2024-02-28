@@ -13,7 +13,7 @@ export const metadata = {
 export default function ProfileLayout({ children }) {
   return (
     <div className="relative flex min-h-screen flex-col">
-      <Header headerType={"headerModifyProfile"} />
+      <Header headerType={"headerLoggedPartial"} />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>

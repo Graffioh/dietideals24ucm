@@ -8,15 +8,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { hash } from "bcryptjs";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { toast } from "sonner";
 
 import DatePicker from "@/app/components/datePicker";
 
 import CancelAlertDialog from "@/app/components/cancelAlertDialog";
 import { useUserContext } from "@/app/(auth)/userProvider";
+import LoadingSpinner from "@/app/components/loadingSpinner";
 
 export default function ProfilePage({ searchParams }) {
-  const [profileStatus, setProfileStatus] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const { currentUser, currentUserIsLoading } = useUserContext();
 
@@ -30,47 +30,54 @@ export default function ProfilePage({ searchParams }) {
         lastName: user.lastName,
         username: user.username,
         password: hashedPassword,
-        birthDate: user.birthDate,
+        birthDate: user.birthDate ? user.birthDate : new Date(),
         email: user.email,
+        provider: searchParams.fromProvider,
       };
 
-      const response = await fetch("http://localhost:8080/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userWithHashedPassword),
-      });
-
-      const responseToken = await fetch(
-        "http://localhost:8080/generate-login-token",
-        {
+      try {
+        await fetch(process.env.NEXT_PUBLIC_BASEURL + "/users/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(userWithHashedPassword),
-        }
-      );
+        });
+      } catch (e) {
+        console.error("Error in /register: " + e);
+      }
 
-      const responseTokenText = await responseToken.text();
+      try {
+        const responseToken = await fetch(
+          process.env.NEXT_PUBLIC_BASEURL + "/generate-login-token",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userWithHashedPassword),
+          }
+        );
 
-      const responseCookie = await fetch(
-        "http://localhost:8080/set-login-token",
-        {
+        const responseTokenText = await responseToken.text();
+
+        await fetch(process.env.NEXT_PUBLIC_BASEURL + "/set-login-token", {
           method: "POST",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(responseTokenText),
-        }
-      );
-
-      setProfileStatus("Account created successfully.");
+        });
+      } catch (e) {
+        console.error("Error while generating/setting the auth token: " + e);
+      }
     } catch (e) {
-      setProfileStatus("Error while creating account");
-      console.log({ e });
+      toast.error("Error while creating the account!", {
+        position: "bottom-center",
+      });
+
+      console.error("Error while creating the account: " + e);
     }
   }
 
@@ -78,15 +85,19 @@ export default function ProfilePage({ searchParams }) {
     event.preventDefault();
 
     const inputs = event.currentTarget;
+
     const userInfoFromInputs = {
       id: Date.now(),
       firstName: inputs.firstName.value,
       lastName: inputs.lastName.value,
       username: inputs.username.value,
       password: inputs.password.value,
-      birthDate: currentUser ? currentUser.birthDate : birthDate,
+      birthDate: currentUser
+        ? currentUser.birthDate
+        : birthDate
+        ? birthDate
+        : new Date(),
       email: inputs.email.value,
-      piva: inputs.piva ? inputs.piva.value : "",
       telephoneNumber: inputs.telephoneNumber
         ? inputs.telephoneNumber.value
         : "",
@@ -94,10 +105,11 @@ export default function ProfilePage({ searchParams }) {
       website: inputs.website ? inputs.website.value : "",
     };
 
-    if (currentUser) {
-      // UPDATE
-      const fff = await fetch(
-        "http://localhost:8080/update-profile?id=" + currentUser.id,
+    if (currentUser && currentUser.id) {
+      await fetch(
+        process.env.NEXT_PUBLIC_BASEURL +
+          "/users/update-profile/" +
+          currentUser.id,
         {
           method: "PUT",
           body: JSON.stringify(userInfoFromInputs),
@@ -105,35 +117,30 @@ export default function ProfilePage({ searchParams }) {
         }
       );
 
-      setProfileStatus("Account updated successfully.");
+      toast.success("Account updated successfully.", {
+        position: "bottom-center",
+      });
     } else {
-      // POST
       await createUserAccount(userInfoFromInputs);
 
       window.location.href = "/home";
+
+      toast.success("Account created successfully.", {
+        position: "bottom-center",
+      });
     }
-  }
-
-  function isUserAdult(birthDateString) {
-    var birthDate = new Date(birthDateString);
-    var currentDate = new Date();
-
-    var age = currentDate.getFullYear() - birthDate.getFullYear();
-    var m = currentDate.getMonth() - birthDate.getMonth();
-
-    if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
-      age--;
-    }
-
-    return age >= 18;
   }
 
   function handleBirthDate(date) {
     setBirthDate(date);
   }
-  
-  if(currentUserIsLoading) {
-    return <div>Loading...</div>
+
+  if (currentUserIsLoading && !searchParams.fromProvider) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   return (
@@ -141,7 +148,7 @@ export default function ProfilePage({ searchParams }) {
       <div className="flex flex justify-center mb-10 mt-10">
         <Avatar className="h-32 w-32">
           <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
-          <AvatarFallback>gojo</AvatarFallback>
+          <AvatarFallback />
         </Avatar>
       </div>
 
@@ -176,76 +183,59 @@ export default function ProfilePage({ searchParams }) {
               />
             </div>
 
-            {searchParams.fromProvider === "github" ? (
-              <>
-                <div>
-                  <Label className="flex mb-2">
-                    Username<div className="text-red-500">*</div>
-                  </Label>
-                  <Input
-                    className="h-9 bg-white"
-                    type="text"
-                    id="username"
-                    placeholder="Username"
-                    defaultValue={searchParams.username}
-                    required
-                    readOnly
-                  />
-                </div>
-              </>
-            ) : (
-              <div>
-                <Label className="flex mb-2">
-                  Username<div className="text-red-500">*</div>
-                </Label>
-                <Input
-                  className="h-9 bg-white"
-                  type="text"
-                  id="username"
-                  placeholder="Username"
-                  defaultValue={currentUser ? currentUser.username : ""}
-                  required
-                />
-              </div>
-            )}
+            <div>
+              <Label className="flex mb-2">
+                Username<div className="text-red-500">*</div>
+              </Label>
+              <Input
+                className="h-9 bg-white"
+                type="text"
+                id="username"
+                placeholder="Username"
+                defaultValue={
+                  searchParams.fromProvider === "github"
+                    ? searchParams.username
+                    : currentUser
+                    ? currentUser.username
+                    : ""
+                }
+                required
+                readOnly={
+                  searchParams.fromProvider === "github" || currentUser
+                    ? currentUser.provider === "github"
+                      ? true
+                      : false
+                    : false
+                }
+              />
+            </div>
 
-            {searchParams.fromProvider === "google" ? (
-              <>
-                <div>
-                  <Label className="flex mb-2">
-                    Email<div className="text-red-500">*</div>
-                  </Label>
-                  <Input
-                    className="h-9 bg-white"
-                    type="email"
-                    id="email"
-                    placeholder="Email"
-                    defaultValue={searchParams.email}
-                    required
-                    readOnly
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div>
-                  <Label className="flex mb-2">
-                    Email<div className="text-red-500">*</div>
-                  </Label>
-                  <Input
-                    className="h-9 bg-white"
-                    type="email"
-                    id="email"
-                    placeholder="Email"
-                    defaultValue={
-                      currentUser ? currentUser.email : searchParams.email
-                    }
-                    required
-                    readOnly={currentUser ? true : false}
-                  />
-                </div>
-              </>
-            )}
+            <div>
+              <Label className="flex mb-2">
+                Email<div className="text-red-500">*</div>
+              </Label>
+              <Input
+                className="h-9 bg-white"
+                type="email"
+                id="email"
+                placeholder="Email"
+                defaultValue={
+                  searchParams.fromProvider === "google"
+                    ? searchParams.email
+                    : currentUser
+                    ? currentUser.email
+                    : searchParams.email
+                }
+                required
+                readOnly={
+                  searchParams.fromProvider === "google" || currentUser
+                    ? currentUser.provider === "google"
+                      ? true
+                      : false
+                    : false
+                }
+              />
+            </div>
 
             <div>
               <Label className="flex mb-2">
@@ -258,7 +248,7 @@ export default function ProfilePage({ searchParams }) {
                 placeholder="Password"
                 defaultValue={currentUser ? currentUser.password : ""}
                 required
-                readOnly={currentUser ? true : false}
+                readOnly={currentUser ? (currentUser.id ? true : false) : false}
               />
             </div>
 
@@ -266,82 +256,58 @@ export default function ProfilePage({ searchParams }) {
               <Label className="flex mb-2">
                 Date of birth (YYYY-MM-dd)<div className="text-red-500">*</div>
               </Label>
-              {/* <Input
-                className="h-9 bg-white"
-                type="text"
-                id="birthDate"
-                placeholder="Date"
-                defaultValue={
-                  currentUser ? currentUser.birthDate.split("T")[0] : ""
-                }
-                required
-              /> */}
               <DatePicker
                 handleParentDate={handleBirthDate}
-                defaultDate={currentUser ? new Date(currentUser.birthDate) : ""}
+                defaultDate={
+                  currentUser ? new Date(currentUser.birthDate) : new Date()
+                }
                 isBirthDate={true}
+                isReadOnly={
+                  currentUser ? (currentUser.id ? true : false) : false
+                }
               />
             </div>
 
-            {currentUser &&
-            isUserAdult(
-              currentUser.birthDate
-                ? currentUser.birthDate.split("T")[0].slice(0, 4)
-                : new Date()
-            ) ? (
-              <div className="flex">
-                <div className="flex-col grow">
-                  <Label>P.IVA</Label>
-                  <Input
-                    className="h-9 bg-white flex grow"
-                    type="text"
-                    id="piva"
-                    placeholder="P.IVA"
-                    defaultValue={currentUser ? currentUser.piva : ""}
-                  />
-                </div>
-                <InfoCircledIcon className="mt-8 ml-2" width={18} height={18} />
-              </div>
-            ) : (
-              <div></div>
-            )}
-
             {currentUser ? (
-              <>
-                <div>
-                  <Label className="flex mb-2">Phone Number</Label>
-                  <Input
-                    className="h-9 bg-white"
-                    type="tel"
-                    id="phoneNumber"
-                    placeholder="Phone Number"
-                    defaultValue={
-                      currentUser ? currentUser.telephoneNumber : ""
-                    }
-                  />
-                </div>
+              currentUser.id ? (
+                <>
+                  <div>
+                    <Label className="flex mb-2">Phone Number</Label>
+                    <Input
+                      className="h-9 bg-white"
+                      type="tel"
+                      id="phoneNumber"
+                      placeholder="Phone Number"
+                      defaultValue={
+                        currentUser ? currentUser.telephoneNumber : ""
+                      }
+                    />
+                  </div>
 
-                <div>
-                  <Label className="flex mb-2">Bio</Label>
-                  <Textarea
-                    className="bg-white"
-                    placeholder="Type your description here."
-                    id="biography"
-                    defaultValue={currentUser ? currentUser.biography : ""}
-                  />
-                </div>
+                  <div>
+                    <Label className="flex mb-2">Bio</Label>
+                    <Textarea
+                      className="bg-white"
+                      placeholder="Type your description here."
+                      id="biography"
+                      defaultValue={currentUser ? currentUser.biography : ""}
+                    />
+                  </div>
 
-                <div>
-                  <Label className="flex mb-2">Website</Label>
-                  <Input
-                    className="h-9 bg-white"
-                    type="url"
-                    id="website"
-                    placeholder="Website"
-                    defaultValue={currentUser ? currentUser.website : ""}
-                  />
-                </div>
-              </>
+                  <div>
+                    <Label className="flex mb-2">Website</Label>
+                    <Input
+                      className="h-9 bg-white"
+                      type="url"
+                      id="website"
+                      placeholder="Website"
+                      defaultValue={currentUser ? currentUser.website : ""}
+                    />
+                  </div>
+                </>
+              ) : (
+                <div></div>
+              )
             ) : (
               <div></div>
             )}
@@ -355,7 +321,6 @@ export default function ProfilePage({ searchParams }) {
               <Button className="mt-6">Save</Button>
             </div>
           </div>
-          <div>{profileStatus}</div>
         </div>
       </form>
     </>

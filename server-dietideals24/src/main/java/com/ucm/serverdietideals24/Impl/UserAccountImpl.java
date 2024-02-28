@@ -22,6 +22,12 @@ public class UserAccountImpl implements UserAccountDAO {
     }
 
     @Override
+    public UserAccount getViaId(Long id) {
+        return jdbcTemplate.query("SELECT * FROM useraccount WHERE id = '" + id + "'",
+                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+    }
+
+    @Override
     public UserAccount getViaEmail(String email) {
         return jdbcTemplate.query("SELECT * FROM useraccount WHERE email = '" + email + "'",
                 new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
@@ -35,18 +41,19 @@ public class UserAccountImpl implements UserAccountDAO {
 
     @Override
     public void create(UserAccount user) {
-        jdbcTemplate.execute("INSERT INTO useraccount VALUES('" + user.getId() + "', '" + user.getFirstName()
+        System.err.println("USER: " + user);
+        jdbcTemplate.execute("INSERT INTO useraccount (id, firstName, lastName, username, password, birthDate, email, provider) VALUES('" + user.getId() + "', '" + user.getFirstName()
                 + "', '" + user.getLastName() + "', '" + user.getUsername() + "', '" + user.getPassword()
                 + "', '"
-                + user.getBirthDate() + "', '" + user.getEmail() + "')");
+                + user.getBirthDate() + "', '" + user.getEmail() + "', '" + user.getProvider() + "')");
     }
 
     @Override
-    public void update(String id, UserAccount user) {
+    public void update(Long id, UserAccount user) {
         jdbcTemplate.update("UPDATE useraccount SET firstName = '" + user.getFirstName() + "', lastName = '"
                 + user.getLastName() + "', username = '" + user.getUsername() + "', password = '"
                 + user.getPassword() + "', birthDate = '" + user.getBirthDate() + "', email = '" + user.getEmail()
-                + "', piva = '" + user.getPiva() + "', telephoneNumber = '" + user.getTelephoneNumber()
+                + "', telephoneNumber = '" + user.getTelephoneNumber()
                 + "', biography = '" + user.getBiography() + "', website = '" + user.getWebsite() + "' WHERE id = '"
                 + id + "'");
     }

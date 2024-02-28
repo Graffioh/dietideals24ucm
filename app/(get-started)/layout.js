@@ -14,7 +14,7 @@ export default function HomeLayout({ children }) {
   return (
     <>
       <div className="relative flex min-h-screen flex-col">
-        <Header headerType={"headerNotLogged"} />
+        <Header headerType={"headerEmpty"} />
         <main className="flex-1">{children}</main>
         <Footer />
       </div>

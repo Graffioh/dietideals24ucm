@@ -3,6 +3,7 @@ import "./globals.css";
 
 import { CookiesProvider } from "next-client-cookies/server";
 import { UserProvider } from "./(auth)/userProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
         <CookiesProvider>
           <UserProvider>
             <main className="flex-1">{children}</main>
+            <Toaster />
           </UserProvider>
         </CookiesProvider>
       </body>

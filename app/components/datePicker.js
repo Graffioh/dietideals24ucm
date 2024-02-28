@@ -14,7 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function DatePicker({handleParentDate, defaultDate, isBirthDate }) {
+export default function DatePicker({handleParentDate, defaultDate, isBirthDate, isReadOnly }) {
   const [date, setDate] = useState(defaultDate);
   
   return (
@@ -32,7 +32,14 @@ export default function DatePicker({handleParentDate, defaultDate, isBirthDate }
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        {isBirthDate ? (
+        {isReadOnly ?  <Calendar
+            mode="single"
+            selected={date}
+            initialFocus
+            captionLayout="dropdown-buttons"
+            fromYear={1940}
+            toYear={2024}
+          /> : isBirthDate ? (
           <Calendar
             mode="single"
             selected={date}

@@ -11,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,62 +24,98 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@RequestMapping("/auctions")
 public class AuctionController {
     @Autowired
     private AuctionDAO auctionDAO;
 
-    @GetMapping("/auctions")
+    @GetMapping
     public ResponseEntity<List<Auction>> fetchAllAuctions() {
         try {
             List<Auction> auctions = auctionDAO.getAll();
 
-            return new ResponseEntity<List<Auction>>(auctions, HttpStatus.OK);
+            return ResponseEntity.ok(auctions);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<List<Auction>>(new ArrayList<Auction>(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
     }
 
-    @GetMapping("/auction-from-id")
-    public ResponseEntity<Auction> fetchAuctionBasedOnId(@RequestParam Long id) {
+    @GetMapping("/paginated")
+    public ResponseEntity<List<Auction>> fetchPagedAuctions(@RequestParam int page) {
+        try {
+            List<Auction> auctions = auctionDAO.getAllPaginated(page);
+
+            return ResponseEntity.ok(auctions);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Auction>> fetchAllAuctionsBasedOnUserId(@PathVariable Long userId) {
+        try {
+            List<Auction> auctions = auctionDAO.getAllViaUserId(userId);
+            return ResponseEntity.ok(auctions);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Auction> fetchAuctionBasedOnId(@PathVariable Long id) {
         try {
             Auction auction = auctionDAO.getViaId(id);
-
-            return new ResponseEntity<Auction>(auction, HttpStatus.OK);
+            return ResponseEntity.ok(auction);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<Auction>(new Auction(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Auction());
         }
     }
 
-    @PostMapping("/insert-auction")
+    @PostMapping
     public ResponseEntity<Auction> createAuction(@RequestBody Auction entity) {
         try {
             auctionDAO.create(entity);
-
-            return new ResponseEntity<Auction>(entity, HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body(entity);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<Auction>(new Auction(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Auction());
         }
-
     }
 
-    @PutMapping("/set-auction-isover")
-    public void setAuctionIsOver(@RequestParam Long id) {
+    @PutMapping("/{id}/is-over")
+    public ResponseEntity<Void> setAuctionIsOver(@PathVariable Long id) {
         try {
             auctionDAO.updateIsOver(id);
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @PutMapping("/set-auction-currentoffer")
-    public void setAuctionCurrentOffer(@RequestParam Long id, @RequestParam Float newCurrentOffer) {
+    @PutMapping("/{id}/current-offer")
+    public ResponseEntity<Void> setAuctionCurrentOffer(@PathVariable Long id, @RequestParam Float newCurrentOffer) {
         try {
             auctionDAO.updateCurrentOffer(id, newCurrentOffer);
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/{id}/current-offertimer")
+    public ResponseEntity<Void> setCurrentOfferTimer(@PathVariable Long id, @RequestParam Time newTimerValue) {
+        try {
+            auctionDAO.updateCurrentOfferTimer(id, newTimerValue);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -95,12 +133,17 @@ public class AuctionController {
         }
     }
 
-    private Time decrementTimerBy1Second(Auction auction) {
-        LocalTime cdtLocalTime = auction.getCurrentDecrementTimer().toLocalTime();
-        LocalTime cdtDecrementedLocalTime = cdtLocalTime.minusSeconds(1);
-        Time newDecrementTimerValue = Time.valueOf(cdtDecrementedLocalTime);
+    @Scheduled(fixedRate = 1000)
+    public void englishAuctionTimerReduction() {
+        List<Auction> auctions = auctionDAO.getAllEnglishAuctions();
 
-        return newDecrementTimerValue;
+        for (Auction auction : auctions) {
+            if (auction.getCurrentOfferTimer().equals(Time.valueOf("00:00:00"))) {
+                setCurrentOfferTimer(auction.getId(), auction.getBaseOfferTimer());
+            } else {
+                setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
+            }
+        }
     }
 
     private void setCurrentDecrementTimer(Long id, Time newTimerValue) {
@@ -109,6 +152,16 @@ public class AuctionController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private Time decrementTimerBy1Second(Auction auction) {
+        LocalTime cdtLocalTime = auction.getAuctionType().name().equals("descending")
+                ? auction.getCurrentDecrementTimer().toLocalTime()
+                : auction.getCurrentOfferTimer().toLocalTime();
+        LocalTime cdtDecrementedLocalTime = cdtLocalTime.minusSeconds(1);
+        Time newDecrementTimerValue = Time.valueOf(cdtDecrementedLocalTime);
+
+        return newDecrementTimerValue;
     }
 
     private void decreasePrice(Auction auction) {

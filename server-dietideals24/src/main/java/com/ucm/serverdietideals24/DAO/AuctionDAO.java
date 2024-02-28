@@ -8,16 +8,19 @@ import com.ucm.serverdietideals24.Models.Auction;
 
 public interface AuctionDAO {
     public List<Auction> getAll();
-
-    public List<Auction> getAllDescendingAuctions();
+    public List<Auction> getAllViaUserId(Long userId);
+    public List<Auction> getAllPaginated(int pageNumber);
 
     public Auction getViaId(Long id);
+
+    public List<Auction> getAllDescendingAuctions();
+    public List<Auction> getAllEnglishAuctions();
 
     public void create(Auction auction);
 
     public void updateIsOver(Long id);
-
     public void updateCurrentOffer(Long id, Float newCurrentOffer);
 
     public void updateCurrentDecrementTimer(Long id, Time newTimerValue);
+    public void updateCurrentOfferTimer(Long id, Time newTimerValue);
 }

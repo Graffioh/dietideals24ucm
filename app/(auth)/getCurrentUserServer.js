@@ -3,44 +3,54 @@ import { cookies } from "next/headers";
 export default async function getCurrentUserServer() {
   const nextCookies = cookies();
 
-  const tokenFromCookies = nextCookies.has("token")
-    ? nextCookies.get("token").value
+  const tokenFromCookies = nextCookies.has("auth-token")
+    ? nextCookies.get("auth-token").value
     : '"no-token"';
 
   // return token without "
-  const token = tokenFromCookies.replaceAll('"', "");
+  const authToken = tokenFromCookies.replaceAll('"', "");
 
   try {
     const subjectFromToken = await fetch(
-      "http://localhost:8080/get-subject-from-token",
+      process.env.NEXT_PUBLIC_BASEURL + "/get-subject-from-token",
       {
         method: "POST",
         credentials: "include",
-        body: token,
+        body: authToken,
       }
     );
 
     const userInfo = await subjectFromToken.text();
 
     if (userInfo.includes("@")) {
-      const userResponse = await fetch(
-        "http:/localhost:8080/user-from-email?email=" + userInfo
-      );
+      try {
+        const userResponse = await fetch(
+          process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + userInfo
+        );
 
-      const user = await userResponse.json();
+        const user = await userResponse.json();
 
-      return user;
+        return user;
+      } catch (e) {
+        console.error("Error while fetching user from email: " + e);
+      }
     } else {
-      const userResponse = await fetch(
-        "http:/localhost:8080/user-from-username?username=" + userInfo
-      );
+      try {
+        const userResponse = await fetch(
+          process.env.NEXT_PUBLIC_BASEURL +
+            "/users/username?username=" +
+            userInfo
+        );
 
-      const user = await userResponse.json();
+        const user = await userResponse.json();
 
-      return user;
+        return user;
+      } catch (e) {
+        console.error("Error while fetching user from username: " + e);
+      }
     }
   } catch (e) {
-    console.log({ e });
+    console.error("Erorr while fetching from auth token: " + e);
     return undefined;
   }
 }

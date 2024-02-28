@@ -24,25 +24,50 @@ public class AuctionImpl implements AuctionDAO {
     }
 
     @Override
+    public List<Auction> getAllViaUserId(Long userId) {
+        return jdbcTemplate.query("SELECT * FROM auction WHERE idUserAccount = " + userId,
+                new BeanPropertyRowMapper<Auction>(Auction.class));
+    }
+
+    public List<Auction> getAllPaginated(int pageNumber) {
+        int offset = (pageNumber - 1) * 20;
+        return jdbcTemplate.query("SELECT * FROM auction ORDER BY id LIMIT 20 OFFSET " + offset,
+                new BeanPropertyRowMapper<Auction>(Auction.class));
+    }
+
+    @Override
     public Auction getViaId(Long id) {
         return jdbcTemplate.query("SELECT * FROM auction WHERE id = '" + id + "'",
                 new BeanPropertyRowMapper<Auction>(Auction.class)).getFirst();
     }
 
     @Override
+    public List<Auction> getAllDescendingAuctions() {
+        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'descending'",
+                new BeanPropertyRowMapper<Auction>(Auction.class));
+    }
+
+    @Override
+    public List<Auction> getAllEnglishAuctions() {
+        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'english'",
+                new BeanPropertyRowMapper<Auction>(Auction.class));
+    }
+
+    @Override
     public void create(Auction auction) {
         // Different query based on auction type
-        if (auction.getAuctionType().toString() == "english") {
+        if (auction.getAuctionType().toString() === "english") {
             jdbcTemplate.execute(
-                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, baseStartAuction, raiseThreshold, idUserAccount, offerTimer, auctionType) VALUES ('"
+                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, baseStartAuction, raiseThreshold, idUserAccount, baseOfferTimer, auctionType, currentOfferTimer) VALUES ('"
                             + auction.getId() + "', '" + auction.getAuctionDescription()
                             + "', '" + auction.getAuctionName() + "', '" + auction.getAuctionCategory() + "', '"
                             + auction.getAuctionQuality() + "', '"
                             + auction.getCurrentOffer() + "', '" + auction.getAuctionImages() + "', '"
                             + auction.getBaseStartAuction() + "', '" + auction.getRaiseThreshold() + "', '"
                             + auction.getIdUserAccount() + "', '"
-                            + auction.getOfferTimer() + "', '" + auction.getAuctionType() + "')");
-        } else if (auction.getAuctionType().toString() == "fixedtime") {
+                            + auction.getBaseOfferTimer() + "', '" + auction.getAuctionType() + "', '"
+                            + auction.getBaseOfferTimer() + "')");
+        } else if (auction.getAuctionType().toString() === "fixedtime") {
             jdbcTemplate.execute(
                     "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, expireDate, minimumPrice, expireTime, idUserAccount, auctionType) VALUES ('"
                             + auction.getId() + "', '" + auction.getAuctionDescription()
@@ -79,14 +104,13 @@ public class AuctionImpl implements AuctionDAO {
     }
 
     @Override
-    public List<Auction> getAllDescendingAuctions() {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'descending'",
-                new BeanPropertyRowMapper<Auction>(Auction.class));
+    public void updateCurrentDecrementTimer(Long id, Time newTimerValue) {
+        jdbcTemplate.update("UPDATE auction SET currentDecrementTimer = '" + newTimerValue + "' WHERE id = " + id);
     }
 
     @Override
-    public void updateCurrentDecrementTimer(Long id, Time newTimerValue) {
-        jdbcTemplate.update("UPDATE auction SET currentDecrementTimer = '" + newTimerValue + "' WHERE id = " + id);
+    public void updateCurrentOfferTimer(Long id, Time newTimerValue) {
+        jdbcTemplate.update("UPDATE auction SET currentOfferTimer = '" + newTimerValue + "' WHERE id = " + id);
     }
 
 }

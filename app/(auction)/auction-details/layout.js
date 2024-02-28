@@ -16,19 +16,19 @@ export default async function AuctionDetailsLayout({ children }) {
   function getTokenFromCookie() {
     const nextCookies = cookies();
 
-    const tokenCookieStr = nextCookies.has("token")
-      ? nextCookies.get("token").value
+    const tokenCookieStr = nextCookies.has("auth-token")
+      ? nextCookies.get("auth-token").value
       : '"no-token"';
 
     // return token without "..."
     return tokenCookieStr.replaceAll('"', "");
   }
 
-  const token = getTokenFromCookie();
+  const authToken = getTokenFromCookie();
 
   return (
     <div className="relative flex min-h-screen flex-col">
-      <Header headerType={token === "no-token" ? "headerEmpty" : "headerLoggedPartial"} />
+      <Header headerType={authToken === "no-token" ? "headerEmpty" : "headerLoggedPartial"} />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>

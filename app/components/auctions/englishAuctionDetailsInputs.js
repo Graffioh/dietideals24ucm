@@ -12,7 +12,6 @@ export default function EnglishAuctionDetailsInputs({ currentAuction }) {
         <Input
           className="max-w-[20em] h-9 bg-white"
           type="text"
-          id="current-offer"
           placeholder="Placeholder"
           defaultValue={currentAuction.currentOffer}
           readOnly
@@ -25,9 +24,8 @@ export default function EnglishAuctionDetailsInputs({ currentAuction }) {
         <Input
           className="max-w-[20em] h-9 bg-white"
           type="text"
-          id="expire-time"
           placeholder="Placeholder"
-          defaultValue={currentAuction.offerTimer}
+          defaultValue={currentAuction.currentOfferTimer}
           readOnly
         />
       </div>

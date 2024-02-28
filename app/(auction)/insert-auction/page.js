@@ -21,12 +21,13 @@ import DescendingInsertAuctionInputs from "@/app/components/auctions/descendingI
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import AddAuctionImageBox from "@/app/components/addAuctionImageBox";
+import { toast } from "sonner";
 
 export default function InsertAuctionPage() {
   const { currentUser, currentUserIsLoading } = useUserContext();
 
   // Category combobox state
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Category 1");
 
   // Auction combobox state
   const [auctionType, setAuctionType] = useState("");
@@ -36,13 +37,13 @@ export default function InsertAuctionPage() {
   }
 
   // Quality combobox state
-  const [quality, setQuality] = useState("");
+  const [quality, setQuality] = useState("Good");
 
   // English auction inputs state
   // ***************************************
   const [baseStartAuction, setBaseStartAuction] = useState("");
   const [raiseThreshold, setRaiseThreshold] = useState("");
-  const [offerTimer, setOfferTimer] = useState("");
+  const [baseOfferTimer, setBaseOfferTimer] = useState("");
 
   function handleBaseStartAuction(baseStartAuction) {
     setBaseStartAuction(baseStartAuction);
@@ -52,15 +53,27 @@ export default function InsertAuctionPage() {
     setRaiseThreshold(raiseThreshold);
   }
 
-  function handleOfferTimer(offerTimer) {
-    setOfferTimer(offerTimer);
+  function handleBaseOfferTimer(baseOfferTimer) {
+    setBaseOfferTimer(baseOfferTimer);
+  }
+
+  function validateEnglishAuctionInputs() {
+    const validState =
+      category &&
+      auctionType &&
+      quality &&
+      baseStartAuction &&
+      raiseThreshold &&
+      baseOfferTimer;
+
+    return validState;
   }
   // ***************************************
 
   // Fixed Time auction inputs state
   // ***************************************
   const [expireDate, setExpireDate] = useState("");
-  // const [expireTime, setExpireTime] = useState("");
+  const [expireTime, setExpireTime] = useState("");
   const [fixedTimeMinimumPrice, setFixedTimeMinimumPrice] = useState("");
 
   function handleExpireDateChange(date) {
@@ -74,13 +87,18 @@ export default function InsertAuctionPage() {
   function handleFixedTimeMinimumPriceChange(price) {
     setFixedTimeMinimumPrice(price);
   }
+
+  function validateFixedTimeAuctionInputs() {
+    const validState =
+      category && auctionType && quality && expireDate && fixedTimeMinimumPrice;
+    return validState;
+  }
   // ***************************************
 
   // Descending auction inputs state
   // ***************************************
   const [startPrice, setStartPrice] = useState("");
   const [decrementAmount, setDecrementAmount] = useState("");
-  const [expireTime, setExpireTime] = useState("");
   const [baseDecrementTimer, setDecrementTimer] = useState("");
   const [descendingMinimumPrice, setDescendingMinimumPrice] = useState("");
 
@@ -92,10 +110,6 @@ export default function InsertAuctionPage() {
     setDecrementAmount(decrementAmount);
   }
 
-  function handleExpireTime(expireTime) {
-    setExpireTime(expireTime);
-  }
-
   function handleDecrementTimer(timer) {
     setDecrementTimer(timer);
   }
@@ -103,8 +117,21 @@ export default function InsertAuctionPage() {
   function handleDescendingMinimumPrice(descendingMinimumPrice) {
     setDescendingMinimumPrice(descendingMinimumPrice);
   }
+
+  function validateDescendingAuctionInputs() {
+    const validState =
+      category &&
+      auctionType &&
+      quality &&
+      startPrice &&
+      decrementAmount &&
+      baseDecrementTimer &&
+      descendingMinimumPrice;
+    return validState;
+  }
   // ***************************************
 
+  const createAuctionButtonRef = useRef(null);
   const hiddenFileInput = useRef(null);
 
   const handleFileUploadClick = () => {
@@ -113,6 +140,19 @@ export default function InsertAuctionPage() {
 
   async function onSubmit(event) {
     event.preventDefault();
+
+    const areFixedTimeInputsValid = validateFixedTimeAuctionInputs();
+    const areEnglishInputsValid = validateEnglishAuctionInputs();
+    const areDescendingInputsValid = validateDescendingAuctionInputs();
+
+    if (
+      !areEnglishInputsValid &&
+      !areDescendingInputsValid &&
+      !areFixedTimeInputsValid
+    ) {
+      toast.error("Please fill all the fields before submitting!");
+      return;
+    }
 
     const inputs = event.currentTarget;
     const auctionFromInputs = {
@@ -128,7 +168,9 @@ export default function InsertAuctionPage() {
       offers: [],
       baseStartAuction: baseStartAuction,
       raiseThreshold: raiseThreshold,
-      offerTimer: offerTimer ? moment(offerTimer, "HH:mm:ss").format("HH:mm:ss") : null,
+      baseOfferTimer: baseOfferTimer
+        ? moment(baseOfferTimer, "HH:mm:ss").format("HH:mm:ss")
+        : null,
       expireDate: expireDate,
       minimumPrice:
         auctionType == "fixedtime"
@@ -136,20 +178,38 @@ export default function InsertAuctionPage() {
           : descendingMinimumPrice,
       startPrice: startPrice,
       decrementAmount: decrementAmount,
-      expireTime: expireTime ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss") : null,
-      baseDecrementTimer: baseDecrementTimer ? moment(baseDecrementTimer, "HH:mm:ss").format("HH:mm:ss") : null,
+      expireTime: expireTime
+        ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss")
+        : null,
+      baseDecrementTimer: baseDecrementTimer
+        ? moment(baseDecrementTimer, "HH:mm:ss").format("HH:mm:ss")
+        : null,
     };
 
-    const insertAuctionResponse = await fetch(
-      "http://localhost:8080/insert-auction",
-      {
+    try {
+      await fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions", {
         method: "POST",
         body: JSON.stringify(auctionFromInputs),
         headers: { "Content-Type": "application/json" },
-      }
-    );
+      });
 
-    window.location.href = "/home";
+      toast.success("The auction has been created.", {
+        position: "bottom-center",
+      });
+
+      createAuctionButtonRef.current.style.opacity = "0.5";
+      createAuctionButtonRef.current.disabled = true;
+
+      setTimeout(() => {
+        window.location.href = "http://localhost:3000/home";
+      }, 1000);
+    } catch (e) {
+      toast.error("The auction has not been created, a problem occurred.", {
+        position: "bottom-center",
+      });
+
+      console.error("Error while creating auction: " + e);
+    }
   }
 
   return (
@@ -235,14 +295,16 @@ export default function InsertAuctionPage() {
               <EnglishInsertAuctionInputs
                 onBaseStartAuctionChange={handleBaseStartAuction}
                 onRaiseThresholdChange={handleRaiseThreshold}
-                onOfferTimerChange={handleOfferTimer}
+                onBaseOfferTimerChange={handleBaseOfferTimer}
               />
             )}
           </div>
         </div>
 
         <div className="flex justify-center items-center mb-4">
-          <Button className="p-7 text-lg">Create Auction</Button>
+          <Button ref={createAuctionButtonRef} className="p-7 text-lg">
+            Create Auction
+          </Button>
         </div>
       </form>
     </>

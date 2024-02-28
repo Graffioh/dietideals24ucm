@@ -9,52 +9,55 @@ const UserContext = createContext(null);
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentUserIsLoading, setcurrentUserIsLoading] = useState(true);
-  // const [isError, setIsError] = useState(false);
 
-  const token = useCookies().get("token");
+  const authToken = useCookies().get("auth-token");
 
-  let user = null;
-
-  if (token) {
-    const userInfoFetcher = (url) =>
-      fetch(url, { method: "POST", credentials: "include", body: token }).then(
-        (res) => res.text()
-      );
-
-    const {
-      data: subject,
-      error: subjectError,
-      isLoading: subjectIsLoading,
-    } = useSWR("http://localhost:8080/get-subject-from-token", userInfoFetcher);
-
-    const fetcher = (url) =>
-      fetch(url, { next: { revalidate: 3 } }).then((res) => res.json());
-
-    const {
-      data: currentUserData,
-      error: currentUserError,
-      isLoading: currentUserIsLoading,
-    } = useSWR(
-      subject != null && subject.includes("@")
-        ? "http://localhost:8080/user-from-email?email=" + subject
-        : "http://localhost:8080/user-from-username?username=" + subject,
-      fetcher
+  const userInfoFetcher = (url) =>
+    fetch(url, { method: "POST", credentials: "include", body: authToken }).then(
+      (res) => res.text()
     );
 
-    user = currentUserData;
+  const {
+    data: subject,
+    error: subjectError,
+  } = useSWR(
+    process.env.NEXT_PUBLIC_BASEURL + "/get-subject-from-token",
+    userInfoFetcher
+  );
+
+  if (subjectError) {
+    console.error(
+      "Error while fetching subject from auth token in user provider: " +
+        subjectError
+    );
+  }
+
+  const fetcher = (url) =>
+    fetch(url, { next: { revalidate: 3 } }).then((res) => res.json());
+
+  const {
+    data: currentUserData,
+    error: currentUserError,
+  } = useSWR(
+    subject != null && subject.includes("@")
+      ? process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + subject
+      : process.env.NEXT_PUBLIC_BASEURL + "/users/username?username=" + subject,
+    fetcher
+  );
+
+  if (currentUserError) {
+    console.error(
+      "Error while fetching user from email or username in user provider: " +
+        currentUserError
+    );
   }
 
   useEffect(() => {
-    if (user) {
-      setCurrentUser(user);
+    if (currentUserData) {
+      setCurrentUser(currentUserData);
       setcurrentUserIsLoading(false);
     }
-    // if (error) {
-    //   console.error('Error fetching user:', error);
-    //   setIsError(true);
-    //   setIsLoading(false);
-    // }
-  }, [user]);
+  }, [currentUserData]);
 
   return (
     <UserContext.Provider value={{ currentUser, currentUserIsLoading }}>

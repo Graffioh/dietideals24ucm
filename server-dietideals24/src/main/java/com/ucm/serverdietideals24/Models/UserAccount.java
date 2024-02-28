@@ -20,7 +20,7 @@ public class UserAccount {
     @NonNull
     private String firstName, lastName, username, password, email; 
     
-    private String piva, telephoneNumber, biography, website;
+    private String telephoneNumber, biography, website, provider;
     
     private Date birthDate;
 

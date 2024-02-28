@@ -30,8 +30,6 @@ export default function PlaceOfferDialog({ auction }) {
       idAuction: auction.id,
     };
 
-    console.log(offerFromInputs);
-
     if (auction.currentOffer < offerAmount) {
       alert("La tua offerta é stata piazzata correttamente");
       await fetch("http://localhost:8080/insert-offer", {
@@ -50,7 +48,6 @@ export default function PlaceOfferDialog({ auction }) {
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log(auction.currentOffer);
 
       setDialogOpen(false);
     } else {

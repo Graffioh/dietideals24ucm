@@ -1,11 +1,28 @@
+import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { TimePicker } from "@/components/timepicker/time-picker";
 
 export default function EnglishInsertAuctionInputs({
   onBaseStartAuctionChange,
   onRaiseThresholdChange,
-  onOfferTimerChange,
+  onBaseOfferTimerChange,
 }) {
+  const zeroDate = new Date();
+  zeroDate.setHours(0, 0, 0, 0);
+  const [dateForTimer, setDateForTimer] = React.useState(zeroDate);
+
+  function convertDateIntoTime() {
+    const timer =
+      dateForTimer.getHours() +
+      ":" +
+      dateForTimer.getMinutes() +
+      ":" +
+      dateForTimer.getSeconds();
+    return timer;
+  }
+
   return (
     <>
       <div>
@@ -18,7 +35,9 @@ export default function EnglishInsertAuctionInputs({
           type="number"
           placeholder="Start price"
           className="bg-white"
-          onChange={(e) => {onBaseStartAuctionChange(e.target.value)}}
+          onChange={(e) => {
+            onBaseStartAuctionChange(e.target.value);
+          }}
         ></Input>
       </div>
 
@@ -28,12 +47,18 @@ export default function EnglishInsertAuctionInputs({
             Offer timer<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input
-          type="time"
-          placeholder="Offer timer"
-          className="bg-white"
-          onChange={(e) => {onOfferTimerChange(e.target.value)}}
-        ></Input>
+        <div className="flex">
+          <TimePicker date={dateForTimer} setDate={setDateForTimer} />
+          <Button
+            className="mt-5 ml-4"
+            onClick={(e) => {
+              e.preventDefault();
+              onBaseOfferTimerChange(convertDateIntoTime(dateForTimer));
+            }}
+          >
+            Set
+          </Button>
+        </div>
       </div>
 
       <div>
@@ -46,7 +71,9 @@ export default function EnglishInsertAuctionInputs({
           type="number"
           placeholder="Rise threshold price"
           className="bg-white"
-          onChange={(e) => {onRaiseThresholdChange(e.target.value)}}
+          onChange={(e) => {
+            onRaiseThresholdChange(e.target.value);
+          }}
         ></Input>
       </div>
     </>

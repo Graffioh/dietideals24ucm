@@ -42,12 +42,12 @@ public class JWTTokenController {
             return new ResponseEntity<String>(token, HttpStatus.OK);
         }
 
-        return new ResponseEntity<String>("none", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<String>("no-token", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/set-login-token")
     public ResponseEntity<String> setLoginToken(@RequestBody String token, HttpServletResponse response) {
-        Cookie tokenCookie = new Cookie("token", token);
+        Cookie tokenCookie = new Cookie("auth-token", token);
         tokenCookie.setSecure(false);
         tokenCookie.setHttpOnly(false);
         tokenCookie.setMaxAge(100000000);
@@ -59,7 +59,7 @@ public class JWTTokenController {
     }
 
     @GetMapping("/get-login-token")
-    public ResponseEntity<String> getLoginToken(@CookieValue(name = "token", required = false) String tokenFromCookie) {
+    public ResponseEntity<String> getLoginToken(@CookieValue(name = "auth-token", required = false) String tokenFromCookie) {
         if (tokenFromCookie != null) {
             return new ResponseEntity<String>(tokenFromCookie, HttpStatus.OK);
         } else {
@@ -69,7 +69,7 @@ public class JWTTokenController {
 
     @GetMapping("/delete-login-token")
     public ResponseEntity<String> deleteLoginToken(HttpServletResponse response) {
-        Cookie tokenCookie = new Cookie("token", null);
+        Cookie tokenCookie = new Cookie("auth-token", null);
         tokenCookie.setSecure(false);
         tokenCookie.setHttpOnly(false);
         tokenCookie.setMaxAge(0);
@@ -77,7 +77,7 @@ public class JWTTokenController {
 
         response.addCookie(tokenCookie);
 
-        return new ResponseEntity<String>("Cookie token delete successfully.", HttpStatus.OK);
+        return new ResponseEntity<String>("Cookie auth token delete successfully.", HttpStatus.OK);
     }
 
     @PostMapping("/get-subject-from-token")
@@ -86,9 +86,11 @@ public class JWTTokenController {
 
         try {
             subject = JwtUtil.extractSubjectViaToken(token);
+        } catch (NoSuchElementException nsee) {
+            return new ResponseEntity<String>("no-token", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<String>("none", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<String>("no-token", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<String>(subject, HttpStatus.ACCEPTED);

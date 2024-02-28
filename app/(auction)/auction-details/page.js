@@ -11,14 +11,15 @@ import EnglishAuctionDetailsInputs from "@/app/components/auctions/englishAuctio
 import FixedTimeAuctionDetailsInputs from "@/app/components/auctions/fixedTimeAuctionDetailsInputs";
 import PlaceOfferDialog from "@/app/components/placeOfferDialog";
 import { cn } from "@/lib/utils";
+import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
 
 
 export default async function AuctionDetailsPage({ searchParams }) {
   function getTokenFromCookie() {
     const nextCookies = cookies();
 
-    const tokenCookieStr = nextCookies.has("token")
-      ? nextCookies.get("token").value
+    const tokenCookieStr = nextCookies.has("auth-token")
+      ? nextCookies.get("auth-token").value
       : '"no-token"';
 
     // return token without "..."
@@ -28,7 +29,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
   async function getCurrentAuctionBasedOnId(id) {
     try {
       const auctionResponse = await fetch(
-        "http://localhost:8080/auction-from-id?id=" + id,
+        process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + id,
         {
           next: { revalidate: 3 },
         }
@@ -37,13 +38,15 @@ export default async function AuctionDetailsPage({ searchParams }) {
 
       return auction;
     } catch (e) {
-      console.log(e);
+      console.error("Error while fetching auctions from id: " + e);
     }
   }
 
   const currentAuction = await getCurrentAuctionBasedOnId(searchParams.id);
 
-  const token = getTokenFromCookie();
+  const authToken = getTokenFromCookie();
+
+  const currentUser = await getCurrentUserServer();
 
   return (
     <>
@@ -72,36 +75,44 @@ export default async function AuctionDetailsPage({ searchParams }) {
 
           <div className="flex justify-center">
             <div className="font-bold text-5xl rounded-full mt-5 mb-[10em]">
-              <Avatar className="h-32 w-32">
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@avatar"
-                />
-                <AvatarFallback>gojo</AvatarFallback>
-              </Avatar>
+              <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>
+                <Avatar className="h-32 w-32">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@avatar"
+                  />
+                  <AvatarFallback />
+                </Avatar>
+              </Link>
             </div>
             <div className="absolute mt-[20em]">
               <Label className="flex mb-2">Description</Label>
               <Textarea
                 className="w-screen max-w-[30em] bg-white h-32"
                 placeholder="Type your description here."
+                defaultValue={currentAuction.auctionDescription}
                 readOnly
               />
             </div>
 
             <div className="absolute mt-[32em]">
-              {token === "no-token" ? (
-                <Link className={cn(
-                  buttonVariants({
-                    variant: "default",
-                    size: "default",
-                    className: "p-7 text-lg",
-                  })
-                )} href="/login">
+              {authToken === "no-token" ? (
+                <Link
+                  className={cn(
+                    buttonVariants({
+                      variant: "default",
+                      size: "default",
+                      className: "p-7 text-lg",
+                    })
+                  )}
+                  href="/login"
+                >
                   Place offer
                 </Link>
-              ) : (
+              ) : searchParams.auctionuserid != currentUser.id ? (
                 <PlaceOfferDialog auction={currentAuction} />
+              ) : (
+                <div></div>
               )}
             </div>
           </div>

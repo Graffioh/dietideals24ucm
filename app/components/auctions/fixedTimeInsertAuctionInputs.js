@@ -23,6 +23,7 @@ export default function FixedTimeInsertAuctionInputs({
           handleParentDate={onExpireDateChange}
           defaultDate={""}
           isBirthDate={false}
+          isReadOnly={false}
         />
       </div>
 
