@@ -41,8 +41,8 @@ public class AuctionController {
         }
     }
     
-    @GetMapping("/name/{name}")
-    public ResponseEntity<List<Auction>> fetchAuctionBasedOnName(@PathVariable String name) {
+    @PostMapping("/name")
+    public ResponseEntity<List<Auction>> fetchAuctionBasedOnName(@RequestBody String name) {
         try {
             List<Auction> auctions = auctionDAO.getViaName(name);
 
