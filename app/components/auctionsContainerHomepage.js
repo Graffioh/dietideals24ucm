@@ -8,8 +8,11 @@ import AuctionPagination from "./auctionPagination";
 import CardAuction from "./cardAuction";
 import LoadingSpinner from "./loadingSpinner";
 import useSWR from "swr";
+import { useAuctionFilter } from "../providers/auctionFilterProvider";
 
 export default function AuctionsContainerHomepage() {
+  const { filteredAuctions } = useAuctionFilter();
+
   // Retrieve last page number from localStorage when the page is reloaded
   const [pageIndex, setPageIndex] = useState(() => {
     if (typeof window !== "undefined") {
@@ -75,7 +78,23 @@ export default function AuctionsContainerHomepage() {
     <>
       <div className="flex flex-col justify-center items-center">
         <div className="grid md:grid-rows-auto md:grid-cols-4 grid-cols-1 md:gap-x-14">
-          {paginatedAuctions ? (
+          {filteredAuctions ? (
+            filteredAuctions.map((filteredAuction) => (
+              <>
+                <Link
+                  href={
+                    "/auction-details?id=" +
+                    filteredAuction.id +
+                    "&auctionuserid=" +
+                    filteredAuction.idUserAccount
+                  }
+                  key={filteredAuction.id}
+                >
+                  <CardAuction isHomepage={true} auction={filteredAuction} />
+                </Link>
+              </>
+            ))
+          ) : paginatedAuctions ? (
             paginatedAuctions.map((auction) => (
               <Link
                 href={

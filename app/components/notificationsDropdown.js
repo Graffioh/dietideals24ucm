@@ -21,7 +21,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { useUserContext } from "@/app/(auth)/userProvider";
+import { useUserContext } from "@/app/providers/userProvider";
 
 export default function NotificationsDropdown() {
   const { currentUser, currentUserIsLoading } = useUserContext();
