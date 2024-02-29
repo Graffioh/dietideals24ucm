@@ -25,7 +25,7 @@ export default function PlaceOfferDialog({ auction }) {
     const offerAmount = offerAmountRef.current.value;
     const offerFromInputs = {
       id: Date.now(),
-      offerAmount: auction.currentOffer,
+      offerAmount: offerAmount,
       idUserAccount: auction.idUserAccount,
       idAuction: auction.id,
     };
