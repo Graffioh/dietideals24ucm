@@ -7,10 +7,16 @@ const AuctionFilterContext = createContext();
 export const AuctionFilterProvider = ({ children }) => {
   const [searchInput, setSearchInput] = useState("");
   const [categoryInput, setCategoryInput] = useState("");
+  const [filteredAuctions, setFilteredAuctions] = useState("");
 
   return (
     <AuctionFilterContext.Provider
-      value={{ searchInput, setSearchInput, categoryInput, setCategoryInput }}
+      value={{
+        setSearchInput,
+        setCategoryInput,
+        filteredAuctions,
+        setFilteredAuctions,
+      }}
     >
       {children}
     </AuctionFilterContext.Provider>
@@ -20,7 +26,7 @@ export const AuctionFilterProvider = ({ children }) => {
 export const useAuctionFilter = () => {
   const context = useContext(AuctionFilterContext);
   if (context === undefined) {
-    throw new Error("useAuctionFilter must be used within a FilterProvider");
+    throw new Error("useFilter must be used within a FilterProvider");
   }
   return context;
 };
