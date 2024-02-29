@@ -20,6 +20,8 @@ export default function ProfilePage({ searchParams }) {
   const [birthDate, setBirthDate] = useState("");
   const { currentUser, currentUserIsLoading } = useUserContext();
 
+  const provider = currentUser ? currentUser.provider : null;
+
   async function createUserAccount(user) {
     try {
       const hashedPassword = await hash(user.password, 10);
@@ -228,10 +230,9 @@ export default function ProfilePage({ searchParams }) {
                 }
                 required
                 readOnly={
-                  searchParams.fromProvider === "google" || currentUser
-                    ? currentUser.provider === "google"
-                      ? true
-                      : false
+                  searchParams.fromProvider === "google" ||
+                  provider === "google"
+                    ? true
                     : false
                 }
               />
