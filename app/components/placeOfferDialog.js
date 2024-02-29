@@ -25,12 +25,15 @@ export default function PlaceOfferDialog({ auction }) {
     const offerAmount = offerAmountRef.current.value;
     const offerFromInputs = {
       id: Date.now(),
-      offerAmount: offerAmount,
+      offerAmount: auction.currentOffer,
       idUserAccount: auction.idUserAccount,
       idAuction: auction.id,
     };
 
-    if (auction.currentOffer < offerAmount) {
+    if (
+      auction.auctionType != "descending" &&
+      auction.currentOffer < offerAmount
+    ) {
       alert("La tua offerta é stata piazzata correttamente");
       await fetch("http://localhost:8080/insert-offer", {
         method: "POST",
@@ -50,8 +53,31 @@ export default function PlaceOfferDialog({ auction }) {
       );
 
       setDialogOpen(false);
-    } else {
+    } else if (
+      auction.auctionType != "descending" &&
+      auction.currentOffer >= offerAmount
+    ) {
       alert("Fai un offerta maggiore dell'offerta corrente");
+    }
+  }
+
+  async function onSubmitDescending(event) {
+    event.preventDefault();
+
+    const offerFromInputs = {
+      id: Date.now(),
+      offerAmount: auction.currentOffer,
+      idUserAccount: auction.idUserAccount,
+      idAuction: auction.id,
+    };
+
+    if (auction.auctionType == "descending") {
+      alert("La tua offerta é stata piazzata correttamente");
+      await fetch("http://localhost:8080/insert-offer", {
+        method: "POST",
+        body: JSON.stringify(offerFromInputs),
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     if (auction.auctionType == "descending") {
@@ -81,38 +107,56 @@ export default function PlaceOfferDialog({ auction }) {
     setDialogOpen(false);
   };
 
-  return (
-    <>
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button
-            variant="default"
-            className="p-7 text-lg"
-            onClick={openDialog}
-          >
-            Place Offer
-          </Button>
-        </AlertDialogTrigger>
-        {isDialogOpen && (
-          <AlertDialogContent className="w-64 flex flex-col items-center">
-            <AlertDialogHeader>
-              <AlertDialogTitle>Place an offer</AlertDialogTitle>
-              <AlertDialogDescription>
-                Current max offer: {auction.currentOffer} €
-              </AlertDialogDescription>
-              <div className="flex justify-center">
-                <Input ref={offerAmountRef} type="number" className="w-48" />
-              </div>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel onClick={closeDialog}>
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction onClick={onSubmit}>Place</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        )}
-      </AlertDialog>
-    </>
-  );
+  if (auction.auctionType != "descending") {
+    return (
+      <>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="default"
+              className="p-7 text-lg"
+              onClick={openDialog}
+            >
+              Place Offer
+            </Button>
+          </AlertDialogTrigger>
+          {isDialogOpen && (
+            <AlertDialogContent className="w-64 flex flex-col items-center">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Place an offer</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Current max offer: {auction.currentOffer} €
+                </AlertDialogDescription>
+                <div className="flex justify-center">
+                  <Input ref={offerAmountRef} type="number" className="w-48" />
+                </div>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={closeDialog}>
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction onClick={onSubmit}>Place</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          )}
+        </AlertDialog>
+      </>
+    );
+  } else if (auction.auctionType == "descending") {
+    return (
+      <>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="default"
+              className="p-7 text-lg"
+              onClick={onSubmitDescending}
+            >
+              Place Offer
+            </Button>
+          </AlertDialogTrigger>
+        </AlertDialog>
+      </>
+    );
+  }
 }
