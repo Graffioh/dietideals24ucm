@@ -20,6 +20,8 @@ export default function ProfilePage({ searchParams }) {
   const [birthDate, setBirthDate] = useState("");
   const { currentUser, currentUserIsLoading } = useUserContext();
 
+  const provider = currentUser ? currentUser.provider : null;
+
   async function createUserAccount(user) {
     try {
       const hashedPassword = await hash(user.password, 10);
@@ -56,7 +58,7 @@ export default function ProfilePage({ searchParams }) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(userWithHashedPassword),
-          }
+          },
         );
 
         const responseTokenText = await responseToken.text();
@@ -85,6 +87,9 @@ export default function ProfilePage({ searchParams }) {
     event.preventDefault();
 
     const inputs = event.currentTarget;
+    
+    // Haha null java bullsh*t
+    const birthDateForInputs = currentUser ? currentUser.birthDate ?? birthDate ?? new Date() : new Date();
 
     const userInfoFromInputs = {
       id: Date.now(),
@@ -92,11 +97,7 @@ export default function ProfilePage({ searchParams }) {
       lastName: inputs.lastName.value,
       username: inputs.username.value,
       password: inputs.password.value,
-      birthDate: currentUser
-        ? currentUser.birthDate
-        : birthDate
-        ? birthDate
-        : new Date(),
+      birthDate: birthDateForInputs,
       email: inputs.email.value,
       telephoneNumber: inputs.telephoneNumber
         ? inputs.telephoneNumber.value
@@ -114,7 +115,7 @@ export default function ProfilePage({ searchParams }) {
           method: "PUT",
           body: JSON.stringify(userInfoFromInputs),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       toast.success("Account updated successfully.", {
@@ -137,15 +138,17 @@ export default function ProfilePage({ searchParams }) {
 
   if (currentUserIsLoading && !searchParams.fromProvider) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex h-screen items-center justify-center">
         <LoadingSpinner />
       </div>
     );
   }
+  
+  console.log(currentUser)
 
   return (
     <>
-      <div className="flex flex justify-center mb-10 mt-10">
+      <div className="mb-10 mt-10 flex justify-center">
         <Avatar className="h-32 w-32">
           <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
           <AvatarFallback />
@@ -154,9 +157,9 @@ export default function ProfilePage({ searchParams }) {
 
       <form onSubmit={onSubmit}>
         <div className="flex flex-col items-center">
-          <div className="w-64 items-center grid gap-6">
+          <div className="grid w-64 items-center gap-6">
             <div>
-              <Label className="flex mb-2">
+              <Label className="mb-2 flex">
                 Name<div className="text-red-500">*</div>
               </Label>
               <Input
@@ -170,7 +173,7 @@ export default function ProfilePage({ searchParams }) {
             </div>
 
             <div>
-              <Label className="flex mb-2">
+              <Label className="mb-2 flex">
                 Surname<div className="text-red-500">*</div>
               </Label>
               <Input
@@ -184,7 +187,7 @@ export default function ProfilePage({ searchParams }) {
             </div>
 
             <div>
-              <Label className="flex mb-2">
+              <Label className="mb-2 flex">
                 Username<div className="text-red-500">*</div>
               </Label>
               <Input
@@ -196,22 +199,21 @@ export default function ProfilePage({ searchParams }) {
                   searchParams.fromProvider === "github"
                     ? searchParams.username
                     : currentUser
-                    ? currentUser.username
-                    : ""
+                      ? currentUser.username
+                      : ""
                 }
                 required
                 readOnly={
-                  searchParams.fromProvider === "github" || currentUser
-                    ? currentUser.provider === "github"
-                      ? true
-                      : false
+                  searchParams.fromProvider === "github" ||
+                  provider === "github"
+                    ? true
                     : false
                 }
               />
             </div>
 
             <div>
-              <Label className="flex mb-2">
+              <Label className="mb-2 flex">
                 Email<div className="text-red-500">*</div>
               </Label>
               <Input
@@ -223,22 +225,21 @@ export default function ProfilePage({ searchParams }) {
                   searchParams.fromProvider === "google"
                     ? searchParams.email
                     : currentUser
-                    ? currentUser.email
-                    : searchParams.email
+                      ? currentUser.email
+                      : searchParams.email
                 }
                 required
                 readOnly={
-                  searchParams.fromProvider === "google" || currentUser
-                    ? currentUser.provider === "google"
-                      ? true
-                      : false
+                  searchParams.fromProvider === "google" ||
+                  provider === "google"
+                    ? true
                     : false
                 }
               />
             </div>
 
             <div>
-              <Label className="flex mb-2">
+              <Label className="mb-2 flex">
                 Password<div className="text-red-500">*</div>
               </Label>
               <Input
@@ -253,7 +254,7 @@ export default function ProfilePage({ searchParams }) {
             </div>
 
             <div>
-              <Label className="flex mb-2">
+              <Label className="mb-2 flex">
                 Date of birth (YYYY-MM-dd)<div className="text-red-500">*</div>
               </Label>
               <DatePicker
@@ -272,7 +273,7 @@ export default function ProfilePage({ searchParams }) {
               currentUser.id ? (
                 <>
                   <div>
-                    <Label className="flex mb-2">Phone Number</Label>
+                    <Label className="mb-2 flex">Phone Number</Label>
                     <Input
                       className="h-9 bg-white"
                       type="tel"
@@ -285,7 +286,7 @@ export default function ProfilePage({ searchParams }) {
                   </div>
 
                   <div>
-                    <Label className="flex mb-2">Bio</Label>
+                    <Label className="mb-2 flex">Bio</Label>
                     <Textarea
                       className="bg-white"
                       placeholder="Type your description here."
@@ -295,7 +296,7 @@ export default function ProfilePage({ searchParams }) {
                   </div>
 
                   <div>
-                    <Label className="flex mb-2">Website</Label>
+                    <Label className="mb-2 flex">Website</Label>
                     <Input
                       className="h-9 bg-white"
                       type="url"

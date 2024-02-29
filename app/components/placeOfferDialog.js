@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 export default function PlaceOfferDialog({ auction }) {
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -22,7 +23,7 @@ export default function PlaceOfferDialog({ auction }) {
   async function onSubmit(event) {
     event.preventDefault();
 
-    const offerAmount = offerAmountRef ? -1 : offerAmountRef.current.value;
+    const offerAmount = offerAmountRef ? offerAmountRef.current.value : -1;
     const offerFromInputs = {
       id: Date.now(),
       offerAmount:
@@ -32,12 +33,12 @@ export default function PlaceOfferDialog({ auction }) {
       idUserAccount: auction.idUserAccount,
       idAuction: auction.id,
     };
-
+    
     if (
       auction.currentOffer < offerAmount ||
       auction.auctionType === "descending"
     ) {
-      alert("La tua offerta é stata piazzata correttamente");
+      toast.success("Your offer has been placed correctly.");
       await fetch(process.env.NEXT_PUBLIC_BASEURL + "/insert-offer", {
         method: "POST",
         body: JSON.stringify(offerFromInputs),
@@ -85,53 +86,11 @@ export default function PlaceOfferDialog({ auction }) {
       auction.auctionType != "descending" &&
       auction.currentOffer >= offerAmount
     ) {
-      alert("Fai un offerta maggiore dell'offerta corrente");
+      toast.error(
+        "You must place an offer greater than the max current offer!"
+      );
     }
   }
-
-  // async function onSubmitDescending(event) {
-  //   event.preventDefault();
-
-  //   const offerFromInputs = {
-  //     id: Date.now(),
-  //     offerAmount: auction.currentOffer,
-  //     idUserAccount: auction.idUserAccount,
-  //     idAuction: auction.id,
-  //   };
-
-  //   if (auction.auctionType == "descending") {
-  //     alert("La tua offerta é stata piazzata correttamente");
-  //     await fetch(process.env.NEXT_PUBLIC_BASEURL + "/insert-offer", {
-  //       method: "POST",
-  //       body: JSON.stringify(offerFromInputs),
-  //       headers: { "Content-Type": "application/json" },
-  //     });
-  //   }
-
-  //   if (auction.auctionType == "descending") {
-  //     fetch(
-  //       process.env.NEXT_PUBLIC_BASEURL +
-  //         "/auctions/" +
-  //         auction.id +
-  //         "/is-over",
-  //       {
-  //         method: "PUT",
-  //         headers: { "Content-Type": "application/json" },
-  //       }
-  //     )
-  //       .then((response) => {
-  //         if (!response.ok) {
-  //           throw new Error("Network response was not ok");
-  //         }
-  //       })
-  //       .then(() => {
-  //         console.log("Auction has ended");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Failed to fetch: ", error);
-  //       });
-  //   }
-  // }
 
   const openDialog = () => {
     setDialogOpen(true);
@@ -141,7 +100,6 @@ export default function PlaceOfferDialog({ auction }) {
     setDialogOpen(false);
   };
 
-  // if (auction.auctionType != "descending") {
   return (
     <>
       <AlertDialog>
@@ -149,7 +107,9 @@ export default function PlaceOfferDialog({ auction }) {
           <Button
             variant="default"
             className="p-7 text-lg"
-            onClick={auction.auctionType === "descending" ? onSubmit : openDialog}
+            onClick={
+              auction.auctionType === "descending" ? onSubmit : openDialog
+            }
           >
             Place Offer
           </Button>
@@ -176,21 +136,4 @@ export default function PlaceOfferDialog({ auction }) {
       </AlertDialog>
     </>
   );
-  // } else if (auction.auctionType == "descending") {
-  //   return (
-  //     <>
-  //       <AlertDialog>
-  //         <AlertDialogTrigger asChild>
-  //           <Button
-  //             variant="default"
-  //             className="p-7 text-lg"
-  //             onClick={onSubmitDescending}
-  //           >
-  //             Place Offer
-  //           </Button>
-  //         </AlertDialogTrigger>
-  //       </AlertDialog>
-  //     </>
-  //   );
-  // }
 }
