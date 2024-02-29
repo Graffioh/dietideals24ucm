@@ -8,17 +8,23 @@ export default function Searchbar() {
 
   const handleInputChange = async (event) => {
     const searchInput = event.target.value;
-    const filteredAuctionsResponse = await fetch(
-      searchInput === ""
-        ? process.env.NEXT_PUBLIC_BASEURL + "/auctions"
-        : process.env.NEXT_PUBLIC_BASEURL +
-            "/auctions/name/" +
-            event.target.value
-    );
-    const filteredAuctionsData = await filteredAuctionsResponse.json();
 
-    setFilteredAuctions(filteredAuctionsData);
-    setSearchInput(event.target.value);
+    if (searchInput === "") {
+      const auctionsResponse = await fetch(
+        process.env.NEXT_PUBLIC_BASEURL + "/auctions"
+      );
+      const auctionsData = await auctionsResponse.json();
+      setFilteredAuctions(auctionsData);
+      setSearchInput(event.target.value);
+    } else {
+      const filteredAuctionsResponse = await fetch(
+        process.env.NEXT_PUBLIC_BASEURL + "/auctions/name",
+        { method: "POST", body: event.target.value, credentials: "include" }
+      );
+      const filteredAuctionsData = await filteredAuctionsResponse.json();
+      setFilteredAuctions(filteredAuctionsData);
+      setSearchInput(event.target.value);
+    }
   };
 
   return (
