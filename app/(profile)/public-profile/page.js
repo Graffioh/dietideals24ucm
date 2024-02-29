@@ -9,7 +9,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AuctionPagination from "../../components/auctionPagination";
 import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
 import CardAuction from "@/app/components/cardAuction";
-import AuctionsContainerHomepage from "@/app/components/auctionsContainerHomepage";
 import AuctionsContainerPublicProfile from "@/app/components/auctionsContainerPublicProfile";
 
 export default async function ProfilePage({ searchParams }) {
@@ -57,7 +56,7 @@ export default async function ProfilePage({ searchParams }) {
   const auctionsFromUser = await getAuctionsByUserId(
     searchParams.id ? searchParams.id : currentUser.id
   );
-  
+
   return (
     <>
       <div className="flex md:flex-row flex-col mt-16 md:ml-[15em] md:mr-[15em] items-center">
@@ -74,7 +73,10 @@ export default async function ProfilePage({ searchParams }) {
             </h1>
             {publicProfileUser.id === currentUser.id ? (
               <Link href="/private-profile?type=update">
-                <Button variant="ghost" className="mt-1.5 md:mt-0 md:mb-3 md:ml-0.5">
+                <Button
+                  variant="ghost"
+                  className="mt-1.5 md:mt-0 md:mb-3 md:ml-0.5"
+                >
                   <Pencil1Icon width="23" height="23" />
                 </Button>
               </Link>
@@ -107,39 +109,13 @@ export default async function ProfilePage({ searchParams }) {
           </RadioGroup>
         </div>
 
-        {/* <input
-              className="flex ml-auto mt-4 border-2 border-gray-300 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500"
-              type="text"
-              placeholder="Search..."
-            ></input> */}
         <div className="flex ml-auto mt-4 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500">
           {" "}
         </div>
 
-        {/* <div className="grid md:overflow-hidden overflow-x-auto md:grid-rows-2 md:grid-cols-4 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
-          {auctionsFromUser.map((auction) => (
-            <Link
-              href={
-                "/auction-details?id=" +
-                auction.id +
-                "&auctionuserid=" +
-                auction.idUserAccount
-              }
-              key={auction.id}
-              className="w-64"
-            >
-              <CardAuction
-                key={auction.id}
-                isHomepage={false}
-                auction={auction}
-              />
-            </Link>
-          ))}
-        </div>
-        <div className="my-5 flex justify-center items-center">
-          <AuctionPagination />
-        </div> */}
-        <AuctionsContainerPublicProfile publicProfileUserId={searchParams.id ?? currentUser.id} />
+        <AuctionsContainerPublicProfile
+          publicProfileUserId={searchParams.id ?? currentUser.id}
+        />
       </div>
     </>
   );

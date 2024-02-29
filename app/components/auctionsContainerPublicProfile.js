@@ -20,8 +20,6 @@ export default function AuctionsContainerPublicProfile({
   const fetcher = (url) =>
     fetch(url, { next: { revalidate: 1 } }).then((res) => res.json());
 
-  console.log(publicProfileUserId);
-
   const {
     data: publicProfileUserData,
     error: publicProfileUserError,
