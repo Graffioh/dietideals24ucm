@@ -35,14 +35,15 @@ export default function PlaceOfferDialog({ auction }) {
       auction.currentOffer < offerAmount
     ) {
       alert("La tua offerta é stata piazzata correttamente");
-      await fetch("http://localhost:8080/insert-offer", {
+      await fetch(process.env.NEXT_PUBLIC_BASEURL + "/insert-offer", {
         method: "POST",
         body: JSON.stringify(offerFromInputs),
         headers: { "Content-Type": "application/json" },
       });
 
       await fetch(
-        "http://localhost:8080/auctions/" +
+        process.env.NEXT_PUBLIC_BASEURL +
+          "/auctions/" +
           auction.id +
           "/current-offer?newCurrentOffer=" +
           offerAmount,
@@ -73,7 +74,7 @@ export default function PlaceOfferDialog({ auction }) {
 
     if (auction.auctionType == "descending") {
       alert("La tua offerta é stata piazzata correttamente");
-      await fetch("http://localhost:8080/insert-offer", {
+      await fetch(process.env.NEXT_PUBLIC_BASEURL + "/insert-offer", {
         method: "POST",
         body: JSON.stringify(offerFromInputs),
         headers: { "Content-Type": "application/json" },
@@ -81,10 +82,16 @@ export default function PlaceOfferDialog({ auction }) {
     }
 
     if (auction.auctionType == "descending") {
-      fetch("http://localhost:8080/auctions/" + auction.id + "/is-over", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      })
+      fetch(
+        process.env.NEXT_PUBLIC_BASEURL +
+          "/auctions/" +
+          auction.id +
+          "/is-over",
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        }
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");

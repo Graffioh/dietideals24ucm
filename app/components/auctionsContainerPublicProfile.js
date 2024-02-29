@@ -8,7 +8,7 @@ import AuctionPagination from "./auctionPagination";
 import CardAuction from "./cardAuction";
 import LoadingSpinner from "./loadingSpinner";
 import useSWR from "swr";
-import { useUserContext } from "../(auth)/userProvider";
+import { useUserContext } from "../providers/userProvider";
 
 export default function AuctionsContainerPublicProfile({
   publicProfileUserId,

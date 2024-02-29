@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import DatePicker from "@/app/components/datePicker";
 
 import CancelAlertDialog from "@/app/components/cancelAlertDialog";
-import { useUserContext } from "@/app/(auth)/userProvider";
+import { useUserContext } from "@/app/providers/userProvider";
 import LoadingSpinner from "@/app/components/loadingSpinner";
 
 export default function ProfilePage({ searchParams }) {

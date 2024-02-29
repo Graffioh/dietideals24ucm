@@ -46,7 +46,7 @@ export default function CardAuction({ isHomepage, auction }) {
 
   async function fetchCurrentOffer(auctionid) {
     const currentUpdatedAuction = await fetch(
-      "http://localhost:8080/auctions/" + auctionid
+      process.env.NEXT_PUBLIC_BASEURL + "auctions/" + auctionid
     );
 
     const updatedAuction = await currentUpdatedAuction.json();

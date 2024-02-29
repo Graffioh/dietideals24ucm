@@ -8,6 +8,8 @@ import com.ucm.serverdietideals24.Models.Auction;
 public interface AuctionDAO {
     public List<Auction> getAll();
 
+    public List<Auction> getViaName(String name);
+
     public List<Auction> getAllViaUserId(Long userId);
 
     public List<Auction> getAllPaginated(int pageNumber);

@@ -42,7 +42,7 @@ export default async function HomeLayout({ children }) {
     <div className="relative flex min-h-screen flex-col">
       <Header
         headerType={
-          isUserAdult(currentUser.birthDate)
+          isUserAdult(currentUser ? currentUser.birthDate : new Date())
             ? "headerLoggedFull"
             : "headerLoggedPartial"
         }

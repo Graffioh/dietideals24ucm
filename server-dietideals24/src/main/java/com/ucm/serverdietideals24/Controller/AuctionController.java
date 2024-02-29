@@ -40,6 +40,18 @@ public class AuctionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
     }
+    
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Auction>> fetchAuctionBasedOnName(@PathVariable String name) {
+        try {
+            List<Auction> auctions = auctionDAO.getViaName(name);
+
+            return new ResponseEntity<List<Auction>>(auctions, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<List<Auction>>(new ArrayList<Auction>(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping("/paginated")
     public ResponseEntity<List<Auction>> fetchPagedAuctions(@RequestParam int page) {
