@@ -60,7 +60,7 @@ export default function AuctionsContainerPublicProfile({
     if (paginatedAuctions) {
       setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20) + 1);
     }
-  }, [paginatedAuctions]);
+  }, [paginatedAuctions, paginatedAuctionsLength]);
 
   function handlePreviousPageChange() {
     if (pageIndex > 1) {
@@ -71,7 +71,6 @@ export default function AuctionsContainerPublicProfile({
   function handleNextPageChange() {
     if (paginatedAuctionsLength === 8) {
       setPageIndex(pageIndex + 1);
-      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20));
     }
   }
 

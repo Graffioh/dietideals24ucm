@@ -217,7 +217,7 @@ export default function AuctionTimer({ deadline, auction }) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [deadline, auction]);
+  }, [deadline, auction, auctionEnded, timeLeft]);
 
   if (typeof timeLeft === "object" && auction.auctionType !== "fixedtime") {
     return (
