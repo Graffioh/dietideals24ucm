@@ -10,6 +10,8 @@ public interface AuctionDAO {
 
     public List<Auction> getViaName(String name);
 
+    public List<Auction> getViaCategory(String category);
+
     public List<Auction> getAllViaUserId(Long userId);
 
     public List<Auction> getAllPaginated(int pageNumber);

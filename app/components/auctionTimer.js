@@ -116,7 +116,7 @@ export default function AuctionTimer({ deadline, auction }) {
               auctionName: auction.auctionName,
               idOffer: 0,
               idAuction: auction.id,
-              idUserAccountSeller: auction.idUserAccount,
+              idUserAccount: auction.idUserAccount,
             };
 
             fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {

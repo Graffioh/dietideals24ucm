@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
-
+import { useAuctionFilter } from "../providers/auctionFilterProvider"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -37,10 +37,30 @@ const categories = [
   },
 ]
 
-export default function ComboboxCategories({ onCategoryChange }) {
+export default function ComboboxCategories({ onCategoryChange }) { 
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
+  const { setFilteredAuctions } = useAuctionFilter();
 
+  async function handleInputChange(categoryInput) {
+    if (categoryInput === "") {
+      const auctionsResponse = await fetch(
+        process.env.NEXT_PUBLIC_BASEURL + "/auctions"
+      );
+
+      const auctionsData = await auctionsResponse.json();
+      setFilteredAuctions(auctionsData);
+    } else {
+      const filteredAuctionsResponse = await fetch(
+        process.env.NEXT_PUBLIC_BASEURL + "/auctions/category",
+        { method: "POST", body: categoryInput, credentials: "include" }
+      );
+
+      const filteredAuctionsData = await filteredAuctionsResponse.json();
+      setFilteredAuctions(filteredAuctionsData);
+    }
+  };
+  
   return (
     <Popover open={open} onOpenChange={setOpen} className="bg-white">
       <PopoverTrigger asChild>
@@ -68,7 +88,9 @@ export default function ComboboxCategories({ onCategoryChange }) {
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
                   setOpen(false);
-                  onCategoryChange(currentValue.charAt(0).toUpperCase() + currentValue.slice(1));
+                  const categoryWithCapitalLetter = currentValue.charAt(0).toUpperCase() + currentValue.slice(1);
+                  onCategoryChange(categoryWithCapitalLetter);
+                  handleInputChange(categoryWithCapitalLetter);
                 }}
               >
                 <Check
