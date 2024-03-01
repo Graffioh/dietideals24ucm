@@ -53,7 +53,8 @@ export default async function AuctionDetailsPage({ searchParams }) {
         <div className="flex flex-col">
           <Label className="flex text-2xl">{currentAuction.auctionName}</Label>
           <div className="">
-            <img
+            <Image
+              alt="auction-image"
               className="object-cover w-96 h-128 mt-5 rounded-lg flex items-center"
               src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
             />

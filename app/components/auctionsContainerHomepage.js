@@ -51,7 +51,7 @@ export default function AuctionsContainerHomepage() {
     }
 
     localStorage.setItem("pageIndex", pageIndex);
-  }, [pageIndex, paginatedAuctions]);
+  }, [pageIndex, paginatedAuctions, paginatedAuctionsLength]);
 
   function handlePreviousPageChange() {
     if (pageIndex > 1) {
