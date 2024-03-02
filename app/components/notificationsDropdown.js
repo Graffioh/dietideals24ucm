@@ -52,12 +52,12 @@ export default function NotificationsDropdown() {
     );
   }
 
-  async function deleteNotification(notiId) {
+  async function deleteNotification(notiId, userId) {
     try {
       const response = await fetch(
         process.env.NEXT_PUBLIC_BASEURL +
           "/notifications/delete?notiId=" +
-          notiId,
+          notiId + "&userId=" + userId,
         { method: "DELETE", headers: { "Content-Type": "application/json" } }
       );
 
@@ -101,7 +101,7 @@ export default function NotificationsDropdown() {
                   </div>
                   <Button
                     onClick={() => {
-                      deleteNotification(noti.id);
+                      deleteNotification(noti.id, currentUser.id);
                     }}
                     className="m-2"
                   >

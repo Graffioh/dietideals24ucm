@@ -60,9 +60,9 @@ public class NotificationController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Notification> deleteNotification(@RequestParam Long notiId) {
+    public ResponseEntity<Notification> deleteNotification(@RequestParam Long notiId, @RequestParam Long userId) {
         try {
-            notificationDAO.delete(notiId);
+            notificationDAO.delete(notiId, userId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();

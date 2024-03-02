@@ -14,32 +14,39 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { useUserContext } from "../providers/userProvider";
 
 export default function PlaceOfferDialog({ auction }) {
   const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const {currentUser} = useUserContext();
 
   const offerAmountRef = useRef(null);
 
   async function onSubmit(event) {
     event.preventDefault();
 
-    const offerAmount = offerAmountRef ? offerAmountRef.current.value : -1;
+    const offerAmount = offerAmountRef
+      ? offerAmountRef.current
+        ? offerAmountRef.current.value
+        : -1
+      : -1;
     const offerFromInputs = {
       id: Date.now(),
       offerAmount:
         auction.auctionType === "descending"
           ? auction.currentOffer
           : offerAmount,
-      idUserAccount: auction.idUserAccount,
+      idUserAccount: currentUser.id,
       idAuction: auction.id,
     };
-    
+
     if (
       auction.currentOffer < offerAmount ||
       auction.auctionType === "descending"
     ) {
       toast.success("Your offer has been placed correctly.");
-      await fetch(process.env.NEXT_PUBLIC_BASEURL + "/insert-offer", {
+      await fetch(process.env.NEXT_PUBLIC_BASEURL + "/offers/insert", {
         method: "POST",
         body: JSON.stringify(offerFromInputs),
         headers: { "Content-Type": "application/json" },
@@ -78,6 +85,32 @@ export default function PlaceOfferDialog({ auction }) {
           })
           .catch((error) => {
             console.error("Failed to fetch: ", error);
+          });
+
+        const noti = {
+          id: auction.id + auction.idUserAccount,
+          auctionName: auction.auctionName,
+          idUserAccount: auction.idUserAccount,
+          idAuction: auction.id,
+        };
+
+        fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(noti),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+          })
+          .then(() => {
+            console.log("Notifications for auction ended created successfully");
+          })
+          .catch((error) => {
+            console.error(
+              "Error while creating notification: " + error.message
+            );
           });
       }
 

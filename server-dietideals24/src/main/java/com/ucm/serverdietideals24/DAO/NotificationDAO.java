@@ -11,6 +11,6 @@ public interface NotificationDAO {
 
     public void create(Notification noti);
     
-    public void delete(Long notiId);
+    public void delete(Long notiId, Long userId);
 }
 

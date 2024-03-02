@@ -57,6 +57,8 @@ export default async function AuctionDetailsPage({ searchParams }) {
               alt="auction-image"
               className="object-cover w-96 h-128 mt-5 rounded-lg flex items-center"
               src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+              width={230}
+              height={140}
             />
           </div>
         </div>

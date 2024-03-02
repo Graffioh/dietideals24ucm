@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 public class Notification {
     @NonNull
-    private Long id, idUserAccountSeller, idAuction, idOffer;
+    private Long id, idUserAccount, idAuction;
+
+    // @NonNull
+    // private Long idOffer;
     
     @NonNull
     private String auctionName;
