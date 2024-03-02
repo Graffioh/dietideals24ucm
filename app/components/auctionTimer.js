@@ -80,7 +80,11 @@ export default function AuctionTimer({ deadline, auction }) {
       }
 
       // SET END
-      if (Object.keys(timeLeft).length === 0 && !auctionEnded && !auction.isOver) {
+      if (
+        Object.keys(timeLeft).length === 0 &&
+        !auctionEnded &&
+        !auction.isOver
+      ) {
         switch (auction.auctionType) {
           case "fixedtime":
             setAuctionEnded(true);
@@ -111,12 +115,13 @@ export default function AuctionTimer({ deadline, auction }) {
                 );
               });
 
+            // NOTIFICATIONS
+            // (SELLER)
             const noti = {
               id: auction.id + auction.idUserAccount,
               auctionName: auction.auctionName,
-              idOffer: 0,
               idAuction: auction.id,
-              idUserAccountSeller: auction.idUserAccount,
+              idUserAccount: auction.idUserAccount,
             };
 
             fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
@@ -139,6 +144,61 @@ export default function AuctionTimer({ deadline, auction }) {
                   "Error while creating notification: " + error.message
                 );
               });
+
+            // (BUYER)
+            fetch(process.env.NEXT_PUBLIC_BASEURL + "/offers/" + auction.id, {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+
+                return response.json();
+              })
+              .then((offers) => {
+                console.log("Offers from auction id fetched successfully!");
+
+                offers.map((offer) => {
+                  const noti = {
+                    id: auction.id + auction.idUserAccount,
+                    auctionName: auction.auctionName,
+                    idAuction: auction.id,
+                    idUserAccount: offer.idUserAccount,
+                  };
+
+                  fetch(
+                    process.env.NEXT_PUBLIC_BASEURL + "/notifications/create",
+                    {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(noti),
+                    }
+                  )
+                    .then((response) => {
+                      if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                      }
+                    })
+                    .then(() => {
+                      console.log(
+                        "Notifications for auction ended created successfully"
+                      );
+                    })
+                    .catch((error) => {
+                      console.error(
+                        "Error while creating notification: " + error.message
+                      );
+                    });
+                });
+              })
+              .catch((error) => {
+                console.error(
+                  "Error while fetching offers from auction id: " +
+                    error.message
+                );
+              });
             break;
 
           case "english":
@@ -149,8 +209,6 @@ export default function AuctionTimer({ deadline, auction }) {
             if (auction.currentOffer === auction.minimumPrice) {
               setAuctionEnded(true);
               clearInterval(timer);
-
-              console.log(auction.id + "| currentOffer = " + auction.currentOffer + " | minimumPrice = " + auction.minimumPrice)
 
               fetch(
                 process.env.NEXT_PUBLIC_BASEURL +
@@ -183,16 +241,11 @@ export default function AuctionTimer({ deadline, auction }) {
                 idAuction: auction.id,
               };
 
-              fetch(
-                process.env.NEXT_PUBLIC_BASEURL +
-                  "/notifications/create/" +
-                  auction.id,
-                {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: noti,
-                }
-              )
+              fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(noti),
+              })
                 .then((response) => {
                   if (!response.ok) {
                     throw new Error("Network response was not ok");

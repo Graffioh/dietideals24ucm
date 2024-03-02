@@ -100,6 +100,8 @@ export default function CardAuction({ isHomepage, auction }) {
                 alt="card-image"
                 className="object-cover w-56 h-36 mt-5 rounded-lg flex items-center"
                 src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+                width={230}
+                height={140}
               />
             </div>
 
