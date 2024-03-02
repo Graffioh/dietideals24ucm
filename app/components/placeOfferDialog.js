@@ -87,31 +87,90 @@ export default function PlaceOfferDialog({ auction }) {
             console.error("Failed to fetch: ", error);
           });
 
-        const noti = {
-          id: auction.id + auction.idUserAccount,
-          auctionName: auction.auctionName,
-          idUserAccount: auction.idUserAccount,
-          idAuction: auction.id,
-        };
+        // NOTIFICATIONS
+            // (SELLER)
+            const noti = {
+              id: auction.id + auction.idUserAccount,
+              auctionName: auction.auctionName,
+              idAuction: auction.id,
+              idUserAccount: auction.idUserAccount,
+            };
 
-        fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(noti),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-          })
-          .then(() => {
-            console.log("Notifications for auction ended created successfully");
-          })
-          .catch((error) => {
-            console.error(
-              "Error while creating notification: " + error.message
-            );
-          });
+            fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(noti),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+              })
+              .then(() => {
+                console.log(
+                  "Notifications for auction ended created successfully"
+                );
+              })
+              .catch((error) => {
+                console.error(
+                  "Error while creating notification: " + error.message
+                );
+              });
+
+            // (BUYER)
+            fetch(process.env.NEXT_PUBLIC_BASEURL + "/offers/" + auction.id, {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+
+                return response.json();
+              })
+              .then((offers) => {
+                console.log("Offers from auction id fetched successfully!");
+
+                offers.map((offer) => {
+                  const noti = {
+                    id: auction.id + auction.idUserAccount,
+                    auctionName: auction.auctionName,
+                    idAuction: auction.id,
+                    idUserAccount: offer.idUserAccount,
+                  };
+
+                  fetch(
+                    process.env.NEXT_PUBLIC_BASEURL + "/notifications/create",
+                    {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(noti),
+                    }
+                  )
+                    .then((response) => {
+                      if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                      }
+                    })
+                    .then(() => {
+                      console.log(
+                        "Notifications for auction ended created successfully"
+                      );
+                    })
+                    .catch((error) => {
+                      console.error(
+                        "Error while creating notification: " + error.message
+                      );
+                    });
+                });
+              })
+              .catch((error) => {
+                console.error(
+                  "Error while fetching offers from auction id: " +
+                    error.message
+                );
+              });
       }
 
       setDialogOpen(false);
