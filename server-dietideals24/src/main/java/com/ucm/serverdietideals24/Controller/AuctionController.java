@@ -162,10 +162,12 @@ public class AuctionController {
         List<Auction> auctions = auctionDAO.getAllEnglishAuctions();
 
         for (Auction auction : auctions) {
-            if (auction.getCurrentOfferTimer().equals(Time.valueOf("00:00:00"))) {
-                setCurrentOfferTimer(auction.getId(), auction.getBaseOfferTimer());
-            } else {
-                setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
+            if(auction.getIsOver() == false) {
+                if (auction.getCurrentOfferTimer().equals(Time.valueOf("00:00:00"))) {
+                    setCurrentOfferTimer(auction.getId(), Time.valueOf("00:00:00"));
+                } else {
+                    setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
+                }
             }
         }
     }

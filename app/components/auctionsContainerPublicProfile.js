@@ -58,7 +58,7 @@ export default function AuctionsContainerPublicProfile({
 
   useEffect(() => {
     if (paginatedAuctions) {
-      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20) + 1);
+      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 8));
     }
   }, [paginatedAuctions, paginatedAuctionsLength]);
 

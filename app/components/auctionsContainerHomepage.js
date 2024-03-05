@@ -22,7 +22,7 @@ export default function AuctionsContainerHomepage() {
     return 1;
   });
   const [maxPageIndex, setMaxPageIndex] = useState("");
-
+  
   const fetcher = (url) =>
     fetch(url, { next: { revalidate: 1 } }).then((res) => res.json());
 
@@ -47,7 +47,7 @@ export default function AuctionsContainerHomepage() {
 
   useEffect(() => {
     if (paginatedAuctions) {
-      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20) + 1);
+      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20));
     }
 
     localStorage.setItem("pageIndex", pageIndex);

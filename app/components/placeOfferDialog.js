@@ -63,6 +63,20 @@ export default function PlaceOfferDialog({ auction }) {
           headers: { "Content-Type": "application/json" },
         }
       );
+      
+      if(auction.auctionType === "english") {
+        await fetch(
+          process.env.NEXT_PUBLIC_BASEURL +
+            "/auctions/" +
+            auction.id +
+            "/current-offertimer?newTimerValue=" +
+            auction.baseOfferTimer,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      }
 
       if (auction.auctionType === "descending") {
         fetch(
