@@ -216,6 +216,7 @@ export default function PlaceOfferDialog({ auction }) {
             onClick={
               auction.auctionType === "descending" ? onSubmit : openDialog
             }
+            disabled={auction.isOver}
           >
             Place Offer
           </Button>

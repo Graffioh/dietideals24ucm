@@ -30,7 +30,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
       const auctionResponse = await fetch(
         process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + id,
         {
-          next: { revalidate: 3 },
+          next: { revalidate: 1 },
         }
       );
       const auction = await auctionResponse.json();
