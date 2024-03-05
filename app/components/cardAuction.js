@@ -57,7 +57,7 @@ export default function CardAuction({ isHomepage, auction }) {
 
     return updatedAuction.currentOffer;
   }
-
+  
   return (
     <>
       {isHomepage ? (

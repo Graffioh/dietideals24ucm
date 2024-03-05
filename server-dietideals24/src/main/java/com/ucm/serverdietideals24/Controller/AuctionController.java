@@ -164,7 +164,7 @@ public class AuctionController {
         for (Auction auction : auctions) {
             if(auction.getIsOver() == false) {
                 if (auction.getCurrentOfferTimer().equals(Time.valueOf("00:00:00"))) {
-                    setCurrentOfferTimer(auction.getId(), auction.getBaseOfferTimer());
+                    setCurrentOfferTimer(auction.getId(), Time.valueOf("00:00:00"));
                 } else {
                     setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
                 }
