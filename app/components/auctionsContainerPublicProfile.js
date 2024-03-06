@@ -7,12 +7,16 @@ import Link from "next/link";
 import AuctionPagination from "./auctionPagination";
 import CardAuction from "./cardAuction";
 import LoadingSpinner from "./loadingSpinner";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import useSWR from "swr";
 import { useUserContext } from "../providers/userProvider";
 
 export default function AuctionsContainerPublicProfile({
   publicProfileUserId,
 }) {
+  const [isSellingSelected, setIsSellingSelected] = useState(true);
+
   // Retrieve last page number from localStorage when the page is reloaded
   const [pageIndex, setPageIndex] = useState(1);
   const [maxPageIndex, setMaxPageIndex] = useState("");
@@ -56,11 +60,46 @@ export default function AuctionsContainerPublicProfile({
     );
   }
 
+  const {
+    data: paginatedAuctionsFromOffers,
+    error: paginatedAuctionsFromOffersError,
+    isLoading: paginatedAuctionsFromOffersIsLoading,
+  } = useSWR(
+    publicProfileUserData && publicProfileUserData.id
+      ? process.env.NEXT_PUBLIC_BASEURL +
+          "/auctions/paginated/from-offers/" +
+          publicProfileUserData.id +
+          "?page=" +
+          pageIndex
+      : null,
+    fetcher
+  );
+
+  const paginatedAuctionsFromOffersLength = paginatedAuctionsFromOffers
+    ? paginatedAuctionsFromOffers.length
+    : 0;
+
+  if (paginatedAuctionsFromOffersError) {
+    console.error(
+      "Error while fetching paginated auctions: " +
+        paginatedAuctionsFromOffersError
+    );
+  }
+
   useEffect(() => {
     if (paginatedAuctions) {
       setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 8));
     }
-  }, [paginatedAuctions, paginatedAuctionsLength]);
+
+    if (paginatedAuctionsFromOffers) {
+      setMaxPageIndex(Math.ceil(paginatedAuctionsFromOffersLength / 8));
+    }
+  }, [
+    paginatedAuctions,
+    paginatedAuctionsLength,
+    paginatedAuctionsFromOffers,
+    paginatedAuctionsFromOffersLength,
+  ]);
 
   function handlePreviousPageChange() {
     if (pageIndex > 1) {
@@ -74,47 +113,104 @@ export default function AuctionsContainerPublicProfile({
     }
   }
 
-  if (paginatedAuctionsIsLoading || publicProfileUserIsLoading) {
+  if (
+    paginatedAuctionsIsLoading ||
+    paginatedAuctionsFromOffersIsLoading ||
+    publicProfileUserIsLoading
+  ) {
     return (
       <div className="flex justify-center items-center h-screen">
         <LoadingSpinner />
       </div>
     );
   }
-  
+
   return (
     <>
-      <div className="grid md:overflow-hidden overflow-x-auto md:grid-rows-2 md:grid-cols-4 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
-        {paginatedAuctions ? (
-          paginatedAuctions.map((auction) => (
-            <Link
-              href={
-                "/auction-details?id=" +
-                auction.id +
-                "&auctionuserid=" +
-                auction.idUserAccount
-              }
-              key={auction.id}
-              className="w-64"
-            >
-              <CardAuction
-                key={auction.id}
-                isHomepage={false}
-                auction={auction}
+      <div className="flex flex-col bg-stone-200 mt-10 mb-20 md:mx-32 mx-4 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
+        <div className="mt-6 ml-11">
+          <RadioGroup defaultValue="option-one">
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem
+                value="option-one"
+                id="option-one"
+                onClick={() => {
+                  setIsSellingSelected(true);
+                }}
               />
-            </Link>
-          ))
-        ) : (
-          <div></div>
-        )}
-      </div>
-      <div className="my-5 flex justify-center items-center">
-        <AuctionPagination
-          onPreviousPageChange={handlePreviousPageChange}
-          onNextPageChange={handleNextPageChange}
-          pageNumber={pageIndex}
-          maxPageNumber={maxPageIndex}
-        />
+              <Label htmlFor="option-one">Selling</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem
+                value="option-two"
+                id="option-two"
+                onClick={() => {
+                  setIsSellingSelected(false);
+                }}
+              />
+              <Label htmlFor="option-two">Buying</Label>
+            </div>
+          </RadioGroup>
+        </div>
+
+        <div className="flex ml-auto mt-4 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500">
+          {" "}
+        </div>
+        <div className="grid md:overflow-hidden overflow-x-auto md:grid-rows-2 md:grid-cols-4 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
+          {isSellingSelected ? (
+            paginatedAuctions ? (
+              paginatedAuctions.map((auction) => (
+                <Link
+                  href={
+                    "/auction-details?id=" +
+                    auction.id +
+                    "&auctionuserid=" +
+                    auction.idUserAccount
+                  }
+                  key={auction.id}
+                  className="w-64"
+                >
+                  <CardAuction
+                    key={auction.id}
+                    isHomepage={false}
+                    auction={auction}
+                  />
+                </Link>
+              ))
+            ) : (
+              <div></div>
+            )
+          ) : paginatedAuctionsFromOffers ? (
+            paginatedAuctionsFromOffers.map((auction) => (
+              <Link
+                href={
+                  "/auction-details?id=" +
+                  auction.id +
+                  "&auctionuserid=" +
+                  auction.idUserAccount
+                }
+                key={auction.id}
+                className="w-64"
+              >
+                <CardAuction
+                  key={auction.id}
+                  isHomepage={false}
+                  auction={auction}
+                />
+              </Link>
+            ))
+          ) : (
+            <div></div>
+          )}
+        </div>
+        <div className="my-5 flex justify-center items-center">
+          <AuctionPagination
+            onPreviousPageChange={handlePreviousPageChange}
+            onNextPageChange={handleNextPageChange}
+            pageNumber={pageIndex}
+            maxPageNumber={maxPageIndex}
+          />
+        </div>
       </div>
     </>
   );

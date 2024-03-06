@@ -58,7 +58,7 @@ export default function ProfilePage({ searchParams }) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(userWithHashedPassword),
-          },
+          }
         );
 
         const responseTokenText = await responseToken.text();
@@ -87,9 +87,12 @@ export default function ProfilePage({ searchParams }) {
     event.preventDefault();
 
     const inputs = event.currentTarget;
-    
-    // Haha null java bullsh*t
-    const birthDateForInputs = currentUser ? currentUser.birthDate ?? birthDate ?? new Date() : new Date();
+
+    // Haha bullsh*t
+    const birthDateForInputs =
+      currentUser && currentUser.birthDate
+        ? currentUser.birthDate
+        : birthDate ?? new Date();
 
     const userInfoFromInputs = {
       id: Date.now(),
@@ -115,7 +118,7 @@ export default function ProfilePage({ searchParams }) {
           method: "PUT",
           body: JSON.stringify(userInfoFromInputs),
           headers: { "Content-Type": "application/json" },
-        },
+        }
       );
 
       toast.success("Account updated successfully.", {
@@ -143,8 +146,6 @@ export default function ProfilePage({ searchParams }) {
       </div>
     );
   }
-  
-  console.log(currentUser)
 
   return (
     <>
@@ -199,8 +200,8 @@ export default function ProfilePage({ searchParams }) {
                   searchParams.fromProvider === "github"
                     ? searchParams.username
                     : currentUser
-                      ? currentUser.username
-                      : ""
+                    ? currentUser.username
+                    : ""
                 }
                 required
                 readOnly={
@@ -225,8 +226,8 @@ export default function ProfilePage({ searchParams }) {
                   searchParams.fromProvider === "google"
                     ? searchParams.email
                     : currentUser
-                      ? currentUser.email
-                      : searchParams.email
+                    ? currentUser.email
+                    : searchParams.email
                 }
                 required
                 readOnly={
