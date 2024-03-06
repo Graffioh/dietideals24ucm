@@ -29,19 +29,19 @@ export default async function ProfilePage({ searchParams }) {
     }
   }
 
-  async function getAuctionsByUserId(userId) {
-    try {
-      const auctionsRes = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/auctions/user/" + userId
-      );
+  // async function getAuctionsByUserId(userId) {
+  //   try {
+  //     const auctionsRes = await fetch(
+  //       process.env.NEXT_PUBLIC_BASEURL + "/auctions/user/" + userId
+  //     );
 
-      const auctions = await auctionsRes.json();
+  //     const auctions = await auctionsRes.json();
 
-      return auctions;
-    } catch (e) {
-      console.error("Error while fetching auctions by user id: " + e);
-    }
-  }
+  //     return auctions;
+  //   } catch (e) {
+  //     console.error("Error while fetching auctions by user id: " + e);
+  //   }
+  // }
 
   // if searchParams is not present or if searchParams.id == currentUser.id,
   //   then display currentUser, otherwise display the queried user by id
@@ -53,9 +53,9 @@ export default async function ProfilePage({ searchParams }) {
       : {}
     : currentUser;
 
-  const auctionsFromUser = await getAuctionsByUserId(
-    searchParams.id ? searchParams.id : currentUser.id
-  );
+  // const auctionsFromUser = await getAuctionsByUserId(
+  //   searchParams.id ? searchParams.id : currentUser.id
+  // );
 
   return (
     <>
@@ -75,7 +75,7 @@ export default async function ProfilePage({ searchParams }) {
               <Link href="/private-profile?type=update">
                 <Button
                   variant="ghost"
-                  className="mt-1.5 md:mt-0 md:mb-3 md:ml-0.5"
+                  className="mt-1.5 md:mt-0.5 md:mb-3 md:ml-0.5"
                 >
                   <Pencil1Icon width="23" height="23" />
                 </Button>
@@ -95,28 +95,9 @@ export default async function ProfilePage({ searchParams }) {
         </div>
       </div>
 
-      <div className="flex flex-col bg-stone-200 mt-10 mb-20 md:mx-32 mx-4 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
-        <div className="mt-6 ml-11">
-          <RadioGroup defaultValue="option-one">
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="option-one" id="option-one" />
-              <Label htmlFor="option-one">Selling</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="option-two" id="option-two" />
-              <Label htmlFor="option-two">Buying</Label>
-            </div>
-          </RadioGroup>
-        </div>
-
-        <div className="flex ml-auto mt-4 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500">
-          {" "}
-        </div>
-
-        <AuctionsContainerPublicProfile
-          publicProfileUserId={searchParams.id ?? currentUser.id}
-        />
-      </div>
+      <AuctionsContainerPublicProfile
+        publicProfileUserId={searchParams.id ?? currentUser.id}
+      />
     </>
   );
 }
