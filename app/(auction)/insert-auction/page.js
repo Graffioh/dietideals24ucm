@@ -269,6 +269,7 @@ export default function InsertAuctionPage() {
                   placeholder="Type your description here."
                   className="bg-white"
                   id="description"
+                  maxLength={250}
                 />
               </div>
             </div>
