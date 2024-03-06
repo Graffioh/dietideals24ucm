@@ -22,6 +22,7 @@ export default function PlaceOfferDialog({ auction }) {
   const {currentUser} = useUserContext();
 
   const offerAmountRef = useRef(null);
+  const placeOfferButtonRef = useRef(null);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -46,6 +47,10 @@ export default function PlaceOfferDialog({ auction }) {
       auction.auctionType === "descending"
     ) {
       toast.success("Your offer has been placed correctly.");
+
+      placeOfferButtonRef.current.style.opacity = "0.5";
+      placeOfferButtonRef.current.disabled = true;
+
       await fetch(process.env.NEXT_PUBLIC_BASEURL + "/offers/insert", {
         method: "POST",
         body: JSON.stringify(offerFromInputs),
@@ -217,6 +222,7 @@ export default function PlaceOfferDialog({ auction }) {
               auction.auctionType === "descending" ? onSubmit : openDialog
             }
             disabled={auction.isOver}
+            ref={placeOfferButtonRef}
           >
             Place Offer
           </Button>

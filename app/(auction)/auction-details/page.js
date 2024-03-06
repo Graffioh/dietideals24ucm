@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -5,47 +7,37 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import Image from "next/image";
-import { cookies } from "next/headers";
+import { useCookies } from "next-client-cookies";
+import useSWR from "swr";
 import DescendingAuctionDetailsInputs from "@/app/components/auctions/descendingAuctionDetailsInputs";
 import EnglishAuctionDetailsInputs from "@/app/components/auctions/englishAuctionDetailsInputs";
 import FixedTimeAuctionDetailsInputs from "@/app/components/auctions/fixedTimeAuctionDetailsInputs";
 import PlaceOfferDialog from "@/app/components/placeOfferDialog";
 import { cn } from "@/lib/utils";
-import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
+import { useUserContext } from "@/app/providers/userProvider";
+import LoadingSpinner from "@/app/components/loadingSpinner";
 
-export default async function AuctionDetailsPage({ searchParams }) {
-  function getTokenFromCookie() {
-    const nextCookies = cookies();
+export default function AuctionDetailsPage({ searchParams }) {
+  const authToken = useCookies().get("auth-token");
 
-    const tokenCookieStr = nextCookies.has("auth-token")
-      ? nextCookies.get("auth-token").value
-      : '"no-token"';
+  const { currentUser } = useUserContext();
 
-    // return token without "..."
-    return tokenCookieStr.replaceAll('"', "");
+  const fetcher = (url) =>
+    fetch(url, { next: { revalidate: 0 } }).then((res) => res.json());
+
+  const {
+    data: currentAuction,
+    error: currentAuctionError,
+    isLoading: currentAuctionIsLoading,
+  } = useSWR(process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + searchParams.id, fetcher, {refreshInterval: 100});
+
+  if (currentAuctionIsLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
-
-  async function getCurrentAuctionBasedOnId(id) {
-    try {
-      const auctionResponse = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + id,
-        {
-          next: { revalidate: 1 },
-        }
-      );
-      const auction = await auctionResponse.json();
-
-      return auction;
-    } catch (e) {
-      console.error("Error while fetching auctions from id: " + e);
-    }
-  }
-
-  const currentAuction = await getCurrentAuctionBasedOnId(searchParams.id);
-
-  const authToken = getTokenFromCookie();
-
-  const currentUser = await getCurrentUserServer();
 
   return (
     <>
@@ -111,7 +103,7 @@ export default async function AuctionDetailsPage({ searchParams }) {
                 >
                   Place offer
                 </Link>
-              ) : searchParams.auctionuserid != currentUser.id ? (
+              ) : currentUser && searchParams.auctionuserid != currentUser.id ? (
                 <PlaceOfferDialog auction={currentAuction} />
               ) : (
                 <div></div>
