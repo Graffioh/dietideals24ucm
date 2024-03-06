@@ -29,14 +29,6 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // Info from OAuth profile
         String emailOrUsernameFromOAuth = authentication.getName();
 
-        // Everytime we login/register via Oauth, add token to cookies
-        String token = JwtUtil.generateToken(emailOrUsernameFromOAuth);
-        Cookie tokenCookie = new Cookie("auth-token", token);
-        tokenCookie.setSecure(false);
-        tokenCookie.setHttpOnly(false);
-        tokenCookie.setMaxAge(1000000000);
-        tokenCookie.setPath("/");
-        response.addCookie(tokenCookie);
 
         Boolean isUserInDB = false;
         Boolean isEmail = emailOrUsernameFromOAuth.contains("@") ? true : false;
@@ -67,6 +59,15 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // If the account is already in the DB, then redirect him to the homepage,
         // otherwise redirect to private profile page to create an account
         if (isUserInDB) {
+            // Everytime we login via Oauth, add token to cookies
+            String token = JwtUtil.generateToken(emailOrUsernameFromOAuth);
+            Cookie tokenCookie = new Cookie("auth-token", token);
+            tokenCookie.setSecure(false);
+            tokenCookie.setHttpOnly(false);
+            tokenCookie.setMaxAge(1000000000);
+            tokenCookie.setPath("/");
+            response.addCookie(tokenCookie);
+
             targetUrl = "http://localhost:3000/";
         } else {
             if (isEmail) {
