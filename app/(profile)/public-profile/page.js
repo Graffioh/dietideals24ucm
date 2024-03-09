@@ -47,7 +47,7 @@ export default async function ProfilePage({ searchParams }) {
         </div> */}
         <div className="md:flex-col md:w-full mt-1 md:mt-0">
           <div className="flex items-center mb-2 md:mb-0">
-            <div className="flex border-2 border-black">
+            <div className="flex">
               <div className="mt-2 mr-4 md:mr-10">
                 <Avatar className="h-32 w-32">
                   <AvatarImage
