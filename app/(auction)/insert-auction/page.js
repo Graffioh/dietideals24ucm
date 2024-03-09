@@ -267,7 +267,7 @@ export default function InsertAuctionPage() {
                 </div>
                 <Textarea
                   placeholder="Type your description here."
-                  className="bg-white"
+                  className="resize-none bg-white"
                   id="description"
                   maxLength={250}
                 />

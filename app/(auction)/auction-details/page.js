@@ -82,7 +82,7 @@ export default function AuctionDetailsPage({ searchParams }) {
             <div className="absolute mt-[20em]">
               <Label className="flex mb-2">Description</Label>
               <Textarea
-                className="w-screen max-w-[30em] bg-white h-32"
+                className="resize-none w-screen max-w-[30em] bg-white h-32"
                 placeholder="Type your description here."
                 defaultValue={currentAuction.auctionDescription}
                 readOnly
