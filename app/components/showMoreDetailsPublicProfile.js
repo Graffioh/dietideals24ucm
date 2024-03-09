@@ -8,6 +8,7 @@ export default function ShowMoreDetailsPublicProfile({ publicProfileUser }) {
 
   return (
     <>
+      <div className={`p-2 ${showMoreDetails ? "bg-stone-200 rounded-full w-9" : ""}`}>
       <DotsHorizontalIcon
         onClick={() => {
           setShowMoreDetails(!showMoreDetails);
@@ -17,8 +18,8 @@ export default function ShowMoreDetailsPublicProfile({ publicProfileUser }) {
         }
         width={20}
         height={20}
-        className={`md:mt-2 ${showMoreDetails ? "bg-stone-200 rounded" : ""}`}
       />
+      </div>
 
         <div className="mt-2 text-stone-600" hidden={!showMoreDetails} >
           Mobile number: {publicProfileUser.telephoneNumber}
