@@ -293,7 +293,7 @@ export default function ProfilePage({ searchParams }) {
                   <div>
                     <Label className="mb-2 flex">Bio</Label>
                     <Textarea
-                      className="bg-white"
+                      className="resize-none bg-white"
                       placeholder="Type your description here."
                       id="biography"
                       defaultValue={currentUser ? currentUser.biography : ""}

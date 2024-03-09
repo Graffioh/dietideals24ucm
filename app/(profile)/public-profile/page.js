@@ -80,12 +80,13 @@ export default async function ProfilePage({ searchParams }) {
             )}
           </div>
           <Textarea
-            className="mt-4"
-            placeholder="BIO HERE"
+            className="resize-none mt-4"
+            placeholder=""
             defaultValue={
               publicProfileUser ? publicProfileUser.biography : "none"
             }
             readOnly={true}
+            
           />
         </div>
       </div>
