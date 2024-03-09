@@ -108,6 +108,8 @@ export default function ProfilePage({ searchParams }) {
       biography: inputs.biography ? inputs.biography.value : "",
       website: inputs.website ? inputs.website.value : "",
     };
+    
+    console.log(userInfoFromInputs.telephoneNumber)
 
     if (currentUser && currentUser.id) {
       await fetch(
@@ -163,14 +165,16 @@ export default function ProfilePage({ searchParams }) {
               <Label className="mb-2 flex">
                 Name<div className="text-red-500">*</div>
               </Label>
-              <Input
-                className="h-9 bg-white"
-                type="text"
-                id="firstName"
-                placeholder="Name"
-                defaultValue={currentUser ? currentUser.firstName : ""}
-                required
-              />
+              <div className="flex">
+                <Input
+                  className="h-9 bg-white"
+                  type="text"
+                  id="firstName"
+                  placeholder="Name"
+                  defaultValue={currentUser ? currentUser.firstName : ""}
+                  required
+                />
+              </div>
             </div>
 
             <div>
@@ -278,7 +282,7 @@ export default function ProfilePage({ searchParams }) {
                     <Input
                       className="h-9 bg-white"
                       type="tel"
-                      id="phoneNumber"
+                      id="telephoneNumber"
                       placeholder="Phone Number"
                       defaultValue={
                         currentUser ? currentUser.telephoneNumber : ""

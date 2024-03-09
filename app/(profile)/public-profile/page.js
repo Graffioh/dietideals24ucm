@@ -29,20 +29,6 @@ export default async function ProfilePage({ searchParams }) {
     }
   }
 
-  // async function getAuctionsByUserId(userId) {
-  //   try {
-  //     const auctionsRes = await fetch(
-  //       process.env.NEXT_PUBLIC_BASEURL + "/auctions/user/" + userId
-  //     );
-
-  //     const auctions = await auctionsRes.json();
-
-  //     return auctions;
-  //   } catch (e) {
-  //     console.error("Error while fetching auctions by user id: " + e);
-  //   }
-  // }
-
   // if searchParams is not present or if searchParams.id == currentUser.id,
   //   then display currentUser, otherwise display the queried user by id
   const publicProfileUser = searchParams.id
@@ -52,10 +38,6 @@ export default async function ProfilePage({ searchParams }) {
         : currentUser
       : {}
     : currentUser;
-
-  // const auctionsFromUser = await getAuctionsByUserId(
-  //   searchParams.id ? searchParams.id : currentUser.id
-  // );
 
   return (
     <>
@@ -68,15 +50,28 @@ export default async function ProfilePage({ searchParams }) {
         </div>
         <div className="md:flex-col md:w-full mt-1 md:mt-0">
           <div className="flex items-center mb-2 md:mb-0">
-            <h1 className="font-bold text-xl md:text-5xl md:mb-4">
-              {publicProfileUser ? publicProfileUser.username : "none"}
-            </h1>
+            <div className="flex flex-col">
+              <h1 className="font-bold text-xl md:text-5xl">
+                {publicProfileUser ? publicProfileUser.username : "none"}
+              </h1>
+
+              <div
+                className="mt-2 text-stone-600"
+                hidden={!publicProfileUser.telephoneNumber}
+              >
+                Mobile number: {publicProfileUser.telephoneNumber}
+              </div>
+
+              <div
+                className="mt-2 text-stone-600"
+                hidden={!publicProfileUser.website}
+              >
+                Website: {publicProfileUser.website}
+              </div>
+            </div>
             {publicProfileUser.id === currentUser.id ? (
               <Link href="/private-profile?type=update">
-                <Button
-                  variant="ghost"
-                  className="mt-1.5 md:mt-0.5 md:mb-3 md:ml-0.5"
-                >
+                <Button variant="ghost" className="">
                   <Pencil1Icon width="23" height="23" />
                 </Button>
               </Link>
@@ -85,7 +80,7 @@ export default async function ProfilePage({ searchParams }) {
             )}
           </div>
           <Textarea
-            className=""
+            className="mt-4"
             placeholder="BIO HERE"
             defaultValue={
               publicProfileUser ? publicProfileUser.biography : "none"

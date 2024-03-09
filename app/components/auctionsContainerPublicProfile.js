@@ -36,9 +36,9 @@ export default function AuctionsContainerPublicProfile({
   );
 
   const {
-    data: paginatedAuctions,
-    error: paginatedAuctionsError,
-    isLoading: paginatedAuctionsIsLoading,
+    data: paginatedSellingAuctions,
+    error: paginatedSellingAuctionsError,
+    isLoading: paginatedSellingAuctionsIsLoading,
   } = useSWR(
     publicProfileUserData && publicProfileUserData.id
       ? process.env.NEXT_PUBLIC_BASEURL +
@@ -50,20 +50,21 @@ export default function AuctionsContainerPublicProfile({
     fetcher
   );
 
-  const paginatedAuctionsLength = paginatedAuctions
-    ? paginatedAuctions.length
+  const paginatedSellingAuctionsLength = paginatedSellingAuctions
+    ? paginatedSellingAuctions.length
     : 0;
 
-  if (paginatedAuctionsError) {
+  if (paginatedSellingAuctionsError) {
     console.error(
-      "Error while fetching paginated auctions: " + paginatedAuctionsError
+      "Error while fetching paginated auctions: " +
+        paginatedSellingAuctionsError
     );
   }
 
   const {
-    data: paginatedAuctionsFromOffers,
-    error: paginatedAuctionsFromOffersError,
-    isLoading: paginatedAuctionsFromOffersIsLoading,
+    data: paginatedBuyingAuctions,
+    error: paginatedBuyingAuctionsError,
+    isLoading: paginatedBuyingAuctionsIsLoading,
   } = useSWR(
     publicProfileUserData && publicProfileUserData.id
       ? process.env.NEXT_PUBLIC_BASEURL +
@@ -75,30 +76,29 @@ export default function AuctionsContainerPublicProfile({
     fetcher
   );
 
-  const paginatedAuctionsFromOffersLength = paginatedAuctionsFromOffers
-    ? paginatedAuctionsFromOffers.length
+  const paginatedBuyingAuctionsLength = paginatedBuyingAuctions
+    ? paginatedBuyingAuctions.length
     : 0;
 
-  if (paginatedAuctionsFromOffersError) {
+  if (paginatedBuyingAuctionsError) {
     console.error(
-      "Error while fetching paginated auctions: " +
-        paginatedAuctionsFromOffersError
+      "Error while fetching paginated auctions: " + paginatedBuyingAuctionsError
     );
   }
 
   useEffect(() => {
-    if (paginatedAuctions) {
-      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 8));
+    if (paginatedSellingAuctions) {
+      setMaxPageIndex(Math.ceil(paginatedSellingAuctionsLength / 8));
     }
 
-    if (paginatedAuctionsFromOffers) {
-      setMaxPageIndex(Math.ceil(paginatedAuctionsFromOffersLength / 8));
+    if (paginatedBuyingAuctions) {
+      setMaxPageIndex(Math.ceil(paginatedBuyingAuctionsLength / 8));
     }
   }, [
-    paginatedAuctions,
-    paginatedAuctionsLength,
-    paginatedAuctionsFromOffers,
-    paginatedAuctionsFromOffersLength,
+    paginatedSellingAuctions,
+    paginatedSellingAuctionsLength,
+    paginatedBuyingAuctions,
+    paginatedBuyingAuctionsLength,
   ]);
 
   function handlePreviousPageChange() {
@@ -108,14 +108,14 @@ export default function AuctionsContainerPublicProfile({
   }
 
   function handleNextPageChange() {
-    if (paginatedAuctionsLength === 8) {
+    if (paginatedSellingAuctionsLength === 8) {
       setPageIndex(pageIndex + 1);
     }
   }
 
   if (
-    paginatedAuctionsIsLoading ||
-    paginatedAuctionsFromOffersIsLoading ||
+    paginatedSellingAuctionsIsLoading ||
+    paginatedBuyingAuctionsIsLoading ||
     publicProfileUserIsLoading
   ) {
     return (
@@ -158,8 +158,8 @@ export default function AuctionsContainerPublicProfile({
         </div>
         <div className="grid md:overflow-hidden overflow-x-auto md:grid-rows-2 md:grid-cols-4 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
           {isSellingSelected ? (
-            paginatedAuctions ? (
-              paginatedAuctions.map((auction) => (
+            paginatedSellingAuctions && paginatedSellingAuctions.length > 0 ? (
+              paginatedSellingAuctions.map((auction) => (
                 <Link
                   href={
                     "/auction-details?id=" +
@@ -178,10 +178,10 @@ export default function AuctionsContainerPublicProfile({
                 </Link>
               ))
             ) : (
-              <div></div>
+              <div className="">No selling auctions yet.</div>
             )
-          ) : paginatedAuctionsFromOffers ? (
-            paginatedAuctionsFromOffers.map((auction) => (
+          ) : paginatedBuyingAuctions && paginatedBuyingAuctions.length > 0 ? (
+            paginatedBuyingAuctions.map((auction) => (
               <Link
                 href={
                   "/auction-details?id=" +
@@ -200,7 +200,7 @@ export default function AuctionsContainerPublicProfile({
               </Link>
             ))
           ) : (
-            <div></div>
+            <div>No buying auctions yet.</div>
           )}
         </div>
         <div className="my-5 flex justify-center items-center">
