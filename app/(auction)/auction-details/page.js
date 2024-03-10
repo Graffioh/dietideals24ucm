@@ -47,19 +47,22 @@ export default function AuctionDetailsPage({ searchParams }) {
     <>
       <div className="flex flex-col md:flex-row mx-20 justify-between">
         <div className="flex flex-col md:ml-20 mt-8">
-          <Label className="flex text-2xl">{currentAuction.auctionName}</Label>
+          <Label className="flex text-2xl mb-2">
+            {currentAuction.auctionName}
+          </Label>
           <Image
             alt="auction-image"
-            className="rounded-lg w-96 h-128 mb-20"
+            className="rounded-lg w-96 h-128 mb-5"
             src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
             width={230}
             height={180}
           />
         </div>
-
         <div className="flex flex-col max-w-2xl my-8">
-          <div className="py-5 px-10 bg-stone-200 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
-            <div className="flex flex-col justify-center items-center mt-6">
+          <div className="px-10 bg-stone-200 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
+            <div className="flex flex-col justify-center items-center">
+              <Label className="flex text-base mb-4 bg-white rounded-b-lg pb-1 px-2 border border-input">{currentAuction.auctionType.toUpperCase()} Auction</Label>
+
               <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>
                 <Avatar className="h-32 w-32">
                   <AvatarImage
@@ -69,7 +72,7 @@ export default function AuctionDetailsPage({ searchParams }) {
                   <AvatarFallback />
                 </Avatar>
               </Link>
-              <div className="flex w-full mt-8 justify-between mx-8">
+              <div className="flex w-full mt-7 justify-between mx-8">
                 <div className="flex flex-col">
                   <Label className="flex mb-2">
                     Current offer<div className="text-red-500"></div>
@@ -135,7 +138,7 @@ export default function AuctionDetailsPage({ searchParams }) {
                   />
                 </div>
               </div>
-              <div className="mt-8">
+              <div className="mt-8 mb-5">
                 {authToken === "no-token" ? (
                   <Link
                     className={cn(
