@@ -50,6 +50,7 @@ export default function PlaceOfferDialog({ auction }) {
 
       placeOfferButtonRef.current.style.opacity = "0.5";
       placeOfferButtonRef.current.disabled = true;
+      placeOfferButtonRef.current.innerText = "Refresh the page";
 
       await fetch(process.env.NEXT_PUBLIC_BASEURL + "/offers/insert", {
         method: "POST",
