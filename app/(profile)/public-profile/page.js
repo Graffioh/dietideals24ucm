@@ -59,13 +59,13 @@ export default async function ProfilePage({ searchParams }) {
               </div>
               <div className="flex flex-col">
                 <div className="flex">
-                  <h1 className="font-bold text-xl md:text-5xl">
+                  <h1 className="font-bold text-4xl md:text-5xl">
                     {publicProfileUser ? publicProfileUser.username : "none"}
                   </h1>
 
                   {publicProfileUser.id === currentUser.id ? (
                     <Link href="/private-profile?type=update">
-                      <Button variant="ghost" className="mt-1.5">
+                      <Button variant="ghost" className="md:mt-1.5 mt-1">
                         <Pencil1Icon width="23" height="23" />
                       </Button>
                     </Link>
