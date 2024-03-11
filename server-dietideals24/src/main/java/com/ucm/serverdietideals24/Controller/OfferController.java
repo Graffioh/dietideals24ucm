@@ -47,4 +47,16 @@ public class OfferController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
     }
+
+    @GetMapping("/highest-offer/{auctionId}")
+    public ResponseEntity<Offer> fetchHighestOffererIdBasedOnAuctionId(@PathVariable String auctionId) {
+        try {
+            Offer highestOffererId = offerDAO.getHighestOffererIdViaAuctionId(auctionId);
+
+            return ResponseEntity.ok(highestOffererId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 }

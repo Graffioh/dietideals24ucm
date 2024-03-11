@@ -31,4 +31,10 @@ public class OfferImpl implements OfferDAO {
                 new BeanPropertyRowMapper<Offer>(Offer.class));
     }
 
+    @Override
+    public Offer getHighestOffererIdViaAuctionId(String auctionId) {
+        return jdbcTemplate.query("SELECT * FROM offer WHERE idAuction = " + auctionId + " ORDER BY offeramount DESC LIMIT 1",
+                new BeanPropertyRowMapper<Offer>(Offer.class)).getFirst();
+    }
+
 }

@@ -35,13 +35,29 @@ export default function AuctionDetailsPage({ searchParams }) {
     { refreshInterval: 100 }
   );
 
-  if (currentAuctionIsLoading) {
+  const {
+    data: highestOfferFromAuction,
+    error: highestOfferFromAuctionError,
+    isLoading: highestOfferFromAuctionIsLoading,
+  } = useSWR(
+    process.env.NEXT_PUBLIC_BASEURL +
+      "/offers/highest-offer/" +
+      searchParams.id,
+    fetcher,
+    { refreshInterval: 100 }
+  );
+
+  if (currentAuctionIsLoading || highestOfferFromAuctionIsLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <LoadingSpinner />
       </div>
     );
   }
+
+  const highestOfferUserId = highestOfferFromAuction
+    ? highestOfferFromAuction.idUserAccount
+    : currentAuction.idUserAccount;
 
   return (
     <>
@@ -61,7 +77,9 @@ export default function AuctionDetailsPage({ searchParams }) {
         <div className="flex flex-col max-w-2xl my-8">
           <div className="px-10 bg-stone-200 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
             <div className="flex flex-col justify-center items-center">
-              <Label className="flex text-base mb-4 bg-white rounded-b-lg pb-1 px-2 border border-input">{currentAuction.auctionType.toUpperCase()} Auction</Label>
+              <Label className="flex text-base mb-4 bg-white rounded-b-lg pb-1 px-2 border border-input">
+                {currentAuction.auctionType.toUpperCase()} Auction
+              </Label>
 
               <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>
                 <Avatar className="h-32 w-32">
@@ -77,13 +95,24 @@ export default function AuctionDetailsPage({ searchParams }) {
                   <Label className="flex mb-2">
                     Current offer<div className="text-red-500"></div>
                   </Label>
-                  <Input
-                    className="max-w-[20em] h-9 bg-white"
-                    type="text"
-                    placeholder="Placeholder"
-                    defaultValue={currentAuction.currentOffer}
-                    readOnly
-                  />
+                  <div className="flex">
+                    <Link href={"/public-profile?id=" + highestOfferUserId}>
+                      <Avatar className="h-8 w-8 mt-0.5 mr-2.5">
+                        <AvatarImage
+                          src="https://github.com/shadcn.png"
+                          alt="@avatar"
+                        />
+                        <AvatarFallback />
+                      </Avatar>
+                    </Link>
+                    <Input
+                      className="max-w-[10em] h-9 bg-white"
+                      type="text"
+                      placeholder="Placeholder"
+                      defaultValue={currentAuction.currentOffer}
+                      readOnly
+                    />
+                  </div>
                 </div>
 
                 <div className="flex flex-col">

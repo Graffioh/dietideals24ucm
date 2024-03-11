@@ -9,4 +9,6 @@ public interface OfferDAO {
     public void create(Offer entity);
 
     public List<Offer> getAllViaAuctionId(String auctionId);
+
+    public Offer getHighestOffererIdViaAuctionId(String auctionId);
 }
