@@ -38,14 +38,14 @@ export default async function ProfilePage({ searchParams }) {
 
   return (
     <>
-      <div className="flex md:flex-row flex-col mt-16 md:ml-[15em] md:mr-[15em] items-center">
+      <div className="flex md:flex-row flex-col mt-16 md:mx-[15em] mx-3 items-center">
         {/* <div className="mt-2 md:mr-10">
           <Avatar className="h-32 w-32">
             <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
             <AvatarFallback />
           </Avatar>
         </div> */}
-        <div className="md:flex-col md:w-full mt-1 md:mt-0">
+        <div className="md:flex-col w-full mt-1 md:mt-0">
           <div className="flex items-center mb-2 md:mb-0">
             <div className="flex">
               <div className="mt-2 mr-4 md:mr-10">
@@ -58,14 +58,17 @@ export default async function ProfilePage({ searchParams }) {
                 </Avatar>
               </div>
               <div className="flex flex-col">
-                <div className="flex">
+                <div className="flex w-full">
                   <h1 className="font-bold text-4xl md:text-5xl">
                     {publicProfileUser ? publicProfileUser.username : "none"}
                   </h1>
 
                   {publicProfileUser.id === currentUser.id ? (
                     <Link href="/private-profile?type=update">
-                      <Button variant="ghost" className="md:mt-1.5 mt-1">
+                      <Button
+                        variant="ghost"
+                        className="md:mt-1.5 mt-1 px-0.5 md:px-1"
+                      >
                         <Pencil1Icon width="23" height="23" />
                       </Button>
                     </Link>

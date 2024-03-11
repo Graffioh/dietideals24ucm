@@ -99,8 +99,8 @@ export default function AuctionDetailsPage({ searchParams }) {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row mx-20 justify-between">
-        <div className="flex flex-col md:ml-20 mt-4">
+      <div className="flex flex-col md:flex-row mx-8 md:mx-20 justify-between">
+        <div className="flex flex-col md:ml-20 mt-4 md:mr-10">
           <Label className="flex text-2xl mb-2">
             {currentAuction.auctionName}
           </Label>
@@ -168,7 +168,7 @@ export default function AuctionDetailsPage({ searchParams }) {
                       </Avatar>
                     </Link>
                     <Input
-                      className="max-w-[10em] h-9 bg-white mb-4 md:mb-0"
+                      className="h-9 bg-white mb-4 md:mb-0"
                       type="text"
                       placeholder="Placeholder"
                       defaultValue={currentAuction.currentOffer}
