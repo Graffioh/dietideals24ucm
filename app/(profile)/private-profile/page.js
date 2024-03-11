@@ -153,7 +153,7 @@ export default function ProfilePage({ searchParams }) {
     <>
       <div className="mb-10 mt-10 flex justify-center">
         <Avatar className="h-32 w-32">
-          <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
+          <AvatarImage src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b" alt="@avatar" />
           <AvatarFallback />
         </Avatar>
       </div>
