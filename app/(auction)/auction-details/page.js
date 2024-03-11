@@ -44,10 +44,10 @@ export default function AuctionDetailsPage({ searchParams }) {
       "/offers/highest-offer/" +
       searchParams.id,
     fetcher,
-    { refreshInterval: 100 }
+    { refreshInterval: 500 }
   );
 
-  if (currentAuctionIsLoading || highestOfferFromAuctionIsLoading) {
+  if (currentAuctionIsLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <LoadingSpinner />
@@ -59,20 +59,52 @@ export default function AuctionDetailsPage({ searchParams }) {
     ? highestOfferFromAuction.idUserAccount
     : currentAuction.idUserAccount;
 
+  const timerValue =
+    currentAuction.auctionType === "english"
+      ? currentAuction.currentOfferTimer
+      : currentAuction.auctionType === "descending"
+      ? currentAuction.currentDecrementTimer
+      : currentAuction.auctionType === "fixedtime"
+      ? "69:69:69"
+      : "00:00:00";
+
   return (
     <>
       <div className="flex flex-col md:flex-row mx-20 justify-between">
-        <div className="flex flex-col md:ml-20 mt-8">
+        <div className="flex flex-col md:ml-20 mt-4">
           <Label className="flex text-2xl mb-2">
             {currentAuction.auctionName}
           </Label>
           <Image
             alt="auction-image"
-            className="rounded-lg w-96 h-128 mb-5"
+            className="rounded-lg mb-2.5 border-2 border-input"
             src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
-            width={230}
+            width={410}
             height={180}
           />
+          <div className="flex">
+            <Image
+              alt="auction-image-1"
+              className="rounded-lg mx-1"
+              src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+              width={130}
+              height={80}
+            />
+            <Image
+              alt="auction-image-2"
+              className="rounded-lg mx-1"
+              src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+              width={130}
+              height={80}
+            />
+            <Image
+              alt="auction-image-3"
+              className="rounded-lg mx-1"
+              src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+              width={130}
+              height={80}
+            />
+          </div>
         </div>
         <div className="flex flex-col max-w-2xl my-8">
           <div className="px-10 bg-stone-200 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
@@ -84,7 +116,7 @@ export default function AuctionDetailsPage({ searchParams }) {
               <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>
                 <Avatar className="h-32 w-32">
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
                     alt="@avatar"
                   />
                   <AvatarFallback />
@@ -99,7 +131,7 @@ export default function AuctionDetailsPage({ searchParams }) {
                     <Link href={"/public-profile?id=" + highestOfferUserId}>
                       <Avatar className="h-8 w-8 mt-0.5 mr-2.5">
                         <AvatarImage
-                          src="https://github.com/shadcn.png"
+                          src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
                           alt="@avatar"
                         />
                         <AvatarFallback />
@@ -117,13 +149,13 @@ export default function AuctionDetailsPage({ searchParams }) {
 
                 <div className="flex flex-col">
                   <Label className="flex mb-2">
-                    Decrement timer<div className="text-red-500"></div>
+                    Timer<div className="text-red-500"></div>
                   </Label>
                   <Input
                     className="max-w-[20em] h-9 bg-white"
                     type="text"
                     placeholder="Placeholder"
-                    defaultValue={currentAuction.currentDecrementTimer}
+                    defaultValue={timerValue}
                     readOnly
                   />
                 </div>

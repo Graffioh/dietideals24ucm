@@ -51,7 +51,7 @@ export default async function ProfilePage({ searchParams }) {
               <div className="mt-2 mr-4 md:mr-10">
                 <Avatar className="h-32 w-32">
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
                     alt="@avatar"
                   />
                   <AvatarFallback />
