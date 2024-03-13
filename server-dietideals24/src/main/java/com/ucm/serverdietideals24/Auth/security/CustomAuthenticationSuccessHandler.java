@@ -68,7 +68,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             tokenCookie.setPath("/");
             response.addCookie(tokenCookie);
 
-            targetUrl = System.getenv("FRONTEND_BASEURL");
+            targetUrl = System.getenv("FRONTEND_BASEURL") + "/home";
         } else {
             if (isEmail) {
                 targetUrl = System.getenv("FRONTEND_BASEURL") + "/private-profile?email=" + emailOrUsernameFromOAuth +
