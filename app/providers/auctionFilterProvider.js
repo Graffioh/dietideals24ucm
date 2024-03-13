@@ -5,15 +5,15 @@ import { createContext, useState, useContext } from "react";
 const AuctionFilterContext = createContext();
 
 export const AuctionFilterProvider = ({ children }) => {
-  const [searchInput, setSearchInput] = useState("");
-  const [categoryInput, setCategoryInput] = useState("");
+  // const [searchInput, setSearchInput] = useState("");
+  // const [categoryInput, setCategoryInput] = useState("");
   const [filteredAuctions, setFilteredAuctions] = useState("");
 
   return (
     <AuctionFilterContext.Provider
       value={{
-        setSearchInput,
-        setCategoryInput,
+        // setSearchInput,
+        // setCategoryInput,
         filteredAuctions,
         setFilteredAuctions,
       }}

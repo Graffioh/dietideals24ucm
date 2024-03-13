@@ -30,6 +30,12 @@ public class AuctionImpl implements AuctionDAO {
     }
 
     @Override
+    public List<Auction> getViaCategory(String category) {
+        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionCategory = '" + category + "'",
+                new BeanPropertyRowMapper<Auction>(Auction.class));
+    }
+
+    @Override
     public List<Auction> getAllViaUserId(Long userId) {
         return jdbcTemplate.query("SELECT * FROM auction WHERE idUserAccount = " + userId,
                 new BeanPropertyRowMapper<Auction>(Auction.class));
