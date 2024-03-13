@@ -13,23 +13,32 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { useUserContext } from "../providers/userProvider";
 
 export default function PlaceOfferDialog({ auction }) {
   const [isDialogOpen, setDialogOpen] = useState(false);
 
+  const { currentUser } = useUserContext();
+
   const offerAmountRef = useRef(null);
+  const placeOfferButtonRef = useRef(null);
 
   async function onSubmit(event) {
     event.preventDefault();
 
-    const offerAmount = offerAmountRef ? -1 : offerAmountRef.current.value;
+    const offerAmount = offerAmountRef
+      ? offerAmountRef.current
+        ? offerAmountRef.current.value
+        : -1
+      : -1;
     const offerFromInputs = {
       id: Date.now(),
       offerAmount:
         auction.auctionType === "descending"
           ? auction.currentOffer
           : offerAmount,
-      idUserAccount: auction.idUserAccount,
+      idUserAccount: currentUser.id,
       idAuction: auction.id,
     };
 
@@ -37,8 +46,13 @@ export default function PlaceOfferDialog({ auction }) {
       auction.currentOffer < offerAmount ||
       auction.auctionType === "descending"
     ) {
-      alert("La tua offerta é stata piazzata correttamente");
-      await fetch(process.env.NEXT_PUBLIC_BASEURL + "/insert-offer", {
+      toast.success("Your offer has been placed correctly.");
+
+      placeOfferButtonRef.current.style.opacity = "0.5";
+      placeOfferButtonRef.current.disabled = true;
+      placeOfferButtonRef.current.innerText = "Refresh the page";
+
+      await fetch(process.env.NEXT_PUBLIC_BASEURL + "/offers/insert", {
         method: "POST",
         body: JSON.stringify(offerFromInputs),
         headers: { "Content-Type": "application/json" },
@@ -55,6 +69,20 @@ export default function PlaceOfferDialog({ auction }) {
           headers: { "Content-Type": "application/json" },
         }
       );
+
+      if (auction.auctionType === "english") {
+        await fetch(
+          process.env.NEXT_PUBLIC_BASEURL +
+            "/auctions/" +
+            auction.id +
+            "/current-offertimer?newTimerValue=" +
+            auction.baseOfferTimer,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      }
 
       if (auction.auctionType === "descending") {
         fetch(
@@ -78,6 +106,85 @@ export default function PlaceOfferDialog({ auction }) {
           .catch((error) => {
             console.error("Failed to fetch: ", error);
           });
+
+        // NOTIFICATIONS
+        // (SELLER)
+        const noti = {
+          id: auction.id + auction.idUserAccount,
+          auctionName: auction.auctionName,
+          idAuction: auction.id,
+          idUserAccount: auction.idUserAccount,
+        };
+
+        fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(noti),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+          })
+          .then(() => {
+            console.log("Notifications for auction ended created successfully");
+          })
+          .catch((error) => {
+            console.error(
+              "Error while creating notification: " + error.message
+            );
+          });
+
+        // (BUYER)
+        fetch(process.env.NEXT_PUBLIC_BASEURL + "/offers/" + auction.id, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+
+            return response.json();
+          })
+          .then((offers) => {
+            console.log("Offers from auction id fetched successfully!");
+
+            offers.map((offer) => {
+              const noti = {
+                id: auction.id + auction.idUserAccount,
+                auctionName: auction.auctionName,
+                idAuction: auction.id,
+                idUserAccount: offer.idUserAccount,
+              };
+
+              fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(noti),
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                  }
+                })
+                .then(() => {
+                  console.log(
+                    "Notifications for auction ended created successfully"
+                  );
+                })
+                .catch((error) => {
+                  console.error(
+                    "Error while creating notification: " + error.message
+                  );
+                });
+            });
+          })
+          .catch((error) => {
+            console.error(
+              "Error while fetching offers from auction id: " + error.message
+            );
+          });
       }
 
       setDialogOpen(false);
@@ -85,53 +192,11 @@ export default function PlaceOfferDialog({ auction }) {
       auction.auctionType != "descending" &&
       auction.currentOffer >= offerAmount
     ) {
-      alert("Fai un offerta maggiore dell'offerta corrente");
+      toast.error(
+        "You must place an offer greater than the max current offer!"
+      );
     }
   }
-
-  // async function onSubmitDescending(event) {
-  //   event.preventDefault();
-
-  //   const offerFromInputs = {
-  //     id: Date.now(),
-  //     offerAmount: auction.currentOffer,
-  //     idUserAccount: auction.idUserAccount,
-  //     idAuction: auction.id,
-  //   };
-
-  //   if (auction.auctionType == "descending") {
-  //     alert("La tua offerta é stata piazzata correttamente");
-  //     await fetch(process.env.NEXT_PUBLIC_BASEURL + "/insert-offer", {
-  //       method: "POST",
-  //       body: JSON.stringify(offerFromInputs),
-  //       headers: { "Content-Type": "application/json" },
-  //     });
-  //   }
-
-  //   if (auction.auctionType == "descending") {
-  //     fetch(
-  //       process.env.NEXT_PUBLIC_BASEURL +
-  //         "/auctions/" +
-  //         auction.id +
-  //         "/is-over",
-  //       {
-  //         method: "PUT",
-  //         headers: { "Content-Type": "application/json" },
-  //       }
-  //     )
-  //       .then((response) => {
-  //         if (!response.ok) {
-  //           throw new Error("Network response was not ok");
-  //         }
-  //       })
-  //       .then(() => {
-  //         console.log("Auction has ended");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Failed to fetch: ", error);
-  //       });
-  //   }
-  // }
 
   const openDialog = () => {
     setDialogOpen(true);
@@ -141,7 +206,6 @@ export default function PlaceOfferDialog({ auction }) {
     setDialogOpen(false);
   };
 
-  // if (auction.auctionType != "descending") {
   return (
     <>
       <AlertDialog>
@@ -149,9 +213,13 @@ export default function PlaceOfferDialog({ auction }) {
           <Button
             variant="default"
             className="p-7 text-lg"
-            onClick={auction.auctionType === "descending" ? onSubmit : openDialog}
+            onClick={
+              auction.auctionType === "descending" ? onSubmit : openDialog
+            }
+            disabled={auction.isOver}
+            ref={placeOfferButtonRef}
           >
-            Place Offer
+            {auction.isOver ? "Auction is over" : "Place offer"}
           </Button>
         </AlertDialogTrigger>
         {isDialogOpen && (
@@ -176,21 +244,4 @@ export default function PlaceOfferDialog({ auction }) {
       </AlertDialog>
     </>
   );
-  // } else if (auction.auctionType == "descending") {
-  //   return (
-  //     <>
-  //       <AlertDialog>
-  //         <AlertDialogTrigger asChild>
-  //           <Button
-  //             variant="default"
-  //             className="p-7 text-lg"
-  //             onClick={onSubmitDescending}
-  //           >
-  //             Place Offer
-  //           </Button>
-  //         </AlertDialogTrigger>
-  //       </AlertDialog>
-  //     </>
-  //   );
-  // }
 }

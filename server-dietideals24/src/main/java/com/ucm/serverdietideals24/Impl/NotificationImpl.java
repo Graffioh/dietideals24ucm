@@ -29,13 +29,13 @@ public class NotificationImpl implements NotificationDAO {
 
     @Override
     public void create(Notification noti) {
-        jdbcTemplate.execute("INSERT INTO notification (id, auctionname, idoffer, idauction, iduseraccount) VALUES('"
+        jdbcTemplate.execute("INSERT INTO notification (id, auctionname, idauction, iduseraccount) VALUES('"
                 + noti.getId() + "', '" + noti.getAuctionName()
-                + "', '0' , '" + noti.getIdAuction() + "', '" + noti.getIdUserAccount() + "')");
+                + "', '" + noti.getIdAuction() + "', '" + noti.getIdUserAccount() + "')");
     }
 
     @Override
-    public void delete(Long notiId) {
-        jdbcTemplate.execute("DELETE FROM notification WHERE id = " + notiId);
+    public void delete(Long notiId, Long userId) {
+        jdbcTemplate.execute("DELETE FROM notification WHERE id = " + notiId + " AND idUserAccount = " + userId);
     }
 }

@@ -158,12 +158,21 @@ export default function InsertAuctionPage() {
     }
 
     const inputs = event.currentTarget;
+
+    // trash
+    const currentOffer =
+      auctionType === "english"
+        ? baseStartAuction
+        : auctionType === "descending"
+        ? startPrice
+        : 0;
+
     const auctionFromInputs = {
       id: Date.now(),
       auctionDescription: inputs.description.value,
       auctionName: inputs.title.value,
       auctionQuality: "Good",
-      currentOffer: 0,
+      currentOffer: currentOffer,
       auctionType: auctionType,
       auctionCategory: category,
       idUserAccount: currentUser.id,
@@ -261,8 +270,9 @@ export default function InsertAuctionPage() {
                 </div>
                 <Textarea
                   placeholder="Type your description here."
-                  className="bg-white"
+                  className="resize-none bg-white"
                   id="description"
+                  maxLength={250}
                 />
               </div>
             </div>

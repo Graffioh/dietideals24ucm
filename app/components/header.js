@@ -40,7 +40,7 @@ function LoggedPartialSection() {
 
       <Link href="/public-profile" className="mt-0.5">
         <Avatar className="h-9 w-9">
-          <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
+          <AvatarImage src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b" alt="@avatar" />
           <AvatarFallback />
         </Avatar>
       </Link>
@@ -75,7 +75,7 @@ function LoggedFullSection() {
 
         <Link href="/public-profile" className="mt-0.5 flex justify-center">
           <Avatar className="h-9 w-9">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
+            <AvatarImage src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b" alt="@avatar" />
             <AvatarFallback />
           </Avatar>
         </Link>

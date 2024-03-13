@@ -78,9 +78,21 @@ public class AuctionController {
     }
 
     @GetMapping("/paginated/user/{userId}")
-    public ResponseEntity<List<Auction>> fetchPagedAuctions(@PathVariable Long userId, @RequestParam int page) {
+    public ResponseEntity<List<Auction>> fetchPaginatedUsersAuctions(@PathVariable Long userId, @RequestParam int page) {
         try {
             List<Auction> auctions = auctionDAO.getAllPaginatedViaUserId(userId, page);
+
+            return ResponseEntity.ok(auctions);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+
+    @GetMapping("/paginated/from-offers/{userId}")
+    public ResponseEntity<List<Auction>> fetchPaginatedUsersAuctionsFromOffers(@PathVariable Long userId, @RequestParam int page) {
+        try {
+            List<Auction> auctions = auctionDAO.getAllPaginatedViaOffers(userId, page);
 
             return ResponseEntity.ok(auctions);
         } catch (Exception e) {
@@ -174,10 +186,12 @@ public class AuctionController {
         List<Auction> auctions = auctionDAO.getAllEnglishAuctions();
 
         for (Auction auction : auctions) {
-            if (auction.getCurrentOfferTimer().equals(Time.valueOf("00:00:00"))) {
-                setCurrentOfferTimer(auction.getId(), auction.getBaseOfferTimer());
-            } else {
-                setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
+            if(auction.getIsOver() == false) {
+                if (auction.getCurrentOfferTimer().equals(Time.valueOf("00:00:00"))) {
+                    setCurrentOfferTimer(auction.getId(), Time.valueOf("00:00:00"));
+                } else {
+                    setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
+                }
             }
         }
     }

@@ -26,7 +26,6 @@ export default function PrivateProfileLayout({ children }) {
 
   const token = getTokenFromCookie();
   
-  console.log(token)
   return (
     <div className="relative flex min-h-screen flex-col">
       <Header headerType={token !== "no-token" ? "headerPrivateProfile" : "headerEmpty"} />

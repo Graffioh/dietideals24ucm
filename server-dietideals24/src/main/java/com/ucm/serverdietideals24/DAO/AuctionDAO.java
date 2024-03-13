@@ -17,6 +17,8 @@ public interface AuctionDAO {
     public List<Auction> getAllPaginated(int pageNumber);
 
     public List<Auction> getAllPaginatedViaUserId(Long userId, int pageNumber);
+    
+    public List<Auction> getAllPaginatedViaOffers(Long userId, int pageNumber);
 
     public Auction getViaId(Long id);
 

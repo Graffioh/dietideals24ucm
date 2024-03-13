@@ -31,127 +31,67 @@ export default function AuctionTimer({ deadline, auction }) {
   const [timeLeft, setTimeLeft] = useState(
     calculateTimeLeftBasedOnDate(deadline)
   );
-  const [hasMounted, setHasMounted] = useState(false);
+  // const [hasMounted, setHasMounted] = useState(false);
   const [auctionEnded, setAuctionEnded] = useState(false);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      // SET TIMER
-      switch (auction.auctionType) {
-        case "fixedtime":
-          setTimeLeft(calculateTimeLeftBasedOnDate(deadline));
-          break;
-
-        case "english":
-          fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + auction.id)
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              return response.json();
-            })
-            .then((auction) => {
-              setTimeLeft(auction.currentOfferTimer);
-            })
-            .catch((error) => {
-              console.error(
-                "Error while fetching auctions (english): " + error.message
-              );
-            });
-          break;
-
-        case "descending":
-          fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + auction.id)
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              return response.json();
-            })
-            .then((auction) => {
-              setTimeLeft(auction.currentDecrementTimer);
-            })
-            .catch((error) => {
-              console.error(
-                "Error while fetching auctions (descending): " + error.message
-              );
-            });
-          break;
-      }
-
-      // SET END
-      if (Object.keys(timeLeft).length === 0 && !auctionEnded && !auction.isOver) {
+    if (!auction.isOver) {
+      const timer = setInterval(() => {
+        // SET TIMER
         switch (auction.auctionType) {
           case "fixedtime":
-            setAuctionEnded(true);
-            clearInterval(timer);
-
-            // set isOver attribute in DB to true
-            fetch(
-              process.env.NEXT_PUBLIC_BASEURL +
-                "/auctions/" +
-                auction.id +
-                "/is-over",
-              {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-              }
-            )
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error("Network response was not ok");
-                }
-              })
-              .then(() => {
-                console.log("Auction has ended");
-              })
-              .catch((error) => {
-                console.error(
-                  "Error while setting is over (fixedtime): " + error.message
-                );
-              });
-
-            const noti = {
-              id: auction.id + auction.idUserAccount,
-              auctionName: auction.auctionName,
-              idOffer: 0,
-              idAuction: auction.id,
-              idUserAccount: auction.idUserAccount,
-            };
-
-            fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(noti),
-            })
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error("Network response was not ok");
-                }
-              })
-              .then(() => {
-                console.log(
-                  "Notifications for auction ended created successfully"
-                );
-              })
-              .catch((error) => {
-                console.error(
-                  "Error while creating notification: " + error.message
-                );
-              });
+            setTimeLeft(calculateTimeLeftBasedOnDate(deadline));
             break;
 
           case "english":
-            // wait for place offer functionality
+            fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + auction.id)
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+              })
+              .then((auction) => {
+                setTimeLeft(auction.currentOfferTimer);
+              })
+              .catch((error) => {
+                console.error(
+                  "Error while fetching auctions (english): " + error.message
+                );
+              });
             break;
 
           case "descending":
-            if (auction.currentOffer === auction.minimumPrice) {
+            fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + auction.id)
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+              })
+              .then((auction) => {
+                setTimeLeft(auction.currentDecrementTimer);
+              })
+              .catch((error) => {
+                console.error(
+                  "Error while fetching auctions (descending): " + error.message
+                );
+              });
+            break;
+        }
+
+        // SET END
+        if (
+          Object.keys(timeLeft).length === 0 &&
+          !auctionEnded &&
+          !auction.isOver
+        ) {
+          switch (auction.auctionType) {
+            case "fixedtime":
               setAuctionEnded(true);
               clearInterval(timer);
 
-              console.log(auction.id + "| currentOffer = " + auction.currentOffer + " | minimumPrice = " + auction.minimumPrice)
-
+              // set isOver attribute in DB to true
               fetch(
                 process.env.NEXT_PUBLIC_BASEURL +
                   "/auctions/" +
@@ -176,23 +116,20 @@ export default function AuctionTimer({ deadline, auction }) {
                   );
                 });
 
-              const noti = {
+              // NOTIFICATIONS
+              // (SELLER)
+              const fixedTimeNoti = {
                 id: auction.id + auction.idUserAccount,
                 auctionName: auction.auctionName,
-                idUserAccount: auction.idUserAccount,
                 idAuction: auction.id,
+                idUserAccount: auction.idUserAccount,
               };
 
-              fetch(
-                process.env.NEXT_PUBLIC_BASEURL +
-                  "/notifications/create/" +
-                  auction.id,
-                {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: noti,
-                }
-              )
+              fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(fixedTimeNoti),
+              })
                 .then((response) => {
                   if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -208,18 +145,267 @@ export default function AuctionTimer({ deadline, auction }) {
                     "Error while creating notification: " + error.message
                   );
                 });
-            }
-            break;
+
+              // (BUYER)
+              fetch(process.env.NEXT_PUBLIC_BASEURL + "/offers/" + auction.id, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                  }
+
+                  return response.json();
+                })
+                .then((offers) => {
+                  console.log("Offers from auction id fetched successfully!");
+
+                  offers.map((offer) => {
+                    const fixedTimeNoti = {
+                      id: auction.id + auction.idUserAccount,
+                      auctionName: auction.auctionName,
+                      idAuction: auction.id,
+                      idUserAccount: offer.idUserAccount,
+                    };
+
+                    fetch(
+                      process.env.NEXT_PUBLIC_BASEURL + "/notifications/create",
+                      {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(fixedTimeNoti),
+                      }
+                    )
+                      .then((response) => {
+                        if (!response.ok) {
+                          throw new Error("Network response was not ok");
+                        }
+                      })
+                      .then(() => {
+                        console.log(
+                          "Notifications for auction ended created successfully"
+                        );
+                      })
+                      .catch((error) => {
+                        console.error(
+                          "Error while creating notification: " + error.message
+                        );
+                      });
+                  });
+                })
+                .catch((error) => {
+                  console.error(
+                    "Error while fetching offers from auction id: " +
+                      error.message
+                  );
+                });
+              break;
+
+            case "english":
+              if (auction.currentOfferTimer === "00:00:00") {
+                setAuctionEnded(true);
+                clearInterval(timer);
+
+                // set isOver attribute in DB to true
+                fetch(
+                  process.env.NEXT_PUBLIC_BASEURL +
+                    "/auctions/" +
+                    auction.id +
+                    "/is-over",
+                  {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                  }
+                )
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                  })
+                  .then(() => {
+                    console.log("Auction has ended");
+                  })
+                  .catch((error) => {
+                    console.error(
+                      "Error while setting is over (fixedtime): " +
+                        error.message
+                    );
+                  });
+
+                // NOTIFICATIONS
+                // (SELLER)
+                const englishNoti = {
+                  id: auction.id + auction.idUserAccount,
+                  auctionName: auction.auctionName,
+                  idAuction: auction.id,
+                  idUserAccount: auction.idUserAccount,
+                };
+
+                fetch(
+                  process.env.NEXT_PUBLIC_BASEURL + "/notifications/create",
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(englishNoti),
+                  }
+                )
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                  })
+                  .then(() => {
+                    console.log(
+                      "Notifications for auction ended created successfully"
+                    );
+                  })
+                  .catch((error) => {
+                    console.error(
+                      "Error while creating notification: " + error.message
+                    );
+                  });
+
+                // (BUYER)
+                fetch(
+                  process.env.NEXT_PUBLIC_BASEURL + "/offers/" + auction.id,
+                  {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                  }
+                )
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+
+                    return response.json();
+                  })
+                  .then((offers) => {
+                    console.log("Offers from auction id fetched successfully!");
+
+                    offers.map((offer) => {
+                      const englishNoti = {
+                        id: auction.id + auction.idUserAccount,
+                        auctionName: auction.auctionName,
+                        idAuction: auction.id,
+                        idUserAccount: offer.idUserAccount,
+                      };
+
+                      fetch(
+                        process.env.NEXT_PUBLIC_BASEURL +
+                          "/notifications/create",
+                        {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify(englishNoti),
+                        }
+                      )
+                        .then((response) => {
+                          if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                          }
+                        })
+                        .then(() => {
+                          console.log(
+                            "Notifications for auction ended created successfully"
+                          );
+                        })
+                        .catch((error) => {
+                          console.error(
+                            "Error while creating notification: " +
+                              error.message
+                          );
+                        });
+                    });
+                  })
+                  .catch((error) => {
+                    console.error(
+                      "Error while fetching offers from auction id: " +
+                        error.message
+                    );
+                  });
+              }
+              break;
+
+            case "descending":
+              if (auction.currentOffer === auction.minimumPrice) {
+                setAuctionEnded(true);
+                clearInterval(timer);
+
+                fetch(
+                  process.env.NEXT_PUBLIC_BASEURL +
+                    "/auctions/" +
+                    auction.id +
+                    "/is-over",
+                  {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                  }
+                )
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                  })
+                  .then(() => {
+                    console.log("Auction has ended");
+                  })
+                  .catch((error) => {
+                    console.error(
+                      "Error while setting is over (fixedtime): " +
+                        error.message
+                    );
+                  });
+
+                const descendingNoti = {
+                  id: auction.id + auction.idUserAccount,
+                  auctionName: auction.auctionName,
+                  idUserAccount: auction.idUserAccount,
+                  idAuction: auction.id,
+                };
+
+                fetch(
+                  process.env.NEXT_PUBLIC_BASEURL + "/notifications/create",
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(descendingNoti),
+                  }
+                )
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                  })
+                  .then(() => {
+                    console.log(
+                      "Notifications for auction ended created successfully"
+                    );
+                  })
+                  .catch((error) => {
+                    console.error(
+                      "Error while creating notification: " + error.message
+                    );
+                  });
+              }
+              break;
+          }
         }
-      }
 
-      setHasMounted(true);
-    }, 1000);
+        // setHasMounted(true);
+      }, 1000);
 
-    return () => clearInterval(timer);
-  }, [deadline, auction]);
+      return () => clearInterval(timer);
+    }
+  }, [deadline, auction, auctionEnded, timeLeft]);
 
-  if (typeof timeLeft === "object" && auction.auctionType !== "fixedtime") {
+  // !hasMounted maybe useless
+  if (
+    typeof timeLeft === "object" &&
+    auction.auctionType !== "fixedtime" &&
+    !auction.isOver
+  ) {
     return (
       <div className="flex justify-center mt-1">
         <LoadingSpinner />
@@ -227,34 +413,8 @@ export default function AuctionTimer({ deadline, auction }) {
     );
   }
 
-  // not necessary but it's for consistency with other laoding timers
-  if (!hasMounted) {
-    return (
-      <div className="flex justify-center mt-1">
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
-  // mamma mia che immondizia che ho fatto qua
   return (
     <div>
-      {/* {Object.keys(timeLeft).length > 0 ? (
-        auction.currentOffer !== auction.minimumPrice ? (
-          auction.auctionType !== "fixedtime" ? (
-            `${timeLeft}`
-          ) : (
-            `${formatTimeLeft(timeLeft)}`
-          )
-        ) : (
-          <div className="text-red-500 text-lg font-medium">Auction ended</div>
-        )
-      ) : auction.isOver ? (
-        <div className="text-red-500 text-lg font-medium">Auction ended</div>
-      ) : (
-        <div className="text-red-500 text-lg font-medium"></div>
-      )} */}
-
       {auctionEnded || Object.keys(timeLeft).length === 0 || auction.isOver ? (
         <div className="text-red-500 text-lg font-medium">Auction ended</div>
       ) : auction.auctionType === "fixedtime" ? (
