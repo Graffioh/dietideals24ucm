@@ -81,7 +81,7 @@ function LoggedFullSection() {
   return (
     <>
       <div className="flex flex-grow gap-6 justify-between mx-48 mb-2">
-        <ComboboxCategories />
+        <ComboboxCategories onCategoryChange={() => {}}/>
         <Searchbar />
       </div>
 

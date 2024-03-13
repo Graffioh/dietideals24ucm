@@ -27,7 +27,10 @@ export default function InsertAuctionPage() {
   const { currentUser, currentUserIsLoading } = useUserContext();
 
   // Category combobox state
-  const [category, setCategory] = useState("Category 1");
+  const [category, setCategory] = useState("");
+  function handleCategory(category) {
+    setCategory(category);
+  }
 
   // Auction combobox state
   const [auctionType, setAuctionType] = useState("");
@@ -171,7 +174,7 @@ export default function InsertAuctionPage() {
       auctionQuality: "Good",
       currentOffer: currentOffer,
       auctionType: auctionType,
-      auctionCategory: "Electronics",
+      auctionCategory: category,
       idUserAccount: currentUser.id,
       auctionImages: "no-images", // mettere le foto prese dalla selezione
       offers: [],
@@ -275,7 +278,9 @@ export default function InsertAuctionPage() {
             </div>
 
             <div className="mt-6 flex flex-col space-y-6">
-              <ComboboxCategories></ComboboxCategories>
+              <ComboboxCategories
+                onCategoryChange={handleCategory}
+              ></ComboboxCategories>
               <ComboboxAuctions
                 onAuctionTypeChange={setAuctionTypeFromCombobox}
               ></ComboboxAuctions>

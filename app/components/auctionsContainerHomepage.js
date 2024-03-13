@@ -74,6 +74,8 @@ export default function AuctionsContainerHomepage() {
     );
   }
 
+  console.log("FILTERED AUCTIONS: ", JSON.stringify(filteredAuctions))
+
   return (
     <>
       <div className="flex flex-col justify-center items-center">

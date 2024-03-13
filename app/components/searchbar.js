@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useAuctionFilter } from "@/app/providers/auctionFilterProvider";
 
 export default function Searchbar() {
-  const { setSearchInput, setFilteredAuctions } = useAuctionFilter();
+  const { setFilteredAuctions } = useAuctionFilter();
 
   const handleInputChange = async (event) => {
     const searchInput = event.target.value;
@@ -15,7 +15,7 @@ export default function Searchbar() {
       );
       const auctionsData = await auctionsResponse.json();
       setFilteredAuctions(auctionsData);
-      setSearchInput(event.target.value);
+      // setSearchInput(event.target.value);
     } else {
       const filteredAuctionsResponse = await fetch(
         process.env.NEXT_PUBLIC_BASEURL + "/auctions/name",
@@ -23,7 +23,7 @@ export default function Searchbar() {
       );
       const filteredAuctionsData = await filteredAuctionsResponse.json();
       setFilteredAuctions(filteredAuctionsData);
-      setSearchInput(event.target.value);
+      // setSearchInput(event.target.value);
     }
   };
 

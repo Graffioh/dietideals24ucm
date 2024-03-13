@@ -53,6 +53,18 @@ public class AuctionController {
         }
     }
 
+    @PostMapping("/category")
+    public ResponseEntity<List<Auction>> fetchAuctionBasedOnCategory(@RequestBody String category) {
+        try {
+            List<Auction> auctions = auctionDAO.getViaCategory(category);
+
+            return new ResponseEntity<List<Auction>>(auctions, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<List<Auction>>(new ArrayList<Auction>(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/paginated")
     public ResponseEntity<List<Auction>> fetchPagedAuctions(@RequestParam int page) {
         try {
