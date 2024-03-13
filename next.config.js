@@ -15,7 +15,7 @@ module.exports = {
       },
       {
         source: "/login/oauth2/:path*",
-        destination: "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app/api/login/oauth2/:path*"
+        destination: "https://dietideals24-git-dev-graffioh.vercel.app/api/login/oauth2/:path*"
       },
       {
         source: "/login/oauth2/:path*",
