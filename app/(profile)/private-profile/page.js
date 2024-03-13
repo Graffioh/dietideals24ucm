@@ -109,8 +109,6 @@ export default function ProfilePage({ searchParams }) {
       website: inputs.website ? inputs.website.value : "",
     };
     
-    console.log(userInfoFromInputs.telephoneNumber)
-
     if (currentUser && currentUser.id) {
       await fetch(
         process.env.NEXT_PUBLIC_BASEURL +

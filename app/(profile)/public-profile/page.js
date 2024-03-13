@@ -1,29 +1,39 @@
+"use client";
+
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import useSWR from "swr";
 
-import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
+// import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
 import AuctionsContainerPublicProfile from "@/app/components/auctionsContainerPublicProfile";
 import ShowMoreDetailsPublicProfile from "@/app/components/showMoreDetailsPublicProfile";
+import LoadingSpinner from "@/app/components/loadingSpinner";
+import { useUserContext } from "@/app/providers/userProvider";
 
-export default async function ProfilePage({ searchParams }) {
-  const currentUser = await getCurrentUserServer();
+export default function ProfilePage({ searchParams }) {
+  const { currentUser } = useUserContext();
+  
+  const fetcher = (url) =>
+    fetch(url, { next: { revalidate: 1 } }).then((res) => res.json());
 
-  async function getUserById(id) {
-    try {
-      const userRes = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/users/" + id,
-        { next: { revalidate: 0 } }
-      );
-
-      const user = await userRes.json();
-
-      return user;
-    } catch (e) {
-      console.error("Error while fetching user by id: " + e);
-    }
+  const {
+    data: userById,
+    error: userByIdError,
+    isLoading: userByIdIsLoading,
+  } = useSWR(
+    process.env.NEXT_PUBLIC_BASEURL + "/users/" + searchParams.id,
+    fetcher
+  );
+  
+  if(searchParams.id && userByIdIsLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   // if searchParams is not present or if searchParams.id == currentUser.id,
@@ -31,7 +41,7 @@ export default async function ProfilePage({ searchParams }) {
   const publicProfileUser = searchParams.id
     ? currentUser
       ? currentUser.id !== searchParams.id
-        ? await getUserById(searchParams.id)
+        ? userById
         : currentUser
       : {}
     : currentUser;
@@ -39,12 +49,6 @@ export default async function ProfilePage({ searchParams }) {
   return (
     <>
       <div className="flex md:flex-row flex-col mt-16 md:mx-[15em] mx-3 items-center">
-        {/* <div className="mt-2 md:mr-10">
-          <Avatar className="h-32 w-32">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@avatar" />
-            <AvatarFallback />
-          </Avatar>
-        </div> */}
         <div className="md:flex-col w-full mt-1 md:mt-0">
           <div className="flex items-center mb-2 md:mb-0">
             <div className="flex">
