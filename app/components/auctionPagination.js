@@ -15,13 +15,6 @@ import {
             Page {pageNumber} of {maxPageNumber}
           </div>
           <div className="flex items-center space-x-2">
-            {/* <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-            >
-              <span className="sr-only">Go to first page</span>
-              <DoubleArrowLeftIcon className="h-4 w-4" />
-            </Button> */}
             <Button
               variant="outline"
               className="h-8 w-8 p-0 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]"
@@ -38,13 +31,6 @@ import {
               <span className="sr-only">Go to next page</span>
               <ChevronRightIcon className="h-4 w-4" />
             </Button>
-            {/* <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-            >
-              <span className="sr-only">Go to last page</span>
-              <DoubleArrowRightIcon className="h-4 w-4" />
-            </Button> */}
           </div>
         </div>
       </div>

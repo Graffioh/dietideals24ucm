@@ -47,7 +47,7 @@ export default function AuctionsContainerHomepage() {
 
   useEffect(() => {
     if (paginatedAuctions) {
-      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20));
+      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20) + 1);
     }
 
     localStorage.setItem("pageIndex", pageIndex);
@@ -62,7 +62,7 @@ export default function AuctionsContainerHomepage() {
   function handleNextPageChange() {
     if (paginatedAuctionsLength === 20) {
       setPageIndex(pageIndex + 1);
-      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20));
+      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20) + 1);
     }
   }
 
@@ -73,8 +73,6 @@ export default function AuctionsContainerHomepage() {
       </div>
     );
   }
-
-  console.log("FILTERED AUCTIONS: ", JSON.stringify(filteredAuctions))
 
   return (
     <>
