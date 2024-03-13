@@ -210,7 +210,7 @@ export default function InsertAuctionPage() {
       createAuctionButtonRef.current.disabled = true;
 
       setTimeout(() => {
-        window.location.href = "http://localhost:3000/home";
+        window.location.href = process.env.NEXT_PUBLIC_BASEURL.replace("/api", "") + "/home";
       }, 1000);
     } catch (e) {
       toast.error("The auction has not been created, a problem occurred.", {

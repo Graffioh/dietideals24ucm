@@ -164,6 +164,29 @@ function NotificationsSection() {
 // *******************************
 // Various header sections MOBILE
 // *******************************
+function LoggedSectionMobile() {
+  function isUserAdult(birthDateString) {
+    var birthDate = new Date(birthDateString);
+    var currentDate = new Date();
+
+    var age = currentDate.getFullYear() - birthDate.getFullYear();
+    var m = currentDate.getMonth() - birthDate.getMonth();
+
+    if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age >= 18;
+  }
+
+  const { currentUser } = useUserContext();
+
+  return isUserAdult(currentUser ? currentUser.birthDate : new Date()) ? (
+    <LoggedFullSectionMobile />
+  ) : (
+    <LoggedPartialSectionMobile />
+  );
+}
 
 // Only notifications and profile icon
 function LoggedPartialSectionMobile() {
@@ -310,12 +333,15 @@ export default function Header({ headerType, token }) {
               } flex-col items-center absolute top-full right-0 bg-white shadow-md mt-2 py-4 w-64 rounded`}
             >
               <div className="flex flex-col items-center">
+                {headerType === "headerLogged" &&
+                  token !== "no-token" &&
+                  token !== "" && <LoggedSectionMobile />}
                 {headerType === "headerLoggedFull" &&
                   token !== "no-token" &&
                   token !== "" && <LoggedFullSectionMobile />}
-                {headerType === "headerLoggedPartial" && (
-                  <LoggedPartialSectionMobile />
-                )}
+                {headerType === "headerLoggedPartial" &&
+                  token !== "no-token" &&
+                  token !== "" && <LoggedPartialSectionMobile />}
                 {headerType === "headerPrivateProfile" && (
                   <PrivateProfileSectionMobile />
                 )}

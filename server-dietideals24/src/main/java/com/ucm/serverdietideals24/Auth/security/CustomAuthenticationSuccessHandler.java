@@ -68,13 +68,13 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             tokenCookie.setPath("/");
             response.addCookie(tokenCookie);
 
-            targetUrl = "http://localhost:3000/";
+            targetUrl = System.getenv("FRONTEND_BASEURL");
         } else {
             if (isEmail) {
-                targetUrl = "http://localhost:3000/private-profile?email=" + emailOrUsernameFromOAuth +
+                targetUrl = System.getenv("FRONTEND_BASEURL") + "/private-profile?email=" + emailOrUsernameFromOAuth +
                         "&fromProvider=google";
             } else {
-                targetUrl = "http://localhost:3000/private-profile?username=" + emailOrUsernameFromOAuth +
+                targetUrl = System.getenv("FRONTEND_BASEURL") + "/private-profile?username=" + emailOrUsernameFromOAuth +
                         "&fromProvider=github";
             }
         }
