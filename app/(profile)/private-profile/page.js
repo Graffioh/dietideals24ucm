@@ -89,10 +89,10 @@ export default function ProfilePage({ searchParams }) {
     const inputs = event.currentTarget;
 
     // Haha bullsh*t
-    const birthDateForInputs =
-      currentUser && currentUser.birthDate
-        ? currentUser.birthDate
-        : birthDate ?? new Date();
+    // const birthDateForInputs =
+    //   currentUser && currentUser.birthDate
+    //     ? currentUser.birthDate
+    //     : birthDate ?? new Date();
 
     const userInfoFromInputs = {
       id: Date.now(),
@@ -100,7 +100,7 @@ export default function ProfilePage({ searchParams }) {
       lastName: inputs.lastName.value,
       username: inputs.username.value,
       password: inputs.password.value,
-      birthDate: birthDateForInputs,
+      birthDate: birthDate,
       email: inputs.email.value,
       telephoneNumber: inputs.telephoneNumber
         ? inputs.telephoneNumber.value
@@ -108,7 +108,7 @@ export default function ProfilePage({ searchParams }) {
       biography: inputs.biography ? inputs.biography.value : "",
       website: inputs.website ? inputs.website.value : "",
     };
-    
+
     if (currentUser && currentUser.id) {
       await fetch(
         process.env.NEXT_PUBLIC_BASEURL +
@@ -151,7 +151,10 @@ export default function ProfilePage({ searchParams }) {
     <>
       <div className="mb-10 mt-10 flex justify-center">
         <Avatar className="h-32 w-32">
-          <AvatarImage src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b" alt="@avatar" />
+          <AvatarImage
+            src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
+            alt="@avatar"
+          />
           <AvatarFallback />
         </Avatar>
       </div>
@@ -266,9 +269,7 @@ export default function ProfilePage({ searchParams }) {
                   currentUser ? new Date(currentUser.birthDate) : new Date()
                 }
                 isBirthDate={true}
-                isReadOnly={
-                  currentUser ? (currentUser.id ? true : false) : false
-                }
+                isReadOnly={false}
               />
             </div>
 

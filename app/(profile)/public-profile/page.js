@@ -28,14 +28,6 @@ export default function ProfilePage({ searchParams }) {
     fetcher
   );
   
-  if(searchParams.id && userByIdIsLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
   // if searchParams is not present or if searchParams.id == currentUser.id,
   //   then display currentUser, otherwise display the queried user by id
   const publicProfileUser = searchParams.id
@@ -45,6 +37,14 @@ export default function ProfilePage({ searchParams }) {
         : currentUser
       : {}
     : currentUser;
+
+  if(searchParams.id && userByIdIsLoading || !publicProfileUser) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <>
