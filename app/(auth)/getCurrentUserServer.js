@@ -22,7 +22,7 @@ export default async function getCurrentUserServer() {
 
     const userInfo = await subjectFromToken.text();
 
-    if (userInfo.includes("@")) {
+    if (userInfo.includes("@") || userInfo.includes("%40")) {
       try {
         const userResponse = await fetch(
           process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + userInfo
