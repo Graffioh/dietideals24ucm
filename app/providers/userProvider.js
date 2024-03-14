@@ -35,8 +35,7 @@ export const UserProvider = ({ children }) => {
     fetch(url, { next: { revalidate: 3 } }).then((res) => res.json());
 
   const { data: currentUserData, error: currentUserError } = useSWR(
-    (subject != null && subject.includes("@")) ||
-      (subject != null && subject.includes("%40"))
+    subject != null && subject.includes("@")
       ? process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + subject
       : process.env.NEXT_PUBLIC_BASEURL + "/users/username?username=" + subject,
     fetcher

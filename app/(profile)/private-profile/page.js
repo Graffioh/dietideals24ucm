@@ -228,11 +228,7 @@ export default function ProfilePage({ searchParams }) {
                 id="email"
                 placeholder="Email"
                 defaultValue={
-                  searchParams.fromProvider === "google"
-                    ? searchParams.email
-                    : currentUser
-                    ? currentUser.email
-                    : searchParams.email
+                  searchParams.email ?? currentUser?.email
                 }
                 required
                 readOnly={
