@@ -104,6 +104,7 @@ export default function InsertAuctionPage() {
   const [decrementAmount, setDecrementAmount] = useState("");
   const [baseDecrementTimer, setDecrementTimer] = useState("");
   const [descendingMinimumPrice, setDescendingMinimumPrice] = useState("");
+  const [isBaseDecrementTimerValid, setIsBaseDecrementTimerValid] = useState(true);
 
   function handleStartPrice(startPrice) {
     setStartPrice(startPrice);
@@ -121,8 +122,18 @@ export default function InsertAuctionPage() {
     setDescendingMinimumPrice(descendingMinimumPrice);
   }
 
+  function handleIsBaseDecrementValid(isValid) {
+    setIsBaseDecrementTimerValid(isValid);
+  }
+
   function validateDescendingAuctionInputs() {
-    const isBaseDecrementTimerValid = baseDecrementTimer ? baseDecrementTimer !== "00:00:00" : false
+    const isTimerValid = baseDecrementTimer && baseDecrementTimer.length !== 0 ? true : false
+    
+    if(!isTimerValid) {
+      setIsBaseDecrementTimerValid(false)
+    } else {
+      setIsBaseDecrementTimerValid(true)
+    }
 
     const validState =
       category &&
@@ -130,7 +141,7 @@ export default function InsertAuctionPage() {
       quality &&
       startPrice &&
       decrementAmount &&
-      isBaseDecrementTimerValid &&
+      isTimerValid &&
       descendingMinimumPrice;
     return validState;
   }
@@ -306,6 +317,8 @@ export default function InsertAuctionPage() {
                 onDecrementAmountChange={handleDecrementAmount}
                 onDecrementTimerChange={handleDecrementTimer}
                 onDescendingMinimumPriceChange={handleDescendingMinimumPrice}
+                onAuctionTimerValidChange={handleIsBaseDecrementValid}
+                isAuctionTimerValid={isBaseDecrementTimerValid}
               />
             )}
             {auctionType === "english" && (

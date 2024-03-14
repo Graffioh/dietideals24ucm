@@ -6,7 +6,7 @@ import DurationPicker from "../durationPicker";
 import { TimePickerInput } from "@/components/timepicker/time-picker-input";
 import { Button } from "@/components/ui/button";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TimePicker } from "@/components/timepicker/time-picker";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
@@ -15,6 +15,8 @@ export default function DescendingInsertAuctionInputs({
   onDecrementAmountChange,
   onDecrementTimerChange,
   onDescendingMinimumPriceChange,
+  onAuctionTimerValidChange,
+  isAuctionTimerValid,
 }) {
   const zeroDate = new Date();
   zeroDate.setHours(0, 0, 0, 0);
@@ -29,8 +31,6 @@ export default function DescendingInsertAuctionInputs({
       dateForTimer.getSeconds();
     return timer;
   }
-
-  const [isSetWarningVisible, setIsSetWarningVisible] = useState(false)
 
   return (
     <>
@@ -79,9 +79,9 @@ export default function DescendingInsertAuctionInputs({
             onClick={(e) => {
               e.preventDefault();
               if(dateForTimer.getHours() === 0 && dateForTimer.getMinutes() === 0 && dateForTimer.getSeconds() === 0) {
-                setIsSetWarningVisible(true);
+                onAuctionTimerValidChange(false);
               } else {
-                setIsSetWarningVisible(false);
+                onAuctionTimerValidChange(true);
                 onDecrementTimerChange(convertDateIntoTime(dateForTimer));
               }
             }}
@@ -89,7 +89,7 @@ export default function DescendingInsertAuctionInputs({
             Set
           </Button>
           
-          <ExclamationTriangleIcon hidden={!isSetWarningVisible} width={23} height={23} className={`text-red-500 mr-1 mt-8 ml-2 ${isSetWarningVisible ? 'animate-bounce' : ''}`} />
+          <ExclamationTriangleIcon hidden={isAuctionTimerValid} width={23} height={23} className="text-red-500 mr-1 mt-8 ml-2 animate-bounce" />
         </div>
       </div>
 
