@@ -122,13 +122,15 @@ export default function InsertAuctionPage() {
   }
 
   function validateDescendingAuctionInputs() {
+    const isBaseDecrementTimerValid = baseDecrementTimer ? baseDecrementTimer !== "00:00:00" : false
+
     const validState =
       category &&
       auctionType &&
       quality &&
       startPrice &&
       decrementAmount &&
-      baseDecrementTimer &&
+      isBaseDecrementTimerValid &&
       descendingMinimumPrice;
     return validState;
   }

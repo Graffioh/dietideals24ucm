@@ -6,8 +6,9 @@ import DurationPicker from "../durationPicker";
 import { TimePickerInput } from "@/components/timepicker/time-picker-input";
 import { Button } from "@/components/ui/button";
 
-import React from "react";
+import React, { useState } from "react";
 import { TimePicker } from "@/components/timepicker/time-picker";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 export default function DescendingInsertAuctionInputs({
   onStartPriceChange,
@@ -29,6 +30,8 @@ export default function DescendingInsertAuctionInputs({
     return timer;
   }
 
+  const [isSetWarningVisible, setIsSetWarningVisible] = useState(false)
+
   return (
     <>
       <div>
@@ -46,20 +49,6 @@ export default function DescendingInsertAuctionInputs({
           }}
         ></Input>
       </div>
-
-      {/* <div>
-        <div className="w-72 min-w-screen flex mb-2">
-          <Label>
-            Expire time<span className="text-red-500">*</span>
-          </Label>
-        </div>
-        <Input
-          type="time"
-          placeholder="Expire time"
-          className="bg-white"
-          onChange={(e) => {onFixedTimeChange(e.target.value)}}
-        ></Input>
-      </div> */}
 
       <div>
         <div className="w-72 min-w-screen flex mb-2">
@@ -83,25 +72,24 @@ export default function DescendingInsertAuctionInputs({
             Decrement Timer<span className="text-red-500">*</span>
           </Label>
         </div>
-        {/* <Input
-          type="time"
-          placeholder="Decrement timer"
-          className="bg-white"
-          onChange={(e) => {onDecrementTimerChange(e.target.value)}}
-        ></Input> */}
-
-        {/* <DurationPicker /> */}
         <div className="flex">
           <TimePicker date={dateForTimer} setDate={setDateForTimer} />
           <Button
             className="mt-5 ml-4"
             onClick={(e) => {
               e.preventDefault();
-              onDecrementTimerChange(convertDateIntoTime(dateForTimer));
+              if(dateForTimer.getHours() === 0 && dateForTimer.getMinutes() === 0 && dateForTimer.getSeconds() === 0) {
+                setIsSetWarningVisible(true);
+              } else {
+                setIsSetWarningVisible(false);
+                onDecrementTimerChange(convertDateIntoTime(dateForTimer));
+              }
             }}
           >
             Set
           </Button>
+          
+          <ExclamationTriangleIcon hidden={!isSetWarningVisible} width={23} height={23} className={`text-red-500 mr-1 mt-8 ml-2 ${isSetWarningVisible ? 'animate-bounce' : ''}`} />
         </div>
       </div>
 
