@@ -134,7 +134,7 @@ export default function AuctionDetailsPage({ searchParams }) {
           <div className="px-10 bg-stone-200 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
             <div className="flex flex-col justify-center items-center">
               <Label className="flex text-base mb-4 bg-white rounded-b-lg pb-1 px-2 border border-input">
-                {currentAuction.auctionType.toUpperCase()} Auction
+                {currentAuction.auctionType.charAt(0).toUpperCase() + currentAuction.auctionType.slice(1)} Auction
               </Label>
 
               <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>

@@ -19,25 +19,25 @@ public class AuctionImpl implements AuctionDAO {
 
     @Override
     public List<Auction> getAll() {
-        return jdbcTemplate.query("SELECT * FROM auction",
+        return jdbcTemplate.query("SELECT * FROM auction ORDER BY id",
                 new BeanPropertyRowMapper<Auction>(Auction.class));
     }
 
     @Override
     public List<Auction> getViaName(String name) {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionName = '" + name + "'",
+        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionName = '" + name + "' ORDER BY id",
                 new BeanPropertyRowMapper<Auction>(Auction.class));
     }
 
     @Override
     public List<Auction> getViaCategory(String category) {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionCategory = '" + category + "'",
+        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionCategory = '" + category + "' ORDER BY id",
                 new BeanPropertyRowMapper<Auction>(Auction.class));
     }
 
     @Override
     public List<Auction> getAllViaUserId(Long userId) {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE idUserAccount = " + userId,
+        return jdbcTemplate.query("SELECT * FROM auction WHERE idUserAccount = '" + userId + "' ORDER BY id",
                 new BeanPropertyRowMapper<Auction>(Auction.class));
     }
 
@@ -74,13 +74,13 @@ public class AuctionImpl implements AuctionDAO {
 
     @Override
     public List<Auction> getAllDescendingAuctions() {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'descending'",
+        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'descending' ORDER BY id",
                 new BeanPropertyRowMapper<Auction>(Auction.class));
     }
 
     @Override
     public List<Auction> getAllEnglishAuctions() {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'english'",
+        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'english' ORDER BY id",
                 new BeanPropertyRowMapper<Auction>(Auction.class));
     }
 

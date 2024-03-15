@@ -51,7 +51,7 @@ export default function FixedTimeInsertAuctionInputs({
         </div>
         <Input
           type="number"
-          placeholder="Reserve"
+          placeholder="Reserve price"
           className="bg-white"
           onChange={(e) => onFixedTimeMinimumPriceChange(e.target.value)}
         ></Input>
