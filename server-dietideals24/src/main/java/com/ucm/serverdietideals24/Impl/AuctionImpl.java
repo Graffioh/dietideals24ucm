@@ -89,38 +89,38 @@ public class AuctionImpl implements AuctionDAO {
         // Different query based on auction type
         if (auction.getAuctionType().toString() == "english") {
             jdbcTemplate.execute(
-                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, baseStartAuction, raiseThreshold, idUserAccount, baseOfferTimer, auctionType, currentOfferTimer) VALUES ('"
+                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, raiseThreshold, idUserAccount, baseTimer, auctionType, currentTimer) VALUES ('"
                             + auction.getId() + "', '" + auction.getAuctionDescription()
                             + "', '" + auction.getAuctionName() + "', '" + auction.getAuctionCategory() + "', '"
                             + auction.getAuctionQuality() + "', '"
                             + auction.getCurrentOffer() + "', '" + auction.getAuctionImages() + "', '"
-                            + auction.getBaseStartAuction() + "', '" + auction.getRaiseThreshold() + "', '"
+                            + auction.getStartPrice() + "', '" + auction.getRaiseThreshold() + "', '"
                             + auction.getIdUserAccount() + "', '"
-                            + auction.getBaseOfferTimer() + "', '" + auction.getAuctionType() + "', '"
-                            + auction.getBaseOfferTimer() + "')");
+                            + auction.getBaseTimer() + "', '" + auction.getAuctionType() + "', '"
+                            + auction.getBaseTimer() + "')");
         } else if (auction.getAuctionType().toString() == "fixedtime") {
             jdbcTemplate.execute(
-                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, expireDate, minimumPrice, expireTime, idUserAccount, auctionType) VALUES ('"
+                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, expireDate, minimumAcceptablePrice, expireTime, idUserAccount, auctionType) VALUES ('"
                             + auction.getId() + "', '" + auction.getAuctionDescription()
                             + "', '" + auction.getAuctionName() + "', '" + auction.getAuctionCategory() + "', '"
                             + auction.getAuctionQuality() + "', '"
                             + auction.getCurrentOffer() + "', '" + auction.getAuctionImages() + "', '"
-                            + auction.getExpireDate() + "', '" + auction.getMinimumPrice() + "', '"
+                            + auction.getExpireDate() + "', '" + auction.getMinimumAcceptablePrice() + "', '"
                             + auction.getExpireTime() + "','"
                             + auction.getIdUserAccount() + "', '"
                             + auction.getAuctionType() + "')");
 
         } else {
             jdbcTemplate.execute(
-                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, baseDecrementTimer, decrementAmount, minimumPrice, idUserAccount, auctionType, currentDecrementTimer) VALUES ('"
+                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, baseTimer, decrementAmount, endPrice, idUserAccount, auctionType, currentTimer) VALUES ('"
                             + auction.getId() + "', '" + auction.getAuctionDescription()
                             + "', '" + auction.getAuctionName() + "', '" + auction.getAuctionCategory() + "', '"
                             + auction.getAuctionQuality() + "', '"
                             + auction.getStartPrice() + "', '" + auction.getAuctionImages() + "', '"
-                            + auction.getStartPrice() + "', '" + auction.getBaseDecrementTimer()
-                            + "', '" + auction.getDecrementAmount() + "', '" + auction.getMinimumPrice() + "', '"
+                            + auction.getStartPrice() + "', '" + auction.getBaseTimer()
+                            + "', '" + auction.getDecrementAmount() + "', '" + auction.getEndPrice() + "', '"
                             + auction.getIdUserAccount() + "', '"
-                            + auction.getAuctionType() + "', '" + auction.getBaseDecrementTimer() + "')");
+                            + auction.getAuctionType() + "', '" + auction.getBaseTimer() + "')");
         }
     }
 
@@ -136,12 +136,12 @@ public class AuctionImpl implements AuctionDAO {
 
     @Override
     public void updateCurrentDecrementTimer(Long id, Time newTimerValue) {
-        jdbcTemplate.update("UPDATE auction SET currentDecrementTimer = '" + newTimerValue + "' WHERE id = " + id);
+        jdbcTemplate.update("UPDATE auction SET currentTimer = '" + newTimerValue + "' WHERE id = " + id);
     }
 
     @Override
     public void updateCurrentOfferTimer(Long id, Time newTimerValue) {
-        jdbcTemplate.update("UPDATE auction SET currentOfferTimer = '" + newTimerValue + "' WHERE id = " + id);
+        jdbcTemplate.update("UPDATE auction SET currentTimer = '" + newTimerValue + "' WHERE id = " + id);
     }
 
     @Override

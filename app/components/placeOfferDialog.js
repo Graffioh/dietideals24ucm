@@ -79,7 +79,7 @@ export default function PlaceOfferDialog({ auction }) {
             "/auctions/" +
             auction.id +
             "/current-offertimer?newTimerValue=" +
-            auction.baseOfferTimer,
+            auction.baseTimer,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },

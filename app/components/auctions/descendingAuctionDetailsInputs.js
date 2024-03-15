@@ -25,7 +25,7 @@ export default function DescendingAuctionDetailsInputs({ currentAuction }) {
           className="max-w-[20em] h-9 bg-white"
           type="text"
           placeholder="Placeholder"
-          defaultValue={currentAuction.currentDecrementTimer}
+          defaultValue={currentAuction.currentTimer}
           readOnly
         />
       </div>

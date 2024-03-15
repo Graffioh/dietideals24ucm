@@ -25,7 +25,7 @@ export default function EnglishAuctionDetailsInputs({ currentAuction }) {
           className="max-w-[20em] h-9 bg-white"
           type="text"
           placeholder="Placeholder"
-          defaultValue={currentAuction.currentOfferTimer}
+          defaultValue={currentAuction.currentTimer}
           readOnly
         />
       </div>

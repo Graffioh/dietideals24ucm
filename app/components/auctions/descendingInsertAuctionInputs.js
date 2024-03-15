@@ -96,12 +96,12 @@ export default function DescendingInsertAuctionInputs({
       <div>
         <div className="w-72 min-w-screen flex mb-2">
           <Label>
-            Secret minimum price<span className="text-red-500">*</span>
+            End price<span className="text-red-500">*</span>
           </Label>
         </div>
         <Input
           type="number"
-          placeholder="Secret minimum price"
+          placeholder="End price"
           className="bg-white"
           onChange={(e) => {
             onDescendingMinimumPriceChange(e.target.value);
