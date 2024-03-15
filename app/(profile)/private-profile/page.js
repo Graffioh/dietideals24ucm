@@ -93,6 +93,7 @@ export default function ProfilePage({ searchParams }) {
     //   currentUser && currentUser.birthDate
     //     ? currentUser.birthDate
     //     : birthDate ?? new Date();
+    console.log(birthDate)
 
     const userInfoFromInputs = {
       id: Date.now(),
@@ -100,7 +101,7 @@ export default function ProfilePage({ searchParams }) {
       lastName: inputs.lastName.value,
       username: inputs.username.value,
       password: inputs.password.value,
-      birthDate: birthDate,
+      birthDate: birthDate !== "" ? birthDate : currentUser?.birthDate,
       email: inputs.email.value,
       telephoneNumber: inputs.telephoneNumber
         ? inputs.telephoneNumber.value
@@ -108,7 +109,7 @@ export default function ProfilePage({ searchParams }) {
       biography: inputs.biography ? inputs.biography.value : "",
       website: inputs.website ? inputs.website.value : "",
     };
-
+    
     if (currentUser && currentUser.id) {
       await fetch(
         process.env.NEXT_PUBLIC_BASEURL +
@@ -120,7 +121,7 @@ export default function ProfilePage({ searchParams }) {
           headers: { "Content-Type": "application/json" },
         }
       );
-
+      
       toast.success("Account updated successfully.", {
         position: "bottom-center",
       });
