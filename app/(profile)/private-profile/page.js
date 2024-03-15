@@ -109,7 +109,7 @@ export default function ProfilePage({ searchParams }) {
       biography: inputs.biography ? inputs.biography.value : "",
       website: inputs.website ? inputs.website.value : "",
     };
-    
+
     if (currentUser && currentUser.id) {
       await fetch(
         process.env.NEXT_PUBLIC_BASEURL +
