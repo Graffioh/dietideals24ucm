@@ -42,6 +42,7 @@ export default function DescendingInsertAuctionInputs({
         </div>
         <Input
           type="number"
+          step="0.01"
           placeholder="Start price"
           className="bg-white"
           onChange={(e) => {
@@ -58,6 +59,7 @@ export default function DescendingInsertAuctionInputs({
         </div>
         <Input
           type="number"
+          step="0.01"
           placeholder="Decrement amount"
           className="bg-white"
           onChange={(e) => {
@@ -101,6 +103,7 @@ export default function DescendingInsertAuctionInputs({
         </div>
         <Input
           type="number"
+          step="0.01"
           placeholder="End price"
           className="bg-white"
           onChange={(e) => {

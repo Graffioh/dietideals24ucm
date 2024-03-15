@@ -250,7 +250,7 @@ export default function PlaceOfferDialog({ auction }) {
               )}
 
               <div className="flex justify-center">
-                <Input ref={offerAmountRef} type="number" className="w-48" />
+                <Input ref={offerAmountRef} type="number" step="0.01" className="w-48" />
               </div>
             </AlertDialogHeader>
             <AlertDialogFooter>
