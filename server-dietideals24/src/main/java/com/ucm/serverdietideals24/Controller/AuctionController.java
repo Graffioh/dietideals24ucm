@@ -229,4 +229,40 @@ public class AuctionController {
             }
         }
     }
+    
+    @GetMapping("/count")
+    public ResponseEntity<Integer> countAllAuctions() {
+        try {
+            Integer auctionsCount = auctionDAO.countAll();
+
+            return ResponseEntity.ok(auctionsCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
+        }
+    }
+
+    @GetMapping("/count/user/{userId}")
+    public ResponseEntity<Integer> countUsersAuctions(@PathVariable Long userId) {
+        try {
+            Integer auctionsCount = auctionDAO.countAllViaUserId(userId);
+            
+            return ResponseEntity.ok(auctionsCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
+        }
+    }
+
+    @GetMapping("/count/from-offers/user/{userId}")
+    public ResponseEntity<Integer> countUsersAuctionsFromOffers(@PathVariable Long userId) {
+        try {
+            Integer auctionsCount = auctionDAO.countAllViaOffersAndUserId(userId);
+
+            return ResponseEntity.ok(auctionsCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
+        }
+    }
 }
