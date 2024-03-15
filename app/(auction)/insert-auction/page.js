@@ -42,22 +42,23 @@ export default function InsertAuctionPage() {
   // Quality combobox state
   const [quality, setQuality] = useState("Good");
 
+  const [startPrice, setStartPrice] = useState("");
+  const [baseTimer, setBaseTimer] = useState("");
+
+  function handleStartPrice(startPrice) {
+    setStartPrice(startPrice);
+  }
+
+  function handleBaseTimer(baseTimer) {
+    setBaseTimer(baseTimer);
+  }
+
   // English auction inputs state
   // ***************************************
-  const [baseStartAuction, setBaseStartAuction] = useState("");
   const [raiseThreshold, setRaiseThreshold] = useState("");
-  const [baseOfferTimer, setBaseOfferTimer] = useState("");
-
-  function handleBaseStartAuction(baseStartAuction) {
-    setBaseStartAuction(baseStartAuction);
-  }
 
   function handleRaiseThreshold(raiseThreshold) {
     setRaiseThreshold(raiseThreshold);
-  }
-
-  function handleBaseOfferTimer(baseOfferTimer) {
-    setBaseOfferTimer(baseOfferTimer);
   }
 
   function validateEnglishAuctionInputs() {
@@ -65,9 +66,9 @@ export default function InsertAuctionPage() {
       category &&
       auctionType &&
       quality &&
-      baseStartAuction &&
+      startPrice &&
       raiseThreshold &&
-      baseOfferTimer;
+      baseTimer;
 
     return validState;
   }
@@ -100,34 +101,24 @@ export default function InsertAuctionPage() {
 
   // Descending auction inputs state
   // ***************************************
-  const [startPrice, setStartPrice] = useState("");
   const [decrementAmount, setDecrementAmount] = useState("");
-  const [baseDecrementTimer, setDecrementTimer] = useState("");
   const [descendingMinimumPrice, setDescendingMinimumPrice] = useState("");
   const [isBaseDecrementTimerValid, setIsBaseDecrementTimerValid] = useState(true);
 
-  function handleStartPrice(startPrice) {
-    setStartPrice(startPrice);
-  }
-
   function handleDecrementAmount(decrementAmount) {
     setDecrementAmount(decrementAmount);
-  }
-
-  function handleDecrementTimer(timer) {
-    setDecrementTimer(timer);
   }
 
   function handleDescendingMinimumPrice(descendingMinimumPrice) {
     setDescendingMinimumPrice(descendingMinimumPrice);
   }
 
-  function handleIsBaseDecrementValid(isValid) {
-    setIsBaseDecrementTimerValid(isValid);
+  function handleIsBaseDecrementTimerValid(descendingMinimumPrice) {
+    setDescendingMinimumPrice(descendingMinimumPrice);
   }
 
   function validateDescendingAuctionInputs() {
-    const isTimerValid = baseDecrementTimer && baseDecrementTimer.length !== 0 ? true : false
+    const isTimerValid = baseTimer && baseTimer.length !== 0 ? true : false
     
     if(!isTimerValid) {
       setIsBaseDecrementTimerValid(false)
@@ -175,7 +166,7 @@ export default function InsertAuctionPage() {
     // trash
     const currentOffer =
       auctionType === "english"
-        ? baseStartAuction
+        ? startPrice
         : auctionType === "descending"
         ? startPrice
         : 0;
@@ -191,23 +182,17 @@ export default function InsertAuctionPage() {
       idUserAccount: currentUser.id,
       auctionImages: "no-images", // mettere le foto prese dalla selezione
       offers: [],
-      baseStartAuction: baseStartAuction,
+      startPrice: startPrice,
       raiseThreshold: raiseThreshold,
-      baseOfferTimer: baseOfferTimer
-        ? moment(baseOfferTimer, "HH:mm:ss").format("HH:mm:ss")
+      baseTimer: baseTimer
+        ? moment(baseTimer, "HH:mm:ss").format("HH:mm:ss")
         : null,
       expireDate: expireDate,
-      minimumPrice:
-        auctionType == "fixedtime"
-          ? fixedTimeMinimumPrice
-          : descendingMinimumPrice,
-      startPrice: startPrice,
+      minimumAcceptablePrice: fixedTimeMinimumPrice,
+      endPrice: descendingMinimumPrice,
       decrementAmount: decrementAmount,
       expireTime: expireTime
         ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss")
-        : null,
-      baseDecrementTimer: baseDecrementTimer
-        ? moment(baseDecrementTimer, "HH:mm:ss").format("HH:mm:ss")
         : null,
     };
 
@@ -315,17 +300,17 @@ export default function InsertAuctionPage() {
               <DescendingInsertAuctionInputs
                 onStartPriceChange={handleStartPrice}
                 onDecrementAmountChange={handleDecrementAmount}
-                onDecrementTimerChange={handleDecrementTimer}
+                onDecrementTimerChange={handleBaseTimer}
                 onDescendingMinimumPriceChange={handleDescendingMinimumPrice}
-                onAuctionTimerValidChange={handleIsBaseDecrementValid}
+                onAuctionTimerValidChange={handleIsBaseDecrementTimerValid}
                 isAuctionTimerValid={isBaseDecrementTimerValid}
               />
             )}
             {auctionType === "english" && (
               <EnglishInsertAuctionInputs
-                onBaseStartAuctionChange={handleBaseStartAuction}
+                onBaseStartAuctionChange={handleStartPrice}
                 onRaiseThresholdChange={handleRaiseThreshold}
-                onBaseOfferTimerChange={handleBaseOfferTimer}
+                onBaseOfferTimerChange={handleBaseTimer}
               />
             )}
           </div>

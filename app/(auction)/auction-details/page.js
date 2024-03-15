@@ -61,13 +61,7 @@ export default function AuctionDetailsPage({ searchParams }) {
     : currentAuction.idUserAccount;
 
   const timerValue =
-    currentAuction.auctionType === "english"
-      ? currentAuction.currentOfferTimer
-      : currentAuction.auctionType === "descending"
-      ? currentAuction.currentDecrementTimer
-      : currentAuction.auctionType === "fixedtime"
-      ? "69:69:69"
-      : "00:00:00";
+    currentAuction.auctionType != "fixedtime" ? currentAuction.currentTimer : "69:69:69"
 
   function generateDeadline(deadline, time) {
     const deadlineTime = time ? time.split(":") : "";
@@ -88,13 +82,13 @@ export default function AuctionDetailsPage({ searchParams }) {
   const englishDeadline = new Date();
   const englishDeadlineTimer = generateDeadline(
     englishDeadline,
-    currentAuction.baseOfferTimer
+    currentAuction.baseTimer
   );
 
   const descendingDeadline = new Date();
   const descendingDeadlineTimer = generateDeadline(
     descendingDeadline,
-    currentAuction.baseDecrementTimer
+    currentAuction.baseTimer
   );
 
   return (

@@ -172,9 +172,9 @@ public class AuctionController {
         List<Auction> auctions = auctionDAO.getAllDescendingAuctions();
 
         for (Auction auction : auctions) {
-            if (auction.getCurrentDecrementTimer().equals(Time.valueOf("00:00:00"))) {
+            if (auction.getCurrentTimer().equals(Time.valueOf("00:00:00"))) {
                 decreasePrice(auction);
-                setCurrentDecrementTimer(auction.getId(), auction.getBaseDecrementTimer());
+                setCurrentDecrementTimer(auction.getId(), auction.getBaseTimer());
             } else {
                 setCurrentDecrementTimer(auction.getId(), decrementTimerBy1Second(auction));
             }
@@ -187,7 +187,7 @@ public class AuctionController {
 
         for (Auction auction : auctions) {
             if(auction.getIsOver() == false) {
-                if (auction.getCurrentOfferTimer().equals(Time.valueOf("00:00:00"))) {
+                if (auction.getCurrentTimer().equals(Time.valueOf("00:00:00"))) {
                     setCurrentOfferTimer(auction.getId(), Time.valueOf("00:00:00"));
                 } else {
                     setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
@@ -205,9 +205,7 @@ public class AuctionController {
     }
 
     private Time decrementTimerBy1Second(Auction auction) {
-        LocalTime cdtLocalTime = auction.getAuctionType().name().equals("descending")
-                ? auction.getCurrentDecrementTimer().toLocalTime()
-                : auction.getCurrentOfferTimer().toLocalTime();
+        LocalTime cdtLocalTime = auction.getCurrentTimer().toLocalTime();
         LocalTime cdtDecrementedLocalTime = cdtLocalTime.minusSeconds(1);
         Time newDecrementTimerValue = Time.valueOf(cdtDecrementedLocalTime);
 
@@ -216,7 +214,7 @@ public class AuctionController {
 
     private void decreasePrice(Auction auction) {
         if (auction.getIsOver() == false) {
-            if (auction.getCurrentOffer() > auction.getMinimumPrice()) {
+            if (auction.getCurrentOffer() > auction.getEndPrice()) {
                 if (auction.getCurrentOffer() > 0) {
                     auctionDAO.updateCurrentOffer(auction.getId(),
                             auction.getCurrentOffer() - auction.getDecrementAmount());
