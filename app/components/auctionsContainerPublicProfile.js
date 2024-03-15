@@ -86,19 +86,50 @@ export default function AuctionsContainerPublicProfile({
     );
   }
 
+  const fetcherCount = (url) =>
+    fetch(url, { next: { revalidate: 1 } }).then((res) => res.text());
+
+  const {
+    data: sellingAuctionsCount,
+    error: sellingAuctionsCountError,
+    isLoading: sellingAuctionsCountIsLoading,
+  } = useSWR(
+    publicProfileUserData && publicProfileUserData.id
+      ? process.env.NEXT_PUBLIC_BASEURL +
+          "/auctions/count/user/" +
+          publicProfileUserData.id
+      : null,
+    fetcherCount
+  );
+
+  const {
+    data: buyingAuctionsCount,
+    error: buyingAuctionsCountError,
+    isLoading: buyingAuctionsCountIsLoading,
+  } = useSWR(
+    publicProfileUserData && publicProfileUserData.id
+      ? process.env.NEXT_PUBLIC_BASEURL +
+          "/auctions/count/from-offers/user/" +
+          publicProfileUserData.id
+      : null,
+    fetcherCount
+  );
+
+
   useEffect(() => {
-    if (paginatedSellingAuctions) {
-      setMaxPageIndex(Math.ceil(paginatedSellingAuctionsLength / 8) + 1);
+    if (paginatedSellingAuctions && sellingAuctionsCount && isSellingSelected) {
+      setMaxPageIndex(Math.ceil(sellingAuctionsCount / 8));
     }
 
-    if (paginatedBuyingAuctions) {
-      setMaxPageIndex(Math.ceil(paginatedBuyingAuctionsLength / 8) + 1);
+    if (paginatedBuyingAuctions && buyingAuctionsCount && !isSellingSelected) {
+      setMaxPageIndex(Math.ceil(buyingAuctionsCount / 8));
     }
   }, [
     paginatedSellingAuctions,
-    paginatedSellingAuctionsLength,
+    sellingAuctionsCount,
     paginatedBuyingAuctions,
-    paginatedBuyingAuctionsLength,
+    buyingAuctionsCount,
+    isSellingSelected
   ]);
 
   function handlePreviousPageChange() {
@@ -108,7 +139,14 @@ export default function AuctionsContainerPublicProfile({
   }
 
   function handleNextPageChange() {
-    if (paginatedSellingAuctionsLength === 8) {
+    if (
+      (paginatedSellingAuctionsLength === 8 &&
+        isSellingSelected &&
+        sellingAuctionsCount > 8) ||
+      (paginatedBuyingAuctionsLength === 8 &&
+        !isSellingSelected &&
+        buyingAuctionsCount > 8)
+    ) {
       setPageIndex(pageIndex + 1);
     }
   }
@@ -136,6 +174,7 @@ export default function AuctionsContainerPublicProfile({
                 id="option-one"
                 onClick={() => {
                   setIsSellingSelected(true);
+                  setPageIndex(1);
                 }}
               />
               <Label htmlFor="option-one">Selling</Label>
@@ -146,6 +185,7 @@ export default function AuctionsContainerPublicProfile({
                 id="option-two"
                 onClick={() => {
                   setIsSellingSelected(false);
+                  setPageIndex(1);
                 }}
               />
               <Label htmlFor="option-two">Buying</Label>

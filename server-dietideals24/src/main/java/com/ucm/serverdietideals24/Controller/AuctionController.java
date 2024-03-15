@@ -242,11 +242,11 @@ public class AuctionController {
         }
     }
 
-    @GetMapping("/count/{userId}")
-    public ResponseEntity<Integer> countPaginatedUsersAuctions(@PathVariable Long userId) {
+    @GetMapping("/count/user/{userId}")
+    public ResponseEntity<Integer> countUsersAuctions(@PathVariable Long userId) {
         try {
             Integer auctionsCount = auctionDAO.countAllViaUserId(userId);
-
+            
             return ResponseEntity.ok(auctionsCount);
         } catch (Exception e) {
             e.printStackTrace();
@@ -254,8 +254,8 @@ public class AuctionController {
         }
     }
 
-    @GetMapping("/count/from-offers/{userId}")
-    public ResponseEntity<Integer> countPaginatedUsersAuctionsFromOffers(@PathVariable Long userId) {
+    @GetMapping("/count/from-offers/user/{userId}")
+    public ResponseEntity<Integer> countUsersAuctionsFromOffers(@PathVariable Long userId) {
         try {
             Integer auctionsCount = auctionDAO.countAllViaOffersAndUserId(userId);
 
