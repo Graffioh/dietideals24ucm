@@ -60,7 +60,8 @@ public class AuctionImpl implements AuctionDAO {
     public List<Auction> getAllPaginatedViaOffers(Long userId, int pageNumber) {
         int offset = (pageNumber - 1) * 20;
         return jdbcTemplate.query(
-                "SELECT a.* FROM auction a JOIN offer o ON a.id = o.idAuction WHERE o.idUserAccount = " + userId
+                "SELECT DISTINCT a.* FROM auction a JOIN offer o ON a.id = o.idAuction WHERE o.idUserAccount = "
+                        + userId
                         + "ORDER BY id LIMIT 8 OFFSET " + offset,
                 new BeanPropertyRowMapper<Auction>(Auction.class));
     }
@@ -143,4 +144,21 @@ public class AuctionImpl implements AuctionDAO {
         jdbcTemplate.update("UPDATE auction SET currentOfferTimer = '" + newTimerValue + "' WHERE id = " + id);
     }
 
+    @Override
+    public Integer countAll() {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM auction", Integer.class);
+    }
+
+    @Override
+    public Integer countAllViaUserId(Long userId) {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM auction WHERE idUserAccount = " + userId,
+                Integer.class);
+    }
+
+    @Override
+    public Integer countAllViaOffersAndUserId(Long userId) {
+        return jdbcTemplate.queryForObject(
+                "SELECT COUNT(DISTINCT idAuction) AS total_auctions_offered FROM offer WHERE idUserAccount = " + userId,
+                Integer.class);
+    }
 }
