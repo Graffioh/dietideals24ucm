@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
@@ -14,9 +12,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function DatePicker({handleParentDate, defaultDate, isBirthDate, isReadOnly }) {
-  const [date, setDate] = useState(defaultDate);
-  
+export default function DatePicker({ handleParentDate, defaultDate, isBirthDate, isReadOnly }) {
+  const [date, setDate] = useState(defaultDate ? new Date(defaultDate.getTime() + defaultDate.getTimezoneOffset() * 60000) : null);
+
+  const toLocalDate = (utcDate) => {
+    if (!utcDate) return null;
+    const localDate = new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000);
+    return localDate;
+  };
+
+  const localDate = toLocalDate(date);
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -28,24 +34,27 @@ export default function DatePicker({handleParentDate, defaultDate, isBirthDate, 
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "yyy-MM-dd") : <span>Pick a date</span>}
+          {date ? format(localDate, "yyy-MM-dd") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        {isReadOnly ?  <Calendar
+        {isReadOnly ? (
+          <Calendar
             mode="single"
-            selected={date}
+            selected={toLocalDate(date)}
             initialFocus
             captionLayout="dropdown-buttons"
             fromYear={1940}
             toYear={2024}
-          /> : isBirthDate ? (
+          />
+        ) : isBirthDate ? (
           <Calendar
             mode="single"
-            selected={date}
-            onSelect={(date) => {
-              handleParentDate(date);
-              setDate(date);
+            selected={toLocalDate(date)}
+            onSelect={(selectedDate) => {
+              const localDate = toLocalDate(selectedDate);
+              handleParentDate(localDate);
+              setDate(localDate);
             }}
             initialFocus
             captionLayout="dropdown-buttons"
@@ -55,13 +64,13 @@ export default function DatePicker({handleParentDate, defaultDate, isBirthDate, 
         ) : (
           <Calendar
             mode="single"
-            selected={date}
-            onSelect={(date) => {
-              handleParentDate(date);
-              setDate(date);
+            selected={toLocalDate(date)}
+            onSelect={(selectedDate) => {
+              const localDate = toLocalDate(selectedDate);
+              handleParentDate(localDate);
+              setDate(localDate);
             }}
             initialFocus
-            // defaultMonth={new Date(new Date().getFullYear(), new Date().getMonth())}
             fromMonth={
               new Date(new Date().getFullYear(), new Date().getMonth())
             }

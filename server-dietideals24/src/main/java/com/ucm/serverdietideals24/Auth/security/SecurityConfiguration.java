@@ -24,16 +24,12 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .securityMatcher("login", "/oauth2/**", "/login/oauth2/**", "/logout", "/login?logout", "/oauth-user")
+                .securityMatcher("login", "/oauth2/**", "/login/oauth2/**", "/logout", "/login?logout", "/oauth-user", "/api/login", "/api/oauth2/**", "api/login/oauth2/**", "api/logout", "api/login?logout", "api/oauth-user")
                 .oauth2Login(oauth2Login -> oauth2Login
                         .userInfoEndpoint(
                                 ui -> ui.userService(oauth2LoginHandler()).oidcUserService(oidcLoginHandler()))
                         .successHandler(customAuthenticationSuccessHandler))
                 .authorizeHttpRequests(c -> c.anyRequest().authenticated())
-                // .logout(l -> l
-                //         .logoutSuccessUrl("/").permitAll())
-                // .csrf(c -> c
-                //         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .build();
     }
 

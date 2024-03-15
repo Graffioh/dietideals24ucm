@@ -20,7 +20,7 @@ import com.ucm.serverdietideals24.DAO.NotificationDAO;
 import com.ucm.serverdietideals24.Models.Notification;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "https://dietideals24.vercel.app", "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app"}, allowCredentials = "true")
 @RequestMapping("/notifications")
 public class NotificationController {
     @Autowired

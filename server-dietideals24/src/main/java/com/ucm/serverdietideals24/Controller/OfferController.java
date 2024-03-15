@@ -18,7 +18,7 @@ import com.ucm.serverdietideals24.DAO.OfferDAO;
 import com.ucm.serverdietideals24.Models.Offer;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "https://dietideals24.vercel.app", "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app"}, allowCredentials = "true")
 @RequestMapping("/offers")
 public class OfferController {
     @Autowired

@@ -46,12 +46,13 @@ export default function FixedTimeInsertAuctionInputs({
       <div>
         <div className="w-72 min-w-screen flex mb-2">
           <Label>
-            Minimum threshold price<span className="text-red-500">*</span>
+            Reserve price<span className="text-red-500">*</span>
           </Label>
         </div>
         <Input
           type="number"
-          placeholder="Minimum threshold price"
+          step="0.01"
+          placeholder="Reserve price"
           className="bg-white"
           onChange={(e) => onFixedTimeMinimumPriceChange(e.target.value)}
         ></Input>

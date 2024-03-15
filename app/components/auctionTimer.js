@@ -52,7 +52,7 @@ export default function AuctionTimer({ deadline, auction }) {
                 return response.json();
               })
               .then((auction) => {
-                setTimeLeft(auction.currentOfferTimer);
+                setTimeLeft(auction.currentTimer);
               })
               .catch((error) => {
                 console.error(
@@ -70,7 +70,7 @@ export default function AuctionTimer({ deadline, auction }) {
                 return response.json();
               })
               .then((auction) => {
-                setTimeLeft(auction.currentDecrementTimer);
+                setTimeLeft(auction.currentTimer);
               })
               .catch((error) => {
                 console.error(
@@ -203,7 +203,7 @@ export default function AuctionTimer({ deadline, auction }) {
               break;
 
             case "english":
-              if (auction.currentOfferTimer === "00:00:00") {
+              if (auction.currentTimer === "00:00:00") {
                 setAuctionEnded(true);
                 clearInterval(timer);
 
@@ -329,7 +329,7 @@ export default function AuctionTimer({ deadline, auction }) {
               break;
 
             case "descending":
-              if (auction.currentOffer === auction.minimumPrice) {
+              if (auction.currentOffer === auction.endPrice) {
                 setAuctionEnded(true);
                 clearInterval(timer);
 

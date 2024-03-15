@@ -48,14 +48,12 @@ export default function ComboboxAuctions({ onAuctionTypeChange }) {
         >
           {value
             ? auctions.find((auction) => auction.value === value)?.label
-            : "Select auction"}
+            : "Select auction type"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 bg-white" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0 bg-white">
         <Command>
-          <CommandInput placeholder="Select auction" />
-          <CommandEmpty>No auction found</CommandEmpty>
           <CommandGroup>
             {auctions.map((auction) => (
               <CommandItem

@@ -23,7 +23,7 @@ import com.ucm.serverdietideals24.DAO.AuctionDAO;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "https://dietideals24.vercel.app", "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app"}, allowCredentials = "true")
 @RequestMapping("/auctions")
 public class AuctionController {
     @Autowired
@@ -172,9 +172,9 @@ public class AuctionController {
         List<Auction> auctions = auctionDAO.getAllDescendingAuctions();
 
         for (Auction auction : auctions) {
-            if (auction.getCurrentDecrementTimer().equals(Time.valueOf("00:00:00"))) {
+            if (auction.getCurrentTimer().equals(Time.valueOf("00:00:00"))) {
                 decreasePrice(auction);
-                setCurrentDecrementTimer(auction.getId(), auction.getBaseDecrementTimer());
+                setCurrentDecrementTimer(auction.getId(), auction.getBaseTimer());
             } else {
                 setCurrentDecrementTimer(auction.getId(), decrementTimerBy1Second(auction));
             }
@@ -187,7 +187,7 @@ public class AuctionController {
 
         for (Auction auction : auctions) {
             if(auction.getIsOver() == false) {
-                if (auction.getCurrentOfferTimer().equals(Time.valueOf("00:00:00"))) {
+                if (auction.getCurrentTimer().equals(Time.valueOf("00:00:00"))) {
                     setCurrentOfferTimer(auction.getId(), Time.valueOf("00:00:00"));
                 } else {
                     setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
@@ -205,9 +205,7 @@ public class AuctionController {
     }
 
     private Time decrementTimerBy1Second(Auction auction) {
-        LocalTime cdtLocalTime = auction.getAuctionType().name().equals("descending")
-                ? auction.getCurrentDecrementTimer().toLocalTime()
-                : auction.getCurrentOfferTimer().toLocalTime();
+        LocalTime cdtLocalTime = auction.getCurrentTimer().toLocalTime();
         LocalTime cdtDecrementedLocalTime = cdtLocalTime.minusSeconds(1);
         Time newDecrementTimerValue = Time.valueOf(cdtDecrementedLocalTime);
 
@@ -216,7 +214,7 @@ public class AuctionController {
 
     private void decreasePrice(Auction auction) {
         if (auction.getIsOver() == false) {
-            if (auction.getCurrentOffer() > auction.getMinimumPrice()) {
+            if (auction.getCurrentOffer() > auction.getEndPrice()) {
                 if (auction.getCurrentOffer() > 0) {
                     auctionDAO.updateCurrentOffer(auction.getId(),
                             auction.getCurrentOffer() - auction.getDecrementAmount());
@@ -227,6 +225,42 @@ public class AuctionController {
             } else {
                 auctionDAO.updateIsOver(auction.getId());
             }
+        }
+    }
+    
+    @GetMapping("/count")
+    public ResponseEntity<Integer> countAllAuctions() {
+        try {
+            Integer auctionsCount = auctionDAO.countAll();
+
+            return ResponseEntity.ok(auctionsCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
+        }
+    }
+
+    @GetMapping("/count/user/{userId}")
+    public ResponseEntity<Integer> countUsersAuctions(@PathVariable Long userId) {
+        try {
+            Integer auctionsCount = auctionDAO.countAllViaUserId(userId);
+            
+            return ResponseEntity.ok(auctionsCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
+        }
+    }
+
+    @GetMapping("/count/from-offers/user/{userId}")
+    public ResponseEntity<Integer> countUsersAuctionsFromOffers(@PathVariable Long userId) {
+        try {
+            Integer auctionsCount = auctionDAO.countAllViaOffersAndUserId(userId);
+
+            return ResponseEntity.ok(auctionsCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
         }
     }
 }

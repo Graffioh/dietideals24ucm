@@ -42,22 +42,23 @@ export default function InsertAuctionPage() {
   // Quality combobox state
   const [quality, setQuality] = useState("Good");
 
+  const [startPrice, setStartPrice] = useState("");
+  const [baseTimer, setBaseTimer] = useState("");
+
+  function handleStartPrice(startPrice) {
+    setStartPrice(startPrice);
+  }
+
+  function handleBaseTimer(baseTimer) {
+    setBaseTimer(baseTimer);
+  }
+
   // English auction inputs state
   // ***************************************
-  const [baseStartAuction, setBaseStartAuction] = useState("");
   const [raiseThreshold, setRaiseThreshold] = useState("");
-  const [baseOfferTimer, setBaseOfferTimer] = useState("");
-
-  function handleBaseStartAuction(baseStartAuction) {
-    setBaseStartAuction(baseStartAuction);
-  }
 
   function handleRaiseThreshold(raiseThreshold) {
     setRaiseThreshold(raiseThreshold);
-  }
-
-  function handleBaseOfferTimer(baseOfferTimer) {
-    setBaseOfferTimer(baseOfferTimer);
   }
 
   function validateEnglishAuctionInputs() {
@@ -65,9 +66,9 @@ export default function InsertAuctionPage() {
       category &&
       auctionType &&
       quality &&
-      baseStartAuction &&
+      startPrice &&
       raiseThreshold &&
-      baseOfferTimer;
+      baseTimer;
 
     return validState;
   }
@@ -100,35 +101,38 @@ export default function InsertAuctionPage() {
 
   // Descending auction inputs state
   // ***************************************
-  const [startPrice, setStartPrice] = useState("");
   const [decrementAmount, setDecrementAmount] = useState("");
-  const [baseDecrementTimer, setDecrementTimer] = useState("");
   const [descendingMinimumPrice, setDescendingMinimumPrice] = useState("");
-
-  function handleStartPrice(startPrice) {
-    setStartPrice(startPrice);
-  }
+  const [isBaseDecrementTimerValid, setIsBaseDecrementTimerValid] = useState(true);
 
   function handleDecrementAmount(decrementAmount) {
     setDecrementAmount(decrementAmount);
-  }
-
-  function handleDecrementTimer(timer) {
-    setDecrementTimer(timer);
   }
 
   function handleDescendingMinimumPrice(descendingMinimumPrice) {
     setDescendingMinimumPrice(descendingMinimumPrice);
   }
 
+  function handleIsBaseDecrementTimerValid(descendingMinimumPrice) {
+    setDescendingMinimumPrice(descendingMinimumPrice);
+  }
+
   function validateDescendingAuctionInputs() {
+    const isTimerValid = baseTimer && baseTimer.length !== 0 ? true : false
+    
+    if(!isTimerValid) {
+      setIsBaseDecrementTimerValid(false)
+    } else {
+      setIsBaseDecrementTimerValid(true)
+    }
+
     const validState =
       category &&
       auctionType &&
       quality &&
       startPrice &&
       decrementAmount &&
-      baseDecrementTimer &&
+      isTimerValid &&
       descendingMinimumPrice;
     return validState;
   }
@@ -162,7 +166,7 @@ export default function InsertAuctionPage() {
     // trash
     const currentOffer =
       auctionType === "english"
-        ? baseStartAuction
+        ? startPrice
         : auctionType === "descending"
         ? startPrice
         : 0;
@@ -178,23 +182,17 @@ export default function InsertAuctionPage() {
       idUserAccount: currentUser.id,
       auctionImages: "no-images", // mettere le foto prese dalla selezione
       offers: [],
-      baseStartAuction: baseStartAuction,
+      startPrice: startPrice,
       raiseThreshold: raiseThreshold,
-      baseOfferTimer: baseOfferTimer
-        ? moment(baseOfferTimer, "HH:mm:ss").format("HH:mm:ss")
+      baseTimer: baseTimer
+        ? moment(baseTimer, "HH:mm:ss").format("HH:mm:ss")
         : null,
       expireDate: expireDate,
-      minimumPrice:
-        auctionType == "fixedtime"
-          ? fixedTimeMinimumPrice
-          : descendingMinimumPrice,
-      startPrice: startPrice,
+      minimumAcceptablePrice: fixedTimeMinimumPrice,
+      endPrice: descendingMinimumPrice,
       decrementAmount: decrementAmount,
       expireTime: expireTime
         ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss")
-        : null,
-      baseDecrementTimer: baseDecrementTimer
-        ? moment(baseDecrementTimer, "HH:mm:ss").format("HH:mm:ss")
         : null,
     };
 
@@ -213,7 +211,7 @@ export default function InsertAuctionPage() {
       createAuctionButtonRef.current.disabled = true;
 
       setTimeout(() => {
-        window.location.href = "http://localhost:3000/home";
+        window.location.href = process.env.NEXT_PUBLIC_BASEURL.replace("/api", "") + "/home";
       }, 1000);
     } catch (e) {
       toast.error("The auction has not been created, a problem occurred.", {
@@ -302,15 +300,17 @@ export default function InsertAuctionPage() {
               <DescendingInsertAuctionInputs
                 onStartPriceChange={handleStartPrice}
                 onDecrementAmountChange={handleDecrementAmount}
-                onDecrementTimerChange={handleDecrementTimer}
+                onDecrementTimerChange={handleBaseTimer}
                 onDescendingMinimumPriceChange={handleDescendingMinimumPrice}
+                onAuctionTimerValidChange={handleIsBaseDecrementTimerValid}
+                isAuctionTimerValid={isBaseDecrementTimerValid}
               />
             )}
             {auctionType === "english" && (
               <EnglishInsertAuctionInputs
-                onBaseStartAuctionChange={handleBaseStartAuction}
+                onBaseStartAuctionChange={handleStartPrice}
                 onRaiseThresholdChange={handleRaiseThreshold}
-                onBaseOfferTimerChange={handleBaseOfferTimer}
+                onBaseOfferTimerChange={handleBaseTimer}
               />
             )}
           </div>

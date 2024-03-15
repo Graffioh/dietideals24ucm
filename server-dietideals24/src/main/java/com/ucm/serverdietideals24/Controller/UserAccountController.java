@@ -22,7 +22,7 @@ import com.ucm.serverdietideals24.DAO.UserAccountDAO;
 import com.ucm.serverdietideals24.Models.UserAccount;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "https://dietideals24.vercel.app", "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app"}, allowCredentials = "true")
 @RequestMapping("/users")
 public class UserAccountController {
     @Autowired

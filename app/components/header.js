@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import ComboboxCategories from "./comboboxCategories";
 import Searchbar from "./searchbar";
 import NotificationsDropdown from "./notificationsDropdown";
+import { useUserContext } from "../providers/userProvider";
 
 function Logo() {
   return (
@@ -31,6 +32,30 @@ function Logo() {
 // *******************************
 // Various header sections DESKTOP
 // *******************************
+//
+function LoggedSection() {
+  function isUserAdult(birthDateString) {
+    var birthDate = new Date(birthDateString);
+    var currentDate = new Date();
+
+    var age = currentDate.getFullYear() - birthDate.getFullYear();
+    var m = currentDate.getMonth() - birthDate.getMonth();
+
+    if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age >= 18;
+  }
+
+  const { currentUser } = useUserContext();
+
+  return isUserAdult(currentUser ? currentUser.birthDate : new Date()) ? (
+    <LoggedFullSection />
+  ) : (
+    <LoggedPartialSection />
+  );
+}
 
 // Only notifications and profile icon
 function LoggedPartialSection() {
@@ -40,7 +65,10 @@ function LoggedPartialSection() {
 
       <Link href="/public-profile" className="mt-0.5">
         <Avatar className="h-9 w-9">
-          <AvatarImage src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b" alt="@avatar" />
+          <AvatarImage
+            src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
+            alt="@avatar"
+          />
           <AvatarFallback />
         </Avatar>
       </Link>
@@ -75,7 +103,10 @@ function LoggedFullSection() {
 
         <Link href="/public-profile" className="mt-0.5 flex justify-center">
           <Avatar className="h-9 w-9">
-            <AvatarImage src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b" alt="@avatar" />
+            <AvatarImage
+              src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
+              alt="@avatar"
+            />
             <AvatarFallback />
           </Avatar>
         </Link>
@@ -133,15 +164,35 @@ function NotificationsSection() {
 // *******************************
 // Various header sections MOBILE
 // *******************************
+function LoggedSectionMobile() {
+  function isUserAdult(birthDateString) {
+    var birthDate = new Date(birthDateString);
+    var currentDate = new Date();
+
+    var age = currentDate.getFullYear() - birthDate.getFullYear();
+    var m = currentDate.getMonth() - birthDate.getMonth();
+
+    if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age >= 18;
+  }
+
+  const { currentUser } = useUserContext();
+
+  return isUserAdult(currentUser ? currentUser.birthDate : new Date()) ? (
+    <LoggedFullSectionMobile />
+  ) : (
+    <LoggedPartialSectionMobile />
+  );
+}
 
 // Only notifications and profile icon
 function LoggedPartialSectionMobile() {
   return (
     <div className="flex justify-center flex-col gap-4">
-      <Link
-        href="/public-profile"
-        className="hover:text-stone-400"
-      >
+      <Link href="/public-profile" className="hover:text-stone-400">
         <div>Profile</div>
       </Link>
     </div>
@@ -166,10 +217,7 @@ function LoggedFullSectionMobile() {
           Insert auction
         </Link>
 
-        <Link
-          href="/public-profile"
-          className="hover:text-stone-400"
-        >
+        <Link href="/public-profile" className="hover:text-stone-400">
           <div>Profile</div>
         </Link>
       </div>
@@ -206,10 +254,6 @@ function NotLoggedSectionMobile() {
 export default function Header({ headerType, token }) {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
 
-  function handleHamburger() {
-    setIsHamburgerOpen(!isHamburgerOpen);
-  }
-
   return (
     <>
       {/* Web */}
@@ -218,10 +262,15 @@ export default function Header({ headerType, token }) {
           <Logo />
         </div>
 
+        {headerType === "headerLogged" &&
+          token !== "no-token" &&
+          token !== "" && <LoggedSection />}
         {headerType === "headerLoggedFull" &&
           token !== "no-token" &&
           token !== "" && <LoggedFullSection />}
-        {headerType === "headerLoggedPartial" && <LoggedPartialSection />}
+        {headerType === "headerLoggedPartial" &&
+          token !== "no-token" &&
+          token !== "" && <LoggedPartialSection />}
         {headerType === "headerPrivateProfile" && <PrivateProfileSection />}
         {(token === "no-token" || token === "") && <NotLoggedSection />}
         {headerType === "headerNotifications" && <NotificationsSection />}
@@ -242,7 +291,14 @@ export default function Header({ headerType, token }) {
           </div>
 
           <div className="relative flex">
-            <div className="mt-1" hidden={token === "no-token" || token === "" || headerType === "headerEmpty"}>
+            <div
+              className="mt-1"
+              hidden={
+                token === "no-token" ||
+                token === "" ||
+                headerType === "headerEmpty"
+              }
+            >
               <NotificationsDropdown />
             </div>
 
@@ -277,12 +333,15 @@ export default function Header({ headerType, token }) {
               } flex-col items-center absolute top-full right-0 bg-white shadow-md mt-2 py-4 w-64 rounded`}
             >
               <div className="flex flex-col items-center">
+                {headerType === "headerLogged" &&
+                  token !== "no-token" &&
+                  token !== "" && <LoggedSectionMobile />}
                 {headerType === "headerLoggedFull" &&
                   token !== "no-token" &&
                   token !== "" && <LoggedFullSectionMobile />}
-                {headerType === "headerLoggedPartial" && (
-                  <LoggedPartialSectionMobile />
-                )}
+                {headerType === "headerLoggedPartial" &&
+                  token !== "no-token" &&
+                  token !== "" && <LoggedPartialSectionMobile />}
                 {headerType === "headerPrivateProfile" && (
                   <PrivateProfileSectionMobile />
                 )}

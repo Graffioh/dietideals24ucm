@@ -43,8 +43,11 @@ export default function PlaceOfferDialog({ auction }) {
     };
 
     if (
-      auction.currentOffer < offerAmount ||
-      auction.auctionType === "descending"
+      (auction.auctionType === "fixedtime" &&
+        auction.currentOffer < offerAmount) ||
+      auction.auctionType === "descending" ||
+      (auction.auctionType === "english" &&
+        auction.currentOffer + auction.raiseThreshold <= offerAmount)
     ) {
       toast.success("Your offer has been placed correctly.");
 
@@ -76,7 +79,7 @@ export default function PlaceOfferDialog({ auction }) {
             "/auctions/" +
             auction.id +
             "/current-offertimer?newTimerValue=" +
-            auction.baseOfferTimer,
+            auction.baseTimer,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -189,11 +192,20 @@ export default function PlaceOfferDialog({ auction }) {
 
       setDialogOpen(false);
     } else if (
-      auction.auctionType != "descending" &&
+      auction.auctionType === "fixedtime" &&
       auction.currentOffer >= offerAmount
     ) {
       toast.error(
         "You must place an offer greater than the max current offer!"
+      );
+    } else if (
+      auction.auctionType === "english" &&
+      auction.currentOffer + auction.raiseThreshold >
+        offerFromInputs.offerAmount
+    ) {
+      const minimumOffer = auction.currentOffer + auction.raiseThreshold;
+      toast.error(
+        "You must place an offer greater or equal than €" + minimumOffer + "!"
       );
     }
   }
@@ -226,11 +238,19 @@ export default function PlaceOfferDialog({ auction }) {
           <AlertDialogContent className="w-64 flex flex-col items-center">
             <AlertDialogHeader>
               <AlertDialogTitle>Place an offer</AlertDialogTitle>
-              <AlertDialogDescription>
-                Current max offer: {auction.currentOffer} €
-              </AlertDialogDescription>
+              {auction.auctionType === "fixedtime" ? (
+                <AlertDialogDescription>
+                  Current max offer: {auction.currentOffer}€
+                </AlertDialogDescription>
+              ) : (
+                <AlertDialogDescription>
+                  Minimum acceptable offer:{" "}
+                  {auction.currentOffer + auction.raiseThreshold}€
+                </AlertDialogDescription>
+              )}
+
               <div className="flex justify-center">
-                <Input ref={offerAmountRef} type="number" className="w-48" />
+                <Input ref={offerAmountRef} type="number" step="0.01" className="w-48" />
               </div>
             </AlertDialogHeader>
             <AlertDialogFooter>

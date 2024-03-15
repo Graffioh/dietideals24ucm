@@ -25,13 +25,13 @@ export default function CardAuction({ isHomepage, auction }) {
   const englishDeadline = new Date();
   const englishDeadlineTimer = generateDeadline(
     englishDeadline,
-    auction.baseOfferTimer
+    auction.baseTimer
   );
 
   const descendingDeadline = new Date();
   const descendingDeadlineTimer = generateDeadline(
     descendingDeadline,
-    auction.baseDecrementTimer
+    auction.baseTimer
   );
 
   const [currentOffer, setCurrentOffer] = useState("");

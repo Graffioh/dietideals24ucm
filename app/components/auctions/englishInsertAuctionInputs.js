@@ -33,6 +33,7 @@ export default function EnglishInsertAuctionInputs({
         </div>
         <Input
           type="number"
+          step="0.01"
           placeholder="Start price"
           className="bg-white"
           onChange={(e) => {
@@ -69,6 +70,7 @@ export default function EnglishInsertAuctionInputs({
         </div>
         <Input
           type="number"
+          step="0.01"
           placeholder="Rise threshold price"
           className="bg-white"
           onChange={(e) => {

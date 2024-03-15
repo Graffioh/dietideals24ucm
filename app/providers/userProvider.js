@@ -13,14 +13,13 @@ export const UserProvider = ({ children }) => {
   const authToken = useCookies().get("auth-token");
 
   const userInfoFetcher = (url) =>
-    fetch(url, { method: "POST", credentials: "include", body: authToken }).then(
-      (res) => res.text()
-    );
+    fetch(url, {
+      method: "POST",
+      credentials: "include",
+      body: authToken,
+    }).then((res) => res.text());
 
-  const {
-    data: subject,
-    error: subjectError,
-  } = useSWR(
+  const { data: subject, error: subjectError } = useSWR(
     process.env.NEXT_PUBLIC_BASEURL + "/get-subject-from-token",
     userInfoFetcher
   );
@@ -35,10 +34,7 @@ export const UserProvider = ({ children }) => {
   const fetcher = (url) =>
     fetch(url, { next: { revalidate: 3 } }).then((res) => res.json());
 
-  const {
-    data: currentUserData,
-    error: currentUserError,
-  } = useSWR(
+  const { data: currentUserData, error: currentUserError } = useSWR(
     subject != null && subject.includes("@")
       ? process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + subject
       : process.env.NEXT_PUBLIC_BASEURL + "/users/username?username=" + subject,

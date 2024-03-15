@@ -61,13 +61,7 @@ export default function AuctionDetailsPage({ searchParams }) {
     : currentAuction.idUserAccount;
 
   const timerValue =
-    currentAuction.auctionType === "english"
-      ? currentAuction.currentOfferTimer
-      : currentAuction.auctionType === "descending"
-      ? currentAuction.currentDecrementTimer
-      : currentAuction.auctionType === "fixedtime"
-      ? "69:69:69"
-      : "00:00:00";
+    currentAuction.auctionType != "fixedtime" ? currentAuction.currentTimer : "69:69:69"
 
   function generateDeadline(deadline, time) {
     const deadlineTime = time ? time.split(":") : "";
@@ -88,13 +82,13 @@ export default function AuctionDetailsPage({ searchParams }) {
   const englishDeadline = new Date();
   const englishDeadlineTimer = generateDeadline(
     englishDeadline,
-    currentAuction.baseOfferTimer
+    currentAuction.baseTimer
   );
 
   const descendingDeadline = new Date();
   const descendingDeadlineTimer = generateDeadline(
     descendingDeadline,
-    currentAuction.baseDecrementTimer
+    currentAuction.baseTimer
   );
 
   return (
@@ -140,7 +134,7 @@ export default function AuctionDetailsPage({ searchParams }) {
           <div className="px-10 bg-stone-200 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
             <div className="flex flex-col justify-center items-center">
               <Label className="flex text-base mb-4 bg-white rounded-b-lg pb-1 px-2 border border-input">
-                {currentAuction.auctionType.toUpperCase()} Auction
+                {currentAuction.auctionType.charAt(0).toUpperCase() + currentAuction.auctionType.slice(1)} Auction
               </Label>
 
               <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>

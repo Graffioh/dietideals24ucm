@@ -22,7 +22,7 @@ export default function AuctionsContainerHomepage() {
     return 1;
   });
   const [maxPageIndex, setMaxPageIndex] = useState("");
-  
+
   const fetcher = (url) =>
     fetch(url, { next: { revalidate: 1 } }).then((res) => res.json());
 
@@ -45,13 +45,22 @@ export default function AuctionsContainerHomepage() {
     );
   }
 
+  const fetcherCount = (url) =>
+    fetch(url, { next: { revalidate: 1 } }).then((res) => res.text());
+
+  const {
+    data: auctionsCount,
+    error: auctionsCountError,
+    isLoading: auctionsCountIsLoading,
+  } = useSWR(process.env.NEXT_PUBLIC_BASEURL + "/auctions/count", fetcherCount);
+
   useEffect(() => {
     if (paginatedAuctions) {
-      setMaxPageIndex(Math.ceil(paginatedAuctionsLength / 20));
+      setMaxPageIndex(Math.ceil(auctionsCount / 20));
     }
 
     localStorage.setItem("pageIndex", pageIndex);
-  }, [pageIndex, paginatedAuctions, paginatedAuctionsLength]);
+  }, [pageIndex, paginatedAuctions, auctionsCount]);
 
   function handlePreviousPageChange() {
     if (pageIndex > 1) {
@@ -73,8 +82,6 @@ export default function AuctionsContainerHomepage() {
       </div>
     );
   }
-
-  console.log("FILTERED AUCTIONS: ", JSON.stringify(filteredAuctions))
 
   return (
     <>

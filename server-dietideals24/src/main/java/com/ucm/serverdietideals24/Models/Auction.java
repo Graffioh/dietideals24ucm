@@ -12,7 +12,6 @@ import lombok.NonNull;
 import com.ucm.serverdietideals24.Models.Enums.AuctionType;
 import com.ucm.serverdietideals24.Models.Enums.AuctionCategory;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -37,26 +36,24 @@ public class Auction {
 
     @NonNull
     private String auctionImages;
-    
+
     private Boolean isOver;
 
     private ArrayList<Offer> offers;
 
-    // English auction
-    private Float baseStartAuction, raiseThreshold;
-
-    private Time baseOfferTimer, currentOfferTimer;
-
-    // Fixed time auction
+    // Fixed time
     private Date expireDate;
-
     private Time expireTime;
+    private Float minimumAcceptablePrice;
 
-    // Descending auction
-    private Float startPrice, decrementAmount;
+    // English
+    private Float raiseThreshold;
 
-    private Time baseDecrementTimer, currentDecrementTimer;
+    // Descending
+    private Float decrementAmount;
+    private Float endPrice;
 
-    // Descending and Fixed time auction
-    private Float minimumPrice;
+    // Descending and English
+    private Float startPrice;
+    private Time baseTimer, currentTimer;
 }

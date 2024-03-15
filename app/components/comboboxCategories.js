@@ -21,109 +21,145 @@ import {
 const categories = [
   {
     value: "",
-    label: "All categories",
-  },
-  {
-    value: "electronics",
-    label: "Electronics",
+    label: "All categories"
   },
   {
     value: "appliances",
-    label: "Appliances",
+    label: "Appliances"
   },
   {
-    value: "garden",
-    label: "Garden",
+    value: "beauty",
+    label: "Beauty"
   },
   {
-    value: "stamps",
-    label: "Stamps",
+    value: "books",
+    label: "Books"
   },
   {
-    value: "beautyAndHealth",
-    label: "Beauty and Health",
+    value: "boats",
+    label: "Boats"
   },
   {
-    value: "booksAndMagazines",
-    label: "Books and Magazines",
+    value: "cars",
+    label: "Cars"
   },
   {
-    value: "boatingAndBoats",
-    label: "Boating and Boats",
+    value: "motorcycles",
+    label: "Motorcycles"
   },
   {
-    value: "carsMotorcyclesAndOtherVehicles",
-    label: "Cars, Motorcycles, and Other Vehicles",
+    value: "bikes",
+    label: "Bikes"
   },
   {
-    value: "clothingAndAccessories",
-    label: "Clothing and Accessories",
+    value: "vehicles",
+    label: "Vehicles"
+  },
+  {
+    value: "clothing",
+    label: "Clothing"
+  },
+  {
+    value: "accessories",
+    label: "Accessories"
   },
   {
     value: "collectibles",
-    label: "Collectibles",
+    label: "Collectibles"
   },
   {
-    value: "coinsAndBanknotes",
-    label: "Coins and Banknotes",
+    value: "coins",
+    label: "Coins"
   },
   {
     value: "comics",
-    label: "Comics",
+    label: "Comics"
   },
   {
     value: "computers",
-    label: "Computers",
+    label: "Computers"
   },
   {
-    value: "homeFurnitureAndDIY",
-    label: "Home Furniture and DIY",
+    value: "electronics",
+    label: "Electronics"
+  },
+  {
+    value: "gardening",
+    label: "Gardening"
+  },
+  {
+    value: "home",
+    label: "Home"
   },
   {
     value: "infancy",
-    label: "Infancy",
+    label: "Infancy"
   },
   {
     value: "lighting",
-    label: "Lighting",
+    label: "Lighting"
   },
   {
-    value: "moviesAndDVDs",
-    label: "Movies and DVDs",
+    value: "movies",
+    label: "Movies"
   },
   {
-    value: "musicCDsAndVinyl",
-    label: "Music CDs and Vinyl",
+    value: "dvds",
+    label: "DVDs"
   },
   {
-    value: "photographyAndVideo",
-    label: "Photography and Video",
+    value: "music",
+    label: "Music"
   },
   {
-    value: "sportsAndLeisure",
-    label: "Sports and Leisure",
+    value: "cds",
+    label: "CDs"
   },
   {
-    value: "ticketsAndEvents",
-    label: "Tickets and Events",
+    value: "vynils",
+    label: "Vynils"
+  },
+  {
+    value: "photography",
+    label: "Photography"
+  },
+  {
+    value: "video",
+    label: "Video"
+  },
+  {
+    value: "sport",
+    label: "Sport"
+  },
+  {
+    value: "stamps",
+    label: "Stamps"
+  },
+  {
+    value: "tickets",
+    label: "Tickets"
   },
   {
     value: "toys",
-    label: "Toys",
+    label: "Toys"
   },
   {
-    value: "travelAccessories",
-    label: "Travel Accessories",
+    value: "travel",
+    label: "Travel"
   },
   {
-    value: "videoGamesAndConsoles",
-    label: "Video Games and Consoles",
+    value: "videogame",
+    label: "Videogame"
   },
   {
-    value: "watchesAndJewelry",
-    label: "Watches and Jewelry",
+    value: "watches",
+    label: "Watches"
   },
-]
+  {
+    value: "jewelry",
+    label: "Jewelry"
+  }
+];
 
 export default function ComboboxCategories({ onCategoryChange }) { 
   const [open, setOpen] = React.useState(false)
