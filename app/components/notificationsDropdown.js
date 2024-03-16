@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/popover";
 
 import { useUserContext } from "@/app/providers/userProvider";
+import config from "@/config";
 
 export default function NotificationsDropdown() {
   const { currentUser, currentUserIsLoading } = useUserContext();
@@ -38,7 +39,7 @@ export default function NotificationsDropdown() {
     error: notiError,
     isLoading: notiIsLoading,
   } = useSWR(
-    process.env.NEXT_PUBLIC_BASEURL + "/notifications/" + cuid,
+    config.apiUrl + "/notifications/" + cuid,
     fetcher, { refreshInterval: 100 }
   );
 
@@ -55,7 +56,7 @@ export default function NotificationsDropdown() {
   async function deleteNotification(notiId, userId) {
     try {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL +
+        config.apiUrl +
           "/notifications/delete?notiId=" +
           notiId + "&userId=" + userId,
         { method: "DELETE", headers: { "Content-Type": "application/json" } }

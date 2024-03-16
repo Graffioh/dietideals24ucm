@@ -18,6 +18,7 @@ import ComboboxCategories from "./comboboxCategories";
 import Searchbar from "./searchbar";
 import NotificationsDropdown from "./notificationsDropdown";
 import { useUserContext } from "../providers/userProvider";
+import config from "@/config";
 
 function Logo() {
   return (
@@ -117,7 +118,7 @@ function LoggedFullSection() {
 
 async function logOut() {
   try {
-    await fetch(process.env.NEXT_PUBLIC_BASEURL + "/delete-login-token", {
+    await fetch(config.apiUrl + "/delete-login-token", {
       method: "GET",
       credentials: "include",
     });

@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useUserContext } from "@/app/providers/userProvider";
 import LoadingSpinner from "@/app/components/loadingSpinner";
 import AuctionTimer from "@/app/components/auctionTimer";
+import config from "@/config";
 
 export default function AuctionDetailsPage({ searchParams }) {
   const authToken = useCookies().get("auth-token");
@@ -31,7 +32,7 @@ export default function AuctionDetailsPage({ searchParams }) {
     error: currentAuctionError,
     isLoading: currentAuctionIsLoading,
   } = useSWR(
-    process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + searchParams.id,
+    config.apiUrl + "/auctions/" + searchParams.id,
     fetcher,
     { refreshInterval: 100 }
   );
@@ -41,7 +42,7 @@ export default function AuctionDetailsPage({ searchParams }) {
     error: highestOfferFromAuctionError,
     isLoading: highestOfferFromAuctionIsLoading,
   } = useSWR(
-    process.env.NEXT_PUBLIC_BASEURL +
+    config.apiUrl +
       "/offers/highest-offer/" +
       searchParams.id,
     fetcher,

@@ -9,6 +9,7 @@ import CardAuction from "./cardAuction";
 import LoadingSpinner from "./loadingSpinner";
 import useSWR from "swr";
 import { useAuctionFilter } from "../providers/auctionFilterProvider";
+import config from "@/config";
 
 export default function AuctionsContainerHomepage() {
   const { filteredAuctions } = useAuctionFilter();
@@ -31,7 +32,7 @@ export default function AuctionsContainerHomepage() {
     error: paginatedAuctionsError,
     isLoading: paginatedAuctionsIsLoading,
   } = useSWR(
-    process.env.NEXT_PUBLIC_BASEURL + "/auctions/paginated?page=" + pageIndex,
+    config.apiUrl + "/auctions/paginated?page=" + pageIndex,
     fetcher
   );
 
@@ -52,7 +53,7 @@ export default function AuctionsContainerHomepage() {
     data: auctionsCount,
     error: auctionsCountError,
     isLoading: auctionsCountIsLoading,
-  } = useSWR(process.env.NEXT_PUBLIC_BASEURL + "/auctions/count", fetcherCount);
+  } = useSWR(config.apiUrl + "/auctions/count", fetcherCount);
 
   useEffect(() => {
     if (paginatedAuctions) {

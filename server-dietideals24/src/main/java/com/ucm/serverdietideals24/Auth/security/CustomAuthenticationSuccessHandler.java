@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    
+    @Value("${frontendurl}")
+    private String frontendUrl;
 
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
@@ -68,13 +72,13 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             tokenCookie.setPath("/");
             response.addCookie(tokenCookie);
 
-            targetUrl = System.getenv("FRONTEND_BASEURL") + "/home";
+            targetUrl = frontendUrl + "/home";
         } else {
             if (isEmail) {
-                targetUrl = System.getenv("FRONTEND_BASEURL") + "/private-profile?email=" + emailOrUsernameFromOAuth +
+                targetUrl = frontendUrl + "/private-profile?email=" + emailOrUsernameFromOAuth +
                         "&fromProvider=google";
             } else {
-                targetUrl = System.getenv("FRONTEND_BASEURL") + "/private-profile?username=" + emailOrUsernameFromOAuth +
+                targetUrl = frontendUrl + "/private-profile?username=" + emailOrUsernameFromOAuth +
                         "&fromProvider=github";
             }
         }

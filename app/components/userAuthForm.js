@@ -15,6 +15,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { compare } from "bcryptjs";
+import config from "@/config";
 
 export function UserAuthForm({ className, createOrLogin }) {
   const router = useRouter();
@@ -32,7 +33,7 @@ export function UserAuthForm({ className, createOrLogin }) {
 
     try {
       const userFromEmailResponse = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" +
+        config.apiUrl + "/users/email?email=" +
           userInfoFromInputs.email.value
       );
 
@@ -45,7 +46,7 @@ export function UserAuthForm({ className, createOrLogin }) {
 
       if (passwordCorrect) {
         const responseToken = await fetch(
-          process.env.NEXT_PUBLIC_BASEURL + "/generate-login-token",
+          config.apiUrl + "/generate-login-token",
           {
             method: "POST",
             headers: {
@@ -58,7 +59,7 @@ export function UserAuthForm({ className, createOrLogin }) {
         const responseTokenText = await responseToken.text();
 
         const responseCookie = await fetch(
-          process.env.NEXT_PUBLIC_BASEURL + "/set-login-token",
+          config.apiUrl + "/set-login-token",
           {
             method: "POST",
             credentials: "include",
@@ -190,7 +191,7 @@ export function UserAuthForm({ className, createOrLogin }) {
             variant: "Github",
           })
         )}
-        href={process.env.NEXT_PUBLIC_BASEURL + "/oauth2/authorization/github"}
+        href={config.apiUrl + "/oauth2/authorization/github"}
       >
         <Image
           src={githubIcon}
@@ -207,7 +208,7 @@ export function UserAuthForm({ className, createOrLogin }) {
             variant: "Google",
           })
         )}
-        href={process.env.NEXT_PUBLIC_BASEURL + "/oauth2/authorization/google"}
+        href={config.apiUrl + "/oauth2/authorization/google"}
       >
         <Image
           src={googleIcon}
