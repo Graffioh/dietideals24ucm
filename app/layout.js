@@ -5,6 +5,7 @@ import { CookiesProvider } from "next-client-cookies/server";
 import { UserProvider } from "./providers/userProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { AuctionFilterProvider } from "./providers/auctionFilterProvider";
+import { Analytics } from "@vercel/analytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
             </AuctionFilterProvider>
           </UserProvider>
         </CookiesProvider>
+        <Analytics />
       </body>
     </html>
   );
