@@ -8,8 +8,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-  } from "@/components/ui/alert-dialog"
-  import { Button } from "@/components/ui/button"
+  } from "@/components/shadcn-ui/alert-dialog"
+  import { Button } from "@/components/shadcn-ui/button"
   import { useRouter } from "next/navigation"
   
   export default function CancelAlertDialog() {

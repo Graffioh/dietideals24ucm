@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Clock } from "lucide-react";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/components/shadcn-ui/label";
 import { TimePickerInput } from "./time-picker-input";
 
 export function TimePicker({ date, setDate }) {

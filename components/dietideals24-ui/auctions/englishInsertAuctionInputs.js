@@ -1,7 +1,7 @@
 import React from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Label } from "@/components/shadcn-ui/label";
+import { Input } from "@/components/shadcn-ui/input";
+import { Button } from "@/components/shadcn-ui/button";
 import { TimePicker } from "@/components/timepicker/time-picker";
 
 export default function EnglishInsertAuctionInputs({

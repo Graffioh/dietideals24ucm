@@ -3,24 +3,24 @@
 import { useState } from "react";
 import { useRef } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/shadcn-ui/button";
+import { Input } from "@/components/shadcn-ui/input";
+import { Label } from "@/components/shadcn-ui/label";
+import { Textarea } from "@/components/shadcn-ui/textarea";
 
-import ComboboxCategories from "@/app/components/comboboxCategories";
-import ComboboxAuctions from "@/app/components/comboboxAuctions.js";
-import ComboboxQuality from "@/app/components/comboboxQualities.js";
+import ComboboxCategories from "@/components/dietideals24-ui/comboboxCategories";
+import ComboboxAuctions from "@/components/dietideals24-ui/comboboxAuctions.js";
+import ComboboxQuality from "@/components/dietideals24-ui/comboboxQualities.js";
 
 import { useUserContext } from "@/app/providers/userProvider";
 
-import FixedTimeInsertAuctionInputs from "@/app/components/auctions/fixedTimeInsertAuctionInputs";
-import EnglishInsertAuctionInputs from "@/app/components/auctions/englishInsertAuctionInputs";
-import DescendingInsertAuctionInputs from "@/app/components/auctions/descendingInsertAuctionInputs";
+import FixedTimeInsertAuctionInputs from "@/components/dietideals24-ui/auctions/fixedTimeInsertAuctionInputs";
+import EnglishInsertAuctionInputs from "@/components/dietideals24-ui/auctions/englishInsertAuctionInputs";
+import DescendingInsertAuctionInputs from "@/components/dietideals24-ui/auctions/descendingInsertAuctionInputs";
 
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
-import AddAuctionImageBox from "@/app/components/addAuctionImageBox";
+import AddAuctionImageBox from "@/components/dietideals24-ui/addAuctionImageBox";
 import { toast } from "sonner";
 import config from "@/config";
 

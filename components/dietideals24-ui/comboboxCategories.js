@@ -2,21 +2,21 @@
 
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
-import { useAuctionFilter } from "../providers/auctionFilterProvider"
+import { useAuctionFilter } from "../../app/providers/auctionFilterProvider"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/shadcn-ui/button"
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command"
+} from "@/components/shadcn-ui/command"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/shadcn-ui/popover"
 import config from "@/config"
 
 const categories = [

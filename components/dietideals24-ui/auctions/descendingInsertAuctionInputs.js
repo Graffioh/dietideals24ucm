@@ -1,10 +1,10 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Label } from "@/components/shadcn-ui/label";
+import { Input } from "@/components/shadcn-ui/input";
 import DurationPicker from "../durationPicker";
 import { TimePickerInput } from "@/components/timepicker/time-picker-input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shadcn-ui/button";
 
 import React, { useEffect, useState } from "react";
 import { TimePicker } from "@/components/timepicker/time-picker";

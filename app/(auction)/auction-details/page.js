@@ -1,22 +1,22 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/shadcn-ui/input";
+import { Label } from "@/components/shadcn-ui/label";
+import { Textarea } from "@/components/shadcn-ui/textarea";
+import { Button, buttonVariants } from "@/components/shadcn-ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/shadcn-ui/avatar";
 import Link from "next/link";
 import Image from "next/image";
 import { useCookies } from "next-client-cookies";
 import useSWR from "swr";
-import DescendingAuctionDetailsInputs from "@/app/components/auctions/descendingAuctionDetailsInputs";
-import EnglishAuctionDetailsInputs from "@/app/components/auctions/englishAuctionDetailsInputs";
-import FixedTimeAuctionDetailsInputs from "@/app/components/auctions/fixedTimeAuctionDetailsInputs";
-import PlaceOfferDialog from "@/app/components/placeOfferDialog";
+import DescendingAuctionDetailsInputs from "@/components/dietideals24-ui/auctions/descendingAuctionDetailsInputs";
+import EnglishAuctionDetailsInputs from "@/components/dietideals24-ui/auctions/englishAuctionDetailsInputs";
+import FixedTimeAuctionDetailsInputs from "@/components/dietideals24-ui/auctions/fixedTimeAuctionDetailsInputs";
+import PlaceOfferDialog from "@/components/dietideals24-ui/placeOfferDialog";
 import { cn } from "@/lib/utils";
 import { useUserContext } from "@/app/providers/userProvider";
-import LoadingSpinner from "@/app/components/loadingSpinner";
-import AuctionTimer from "@/app/components/auctionTimer";
+import LoadingSpinner from "@/components/dietideals24-ui/loadingSpinner";
+import AuctionTimer from "@/components/dietideals24-ui/auctionTimer";
 import config from "@/config";
 
 export default function AuctionDetailsPage({ searchParams }) {

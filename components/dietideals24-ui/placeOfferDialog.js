@@ -10,11 +10,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+} from "@/components/shadcn-ui/alert-dialog";
+import { Button } from "@/components/shadcn-ui/button";
+import { Input } from "@/components/shadcn-ui/input";
 import { toast } from "sonner";
-import { useUserContext } from "../providers/userProvider";
+import { useUserContext } from "../../app/providers/userProvider";
 import config from "@/config";
 
 export default function PlaceOfferDialog({ auction }) {

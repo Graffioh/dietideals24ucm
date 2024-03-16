@@ -8,7 +8,7 @@ import AuctionPagination from "./auctionPagination";
 import CardAuction from "./cardAuction";
 import LoadingSpinner from "./loadingSpinner";
 import useSWR from "swr";
-import { useAuctionFilter } from "../providers/auctionFilterProvider";
+import { useAuctionFilter } from "../../app/providers/auctionFilterProvider";
 import config from "@/config";
 
 export default function AuctionsContainerHomepage() {

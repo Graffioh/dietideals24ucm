@@ -4,8 +4,8 @@ import Link from "next/link";
 
 import { useState, useEffect } from "react";
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button, buttonVariants } from "@/components/shadcn-ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/shadcn-ui/avatar";
 import {
   BellIcon,
   Pencil1Icon,
@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 import ComboboxCategories from "./comboboxCategories";
 import Searchbar from "./searchbar";
 import NotificationsDropdown from "./notificationsDropdown";
-import { useUserContext } from "../providers/userProvider";
+import { useUserContext } from "../../app/providers/userProvider";
 import config from "@/config";
 
 function Logo() {

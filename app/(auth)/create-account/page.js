@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { UserAuthForm } from "../../components/userAuthForm";
+import { UserAuthForm } from "../../../components/dietideals24-ui/userAuthForm";
 
 export default function CreateAccountPage() {
   return (
