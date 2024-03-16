@@ -5,7 +5,7 @@ import { CookiesProvider } from "next-client-cookies/server";
 import { UserProvider } from "./providers/userProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { AuctionFilterProvider } from "./providers/auctionFilterProvider";
-import { Analytics } from "@vercel/analytics";
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Inter({ subsets: ["latin"] });
 
