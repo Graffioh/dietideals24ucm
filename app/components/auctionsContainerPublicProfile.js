@@ -11,6 +11,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import useSWR from "swr";
 import { useUserContext } from "../providers/userProvider";
+import config from "@/config";
 
 export default function AuctionsContainerPublicProfile({
   publicProfileUserId,
@@ -30,7 +31,7 @@ export default function AuctionsContainerPublicProfile({
     isLoading: publicProfileUserIsLoading,
   } = useSWR(
     publicProfileUserId
-      ? process.env.NEXT_PUBLIC_BASEURL + "/users/" + publicProfileUserId
+      ? config.apiUrl + "/users/" + publicProfileUserId
       : null,
     fetcher
   );
@@ -41,7 +42,7 @@ export default function AuctionsContainerPublicProfile({
     isLoading: paginatedSellingAuctionsIsLoading,
   } = useSWR(
     publicProfileUserData && publicProfileUserData.id
-      ? process.env.NEXT_PUBLIC_BASEURL +
+      ? config.apiUrl +
           "/auctions/paginated/user/" +
           publicProfileUserData.id +
           "?page=" +
@@ -67,7 +68,7 @@ export default function AuctionsContainerPublicProfile({
     isLoading: paginatedBuyingAuctionsIsLoading,
   } = useSWR(
     publicProfileUserData && publicProfileUserData.id
-      ? process.env.NEXT_PUBLIC_BASEURL +
+      ? config.apiUrl +
           "/auctions/paginated/from-offers/" +
           publicProfileUserData.id +
           "?page=" +
@@ -95,7 +96,7 @@ export default function AuctionsContainerPublicProfile({
     isLoading: sellingAuctionsCountIsLoading,
   } = useSWR(
     publicProfileUserData && publicProfileUserData.id
-      ? process.env.NEXT_PUBLIC_BASEURL +
+      ? config.apiUrl +
           "/auctions/count/user/" +
           publicProfileUserData.id
       : null,
@@ -108,7 +109,7 @@ export default function AuctionsContainerPublicProfile({
     isLoading: buyingAuctionsCountIsLoading,
   } = useSWR(
     publicProfileUserData && publicProfileUserData.id
-      ? process.env.NEXT_PUBLIC_BASEURL +
+      ? config.apiUrl +
           "/auctions/count/from-offers/user/" +
           publicProfileUserData.id
       : null,

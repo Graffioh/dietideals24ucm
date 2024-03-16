@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import LoadingSpinner from "./loadingSpinner";
+import config from "@/config";
 
 const calculateTimeLeftBasedOnDate = (deadline) => {
   const difference = +new Date(deadline) - +new Date();
@@ -44,7 +45,7 @@ export default function AuctionTimer({ deadline, auction }) {
             break;
 
           case "english":
-            fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + auction.id)
+            fetch(config.apiUrl + "/auctions/" + auction.id)
               .then((response) => {
                 if (!response.ok) {
                   throw new Error(`HTTP error! status: ${response.status}`);
@@ -62,7 +63,7 @@ export default function AuctionTimer({ deadline, auction }) {
             break;
 
           case "descending":
-            fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + auction.id)
+            fetch(config.apiUrl + "/auctions/" + auction.id)
               .then((response) => {
                 if (!response.ok) {
                   throw new Error(`HTTP error! status: ${response.status}`);
@@ -93,7 +94,7 @@ export default function AuctionTimer({ deadline, auction }) {
 
               // set isOver attribute in DB to true
               fetch(
-                process.env.NEXT_PUBLIC_BASEURL +
+                config.apiUrl +
                   "/auctions/" +
                   auction.id +
                   "/is-over",
@@ -125,7 +126,7 @@ export default function AuctionTimer({ deadline, auction }) {
                 idUserAccount: auction.idUserAccount,
               };
 
-              fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
+              fetch(config.apiUrl + "/notifications/create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(fixedTimeNoti),
@@ -147,7 +148,7 @@ export default function AuctionTimer({ deadline, auction }) {
                 });
 
               // (BUYER)
-              fetch(process.env.NEXT_PUBLIC_BASEURL + "/offers/" + auction.id, {
+              fetch(config.apiUrl + "/offers/" + auction.id, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
               })
@@ -170,7 +171,7 @@ export default function AuctionTimer({ deadline, auction }) {
                     };
 
                     fetch(
-                      process.env.NEXT_PUBLIC_BASEURL + "/notifications/create",
+                      config.apiUrl + "/notifications/create",
                       {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -209,7 +210,7 @@ export default function AuctionTimer({ deadline, auction }) {
 
                 // set isOver attribute in DB to true
                 fetch(
-                  process.env.NEXT_PUBLIC_BASEURL +
+                  config.apiUrl +
                     "/auctions/" +
                     auction.id +
                     "/is-over",
@@ -243,7 +244,7 @@ export default function AuctionTimer({ deadline, auction }) {
                 };
 
                 fetch(
-                  process.env.NEXT_PUBLIC_BASEURL + "/notifications/create",
+                  config.apiUrl + "/notifications/create",
                   {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -268,7 +269,7 @@ export default function AuctionTimer({ deadline, auction }) {
 
                 // (BUYER)
                 fetch(
-                  process.env.NEXT_PUBLIC_BASEURL + "/offers/" + auction.id,
+                  config.apiUrl + "/offers/" + auction.id,
                   {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
@@ -293,7 +294,7 @@ export default function AuctionTimer({ deadline, auction }) {
                       };
 
                       fetch(
-                        process.env.NEXT_PUBLIC_BASEURL +
+                        config.apiUrl +
                           "/notifications/create",
                         {
                           method: "POST",
@@ -334,7 +335,7 @@ export default function AuctionTimer({ deadline, auction }) {
                 clearInterval(timer);
 
                 fetch(
-                  process.env.NEXT_PUBLIC_BASEURL +
+                  config.apiUrl +
                     "/auctions/" +
                     auction.id +
                     "/is-over",
@@ -366,7 +367,7 @@ export default function AuctionTimer({ deadline, auction }) {
                 };
 
                 fetch(
-                  process.env.NEXT_PUBLIC_BASEURL + "/notifications/create",
+                  config.apiUrl + "/notifications/create",
                   {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
