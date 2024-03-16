@@ -8,14 +8,15 @@ module.exports = {
     domains: ["m.media-amazon.com"],
   },
   async rewrites() {
+    const isProd = process.env.NODE_ENV === "production";
+    const apiBaseUrl = isProd
+      ? "https://server-dietideals24.onrender.com"
+      : "https://server-dietideals24-render-dev.onrender.com"
+
     return [
       {
-        source: "/dietideals24.vercel.app/api/:path*",
-        destination: "https://server-dietideals24.onrender.com/:path*"
-      },
-      {
         source: "/api/:path*",
-        destination: "https://server-dietideals24-render-dev.onrender.com/:path*"
+        destination: apiBaseUrl + "/:path*"
       },
       {
         source: "/login/oauth2/:path*",
