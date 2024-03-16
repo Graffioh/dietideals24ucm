@@ -12,6 +12,7 @@ import AuctionsContainerPublicProfile from "@/app/components/auctionsContainerPu
 import ShowMoreDetailsPublicProfile from "@/app/components/showMoreDetailsPublicProfile";
 import LoadingSpinner from "@/app/components/loadingSpinner";
 import { useUserContext } from "@/app/providers/userProvider";
+import config from "@/config";
 
 export default function ProfilePage({ searchParams }) {
   const { currentUser } = useUserContext();
@@ -24,7 +25,7 @@ export default function ProfilePage({ searchParams }) {
     error: userByIdError,
     isLoading: userByIdIsLoading,
   } = useSWR(
-    process.env.NEXT_PUBLIC_BASEURL + "/users/" + searchParams.id,
+    config.apiUrl + "/users/" + searchParams.id,
     fetcher
   );
   

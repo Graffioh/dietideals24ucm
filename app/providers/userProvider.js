@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import useSWR from "swr";
 import { useCookies } from "next-client-cookies";
+import config from "@/config";
 
 const UserContext = createContext(null);
 
@@ -20,7 +21,7 @@ export const UserProvider = ({ children }) => {
     }).then((res) => res.text());
 
   const { data: subject, error: subjectError } = useSWR(
-    process.env.NEXT_PUBLIC_BASEURL + "/get-subject-from-token",
+    config.apiUrl + "/get-subject-from-token",
     userInfoFetcher
   );
 
@@ -36,8 +37,8 @@ export const UserProvider = ({ children }) => {
 
   const { data: currentUserData, error: currentUserError } = useSWR(
     subject != null && subject.includes("@")
-      ? process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + subject
-      : process.env.NEXT_PUBLIC_BASEURL + "/users/username?username=" + subject,
+      ? config.apiUrl + "/users/email?email=" + subject
+      : config.apiUrl + "/users/username?username=" + subject,
     fetcher
   );
 

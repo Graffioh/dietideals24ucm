@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import AuctionTimer from "./auctionTimer";
 import LoadingSpinner from "./loadingSpinner";
+import config from "@/config";
 
 export default function CardAuction({ isHomepage, auction }) {
   function generateDeadline(deadline, time) {
@@ -50,7 +51,7 @@ export default function CardAuction({ isHomepage, auction }) {
 
   async function fetchCurrentOffer(auctionid) {
     const currentUpdatedAuction = await fetch(
-      process.env.NEXT_PUBLIC_BASEURL + "/auctions/" + auctionid
+      config.apiUrl + "/auctions/" + auctionid
     );
 
     const updatedAuction = await currentUpdatedAuction.json();

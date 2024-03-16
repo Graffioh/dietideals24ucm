@@ -1,3 +1,4 @@
+import config from "@/config";
 import { cookies } from "next/headers";
 
 export default async function getCurrentUserServer() {
@@ -12,7 +13,7 @@ export default async function getCurrentUserServer() {
 
   try {
     const subjectFromToken = await fetch(
-      process.env.NEXT_PUBLIC_BASEURL + "/get-subject-from-token",
+      config.apiUrl + "/get-subject-from-token",
       {
         method: "POST",
         credentials: "include",
@@ -25,7 +26,7 @@ export default async function getCurrentUserServer() {
     if (userInfo.includes("@")) {
       try {
         const userResponse = await fetch(
-          process.env.NEXT_PUBLIC_BASEURL + "/users/email?email=" + userInfo
+          config.apiUrl + "/users/email?email=" + userInfo
         );
 
         const user = await userResponse.json();
@@ -37,7 +38,7 @@ export default async function getCurrentUserServer() {
     } else {
       try {
         const userResponse = await fetch(
-          process.env.NEXT_PUBLIC_BASEURL +
+          config.apiUrl +
             "/users/username?username=" +
             userInfo
         );

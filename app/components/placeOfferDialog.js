@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useUserContext } from "../providers/userProvider";
+import config from "@/config";
 
 export default function PlaceOfferDialog({ auction }) {
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -55,14 +56,14 @@ export default function PlaceOfferDialog({ auction }) {
       placeOfferButtonRef.current.disabled = true;
       placeOfferButtonRef.current.innerText = "Refresh the page";
 
-      await fetch(process.env.NEXT_PUBLIC_BASEURL + "/offers/insert", {
+      await fetch(config.apiUrl + "/offers/insert", {
         method: "POST",
         body: JSON.stringify(offerFromInputs),
         headers: { "Content-Type": "application/json" },
       });
 
       await fetch(
-        process.env.NEXT_PUBLIC_BASEURL +
+        config.apiUrl +
           "/auctions/" +
           auction.id +
           "/current-offer?newCurrentOffer=" +
@@ -75,7 +76,7 @@ export default function PlaceOfferDialog({ auction }) {
 
       if (auction.auctionType === "english") {
         await fetch(
-          process.env.NEXT_PUBLIC_BASEURL +
+          config.apiUrl +
             "/auctions/" +
             auction.id +
             "/current-offertimer?newTimerValue=" +
@@ -88,16 +89,10 @@ export default function PlaceOfferDialog({ auction }) {
       }
 
       if (auction.auctionType === "descending") {
-        fetch(
-          process.env.NEXT_PUBLIC_BASEURL +
-            "/auctions/" +
-            auction.id +
-            "/is-over",
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-          }
-        )
+        fetch(config.apiUrl + "/auctions/" + auction.id + "/is-over", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        })
           .then((response) => {
             if (!response.ok) {
               throw new Error("Network response was not ok");
@@ -119,7 +114,7 @@ export default function PlaceOfferDialog({ auction }) {
           idUserAccount: auction.idUserAccount,
         };
 
-        fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
+        fetch(config.apiUrl + "/notifications/create", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(noti),
@@ -139,7 +134,7 @@ export default function PlaceOfferDialog({ auction }) {
           });
 
         // (BUYER)
-        fetch(process.env.NEXT_PUBLIC_BASEURL + "/offers/" + auction.id, {
+        fetch(config.apiUrl + "/offers/" + auction.id, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         })
@@ -161,7 +156,7 @@ export default function PlaceOfferDialog({ auction }) {
                 idUserAccount: offer.idUserAccount,
               };
 
-              fetch(process.env.NEXT_PUBLIC_BASEURL + "/notifications/create", {
+              fetch(config.apiUrl + "/notifications/create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(noti),
@@ -250,7 +245,12 @@ export default function PlaceOfferDialog({ auction }) {
               )}
 
               <div className="flex justify-center">
-                <Input ref={offerAmountRef} type="number" step="0.01" className="w-48" />
+                <Input
+                  ref={offerAmountRef}
+                  type="number"
+                  step="0.01"
+                  className="w-48"
+                />
               </div>
             </AlertDialogHeader>
             <AlertDialogFooter>

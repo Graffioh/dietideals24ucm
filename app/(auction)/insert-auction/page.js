@@ -22,6 +22,7 @@ import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import AddAuctionImageBox from "@/app/components/addAuctionImageBox";
 import { toast } from "sonner";
+import config from "@/config";
 
 export default function InsertAuctionPage() {
   const { currentUser, currentUserIsLoading } = useUserContext();
@@ -197,7 +198,7 @@ export default function InsertAuctionPage() {
     };
 
     try {
-      await fetch(process.env.NEXT_PUBLIC_BASEURL + "/auctions", {
+      await fetch(config.apiUrl + "/auctions", {
         method: "POST",
         body: JSON.stringify(auctionFromInputs),
         headers: { "Content-Type": "application/json" },
@@ -211,7 +212,7 @@ export default function InsertAuctionPage() {
       createAuctionButtonRef.current.disabled = true;
 
       setTimeout(() => {
-        window.location.href = process.env.NEXT_PUBLIC_BASEURL.replace("/api", "") + "/home";
+        window.location.href = config.apiUrl.replace("/api", "") + "/home";
       }, 1000);
     } catch (e) {
       toast.error("The auction has not been created, a problem occurred.", {

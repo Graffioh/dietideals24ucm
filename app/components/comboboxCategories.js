@@ -17,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import config from "@/config"
 
 const categories = [
   {
@@ -169,7 +170,7 @@ export default function ComboboxCategories({ onCategoryChange }) {
   async function handleInputChange(categoryInput) {
     if (categoryInput === "") {
       const auctionsResponse = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/auctions"
+        config.apiUrl + "/auctions"
       );
 
       const auctionsData = await auctionsResponse.json();
@@ -177,7 +178,7 @@ export default function ComboboxCategories({ onCategoryChange }) {
       onCategoryChange("All categories");
     } else {
       const filteredAuctionsResponse = await fetch(
-        process.env.NEXT_PUBLIC_BASEURL + "/auctions/category",
+        config.apiUrl + "/auctions/category",
         { method: "POST", body: categoryInput, credentials: "include" }
       );
 

@@ -15,6 +15,7 @@ import DatePicker from "@/app/components/datePicker";
 import CancelAlertDialog from "@/app/components/cancelAlertDialog";
 import { useUserContext } from "@/app/providers/userProvider";
 import LoadingSpinner from "@/app/components/loadingSpinner";
+import config from "@/config";
 
 export default function ProfilePage({ searchParams }) {
   const [birthDate, setBirthDate] = useState("");
@@ -38,7 +39,7 @@ export default function ProfilePage({ searchParams }) {
       };
 
       try {
-        await fetch(process.env.NEXT_PUBLIC_BASEURL + "/users/register", {
+        await fetch(config.apiUrl + "/users/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -51,7 +52,7 @@ export default function ProfilePage({ searchParams }) {
 
       try {
         const responseToken = await fetch(
-          process.env.NEXT_PUBLIC_BASEURL + "/generate-login-token",
+          config.apiUrl + "/generate-login-token",
           {
             method: "POST",
             headers: {
@@ -63,7 +64,7 @@ export default function ProfilePage({ searchParams }) {
 
         const responseTokenText = await responseToken.text();
 
-        await fetch(process.env.NEXT_PUBLIC_BASEURL + "/set-login-token", {
+        await fetch(config.apiUrl + "/set-login-token", {
           method: "POST",
           credentials: "include",
           headers: {
@@ -112,7 +113,7 @@ export default function ProfilePage({ searchParams }) {
 
     if (currentUser && currentUser.id) {
       await fetch(
-        process.env.NEXT_PUBLIC_BASEURL +
+        config.apiUrl +
           "/users/update-profile/" +
           currentUser.id,
         {
