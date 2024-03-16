@@ -3,13 +3,12 @@ const nextConfig = {};
 
 module.exports = nextConfig;
 
-const isProd = process.env.NEXT_ENV === "prod";
-
 module.exports = {
   images: {
     domains: ["m.media-amazon.com"],
   },
   async rewrites() {
+    const isProd = process.env.NEXT_ENV === "prod";
     return [
       {
         source: "/api/:path*",
