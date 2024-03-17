@@ -31,10 +31,7 @@ export default function AuctionsContainerHomepage() {
     data: paginatedAuctions,
     error: paginatedAuctionsError,
     isLoading: paginatedAuctionsIsLoading,
-  } = useSWR(
-    config.apiUrl + "/auctions/paginated?page=" + pageIndex,
-    fetcher
-  );
+  } = useSWR(config.apiUrl + "/auctions/paginated?page=" + pageIndex, fetcher);
 
   const paginatedAuctionsLength = paginatedAuctions
     ? paginatedAuctions.length
@@ -76,10 +73,25 @@ export default function AuctionsContainerHomepage() {
     }
   }
 
+  const [showDelayedMessage, setShowDelayedMessage] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowDelayedMessage(true);
+    }, 2500); // Change the delay time (in milliseconds) as needed
+
+    return () => clearTimeout(timer); // Clean up the timeout on component unmount
+  }, []);
+
   if (paginatedAuctionsIsLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex flex-col justify-center items-center h-screen">
         <LoadingSpinner />
+        {showDelayedMessage && (
+          <div className="text-sm text-stone-800">
+            server spinning up due to cold start, may take a while...
+          </div>
+        )}
       </div>
     );
   }
