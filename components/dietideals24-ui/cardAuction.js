@@ -111,46 +111,70 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
               : ""
           }`}
         >
-          <button className="relative bg-white w-64 h-56 flex justify-center rounded-lg">
-            <div className="relative">
+          <button
+            className={`relative bg-white ${
+              isMobile ? "w-52 h-64" : "w-64 h-56"
+            } flex justify-center rounded-lg`}
+          >
+            <div className="flex flex-col">
               <Image
                 alt="card-image"
-                className="object-cover w-56 h-36 mt-5 rounded-lg flex items-center"
+                className={`object-cover ${
+                  isMobile ? "w-[11.5em] h-36" : "w-56 h-36"
+                }  mt-4 rounded-lg flex items-center`}
                 src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
                 width={230}
                 height={140}
               />
-            </div>
 
-            <div className="absolute bottom-1 left-0 right-0 text-base flex flex-col">
-              <div>{auction.auctionName}</div>
+              <div className="text-base flex flex-col">
+                <div>{auction.auctionName}</div>
 
-              <div className="flex justify-between">
-                <div className="text-2xl ml-6">€{auction.currentOffer}</div>
-                {auction.auctionType === "fixedtime" && (
-                  <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                    <AuctionTimer
-                      deadline={fixedTimeDeadlineTimer}
-                      auction={auction}
-                    />
-                  </div>
-                )}
-                {auction.auctionType === "english" && (
-                  <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                    <AuctionTimer
-                      deadline={englishDeadlineTimer}
-                      auction={auction}
-                    />
-                  </div>
-                )}
-                {auction.auctionType === "descending" && (
-                  <div className="text-xl mr-8 mt-0.5 bg-stone-200 rounded px-2 w-[7em] h-8">
-                    <AuctionTimer
-                      deadline={descendingDeadlineTimer}
-                      auction={auction}
-                    />
-                  </div>
-                )}
+                <div
+                  className={`flex ${
+                    isMobile
+                      ? "flex-col justify-center"
+                      : "flex-row justify-between"
+                  } `}
+                >
+                  <div className="text-2xl">€{auction.currentOffer}</div>
+                  {auction.auctionType === "fixedtime" && (
+                    <div
+                      className={`text-xl mt-0.5 ${
+                        isMobile ? "" : "px-2 w-[7em]"
+                      } bg-stone-200 rounded h-8`}
+                    >
+                      <AuctionTimer
+                        deadline={fixedTimeDeadlineTimer}
+                        auction={auction}
+                      />
+                    </div>
+                  )}
+                  {auction.auctionType === "english" && (
+                    <div
+                      className={`text-xl mt-0.5 ${
+                        isMobile ? "" : "px-2 w-[7em]"
+                      } bg-stone-200 rounded h-8`}
+                    >
+                      <AuctionTimer
+                        deadline={englishDeadlineTimer}
+                        auction={auction}
+                      />
+                    </div>
+                  )}
+                  {auction.auctionType === "descending" && (
+                    <div
+                      className={`text-xl mt-0.5 ${
+                        isMobile ? "" : "px-2 w-[7em]"
+                      } bg-stone-200 rounded h-8`}
+                    >
+                      <AuctionTimer
+                        deadline={descendingDeadlineTimer}
+                        auction={auction}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </button>

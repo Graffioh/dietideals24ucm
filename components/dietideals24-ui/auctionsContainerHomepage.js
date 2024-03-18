@@ -106,7 +106,7 @@ export default function AuctionsContainerHomepage() {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col">
         <div className="grid md:grid-rows-auto md:grid-cols-4 grid-cols-2 md:gap-x-14">
           {filteredAuctions ? (
             filteredAuctions.map((filteredAuction) => (
@@ -143,7 +143,7 @@ export default function AuctionsContainerHomepage() {
           )}
         </div>
 
-        <div className="my-5 mt-10">
+        <div className="my-5 mt-10 flex justify-center items-center">
           <AuctionPagination
             onPreviousPageChange={handlePreviousPageChange}
             onNextPageChange={handleNextPageChange}
