@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 
+import { useMediaQuery } from "react-responsive";
+
 import Link from "next/link";
 
 import AuctionPagination from "./auctionPagination";
@@ -14,7 +16,13 @@ import config from "@/config";
 export default function AuctionsContainerHomepage() {
   const { filteredAuctions } = useAuctionFilter();
 
-  // Retrieve last page number from localStorage when the page is reloaded
+  const isMobileScreen = useMediaQuery({ maxWidth: 767 });
+  const [isMobile, setIsMobile] = useState(isMobileScreen);
+
+  useEffect(() => {
+    setIsMobile(isMobileScreen);
+  }, [isMobileScreen]);
+
   const [pageIndex, setPageIndex] = useState(() => {
     if (typeof window !== "undefined") {
       const storedPageIndex = localStorage.getItem("pageIndex");
@@ -99,7 +107,7 @@ export default function AuctionsContainerHomepage() {
   return (
     <>
       <div className="flex flex-col justify-center items-center">
-        <div className="grid md:grid-rows-auto md:grid-cols-4 grid-cols-1 md:gap-x-14">
+        <div className="grid md:grid-rows-auto md:grid-cols-4 grid-cols-2 md:gap-x-14">
           {filteredAuctions ? (
             filteredAuctions.map((filteredAuction) => (
               <>
@@ -112,7 +120,7 @@ export default function AuctionsContainerHomepage() {
                   }
                   key={filteredAuction.id}
                 >
-                  <CardAuction isHomepage={true} auction={filteredAuction} />
+                  <CardAuction isHomepage={true} isMobile={isMobile} auction={filteredAuction} />
                 </Link>
               </>
             ))
@@ -127,7 +135,7 @@ export default function AuctionsContainerHomepage() {
                 }
                 key={auction.id}
               >
-                <CardAuction isHomepage={true} auction={auction} />
+                <CardAuction isHomepage={true} isMobile={isMobile} auction={auction} />
               </Link>
             ))
           ) : (
