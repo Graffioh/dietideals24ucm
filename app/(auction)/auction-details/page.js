@@ -237,7 +237,7 @@ export default function AuctionDetailsPage({ searchParams }) {
                 </div>
               </div>
               <div className="mt-8 mb-5">
-                {authToken === "no-token" ? (
+                {!authToken || authToken === "no-token" ? (
                   <Link
                     className={cn(
                       buttonVariants({
