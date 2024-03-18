@@ -6,7 +6,7 @@ import AuctionTimer from "./auctionTimer";
 import LoadingSpinner from "./loadingSpinner";
 import config from "@/config";
 
-export default function CardAuction({ isHomepage, auction }) {
+export default function CardAuction({ isHomepage, isMobile, auction }) {
   function generateDeadline(deadline, time) {
     const deadlineTime = time ? time.split(":") : "";
     const hours = parseInt(deadlineTime[0]);
@@ -58,10 +58,10 @@ export default function CardAuction({ isHomepage, auction }) {
 
     return updatedAuction.currentOffer;
   }
-  
+
   return (
     <>
-      {isHomepage ? (
+      {isHomepage && !isMobile ? (
         <div className="">
           <button className="relative mt-10 bg-white w-64 h-80 flex justify-center rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
             <div className="relative">
@@ -75,7 +75,9 @@ export default function CardAuction({ isHomepage, auction }) {
             </div>
 
             <div className="absolute bottom-2 left-0 right-0 text-base flex flex-col">
-              <div className="flex justify-center items-center">{auction.auctionName}</div>
+              <div className="flex justify-center items-center">
+                {auction.auctionName}
+              </div>
 
               <div className="flex justify-center">
                 {currentOffer ? (
@@ -102,7 +104,13 @@ export default function CardAuction({ isHomepage, auction }) {
           </button>
         </div>
       ) : (
-        <div className="">
+        <div
+          className={`rounded-lg ${
+            isMobile
+              ? "scale-[0.85] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]"
+              : ""
+          }`}
+        >
           <button className="relative bg-white w-64 h-56 flex justify-center rounded-lg">
             <div className="relative">
               <Image
