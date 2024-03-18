@@ -78,9 +78,9 @@ export default function AuctionsContainerHomepage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowDelayedMessage(true);
-    }, 2500); // Change the delay time (in milliseconds) as needed
+    }, 2500);
 
-    return () => clearTimeout(timer); // Clean up the timeout on component unmount
+    return () => clearTimeout(timer);
   }, []);
 
   if (paginatedAuctionsIsLoading) {
