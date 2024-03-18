@@ -2,19 +2,19 @@
 
 import { useState } from "react";
 
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/shadcn-ui/input";
+import { Textarea } from "@/components/shadcn-ui/textarea";
+import { Label } from "@/components/shadcn-ui/label";
+import { Button } from "@/components/shadcn-ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/shadcn-ui/avatar";
 import { hash } from "bcryptjs";
 import { toast } from "sonner";
 
-import DatePicker from "@/app/components/datePicker";
+import DatePicker from "@/components/dietideals24-ui/datePicker";
 
-import CancelAlertDialog from "@/app/components/cancelAlertDialog";
+import CancelAlertDialog from "@/components/dietideals24-ui/cancelAlertDialog";
 import { useUserContext } from "@/app/providers/userProvider";
-import LoadingSpinner from "@/app/components/loadingSpinner";
+import LoadingSpinner from "@/components/dietideals24-ui/loadingSpinner";
 import config from "@/config";
 
 export default function ProfilePage({ searchParams }) {

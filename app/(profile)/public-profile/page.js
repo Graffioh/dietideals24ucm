@@ -1,16 +1,16 @@
 "use client";
 
-import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from "@/components/shadcn-ui/textarea";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shadcn-ui/button";
 import { Pencil1Icon } from "@radix-ui/react-icons";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/shadcn-ui/avatar";
 import useSWR from "swr";
 
 // import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
-import AuctionsContainerPublicProfile from "@/app/components/auctionsContainerPublicProfile";
-import ShowMoreDetailsPublicProfile from "@/app/components/showMoreDetailsPublicProfile";
-import LoadingSpinner from "@/app/components/loadingSpinner";
+import AuctionsContainerPublicProfile from "@/components/dietideals24-ui/auctionsContainerPublicProfile";
+import ShowMoreDetailsPublicProfile from "@/components/dietideals24-ui/showMoreDetailsPublicProfile";
+import LoadingSpinner from "@/components/dietideals24-ui/loadingSpinner";
 import { useUserContext } from "@/app/providers/userProvider";
 import config from "@/config";
 

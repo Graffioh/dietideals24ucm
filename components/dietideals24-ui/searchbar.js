@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/shadcn-ui/input";
 import { useAuctionFilter } from "@/app/providers/auctionFilterProvider";
 import config from "@/config";
 

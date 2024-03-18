@@ -7,10 +7,10 @@ import Link from "next/link";
 import AuctionPagination from "./auctionPagination";
 import CardAuction from "./cardAuction";
 import LoadingSpinner from "./loadingSpinner";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/shadcn-ui/radio-group";
+import { Label } from "@/components/shadcn-ui/label";
 import useSWR from "swr";
-import { useUserContext } from "../providers/userProvider";
+import { useUserContext } from "../../app/providers/userProvider";
 import config from "@/config";
 
 export default function AuctionsContainerPublicProfile({

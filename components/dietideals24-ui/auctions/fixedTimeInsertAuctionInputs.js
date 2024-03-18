@@ -1,9 +1,10 @@
 import { useState } from "react";
 
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Label } from "@/components/shadcn-ui/label";
+import { Input } from "@/components/shadcn-ui/input";
 
 import DatePicker from "../datePicker";
+import PriceInput from "../priceInput";
 
 export default function FixedTimeInsertAuctionInputs({
   onExpireDateChange,
@@ -49,13 +50,10 @@ export default function FixedTimeInsertAuctionInputs({
             Reserve price<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input
-          type="number"
-          step="0.01"
-          placeholder="Reserve price"
-          className="bg-white"
-          onChange={(e) => onFixedTimeMinimumPriceChange(e.target.value)}
-        ></Input>
+        <PriceInput
+          placeholderTxt={"Reserve price"}
+          onFunctionChange={onFixedTimeMinimumPriceChange}
+        />
       </div>
     </>
   );

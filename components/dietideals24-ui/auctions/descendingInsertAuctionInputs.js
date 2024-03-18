@@ -1,14 +1,15 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Label } from "@/components/shadcn-ui/label";
+import { Input } from "@/components/shadcn-ui/input";
 import DurationPicker from "../durationPicker";
 import { TimePickerInput } from "@/components/timepicker/time-picker-input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shadcn-ui/button";
 
 import React, { useEffect, useState } from "react";
 import { TimePicker } from "@/components/timepicker/time-picker";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import PriceInput from "../priceInput";
 
 export default function DescendingInsertAuctionInputs({
   onStartPriceChange,
@@ -40,15 +41,10 @@ export default function DescendingInsertAuctionInputs({
             Start price<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input
-          type="number"
-          step="0.01"
-          placeholder="Start price"
-          className="bg-white"
-          onChange={(e) => {
-            onStartPriceChange(e.target.value);
-          }}
-        ></Input>
+        <PriceInput
+          placeholderTxt={"Start price"}
+          onFunctionChange={onStartPriceChange}
+        />
       </div>
 
       <div>
@@ -57,15 +53,10 @@ export default function DescendingInsertAuctionInputs({
             Decrement amount<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input
-          type="number"
-          step="0.01"
-          placeholder="Decrement amount"
-          className="bg-white"
-          onChange={(e) => {
-            onDecrementAmountChange(e.target.value);
-          }}
-        ></Input>
+        <PriceInput
+          placeholderTxt={"Decrement amount"}
+          onFunctionChange={onDecrementAmountChange}
+        />
       </div>
 
       <div>
@@ -80,7 +71,11 @@ export default function DescendingInsertAuctionInputs({
             className="mt-5 ml-4"
             onClick={(e) => {
               e.preventDefault();
-              if(dateForTimer.getHours() === 0 && dateForTimer.getMinutes() === 0 && dateForTimer.getSeconds() === 0) {
+              if (
+                dateForTimer.getHours() === 0 &&
+                dateForTimer.getMinutes() === 0 &&
+                dateForTimer.getSeconds() === 0
+              ) {
                 onAuctionTimerValidChange(false);
               } else {
                 onAuctionTimerValidChange(true);
@@ -90,8 +85,13 @@ export default function DescendingInsertAuctionInputs({
           >
             Set
           </Button>
-          
-          <ExclamationTriangleIcon hidden={isAuctionTimerValid} width={23} height={23} className="text-red-500 mr-1 mt-8 ml-2 animate-bounce" />
+
+          <ExclamationTriangleIcon
+            hidden={isAuctionTimerValid}
+            width={23}
+            height={23}
+            className="text-red-500 mr-1 mt-8 ml-2 animate-bounce"
+          />
         </div>
       </div>
 

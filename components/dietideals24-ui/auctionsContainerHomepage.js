@@ -8,7 +8,7 @@ import AuctionPagination from "./auctionPagination";
 import CardAuction from "./cardAuction";
 import LoadingSpinner from "./loadingSpinner";
 import useSWR from "swr";
-import { useAuctionFilter } from "../providers/auctionFilterProvider";
+import { useAuctionFilter } from "../../app/providers/auctionFilterProvider";
 import config from "@/config";
 
 export default function AuctionsContainerHomepage() {
@@ -31,10 +31,7 @@ export default function AuctionsContainerHomepage() {
     data: paginatedAuctions,
     error: paginatedAuctionsError,
     isLoading: paginatedAuctionsIsLoading,
-  } = useSWR(
-    config.apiUrl + "/auctions/paginated?page=" + pageIndex,
-    fetcher
-  );
+  } = useSWR(config.apiUrl + "/auctions/paginated?page=" + pageIndex, fetcher);
 
   const paginatedAuctionsLength = paginatedAuctions
     ? paginatedAuctions.length
@@ -76,10 +73,25 @@ export default function AuctionsContainerHomepage() {
     }
   }
 
+  const [showDelayedMessage, setShowDelayedMessage] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowDelayedMessage(true);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   if (paginatedAuctionsIsLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex flex-col justify-center items-center h-screen">
         <LoadingSpinner />
+        {showDelayedMessage && (
+          <div className="text-sm text-stone-800">
+            server spinning up due to cold start, may take a while...
+          </div>
+        )}
       </div>
     );
   }

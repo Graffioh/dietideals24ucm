@@ -1,8 +1,9 @@
 import React from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Label } from "@/components/shadcn-ui/label";
+import { Input } from "@/components/shadcn-ui/input";
+import { Button } from "@/components/shadcn-ui/button";
 import { TimePicker } from "@/components/timepicker/time-picker";
+import PriceInput from "../priceInput";
 
 export default function EnglishInsertAuctionInputs({
   onBaseStartAuctionChange,
@@ -31,15 +32,10 @@ export default function EnglishInsertAuctionInputs({
             Start price<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input
-          type="number"
-          step="0.01"
-          placeholder="Start price"
-          className="bg-white"
-          onChange={(e) => {
-            onBaseStartAuctionChange(e.target.value);
-          }}
-        ></Input>
+        <PriceInput
+          placeholderTxt={"Start price"}
+          onFunctionChange={onBaseStartAuctionChange}
+        />
       </div>
 
       <div>
@@ -68,15 +64,10 @@ export default function EnglishInsertAuctionInputs({
             Rise threshold price<span className="text-red-500">*</span>
           </Label>
         </div>
-        <Input
-          type="number"
-          step="0.01"
-          placeholder="Rise threshold price"
-          className="bg-white"
-          onChange={(e) => {
-            onRaiseThresholdChange(e.target.value);
-          }}
-        ></Input>
+        <PriceInput
+          placeholderTxt={"Rise threshold price"}
+          onFunctionChange={onRaiseThresholdChange}
+        />
       </div>
     </>
   );
