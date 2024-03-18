@@ -105,15 +105,11 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
         </div>
       ) : (
         <div
-          className={`rounded-lg ${
-            isMobile
-              ? "scale-[0.85] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]"
-              : ""
-          }`}
+          className="flex"
         >
           <button
-            className={`relative bg-white ${
-              isMobile ? "w-52 h-64" : "w-64 h-56"
+            className={`px-2 relative bg-white ${
+              isMobile ? "w-44 h-64 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]" : "w-64 h-56"
             } flex justify-center rounded-lg`}
           >
             <div className="flex flex-col">

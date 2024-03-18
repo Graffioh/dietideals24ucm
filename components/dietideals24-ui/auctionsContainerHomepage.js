@@ -106,8 +106,8 @@ export default function AuctionsContainerHomepage() {
 
   return (
     <>
-      <div className="flex flex-col">
-        <div className="grid md:grid-rows-auto md:grid-cols-4 grid-cols-2 md:gap-x-14">
+      <div className="flex flex-col items-center">
+        <div className="grid md:grid-rows-auto md:grid-cols-4 grid-cols-2 gap-6 md:gap-x-14">
           {filteredAuctions ? (
             filteredAuctions.map((filteredAuction) => (
               <>
