@@ -283,22 +283,8 @@ export default function ProfilePage({ searchParams }) {
 
                   <div>
                     <Label className="mb-2 flex">Phone Number</Label>
-                    {/* <Input
-                      className="h-9 bg-white"
-                      type="tel"
-                      id="telephoneNumber"
-                      placeholder="Phone Number"
-                      defaultValue={
-                        currentUser ? currentUser.telephoneNumber : ""
-                      }
-                    /> */}
-                    {/* <PhoneInput
-                      defaultCountry="it"
-                      value={phone}
-                      onChange={(phone) => setPhone(phone)}
-                    /> */}
                     <PhoneInput
-                      default
+                      defaultCountry="it"
                       value={phone}
                       onChange={(phone) => setPhone(phone)}
                     />
