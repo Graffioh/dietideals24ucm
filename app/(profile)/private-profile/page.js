@@ -6,10 +6,16 @@ import { Input } from "@/components/shadcn-ui/input";
 import { Textarea } from "@/components/shadcn-ui/textarea";
 import { Label } from "@/components/shadcn-ui/label";
 import { Button } from "@/components/shadcn-ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/shadcn-ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/shadcn-ui/avatar";
 import { hash } from "bcryptjs";
 import { toast } from "sonner";
 
+import { isValidPhoneNumber } from "react-phone-number-input";
+import { PhoneInput } from "@/components/phoneinput/phone-input";
 import DatePicker from "@/components/dietideals24-ui/datePicker";
 
 import CancelAlertDialog from "@/components/dietideals24-ui/cancelAlertDialog";
@@ -19,7 +25,9 @@ import config from "@/config";
 
 export default function ProfilePage({ searchParams }) {
   const [birthDate, setBirthDate] = useState("");
+
   const { currentUser, currentUserIsLoading } = useUserContext();
+  const [phone, setPhone] = useState(currentUser ? currentUser.telephoneNumber ? currentUser.telephoneNumber : "" : "");
 
   const provider = currentUser ? currentUser.provider : null;
 
@@ -86,15 +94,8 @@ export default function ProfilePage({ searchParams }) {
 
   async function onSubmit(event) {
     event.preventDefault();
-
+    
     const inputs = event.currentTarget;
-
-    // Haha bullsh*t
-    // const birthDateForInputs =
-    //   currentUser && currentUser.birthDate
-    //     ? currentUser.birthDate
-    //     : birthDate ?? new Date();
-    console.log(birthDate)
 
     const userInfoFromInputs = {
       id: Date.now(),
@@ -104,25 +105,23 @@ export default function ProfilePage({ searchParams }) {
       password: inputs.password.value,
       birthDate: birthDate !== "" ? birthDate : currentUser?.birthDate,
       email: inputs.email.value,
-      telephoneNumber: inputs.telephoneNumber
-        ? inputs.telephoneNumber.value
-        : "",
+      telephoneNumber: phone,
       biography: inputs.biography ? inputs.biography.value : "",
       website: inputs.website ? inputs.website.value : "",
     };
+    
+    if(!isValidPhoneNumber(phone)) {
+      toast.error("Phone number not valid, please choose a valid number.")
+      return;
+    }
 
     if (currentUser && currentUser.id) {
-      await fetch(
-        config.apiUrl +
-          "/users/update-profile/" +
-          currentUser.id,
-        {
-          method: "PUT",
-          body: JSON.stringify(userInfoFromInputs),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      
+      await fetch(config.apiUrl + "/users/update-profile/" + currentUser.id, {
+        method: "PUT",
+        body: JSON.stringify(userInfoFromInputs),
+        headers: { "Content-Type": "application/json" },
+      });
+
       toast.success("Account updated successfully.", {
         position: "bottom-center",
       });
@@ -229,9 +228,7 @@ export default function ProfilePage({ searchParams }) {
                 type="email"
                 id="email"
                 placeholder="Email"
-                defaultValue={
-                  searchParams.email ?? currentUser?.email
-                }
+                defaultValue={searchParams.email ?? currentUser?.email}
                 required
                 readOnly={
                   searchParams.fromProvider === "google" ||
@@ -275,8 +272,18 @@ export default function ProfilePage({ searchParams }) {
               currentUser.id ? (
                 <>
                   <div>
+                    <Label className="mb-2 flex">Bio</Label>
+                    <Textarea
+                      className="resize-none bg-white"
+                      placeholder="Type your description here."
+                      id="biography"
+                      defaultValue={currentUser ? currentUser.biography : ""}
+                    />
+                  </div>
+
+                  <div>
                     <Label className="mb-2 flex">Phone Number</Label>
-                    <Input
+                    {/* <Input
                       className="h-9 bg-white"
                       type="tel"
                       id="telephoneNumber"
@@ -284,16 +291,16 @@ export default function ProfilePage({ searchParams }) {
                       defaultValue={
                         currentUser ? currentUser.telephoneNumber : ""
                       }
-                    />
-                  </div>
-
-                  <div>
-                    <Label className="mb-2 flex">Bio</Label>
-                    <Textarea
-                      className="resize-none bg-white"
-                      placeholder="Type your description here."
-                      id="biography"
-                      defaultValue={currentUser ? currentUser.biography : ""}
+                    /> */}
+                    {/* <PhoneInput
+                      defaultCountry="it"
+                      value={phone}
+                      onChange={(phone) => setPhone(phone)}
+                    /> */}
+                    <PhoneInput
+                      default
+                      value={phone}
+                      onChange={(phone) => setPhone(phone)}
                     />
                   </div>
 
