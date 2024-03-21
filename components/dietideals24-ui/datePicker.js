@@ -59,7 +59,7 @@ export default function DatePicker({ handleParentDate, defaultDate, isBirthDate,
             initialFocus
             captionLayout="dropdown-buttons"
             fromYear={1940}
-            toYear={2024}
+            toDate={Date.now()}
           />
         ) : (
           <Calendar
