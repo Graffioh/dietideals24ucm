@@ -110,7 +110,7 @@ export default function ProfilePage({ searchParams }) {
       website: inputs.website ? inputs.website.value : "",
     };
     
-    if(!isValidPhoneNumber(phone) && currentUser && currentUser.id) {
+    if(phone !== "" && !isValidPhoneNumber(phone) && currentUser && currentUser.id) {
       toast.error("Phone number not valid, please choose a valid number.")
       return;
     }
