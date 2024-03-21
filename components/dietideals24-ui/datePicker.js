@@ -12,12 +12,25 @@ import {
   PopoverTrigger,
 } from "@/components/shadcn-ui/popover";
 
-export default function DatePicker({ handleParentDate, defaultDate, isBirthDate, isReadOnly }) {
-  const [date, setDate] = useState(defaultDate ? new Date(defaultDate.getTime() + defaultDate.getTimezoneOffset() * 60000) : null);
+export default function DatePicker({
+  handleParentDate,
+  defaultDate,
+  isBirthDate,
+  isReadOnly,
+}) {
+  const [date, setDate] = useState(
+    defaultDate
+      ? new Date(
+          defaultDate.getTime() + defaultDate.getTimezoneOffset() * 60000
+        )
+      : null
+  );
 
   const toLocalDate = (utcDate) => {
     if (!utcDate) return null;
-    const localDate = new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000);
+    const localDate = new Date(
+      utcDate.getTime() - utcDate.getTimezoneOffset() * 60000
+    );
     return localDate;
   };
 
@@ -71,9 +84,7 @@ export default function DatePicker({ handleParentDate, defaultDate, isBirthDate,
               setDate(localDate);
             }}
             initialFocus
-            fromMonth={
-              new Date(new Date().getFullYear(), new Date().getMonth())
-            }
+            fromDate={new Date()}
             toDate={new Date(2026, 9, 11)}
           />
         )}
