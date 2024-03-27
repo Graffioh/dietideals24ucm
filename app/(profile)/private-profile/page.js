@@ -122,9 +122,14 @@ export default function ProfilePage({ searchParams }) {
         headers: { "Content-Type": "application/json" },
       });
 
+      setTimeout(() => {
+        window.location.href = config.apiUrl.replace("/api", "") + "/public-profile";
+      }, 1500);
+
       toast.success("Account updated successfully.", {
         position: "bottom-center",
       });
+
     } else {
       await createUserAccount(userInfoFromInputs);
 
