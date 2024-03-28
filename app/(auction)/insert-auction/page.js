@@ -231,8 +231,6 @@ export default function InsertAuctionPage() {
     };
 
     try {
-      
-
       await fetch(config.apiUrl + "/auctions", {
         method: "POST",
         body: JSON.stringify(auctionFromInputs),
@@ -267,17 +265,20 @@ export default function InsertAuctionPage() {
               onFileChange={handleFileChange}
               onHiddenFileInputChange={handleHiddenFileInput}
               hiddenFileInput={hiddenFileInput}
-            />
-
-            {/* <AddAuctionImageBox
-              handleFileUploadClick={handleFileUploadClick}
-              hiddenFileInput={hiddenFileInput}
+              disabled={false}
             />
 
             <AddAuctionImageBox
-              handleFileUploadClick={handleFileUploadClick}
-              hiddenFileInput={hiddenFileInput}
-            /> */}
+              onFileChange={handleFileChange}
+              onHiddenFileInputChange={handleHiddenFileInput}
+              disabled={true}
+            />
+
+            <AddAuctionImageBox
+              onFileChange={handleFileChange}
+              onHiddenFileInputChange={handleHiddenFileInput}
+              disabled={true}
+            />
           </div>
 
           <div className="flex flex-col mx-2">
