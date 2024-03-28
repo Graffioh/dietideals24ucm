@@ -104,7 +104,8 @@ export default function InsertAuctionPage() {
   // ***************************************
   const [decrementAmount, setDecrementAmount] = useState("");
   const [descendingMinimumPrice, setDescendingMinimumPrice] = useState("");
-  const [isBaseDecrementTimerValid, setIsBaseDecrementTimerValid] = useState(true);
+  const [isBaseDecrementTimerValid, setIsBaseDecrementTimerValid] =
+    useState(true);
 
   function handleDecrementAmount(decrementAmount) {
     setDecrementAmount(decrementAmount);
@@ -119,12 +120,12 @@ export default function InsertAuctionPage() {
   }
 
   function validateDescendingAuctionInputs() {
-    const isTimerValid = baseTimer && baseTimer.length !== 0 ? true : false
-    
-    if(!isTimerValid) {
-      setIsBaseDecrementTimerValid(false)
+    const isTimerValid = baseTimer && baseTimer.length !== 0 ? true : false;
+
+    if (!isTimerValid) {
+      setIsBaseDecrementTimerValid(false);
     } else {
-      setIsBaseDecrementTimerValid(true)
+      setIsBaseDecrementTimerValid(true);
     }
 
     const validState =
@@ -142,8 +143,35 @@ export default function InsertAuctionPage() {
   const createAuctionButtonRef = useRef(null);
   const hiddenFileInput = useRef(null);
 
-  const handleFileUploadClick = () => {
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  
+  const handleHiddenFileInput = () => {
     hiddenFileInput.current.click();
+  }
+
+  const handleImageUpload = async (auctionId) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch(config.apiUrl + "/auctions/upload-img?auctionId=" + auctionId, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const imageUrl = await response.text();
+        console.log("Image uploaded successfully:", imageUrl);
+      } else {
+        console.error("Error uploading image");
+      }
+    } catch (error) {
+      console.error("Error uploading image", error);
+    }
   };
 
   async function onSubmit(event) {
@@ -204,6 +232,8 @@ export default function InsertAuctionPage() {
         headers: { "Content-Type": "application/json" },
       });
 
+      await handleImageUpload(auctionFromInputs.id);
+
       toast.success("The auction has been created.", {
         position: "bottom-center",
       });
@@ -229,6 +259,12 @@ export default function InsertAuctionPage() {
         <div className="flex flex-col md:flex-row items-center mt-12">
           <div className="mx-3 mb-6 md:m-6 md:mr-20 md:ml-48 grid md:grid-cols-2 gap-2">
             <AddAuctionImageBox
+              onFileChange={handleFileChange}
+              onHiddenFileInputChange={handleHiddenFileInput}
+              hiddenFileInput={hiddenFileInput}
+            />
+
+            {/* <AddAuctionImageBox
               handleFileUploadClick={handleFileUploadClick}
               hiddenFileInput={hiddenFileInput}
             />
@@ -236,12 +272,7 @@ export default function InsertAuctionPage() {
             <AddAuctionImageBox
               handleFileUploadClick={handleFileUploadClick}
               hiddenFileInput={hiddenFileInput}
-            />
-
-            <AddAuctionImageBox
-              handleFileUploadClick={handleFileUploadClick}
-              hiddenFileInput={hiddenFileInput}
-            />
+            /> */}
           </div>
 
           <div className="flex flex-col mx-2">
