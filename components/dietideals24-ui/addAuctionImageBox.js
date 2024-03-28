@@ -43,7 +43,7 @@ export default function AddAuctionImageBox({
             src={imageData}
             alt="auction-image"
             fill
-            style={{ objectFit: "contain" }}
+            style={{ objectFit: "cover" }}
           />
         ) : (
           "+"
