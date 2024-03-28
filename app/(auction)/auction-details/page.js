@@ -102,7 +102,7 @@ export default function AuctionDetailsPage({ searchParams }) {
           <Image
             alt="auction-image"
             className="rounded-lg mb-2.5 border-2 border-input"
-            src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+            src={currentAuction.auctionImages === "no-images" ? "https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg": currentAuction.auctionImages}
             width={410}
             height={180}
           />

@@ -166,6 +166,7 @@ export default function InsertAuctionPage() {
       if (response.ok) {
         const imageUrl = await response.text();
         console.log("Image uploaded successfully:", imageUrl);
+        return imageUrl;
       } else {
         console.error("Error uploading image");
       }
@@ -200,8 +201,12 @@ export default function InsertAuctionPage() {
         ? startPrice
         : 0;
 
+    const newAuctionIdFromDate = Date.now();
+      
+    const imageUrl = await handleImageUpload(newAuctionIdFromDate);
+
     const auctionFromInputs = {
-      id: Date.now(),
+      id: newAuctionIdFromDate,
       auctionDescription: inputs.description.value,
       auctionName: inputs.title.value,
       auctionQuality: "Good",
@@ -209,7 +214,7 @@ export default function InsertAuctionPage() {
       auctionType: auctionType,
       auctionCategory: category,
       idUserAccount: currentUser.id,
-      auctionImages: "no-images", // mettere le foto prese dalla selezione
+      auctionImages: imageUrl ?? "no-images",
       offers: [],
       startPrice: startPrice,
       raiseThreshold: raiseThreshold,
@@ -226,13 +231,13 @@ export default function InsertAuctionPage() {
     };
 
     try {
+      
+
       await fetch(config.apiUrl + "/auctions", {
         method: "POST",
         body: JSON.stringify(auctionFromInputs),
         headers: { "Content-Type": "application/json" },
       });
-
-      await handleImageUpload(auctionFromInputs.id);
 
       toast.success("The auction has been created.", {
         position: "bottom-center",

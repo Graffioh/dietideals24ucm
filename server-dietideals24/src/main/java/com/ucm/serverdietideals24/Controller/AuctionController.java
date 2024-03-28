@@ -37,9 +37,6 @@ public class AuctionController {
     @Autowired
     private AuctionDAO auctionDAO;
 
-    @Autowired
-    private AmazonS3 amazonS3;
-
     @GetMapping
     public ResponseEntity<List<Auction>> fetchAllAuctions() {
         try {
@@ -274,6 +271,10 @@ public class AuctionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
         }
     }
+    
+    // AWS S3 for images
+    @Autowired
+    private AmazonS3 amazonS3;
 
     @Value("${aws.s3.bucketName}")
     private String S3bucketName;

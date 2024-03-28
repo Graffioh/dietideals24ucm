@@ -68,7 +68,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
               <Image
                 alt="card-image"
                 className="mt-5 rounded-lg flex items-center"
-                src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+                src={auction.auctionImages === "no-images" ? "https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg": auction.auctionImages}
                 width={230}
                 height={140}
               />
@@ -118,7 +118,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                 className={`object-cover ${
                   isMobile ? "w-[11.5em] h-36" : "w-56 h-36"
                 }  mt-4 rounded-lg flex items-center`}
-                src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+                src={auction.auctionImages === "no-images" ? "https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg": auction.auctionImages}
                 width={230}
                 height={140}
               />
@@ -137,7 +137,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                   {auction.auctionType === "fixedtime" && (
                     <div
                       className={`text-xl mt-0.5 ${
-                        isMobile ? "" : "px-2 w-[7em]"
+                        isMobile ? "" : "px-2 w-[7.5em]"
                       } bg-stone-200 rounded h-8`}
                     >
                       <AuctionTimer
