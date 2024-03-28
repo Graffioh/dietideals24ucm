@@ -56,7 +56,7 @@ export default function ProfilePage({ searchParams }) {
               <div className="mt-2 mr-4 md:mr-10">
                 <Avatar className="h-32 w-32">
                   <AvatarImage
-                    src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
+                    src={currentUser?.profilePicUrl ?? "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg"}
                     alt="@avatar"
                   />
                   <AvatarFallback />

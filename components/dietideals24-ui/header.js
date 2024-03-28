@@ -5,7 +5,11 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 import { Button, buttonVariants } from "@/components/shadcn-ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/shadcn-ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/shadcn-ui/avatar";
 import {
   BellIcon,
   Pencil1Icon,
@@ -60,6 +64,8 @@ function LoggedSection() {
 
 // Only notifications and profile icon
 function LoggedPartialSection() {
+  const { currentUser } = useUserContext();
+
   return (
     <div className="mr-3 flex justify-between mb-2">
       <NotificationsDropdown />
@@ -67,7 +73,10 @@ function LoggedPartialSection() {
       <Link href="/public-profile" className="mt-0.5">
         <Avatar className="h-9 w-9">
           <AvatarImage
-            src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
+            src={
+              currentUser?.profilePicUrl ??
+              "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg"
+            }
             alt="@avatar"
           />
           <AvatarFallback />
@@ -79,10 +88,12 @@ function LoggedPartialSection() {
 
 // Categories, searchbar, create auction, notifications, profile icon
 function LoggedFullSection() {
+  const { currentUser } = useUserContext();
+
   return (
     <>
       <div className="flex flex-grow gap-6 justify-between mx-48 mb-2">
-        <ComboboxCategories onCategoryChange={() => {}}/>
+        <ComboboxCategories onCategoryChange={() => {}} />
         <Searchbar />
       </div>
 
@@ -105,7 +116,10 @@ function LoggedFullSection() {
         <Link href="/public-profile" className="mt-0.5 flex justify-center">
           <Avatar className="h-9 w-9">
             <AvatarImage
-              src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
+              src={
+                currentUser?.profilePicUrl ??
+                "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg"
+              }
               alt="@avatar"
             />
             <AvatarFallback />

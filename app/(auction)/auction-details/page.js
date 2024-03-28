@@ -141,7 +141,10 @@ export default function AuctionDetailsPage({ searchParams }) {
               <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>
                 <Avatar className="h-32 w-32 hover:opacity-90">
                   <AvatarImage
-                    src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
+                     src={
+                      currentUser?.profilePicUrl ??
+                      "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg"
+                    }
                     alt="@avatar"
                   />
                   <AvatarFallback />
@@ -156,7 +159,10 @@ export default function AuctionDetailsPage({ searchParams }) {
                     <Link href={"/public-profile?id=" + highestOfferUserId}>
                       <Avatar className="h-8 w-8 mt-0.5 mr-2.5 hover:opacity-90">
                         <AvatarImage
-                          src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
+                           src={
+                            currentUser?.profilePicUrl ??
+                            "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg"
+                          }
                           alt="@avatar"
                         />
                         <AvatarFallback />
