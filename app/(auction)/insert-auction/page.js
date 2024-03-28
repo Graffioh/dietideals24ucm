@@ -104,7 +104,8 @@ export default function InsertAuctionPage() {
   // ***************************************
   const [decrementAmount, setDecrementAmount] = useState("");
   const [descendingMinimumPrice, setDescendingMinimumPrice] = useState("");
-  const [isBaseDecrementTimerValid, setIsBaseDecrementTimerValid] = useState(true);
+  const [isBaseDecrementTimerValid, setIsBaseDecrementTimerValid] =
+    useState(true);
 
   function handleDecrementAmount(decrementAmount) {
     setDecrementAmount(decrementAmount);
@@ -119,12 +120,12 @@ export default function InsertAuctionPage() {
   }
 
   function validateDescendingAuctionInputs() {
-    const isTimerValid = baseTimer && baseTimer.length !== 0 ? true : false
-    
-    if(!isTimerValid) {
-      setIsBaseDecrementTimerValid(false)
+    const isTimerValid = baseTimer && baseTimer.length !== 0 ? true : false;
+
+    if (!isTimerValid) {
+      setIsBaseDecrementTimerValid(false);
     } else {
-      setIsBaseDecrementTimerValid(true)
+      setIsBaseDecrementTimerValid(true);
     }
 
     const validState =
@@ -142,8 +143,36 @@ export default function InsertAuctionPage() {
   const createAuctionButtonRef = useRef(null);
   const hiddenFileInput = useRef(null);
 
-  const handleFileUploadClick = () => {
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  
+  const handleHiddenFileInput = () => {
     hiddenFileInput.current.click();
+  }
+
+  const handleImageUpload = async (auctionId) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch(config.apiUrl + "/auctions/upload-img?auctionId=" + auctionId, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const imageUrl = await response.text();
+        console.log("Image uploaded successfully:", imageUrl);
+        return imageUrl;
+      } else {
+        console.error("Error uploading image");
+      }
+    } catch (error) {
+      console.error("Error uploading image", error);
+    }
   };
 
   async function onSubmit(event) {
@@ -172,8 +201,12 @@ export default function InsertAuctionPage() {
         ? startPrice
         : 0;
 
+    const newAuctionIdFromDate = Date.now();
+      
+    const imageUrl = await handleImageUpload(newAuctionIdFromDate);
+
     const auctionFromInputs = {
-      id: Date.now(),
+      id: newAuctionIdFromDate,
       auctionDescription: inputs.description.value,
       auctionName: inputs.title.value,
       auctionQuality: "Good",
@@ -181,7 +214,7 @@ export default function InsertAuctionPage() {
       auctionType: auctionType,
       auctionCategory: category,
       idUserAccount: currentUser.id,
-      auctionImages: "no-images", // mettere le foto prese dalla selezione
+      auctionImages: imageUrl ?? "no-images",
       offers: [],
       startPrice: startPrice,
       raiseThreshold: raiseThreshold,
@@ -229,18 +262,22 @@ export default function InsertAuctionPage() {
         <div className="flex flex-col md:flex-row items-center mt-12">
           <div className="mx-3 mb-6 md:m-6 md:mr-20 md:ml-48 grid md:grid-cols-2 gap-2">
             <AddAuctionImageBox
-              handleFileUploadClick={handleFileUploadClick}
+              onFileChange={handleFileChange}
+              onHiddenFileInputChange={handleHiddenFileInput}
               hiddenFileInput={hiddenFileInput}
+              disabled={false}
             />
 
             <AddAuctionImageBox
-              handleFileUploadClick={handleFileUploadClick}
-              hiddenFileInput={hiddenFileInput}
+              onFileChange={handleFileChange}
+              onHiddenFileInputChange={handleHiddenFileInput}
+              disabled={true}
             />
 
             <AddAuctionImageBox
-              handleFileUploadClick={handleFileUploadClick}
-              hiddenFileInput={hiddenFileInput}
+              onFileChange={handleFileChange}
+              onHiddenFileInputChange={handleHiddenFileInput}
+              disabled={true}
             />
           </div>
 

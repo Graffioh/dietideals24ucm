@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,7 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 
 import com.ucm.serverdietideals24.Models.Auction;
 import com.ucm.serverdietideals24.DAO.AuctionDAO;
@@ -262,5 +270,23 @@ public class AuctionController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
         }
+    }
+    
+    // AWS S3 for images
+    @Autowired
+    private AmazonS3 amazonS3;
+
+    @Value("${aws.s3.bucketName}")
+    private String S3bucketName;
+
+    @PostMapping("/upload-img")
+    public ResponseEntity<String> uploadImage(@RequestPart("file") MultipartFile file, @RequestParam String auctionId) throws IOException {
+        String key = "auctions/" + auctionId + "/" + file.getOriginalFilename();
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(file.getSize());
+        amazonS3.putObject(S3bucketName, key, file.getInputStream(), metadata);
+        String imageUrl = "https://" + S3bucketName + ".s3.amazonaws.com/" + key;
+
+        return ResponseEntity.ok(imageUrl);
     }
 }
