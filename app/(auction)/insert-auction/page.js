@@ -7,6 +7,7 @@ import { Button } from "@/components/shadcn-ui/button";
 import { Input } from "@/components/shadcn-ui/input";
 import { Label } from "@/components/shadcn-ui/label";
 import { Textarea } from "@/components/shadcn-ui/textarea";
+import Compressor from "compressorjs";
 
 import ComboboxCategories from "@/components/dietideals24-ui/comboboxCategories";
 import ComboboxAuctions from "@/components/dietideals24-ui/comboboxAuctions.js";
@@ -154,15 +155,20 @@ export default function InsertAuctionPage() {
   }
 
   const handleImageUpload = async (auctionId) => {
+    const compressedFile = await compressImage(file);
+  
     const formData = new FormData();
-    formData.append("file", file);
-
+    formData.append("file", compressedFile);
+  
     try {
-      const response = await fetch(config.apiUrl + "/auctions/upload-img?auctionId=" + auctionId, {
-        method: "POST",
-        body: formData,
-      });
-
+      const response = await fetch(
+        config.apiUrl + "/auctions/upload-img?auctionId=" + auctionId,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+  
       if (response.ok) {
         const imageUrl = await response.text();
         console.log("Image uploaded successfully:", imageUrl);
@@ -173,6 +179,23 @@ export default function InsertAuctionPage() {
     } catch (error) {
       console.error("Error uploading image", error);
     }
+  };
+  
+  const compressImage = async (file) => {
+    return new Promise((resolve, reject) => {
+      new Compressor(file, {
+        quality: 0.6, 
+        success(compressedBlob) {
+          const compressedFile = new File([compressedBlob], file.name, {
+            type: file.type,
+          });
+          resolve(compressedFile);
+        },
+        error(error) {
+          reject(error);
+        },
+      });
+    });
   };
 
   async function onSubmit(event) {

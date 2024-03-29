@@ -5,6 +5,7 @@ import Image from "next/image";
 import AuctionTimer from "./auctionTimer";
 import LoadingSpinner from "./loadingSpinner";
 import config from "@/config";
+import useSWR from "swr";
 
 export default function CardAuction({ isHomepage, isMobile, auction }) {
   function generateDeadline(deadline, time) {
@@ -59,6 +60,20 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
     return updatedAuction.currentOffer;
   }
 
+  const imgFetcher = (url) =>
+    fetch(url)
+      .then((res) => res.blob())
+      .then((imgBlob) => URL.createObjectURL(imgBlob));
+
+  const {
+    data: auctionPicData,
+    error: auctionPicDataError,
+    isLoading: auctionPicDataIsLoading,
+  } = useSWR(
+    config.apiUrl + "/auctions/image?key=" + auction.auctionImages,
+    imgFetcher
+  );
+
   return (
     <>
       {isHomepage && !isMobile ? (
@@ -68,7 +83,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                 <Image
                   alt="card-image"
                   className="mt-4 pb-[5.5em] px-3 rounded-lg flex items-center object-cover"
-                  src={auction.auctionImages === "no-images" ? "https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg": auction.auctionImages}
+                  src={auctionPicData}
                   fill
                 />
               </div>
@@ -117,7 +132,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                 className={`object-cover ${
                   isMobile ? "w-[11.5em] h-36" : "w-56 h-36"
                 }  mt-4 flex items-center`}
-                src={auction.auctionImages === "no-images" ? "https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg": auction.auctionImages}
+                src={auctionPicData ?? "https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"}
                 width={230}
                 height={140}
               />

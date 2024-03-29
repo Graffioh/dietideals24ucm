@@ -56,7 +56,9 @@ export default function AuctionDetailsPage({ searchParams }) {
   } = useSWR(config.apiUrl + "/users/" + searchParams.auctionuserid, fetcher);
 
   const auctionDetailsUser =
-    searchParams.auctionuserid !== currentUser?.id ? userBySearchParams : currentUser;
+    searchParams.auctionuserid !== currentUser?.id
+      ? userBySearchParams
+      : currentUser;
 
   const imgFetcher = (url) =>
     fetch(url)
@@ -69,6 +71,15 @@ export default function AuctionDetailsPage({ searchParams }) {
     isLoading: profilePicDataIsLoading,
   } = useSWR(
     config.apiUrl + "/users/image?key=" + auctionDetailsUser?.profilePicUrl,
+    imgFetcher
+  );
+
+  const {
+    data: auctionPicData,
+    error: auctionPicDataError,
+    isLoading: auctionPicDataIsLoading,
+  } = useSWR(
+    config.apiUrl + "/auctions/image?key=" + currentAuction?.auctionImages,
     imgFetcher
   );
 
@@ -122,11 +133,7 @@ export default function AuctionDetailsPage({ searchParams }) {
           <Image
             alt="auction-image"
             className="rounded-lg mb-2.5 border-2 border-input"
-            src={
-              currentAuction.auctionImages === "no-images"
-                ? "https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
-                : currentAuction.auctionImages
-            }
+            src={auctionPicData}
             width={410}
             height={180}
           />
