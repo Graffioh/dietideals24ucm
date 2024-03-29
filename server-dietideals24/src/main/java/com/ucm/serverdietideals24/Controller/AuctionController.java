@@ -289,9 +289,9 @@ public class AuctionController {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
         amazonS3.putObject(S3bucketName, key, file.getInputStream(), metadata);
-        String imageUrl = "https://" + S3bucketName + ".s3.amazonaws.com/" + key;
+        String imageUrlKey = key;
 
-        return ResponseEntity.ok(imageUrl);
+        return ResponseEntity.ok(imageUrlKey);
     }
 
     @GetMapping("/image")
