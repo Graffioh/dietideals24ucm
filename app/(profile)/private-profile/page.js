@@ -195,7 +195,7 @@ export default function ProfilePage({ searchParams }) {
       setTimeout(() => {
         window.location.href =
           config.apiUrl.replace("/api", "") + "/public-profile";
-      }, 1500);
+      }, 1000);
 
       toast.success("Account updated successfully.", {
         position: "bottom-center",
@@ -216,7 +216,7 @@ export default function ProfilePage({ searchParams }) {
   }
 
   const imgFetcher = (url) =>
-    fetch(url, { next: { revalidate: 1 } })
+    fetch(url)
       .then((res) => res.blob())
       .then((imgBlob) => URL.createObjectURL(imgBlob));
 
@@ -228,7 +228,7 @@ export default function ProfilePage({ searchParams }) {
     config.apiUrl + "/users/image?key=" + currentUser?.profilePicUrl,
     imgFetcher
   );
-
+  
   if (currentUserIsLoading && !searchParams.fromProvider) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -255,7 +255,6 @@ export default function ProfilePage({ searchParams }) {
               }
               alt="@avatar"
             />
-
             <AvatarFallback />
           </Avatar>
         </Button>

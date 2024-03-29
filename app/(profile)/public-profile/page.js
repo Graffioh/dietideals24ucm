@@ -40,9 +40,9 @@ export default function ProfilePage({ searchParams }) {
         : currentUser
       : {}
     : currentUser;
-
+  
   const imgFetcher = (url) =>
-    fetch(url, { next: { revalidate: 1 } })
+    fetch(url)
       .then((res) => res.blob())
       .then((imgBlob) => URL.createObjectURL(imgBlob));
 

@@ -50,16 +50,27 @@ export default function AuctionDetailsPage({ searchParams }) {
   );
 
   const {
-    data: userById,
+    data: userBySearchParams,
     error: userByIdError,
     isLoading: userByIdIsLoading,
-  } = useSWR(config.apiUrl + "/users/" + searchParams.auctionUserId, fetcher);
+  } = useSWR(config.apiUrl + "/users/" + searchParams.auctionuserid, fetcher);
 
-  const auctionDetailsUser = searchParams.auctionUserId
-    ? userById
-    : currentUser?.id;
+  const auctionDetailsUser =
+    searchParams.auctionuserid !== currentUser?.id ? userBySearchParams : currentUser;
 
-  console.log(JSON.stringify(auctionDetailsUser));
+  const imgFetcher = (url) =>
+    fetch(url)
+      .then((res) => res.blob())
+      .then((imgBlob) => URL.createObjectURL(imgBlob));
+
+  const {
+    data: profilePicData,
+    error: profilePicDataError,
+    isLoading: profilePicDataIsLoading,
+  } = useSWR(
+    config.apiUrl + "/users/image?key=" + auctionDetailsUser?.profilePicUrl,
+    imgFetcher
+  );
 
   if (currentAuctionIsLoading || userByIdIsLoading) {
     return (
@@ -72,11 +83,6 @@ export default function AuctionDetailsPage({ searchParams }) {
   const highestOfferUserId = highestOfferFromAuction
     ? highestOfferFromAuction.idUserAccount
     : currentAuction.idUserAccount;
-
-  const timerValue =
-    currentAuction.auctionType != "fixedtime"
-      ? currentAuction.currentTimer
-      : "69:69:69";
 
   function generateDeadline(deadline, time) {
     const deadlineTime = time ? time.split(":") : "";
@@ -160,12 +166,7 @@ export default function AuctionDetailsPage({ searchParams }) {
 
               <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>
                 <Avatar className="h-32 w-32 hover:opacity-90">
-                  <AvatarImage
-                    src={
-                      auctionDetailsUser?.profilePicUrl
-                    }
-                    alt="@avatar"
-                  />
+                  <AvatarImage src={profilePicData} alt="@avatar" />
                   <AvatarFallback />
                 </Avatar>
               </Link>
