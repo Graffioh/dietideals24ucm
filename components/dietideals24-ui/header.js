@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { useState, useEffect } from "react";
+import useSWR from "swr";
 
 import { Button, buttonVariants } from "@/components/shadcn-ui/button";
 import {
@@ -66,6 +67,20 @@ function LoggedSection() {
 function LoggedPartialSection() {
   const { currentUser } = useUserContext();
 
+  const imgFetcher = (url) =>
+    fetch(url, { next: { revalidate: 1 } })
+      .then((res) => res.blob())
+      .then((imgBlob) => URL.createObjectURL(imgBlob));
+
+  const {
+    data: profilePicData,
+    error: profilePicDataError,
+    isLoading: profilePicDataIsLoading,
+  } = useSWR(
+    config.apiUrl + "/users/image?key=" + currentUser?.profilePicUrl,
+    imgFetcher
+  );
+
   return (
     <div className="mr-3 flex justify-between mb-2">
       <NotificationsDropdown />
@@ -74,8 +89,7 @@ function LoggedPartialSection() {
         <Avatar className="h-9 w-9">
           <AvatarImage
             src={
-              currentUser?.profilePicUrl ??
-              "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg"
+              profilePicData
             }
             alt="@avatar"
           />
@@ -89,6 +103,20 @@ function LoggedPartialSection() {
 // Categories, searchbar, create auction, notifications, profile icon
 function LoggedFullSection() {
   const { currentUser } = useUserContext();
+
+  const imgFetcher = (url) =>
+    fetch(url, { next: { revalidate: 1 } })
+      .then((res) => res.blob())
+      .then((imgBlob) => URL.createObjectURL(imgBlob));
+
+  const {
+    data: profilePicData,
+    error: profilePicDataError,
+    isLoading: profilePicDataIsLoading,
+  } = useSWR(
+    config.apiUrl + "/users/image?key=" + currentUser?.profilePicUrl,
+    imgFetcher
+  );
 
   return (
     <>
@@ -117,8 +145,7 @@ function LoggedFullSection() {
           <Avatar className="h-9 w-9">
             <AvatarImage
               src={
-                currentUser?.profilePicUrl ??
-                "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg"
+                profilePicData
               }
               alt="@avatar"
             />

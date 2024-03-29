@@ -13,6 +13,7 @@ import {
 } from "@/components/shadcn-ui/avatar";
 import { hash } from "bcryptjs";
 import { toast } from "sonner";
+import useSWR from "swr";
 
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { PhoneInput } from "@/components/phoneinput/phone-input";
@@ -156,9 +157,9 @@ export default function ProfilePage({ searchParams }) {
 
     const newUserIdFromDate = Date.now();
 
-    const pfpImageUrl = await handleImageUpload(currentUser?.id ?? newUserIdFromDate);
-
-    console.log(pfpImageUrl);
+    const pfpImageUrl = await handleImageUpload(
+      currentUser?.id ?? newUserIdFromDate
+    );
 
     const userInfoFromInputs = {
       id: newUserIdFromDate,
@@ -214,6 +215,20 @@ export default function ProfilePage({ searchParams }) {
     setBirthDate(date);
   }
 
+  const imgFetcher = (url) =>
+    fetch(url, { next: { revalidate: 1 } })
+      .then((res) => res.blob())
+      .then((imgBlob) => URL.createObjectURL(imgBlob));
+
+  const {
+    data: profilePicData,
+    error: profilePicDataError,
+    isLoading: profilePicDataIsLoading,
+  } = useSWR(
+    config.apiUrl + "/users/image?key=" + currentUser?.profilePicUrl,
+    imgFetcher
+  );
+
   if (currentUserIsLoading && !searchParams.fromProvider) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -236,8 +251,7 @@ export default function ProfilePage({ searchParams }) {
             <AvatarImage
               src={
                 imageData ??
-                currentUser?.profilePicUrl ??
-                "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg"
+                profilePicData
               }
               alt="@avatar"
             />
