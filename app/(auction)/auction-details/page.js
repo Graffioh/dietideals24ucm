@@ -133,7 +133,7 @@ export default function AuctionDetailsPage({ searchParams }) {
           <Image
             alt="auction-image"
             className="rounded-lg mb-2.5 border-2 border-input"
-            src={auctionPicData}
+            src={currentAuction.auctionImages !== "no-images" ? auctionPicData : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"}
             width={410}
             height={180}
           />

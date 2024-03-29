@@ -5,7 +5,7 @@ module.exports = nextConfig;
 
 module.exports = {
   images: {
-    domains: ["m.media-amazon.com", "dietideals24-bucket.s3.amazonaws.com"],
+    domains: ["m.media-amazon.com", "dietideals24-bucket.s3.amazonaws.com", "www.frosinonecalcio.com"],
   },
   async rewrites() {
     const isProd = process.env.NODE_ENV === "production";

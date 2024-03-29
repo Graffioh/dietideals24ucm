@@ -83,7 +83,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                 <Image
                   alt="card-image"
                   className="mt-4 pb-[5.5em] px-3 rounded-lg flex items-center object-cover"
-                  src={auctionPicData}
+                  src={auction.auctionImages !== "no-images" ? auctionPicData : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"}
                   fill
                 />
               </div>
@@ -132,7 +132,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                 className={`object-cover ${
                   isMobile ? "w-[11.5em] h-36" : "w-56 h-36"
                 }  mt-4 flex items-center`}
-                src={auctionPicData ?? "https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"}
+                src={auction.auctionImages !== "no-images" ? auctionPicData : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"}
                 width={230}
                 height={140}
               />

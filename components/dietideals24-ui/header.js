@@ -68,7 +68,7 @@ function LoggedPartialSection() {
   const { currentUser } = useUserContext();
 
   const imgFetcher = (url) =>
-    fetch(url, { next: { revalidate: 1 } })
+    fetch(url)
       .then((res) => res.blob())
       .then((imgBlob) => URL.createObjectURL(imgBlob));
 
@@ -105,7 +105,7 @@ function LoggedFullSection() {
   const { currentUser } = useUserContext();
 
   const imgFetcher = (url) =>
-    fetch(url, { next: { revalidate: 1 } })
+    fetch(url)
       .then((res) => res.blob())
       .then((imgBlob) => URL.createObjectURL(imgBlob));
 
