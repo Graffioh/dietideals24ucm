@@ -4,7 +4,11 @@ import { Input } from "@/components/shadcn-ui/input";
 import { Label } from "@/components/shadcn-ui/label";
 import { Textarea } from "@/components/shadcn-ui/textarea";
 import { Button, buttonVariants } from "@/components/shadcn-ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/shadcn-ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/shadcn-ui/avatar";
 import Link from "next/link";
 import Image from "next/image";
 import { useCookies } from "next-client-cookies";
@@ -31,25 +35,44 @@ export default function AuctionDetailsPage({ searchParams }) {
     data: currentAuction,
     error: currentAuctionError,
     isLoading: currentAuctionIsLoading,
-  } = useSWR(
-    config.apiUrl + "/auctions/" + searchParams.id,
-    fetcher,
-    { refreshInterval: 100 }
-  );
+  } = useSWR(config.apiUrl + "/auctions/" + searchParams.id, fetcher, {
+    refreshInterval: 100,
+  });
 
   const {
     data: highestOfferFromAuction,
     error: highestOfferFromAuctionError,
     isLoading: highestOfferFromAuctionIsLoading,
   } = useSWR(
-    config.apiUrl +
-      "/offers/highest-offer/" +
-      searchParams.id,
+    config.apiUrl + "/offers/highest-offer/" + searchParams.id,
     fetcher,
     { refreshInterval: 500 }
   );
 
-  if (currentAuctionIsLoading) {
+  const {
+    data: userBySearchParams,
+    error: userByIdError,
+    isLoading: userByIdIsLoading,
+  } = useSWR(config.apiUrl + "/users/" + searchParams.auctionuserid, fetcher);
+
+  const auctionDetailsUser =
+    searchParams.auctionuserid !== currentUser?.id ? userBySearchParams : currentUser;
+
+  const imgFetcher = (url) =>
+    fetch(url)
+      .then((res) => res.blob())
+      .then((imgBlob) => URL.createObjectURL(imgBlob));
+
+  const {
+    data: profilePicData,
+    error: profilePicDataError,
+    isLoading: profilePicDataIsLoading,
+  } = useSWR(
+    config.apiUrl + "/users/image?key=" + auctionDetailsUser?.profilePicUrl,
+    imgFetcher
+  );
+
+  if (currentAuctionIsLoading || userByIdIsLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <LoadingSpinner />
@@ -60,9 +83,6 @@ export default function AuctionDetailsPage({ searchParams }) {
   const highestOfferUserId = highestOfferFromAuction
     ? highestOfferFromAuction.idUserAccount
     : currentAuction.idUserAccount;
-
-  const timerValue =
-    currentAuction.auctionType != "fixedtime" ? currentAuction.currentTimer : "69:69:69"
 
   function generateDeadline(deadline, time) {
     const deadlineTime = time ? time.split(":") : "";
@@ -102,7 +122,11 @@ export default function AuctionDetailsPage({ searchParams }) {
           <Image
             alt="auction-image"
             className="rounded-lg mb-2.5 border-2 border-input"
-            src={currentAuction.auctionImages === "no-images" ? "https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg": currentAuction.auctionImages}
+            src={
+              currentAuction.auctionImages === "no-images"
+                ? "https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
+                : currentAuction.auctionImages
+            }
             width={410}
             height={180}
           />
@@ -135,15 +159,14 @@ export default function AuctionDetailsPage({ searchParams }) {
           <div className="px-10 bg-stone-200 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
             <div className="flex flex-col justify-center items-center">
               <Label className="flex text-base mb-4 bg-white rounded-b-lg pb-1 px-2 border border-input">
-                {currentAuction.auctionType.charAt(0).toUpperCase() + currentAuction.auctionType.slice(1)} Auction
+                {currentAuction.auctionType.charAt(0).toUpperCase() +
+                  currentAuction.auctionType.slice(1)}{" "}
+                Auction
               </Label>
 
               <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>
                 <Avatar className="h-32 w-32 hover:opacity-90">
-                  <AvatarImage
-                    src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
-                    alt="@avatar"
-                  />
+                  <AvatarImage src={profilePicData} alt="@avatar" />
                   <AvatarFallback />
                 </Avatar>
               </Link>
@@ -156,7 +179,9 @@ export default function AuctionDetailsPage({ searchParams }) {
                     <Link href={"/public-profile?id=" + highestOfferUserId}>
                       <Avatar className="h-8 w-8 mt-0.5 mr-2.5 hover:opacity-90">
                         <AvatarImage
-                          src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
+                          src={
+                            "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg"
+                          }
                           alt="@avatar"
                         />
                         <AvatarFallback />
