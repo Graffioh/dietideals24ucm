@@ -68,7 +68,7 @@ function LoggedPartialSection() {
   const { currentUser } = useUserContext();
 
   const imgFetcher = (url) =>
-    fetch(url, { next: { revalidate: 1 } })
+    fetch(url)
       .then((res) => res.blob())
       .then((imgBlob) => URL.createObjectURL(imgBlob));
 
@@ -78,7 +78,13 @@ function LoggedPartialSection() {
     isLoading: profilePicDataIsLoading,
   } = useSWR(
     config.apiUrl + "/users/image?key=" + currentUser?.profilePicUrl,
-    imgFetcher
+    imgFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      dedupingInterval: 86400000, // 24 hours
+      shouldRetryOnError: false,
+    }
   );
 
   return (
@@ -87,12 +93,7 @@ function LoggedPartialSection() {
 
       <Link href="/public-profile" className="mt-0.5">
         <Avatar className="h-9 w-9">
-          <AvatarImage
-            src={
-              profilePicData
-            }
-            alt="@avatar"
-          />
+          <AvatarImage src={profilePicData} alt="@avatar" />
           <AvatarFallback />
         </Avatar>
       </Link>
@@ -105,7 +106,7 @@ function LoggedFullSection() {
   const { currentUser } = useUserContext();
 
   const imgFetcher = (url) =>
-    fetch(url, { next: { revalidate: 1 } })
+    fetch(url)
       .then((res) => res.blob())
       .then((imgBlob) => URL.createObjectURL(imgBlob));
 
@@ -115,7 +116,13 @@ function LoggedFullSection() {
     isLoading: profilePicDataIsLoading,
   } = useSWR(
     config.apiUrl + "/users/image?key=" + currentUser?.profilePicUrl,
-    imgFetcher
+    imgFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      dedupingInterval: 86400000, // 24 hours
+      shouldRetryOnError: false,
+    }
   );
 
   return (
@@ -143,12 +150,7 @@ function LoggedFullSection() {
 
         <Link href="/public-profile" className="mt-0.5 flex justify-center">
           <Avatar className="h-9 w-9">
-            <AvatarImage
-              src={
-                profilePicData
-              }
-              alt="@avatar"
-            />
+            <AvatarImage src={profilePicData} alt="@avatar" />
             <AvatarFallback />
           </Avatar>
         </Link>

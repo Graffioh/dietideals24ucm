@@ -149,42 +149,15 @@ export default function InsertAuctionPage() {
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
-  
+
   const handleHiddenFileInput = () => {
     hiddenFileInput.current.click();
-  }
-
-  const handleImageUpload = async (auctionId) => {
-    const compressedFile = await compressImage(file);
-  
-    const formData = new FormData();
-    formData.append("file", compressedFile);
-  
-    try {
-      const response = await fetch(
-        config.apiUrl + "/auctions/upload-img?auctionId=" + auctionId,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-  
-      if (response.ok) {
-        const imageUrl = await response.text();
-        console.log("Image uploaded successfully:", imageUrl);
-        return imageUrl;
-      } else {
-        console.error("Error uploading image");
-      }
-    } catch (error) {
-      console.error("Error uploading image", error);
-    }
   };
-  
+
   const compressImage = async (file) => {
     return new Promise((resolve, reject) => {
       new Compressor(file, {
-        quality: 0.6, 
+        quality: 0.6,
         success(compressedBlob) {
           const compressedFile = new File([compressedBlob], file.name, {
             type: file.type,
@@ -198,12 +171,46 @@ export default function InsertAuctionPage() {
     });
   };
 
+  const handleImageUpload = async (auctionId) => {
+    const compressedFile = await compressImage(file);
+
+    const formData = new FormData();
+    formData.append("file", compressedFile);
+
+    if (compressedFile.size < 512000) {
+      try {
+        const response = await fetch(
+          config.apiUrl + "/auctions/upload-img?auctionId=" + auctionId,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          const imageUrl = await response.text();
+          console.log("Image uploaded successfully:", imageUrl);
+          return imageUrl;
+        } else {
+          toast.error("Error uploading image");
+        }
+      } catch (error) {
+        toast.error("Error uploading image", error);
+      }
+    }
+  };
+
   async function onSubmit(event) {
     event.preventDefault();
 
     const areFixedTimeInputsValid = validateFixedTimeAuctionInputs();
     const areEnglishInputsValid = validateEnglishAuctionInputs();
     const areDescendingInputsValid = validateDescendingAuctionInputs();
+
+    if (file.size > 512000) {
+      toast.error("Image size must be less than 500KB");
+      return;
+    }
 
     if (
       !areEnglishInputsValid &&
@@ -225,7 +232,7 @@ export default function InsertAuctionPage() {
         : 0;
 
     const newAuctionIdFromDate = Date.now();
-      
+
     const imageUrl = await handleImageUpload(newAuctionIdFromDate);
 
     const auctionFromInputs = {

@@ -22,6 +22,7 @@ import { useUserContext } from "@/app/providers/userProvider";
 import LoadingSpinner from "@/components/dietideals24-ui/loadingSpinner";
 import AuctionTimer from "@/components/dietideals24-ui/auctionTimer";
 import config from "@/config";
+import useSWRImmutable from 'swr/immutable'
 
 export default function AuctionDetailsPage({ searchParams }) {
   const authToken = useCookies().get("auth-token");
@@ -78,7 +79,7 @@ export default function AuctionDetailsPage({ searchParams }) {
     data: auctionPicData,
     error: auctionPicDataError,
     isLoading: auctionPicDataIsLoading,
-  } = useSWR(
+  } = useSWRImmutable(
     config.apiUrl + "/auctions/image?key=" + currentAuction?.auctionImages,
     imgFetcher
   );
@@ -133,7 +134,7 @@ export default function AuctionDetailsPage({ searchParams }) {
           <Image
             alt="auction-image"
             className="rounded-lg mb-2.5 border-2 border-input"
-            src={auctionPicData}
+            src={currentAuction.auctionImages !== "no-images" ? auctionPicData : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"}
             width={410}
             height={180}
           />
