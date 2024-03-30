@@ -22,7 +22,8 @@ import { useUserContext } from "@/app/providers/userProvider";
 import LoadingSpinner from "@/components/dietideals24-ui/loadingSpinner";
 import AuctionTimer from "@/components/dietideals24-ui/auctionTimer";
 import config from "@/config";
-import useSWRImmutable from 'swr/immutable'
+import useSWRImmutable from "swr/immutable";
+import { useState, useEffect } from "react";
 
 export default function AuctionDetailsPage({ searchParams }) {
   const authToken = useCookies().get("auth-token");
@@ -37,8 +38,20 @@ export default function AuctionDetailsPage({ searchParams }) {
     error: currentAuctionError,
     isLoading: currentAuctionIsLoading,
   } = useSWR(config.apiUrl + "/auctions/" + searchParams.id, fetcher, {
-    refreshInterval: 100,
+    refreshInterval: 500,
   });
+
+  const [currentOffer, setCurrentOffer] = useState(null);
+
+  function handleCurrentOffer(newCurrentOffer) {
+    setCurrentOffer(newCurrentOffer);
+  }
+
+  useEffect(() => {
+    if (currentAuction) {
+      setCurrentOffer(currentAuction.currentOffer);
+    }
+  }, [currentAuction]);
 
   const {
     data: highestOfferFromAuction,
@@ -72,7 +85,13 @@ export default function AuctionDetailsPage({ searchParams }) {
     isLoading: profilePicDataIsLoading,
   } = useSWR(
     config.apiUrl + "/users/image?key=" + auctionDetailsUser?.profilePicUrl,
-    imgFetcher
+    imgFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      dedupingInterval: 86400000, // 24 hours
+      shouldRetryOnError: false,
+    }
   );
 
   const {
@@ -134,7 +153,11 @@ export default function AuctionDetailsPage({ searchParams }) {
           <Image
             alt="auction-image"
             className="rounded-lg mb-2.5 border-2 border-input"
-            src={currentAuction.auctionImages !== "no-images" ? auctionPicData : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"}
+            src={
+              currentAuction.auctionImages !== "no-images"
+                ? auctionPicData
+                : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"
+            }
             width={410}
             height={180}
           />
@@ -198,8 +221,8 @@ export default function AuctionDetailsPage({ searchParams }) {
                     <Input
                       className="h-9 bg-white mb-4 md:mb-0"
                       type="text"
-                      placeholder="Placeholder"
-                      defaultValue={currentAuction.currentOffer}
+                      placeholder="No offer yet"
+                      defaultValue={currentOffer}
                       readOnly
                     />
                   </div>
@@ -285,7 +308,10 @@ export default function AuctionDetailsPage({ searchParams }) {
                   </Link>
                 ) : currentUser &&
                   searchParams.auctionuserid != currentUser.id ? (
-                  <PlaceOfferDialog auction={currentAuction} />
+                  <PlaceOfferDialog
+                    auction={currentAuction}
+                    onCurrentOfferChange={handleCurrentOffer}
+                  />
                 ) : (
                   <div></div>
                 )}

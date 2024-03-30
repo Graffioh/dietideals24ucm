@@ -165,11 +165,11 @@ export default function ProfilePage({ searchParams }) {
             type: file.type,
           });
           resolve(compressedFile);
-        },
-        error(error) {
-          reject(error);
-        },
-      });
+          // },
+          error(error) {
+            reject(error);
+          },
+        });
     });
   };
 
@@ -346,13 +346,13 @@ export default function ProfilePage({ searchParams }) {
                   searchParams.fromProvider === "github"
                     ? searchParams.username
                     : currentUser
-                    ? currentUser.username
-                    : ""
+                      ? currentUser.username
+                      : ""
                 }
                 required
                 readOnly={
                   searchParams.fromProvider === "github" ||
-                  provider === "github"
+                    provider === "github"
                     ? true
                     : false
                 }
@@ -372,7 +372,7 @@ export default function ProfilePage({ searchParams }) {
                 required
                 readOnly={
                   searchParams.fromProvider === "google" ||
-                  provider === "google"
+                    provider === "google"
                     ? true
                     : false
                 }

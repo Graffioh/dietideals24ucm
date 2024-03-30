@@ -16,8 +16,9 @@ import { Input } from "@/components/shadcn-ui/input";
 import { toast } from "sonner";
 import { useUserContext } from "../../app/providers/userProvider";
 import config from "@/config";
+import { mutate } from "swr";
 
-export default function PlaceOfferDialog({ auction }) {
+export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
   const [isDialogOpen, setDialogOpen] = useState(false);
 
   const { currentUser } = useUserContext();
@@ -52,10 +53,10 @@ export default function PlaceOfferDialog({ auction }) {
           auction.currentOffer + auction.raiseThreshold <= offerAmount)
       ) {
         toast.success("Your offer has been placed correctly.");
-
-        placeOfferButtonRef.current.style.opacity = "0.5";
-        placeOfferButtonRef.current.disabled = true;
-        placeOfferButtonRef.current.innerText = "Refresh the page";
+        onCurrentOfferChange(offerAmount);
+        
+        mutate("/auctions/" + auction.id);
+        mutate(config.apiUrl + "/offers/highest-offer/" + auction.id);
 
         await fetch(config.apiUrl + "/offers/insert", {
           method: "POST",
