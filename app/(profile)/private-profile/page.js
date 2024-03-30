@@ -165,7 +165,7 @@ export default function ProfilePage({ searchParams }) {
             type: file.type,
           });
           resolve(compressedFile);
-          // },
+          },
           error(error) {
             reject(error);
           },

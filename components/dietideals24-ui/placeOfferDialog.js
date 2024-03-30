@@ -54,7 +54,7 @@ export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
       ) {
         toast.success("Your offer has been placed correctly.");
         onCurrentOfferChange(offerAmount);
-        
+
         mutate("/auctions/" + auction.id);
         mutate(config.apiUrl + "/offers/highest-offer/" + auction.id);
 
