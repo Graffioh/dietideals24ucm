@@ -40,7 +40,7 @@ export default function ProfilePage({ searchParams }) {
         : currentUser
       : {}
     : currentUser;
-  
+
   const imgFetcher = (url) =>
     fetch(url)
       .then((res) => res.blob())
@@ -52,7 +52,13 @@ export default function ProfilePage({ searchParams }) {
     isLoading: profilePicDataIsLoading,
   } = useSWR(
     config.apiUrl + "/users/image?key=" + publicProfileUser?.profilePicUrl,
-    imgFetcher
+    imgFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      dedupingInterval: 86400000, // 24 hours
+      shouldRetryOnError: false,
+    }
   );
 
   if ((searchParams.id && userByIdIsLoading) || !publicProfileUser) {
@@ -71,12 +77,7 @@ export default function ProfilePage({ searchParams }) {
             <div className="flex">
               <div className="mt-2 mr-4 md:mr-10">
                 <Avatar className="h-32 w-32">
-                  <AvatarImage
-                    src={
-                      profilePicData
-                    }
-                    alt="@avatar"
-                  />
+                  <AvatarImage src={profilePicData} alt="@avatar" />
                   <AvatarFallback />
                 </Avatar>
               </div>

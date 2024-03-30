@@ -22,6 +22,7 @@ import { useUserContext } from "@/app/providers/userProvider";
 import LoadingSpinner from "@/components/dietideals24-ui/loadingSpinner";
 import AuctionTimer from "@/components/dietideals24-ui/auctionTimer";
 import config from "@/config";
+import useSWRImmutable from 'swr/immutable'
 
 export default function AuctionDetailsPage({ searchParams }) {
   const authToken = useCookies().get("auth-token");
@@ -78,7 +79,7 @@ export default function AuctionDetailsPage({ searchParams }) {
     data: auctionPicData,
     error: auctionPicDataError,
     isLoading: auctionPicDataIsLoading,
-  } = useSWR(
+  } = useSWRImmutable(
     config.apiUrl + "/auctions/image?key=" + currentAuction?.auctionImages,
     imgFetcher
   );

@@ -6,6 +6,7 @@ import AuctionTimer from "./auctionTimer";
 import LoadingSpinner from "./loadingSpinner";
 import config from "@/config";
 import useSWR from "swr";
+import useSWRImmutable from 'swr/immutable'
 
 export default function CardAuction({ isHomepage, isMobile, auction }) {
   function generateDeadline(deadline, time) {
@@ -69,7 +70,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
     data: auctionPicData,
     error: auctionPicDataError,
     isLoading: auctionPicDataIsLoading,
-  } = useSWR(
+  } = useSWRImmutable(
     config.apiUrl + "/auctions/image?key=" + auction.auctionImages,
     imgFetcher
   );

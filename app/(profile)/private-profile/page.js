@@ -14,6 +14,7 @@ import {
 import { hash } from "bcryptjs";
 import { toast } from "sonner";
 import useSWR from "swr";
+import { mutate } from "swr";
 
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { PhoneInput } from "@/components/phoneinput/phone-input";
@@ -23,6 +24,7 @@ import CancelAlertDialog from "@/components/dietideals24-ui/cancelAlertDialog";
 import { useUserContext } from "@/app/providers/userProvider";
 import LoadingSpinner from "@/components/dietideals24-ui/loadingSpinner";
 import config from "@/config";
+import Compressor from "compressorjs";
 
 export default function ProfilePage({ searchParams }) {
   const [birthDate, setBirthDate] = useState("");
@@ -127,35 +129,37 @@ export default function ProfilePage({ searchParams }) {
 
   const handleImageUpload = async (auctionId) => {
     const compressedFile = await compressImage(file);
-  
+
     const formData = new FormData();
     formData.append("file", compressedFile);
-  
-    try {
-      const response = await fetch(
-        config.apiUrl + "/auctions/upload-img?auctionId=" + auctionId,
-        {
-          method: "POST",
-          body: formData,
+
+    if (compressedFile.size < 512000) {
+      try {
+        const response = await fetch(
+          config.apiUrl + "/auctions/upload-img?auctionId=" + auctionId,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          const imageUrl = await response.text();
+          console.log("Image uploaded successfully:", imageUrl);
+          return imageUrl;
+        } else {
+          console.error("Error uploading image");
         }
-      );
-  
-      if (response.ok) {
-        const imageUrl = await response.text();
-        console.log("Image uploaded successfully:", imageUrl);
-        return imageUrl;
-      } else {
-        console.error("Error uploading image");
+      } catch (error) {
+        console.error("Error uploading image", error);
       }
-    } catch (error) {
-      console.error("Error uploading image", error);
     }
   };
-  
+
   const compressImage = async (file) => {
     return new Promise((resolve, reject) => {
       new Compressor(file, {
-        quality: 0.6, 
+        quality: 0.6,
         success(compressedBlob) {
           const compressedFile = new File([compressedBlob], file.name, {
             type: file.type,
@@ -194,6 +198,11 @@ export default function ProfilePage({ searchParams }) {
       profilePicUrl: pfpImageUrl ?? "no-pfp",
     };
 
+    if (file.size > 512000) {
+      toast.error("Image size must be less than 500KB");
+      return;
+    }
+
     if (
       phone !== "" &&
       !isValidPhoneNumber(phone) &&
@@ -210,6 +219,8 @@ export default function ProfilePage({ searchParams }) {
         body: JSON.stringify(userInfoFromInputs),
         headers: { "Content-Type": "application/json" },
       });
+
+      mutate("/users/image?key=" + currentUser.profilePicUrl)
 
       setTimeout(() => {
         window.location.href =
@@ -245,9 +256,15 @@ export default function ProfilePage({ searchParams }) {
     isLoading: profilePicDataIsLoading,
   } = useSWR(
     config.apiUrl + "/users/image?key=" + currentUser?.profilePicUrl,
-    imgFetcher
+    imgFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      dedupingInterval: 86400000, // 24 hours
+      shouldRetryOnError: false,
+    }
   );
-  
+
   if (currentUserIsLoading && !searchParams.fromProvider) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -267,13 +284,7 @@ export default function ProfilePage({ searchParams }) {
           }}
         >
           <Avatar className="h-32 w-32">
-            <AvatarImage
-              src={
-                imageData ??
-                profilePicData
-              }
-              alt="@avatar"
-            />
+            <AvatarImage src={imageData ?? profilePicData} alt="@avatar" />
             <AvatarFallback />
           </Avatar>
         </Button>
