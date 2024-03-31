@@ -1,10 +1,11 @@
 package com.ucm.serverdietideals24.Util;
 
+import java.util.Date;
 import java.util.regex.Pattern;
 
 import com.ucm.serverdietideals24.Models.UserAccount;
 
-public class UserAccountRegistrationValidator {
+public class UserAccountRegistrationValidatorUtil {
 
     private static final Pattern VALID_NAME_PATTERN = Pattern.compile("^[a-zA-Z\\s]+$");
     private static final Pattern VALID_EMAIL_PATTERN = Pattern
@@ -28,11 +29,18 @@ public class UserAccountRegistrationValidator {
         return true;
     }
 
+    private static boolean isBirthdateValid(Date birthDate) {
+        Date currentDate = new Date();
+        return birthDate.before(currentDate);
+    }
+
     public boolean isUserValidForRegistration(UserAccount user) {
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         String email = user.getEmail();
         String username = user.getUsername();
+        Date birthDate = user.getBirthDate();
+        // Can't test the password because it's hashed
 
         if (!isValidName(firstName) || !isValidName(lastName)) {
             return false;
@@ -43,6 +51,10 @@ public class UserAccountRegistrationValidator {
         }
 
         if (!isUsernameValid(username)) {
+            return false;
+        }
+
+        if (!isBirthdateValid(birthDate)) {
             return false;
         }
 

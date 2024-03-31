@@ -32,7 +32,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.util.IOUtils;
 import com.ucm.serverdietideals24.DAO.UserAccountDAO;
 import com.ucm.serverdietideals24.Models.UserAccount;
-import com.ucm.serverdietideals24.Util.UserAccountRegistrationValidator;
+import com.ucm.serverdietideals24.Util.UserAccountRegistrationValidatorUtil;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:3000", "https://dietideals24.vercel.app",
@@ -89,7 +89,7 @@ public class UserAccountController {
 
     @PostMapping("/register")
     public ResponseEntity<UserAccount> createUserAccount(@RequestBody UserAccount entity) {
-        UserAccountRegistrationValidator userValidator = new UserAccountRegistrationValidator();
+        UserAccountRegistrationValidatorUtil userValidator = new UserAccountRegistrationValidatorUtil();
 
         try {
             if(userValidator.isUserValidForRegistration(entity)) {
