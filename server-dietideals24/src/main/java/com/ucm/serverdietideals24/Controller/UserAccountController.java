@@ -2,6 +2,7 @@ package com.ucm.serverdietideals24.Controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.util.IOUtils;
 import com.ucm.serverdietideals24.DAO.UserAccountDAO;
 import com.ucm.serverdietideals24.Models.UserAccount;
+import com.ucm.serverdietideals24.Util.UserAccountRegistrationValidator;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:3000", "https://dietideals24.vercel.app",
@@ -87,9 +89,15 @@ public class UserAccountController {
 
     @PostMapping("/register")
     public ResponseEntity<UserAccount> createUserAccount(@RequestBody UserAccount entity) {
+        UserAccountRegistrationValidator userValidator = new UserAccountRegistrationValidator();
+
         try {
-            userAccountDAO.create(entity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(entity);
+            if(userValidator.isUserValidForRegistration(entity)) {
+                userAccountDAO.create(entity);
+                return ResponseEntity.status(HttpStatus.CREATED).body(entity);
+            } else {
+                throw new InvalidParameterException();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserAccount());

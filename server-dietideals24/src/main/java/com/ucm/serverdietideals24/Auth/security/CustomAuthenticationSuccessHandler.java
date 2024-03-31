@@ -11,8 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.ucm.serverdietideals24.Auth.util.JwtUtil;
 import com.ucm.serverdietideals24.Models.UserAccount;
+import com.ucm.serverdietideals24.Util.JwtUtil;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
