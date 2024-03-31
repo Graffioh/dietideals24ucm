@@ -53,6 +53,7 @@ export default function ProfilePage({ searchParams }) {
         birthDate: user.birthDate ? user.birthDate : new Date(),
         email: user.email,
         provider: searchParams.fromProvider,
+        profilePicUrl: user.profilePicUrl
       };
 
       try {
@@ -127,7 +128,7 @@ export default function ProfilePage({ searchParams }) {
     hiddenFileInput.current.click();
   };
 
-  const handleImageUpload = async (auctionId) => {
+  const handleImageUpload = async (userId) => {
     const compressedFile = await compressImage(file);
 
     const formData = new FormData();
@@ -136,7 +137,7 @@ export default function ProfilePage({ searchParams }) {
     if (compressedFile.size < 512000) {
       try {
         const response = await fetch(
-          config.apiUrl + "/auctions/upload-img?auctionId=" + auctionId,
+          config.apiUrl + "/users/upload-img?userId=" + userId,
           {
             method: "POST",
             body: formData,
@@ -165,11 +166,11 @@ export default function ProfilePage({ searchParams }) {
             type: file.type,
           });
           resolve(compressedFile);
-          },
-          error(error) {
-            reject(error);
-          },
-        });
+        },
+        error(error) {
+          reject(error);
+        },
+      });
     });
   };
 
@@ -198,6 +199,8 @@ export default function ProfilePage({ searchParams }) {
       profilePicUrl: pfpImageUrl ?? "no-pfp",
     };
 
+    console.log(userInfoFromInputs);
+
     if (file.size > 512000) {
       toast.error("Image size must be less than 500KB");
       return;
@@ -220,7 +223,7 @@ export default function ProfilePage({ searchParams }) {
         headers: { "Content-Type": "application/json" },
       });
 
-      mutate("/users/image?key=" + currentUser.profilePicUrl)
+      mutate("/users/image?key=" + currentUser.profilePicUrl);
 
       setTimeout(() => {
         window.location.href =
@@ -346,13 +349,13 @@ export default function ProfilePage({ searchParams }) {
                   searchParams.fromProvider === "github"
                     ? searchParams.username
                     : currentUser
-                      ? currentUser.username
-                      : ""
+                    ? currentUser.username
+                    : ""
                 }
                 required
                 readOnly={
                   searchParams.fromProvider === "github" ||
-                    provider === "github"
+                  provider === "github"
                     ? true
                     : false
                 }
@@ -372,7 +375,7 @@ export default function ProfilePage({ searchParams }) {
                 required
                 readOnly={
                   searchParams.fromProvider === "google" ||
-                    provider === "google"
+                  provider === "google"
                     ? true
                     : false
                 }
