@@ -134,10 +134,7 @@ export default function ProfilePage({ searchParams }) {
     const formData = new FormData();
     formData.append("file", compressedFile);
 
-    console.log(compressedFile);
-
     if (compressedFile && compressedFile.size < 1500000) {
-      console.log("YOOO");
       try {
         const response = await fetch(
           config.apiUrl + "/users/upload-img?userId=" + userId,
