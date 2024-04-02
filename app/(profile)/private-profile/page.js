@@ -53,7 +53,7 @@ export default function ProfilePage({ searchParams }) {
         birthDate: user.birthDate ? user.birthDate : new Date(),
         email: user.email,
         provider: searchParams.fromProvider,
-        profilePicUrl: user.profilePicUrl
+        profilePicUrl: user.profilePicUrl,
       };
 
       try {
@@ -134,7 +134,10 @@ export default function ProfilePage({ searchParams }) {
     const formData = new FormData();
     formData.append("file", compressedFile);
 
-    if (compressedFile.size < 1500000) {
+    console.log(compressedFile);
+
+    if (compressedFile && compressedFile.size < 1500000) {
+      console.log("YOOO");
       try {
         const response = await fetch(
           config.apiUrl + "/users/upload-img?userId=" + userId,
@@ -158,20 +161,22 @@ export default function ProfilePage({ searchParams }) {
   };
 
   const compressImage = async (file) => {
-    return new Promise((resolve, reject) => {
-      new Compressor(file, {
-        quality: 0.6,
-        success(compressedBlob) {
-          const compressedFile = new File([compressedBlob], file.name, {
-            type: file.type,
-          });
-          resolve(compressedFile);
-        },
-        error(error) {
-          reject(error);
-        },
+    if (file) {
+      return new Promise((resolve, reject) => {
+        new Compressor(file, {
+          quality: 0.6,
+          success(compressedBlob) {
+            const compressedFile = new File([compressedBlob], file.name, {
+              type: file.type,
+            });
+            resolve(compressedFile);
+          },
+          error(error) {
+            reject(error);
+          },
+        });
       });
-    });
+    }
   };
 
   async function onSubmit(event) {
@@ -181,9 +186,10 @@ export default function ProfilePage({ searchParams }) {
 
     const newUserIdFromDate = Date.now();
 
-    const pfpImageUrl = await handleImageUpload(
-      currentUser?.id ?? newUserIdFromDate
-    );
+    const pfpImageUrl =
+      !file && currentUser
+        ? currentUser.profilePicUrl
+        : await handleImageUpload(currentUser?.id ?? newUserIdFromDate);
 
     const userInfoFromInputs = {
       id: newUserIdFromDate,
@@ -199,9 +205,7 @@ export default function ProfilePage({ searchParams }) {
       profilePicUrl: pfpImageUrl ?? "no-pfp",
     };
 
-    console.log(userInfoFromInputs);
-
-    if (file.size > 1500000) {
+    if (file && file.size > 1500000) {
       toast.error("Image size must be less than 1,5MB");
       return;
     }
