@@ -134,7 +134,7 @@ export default function ProfilePage({ searchParams }) {
     const formData = new FormData();
     formData.append("file", compressedFile);
 
-    if (compressedFile.size < 512000) {
+    if (compressedFile.size < 1500000) {
       try {
         const response = await fetch(
           config.apiUrl + "/users/upload-img?userId=" + userId,
@@ -201,8 +201,8 @@ export default function ProfilePage({ searchParams }) {
 
     console.log(userInfoFromInputs);
 
-    if (file.size > 512000) {
-      toast.error("Image size must be less than 500KB");
+    if (file.size > 1500000) {
+      toast.error("Image size must be less than 1,5MB");
       return;
     }
 
