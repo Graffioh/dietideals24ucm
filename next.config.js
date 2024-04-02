@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-module.exports = nextConfig;
-
-module.exports = {
+const nextConfig = {
   images: {
     domains: ["m.media-amazon.com", "dietideals24-bucket.s3.amazonaws.com", "www.frosinonecalcio.com"],
   },
@@ -28,3 +24,5 @@ module.exports = {
     ];
   },
 };
+
+module.exports = nextConfig;
