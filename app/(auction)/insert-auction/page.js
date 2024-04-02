@@ -177,7 +177,7 @@ export default function InsertAuctionPage() {
     const formData = new FormData();
     formData.append("file", compressedFile);
 
-    if (compressedFile.size < 1500000) {
+    if (compressedFile && compressedFile.size < 1500000) {
       try {
         const response = await fetch(
           config.apiUrl + "/auctions/upload-img?auctionId=" + auctionId,
@@ -207,7 +207,7 @@ export default function InsertAuctionPage() {
     const areEnglishInputsValid = validateEnglishAuctionInputs();
     const areDescendingInputsValid = validateDescendingAuctionInputs();
 
-    if (file.size > 1500000) {
+    if (file && file.size > 1500000) {
       toast.error("Image size must be less than 1,5MB");
       return;
     }
@@ -233,7 +233,7 @@ export default function InsertAuctionPage() {
 
     const newAuctionIdFromDate = Date.now();
 
-    const imageUrl = await handleImageUpload(newAuctionIdFromDate);
+    const imageUrl =  file ? await handleImageUpload(newAuctionIdFromDate) : "no-images"
 
     const auctionFromInputs = {
       id: newAuctionIdFromDate,
@@ -244,7 +244,7 @@ export default function InsertAuctionPage() {
       auctionType: auctionType,
       auctionCategory: category,
       idUserAccount: currentUser.id,
-      auctionImages: imageUrl ?? "no-images",
+      auctionImages: imageUrl,
       offers: [],
       startPrice: startPrice,
       raiseThreshold: raiseThreshold,
