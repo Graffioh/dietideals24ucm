@@ -4,8 +4,13 @@ import { Textarea } from "@/components/shadcn-ui/textarea";
 import Link from "next/link";
 import { Button } from "@/components/shadcn-ui/button";
 import { Pencil1Icon } from "@radix-ui/react-icons";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/shadcn-ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/shadcn-ui/avatar";
 import useSWR from "swr";
+import { useState } from "react";
 
 // import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
 import AuctionsContainerPublicProfile from "@/components/dietideals24-ui/auctionsContainerPublicProfile";
@@ -16,7 +21,7 @@ import config from "@/config";
 
 export default function ProfilePage({ searchParams }) {
   const { currentUser } = useUserContext();
-  
+
   const fetcher = (url) =>
     fetch(url, { next: { revalidate: 1 } }).then((res) => res.json());
 
@@ -24,11 +29,8 @@ export default function ProfilePage({ searchParams }) {
     data: userById,
     error: userByIdError,
     isLoading: userByIdIsLoading,
-  } = useSWR(
-    config.apiUrl + "/users/" + searchParams.id,
-    fetcher
-  );
-  
+  } = useSWR(config.apiUrl + "/users/" + searchParams.id, fetcher);
+
   // if searchParams is not present or if searchParams.id == currentUser.id,
   //   then display currentUser, otherwise display the queried user by id
   const publicProfileUser = searchParams.id
@@ -39,7 +41,27 @@ export default function ProfilePage({ searchParams }) {
       : {}
     : currentUser;
 
-  if(searchParams.id && userByIdIsLoading || !publicProfileUser) {
+  const imgFetcher = (url) =>
+    fetch(url)
+      .then((res) => res.blob())
+      .then((imgBlob) => URL.createObjectURL(imgBlob));
+
+  const {
+    data: profilePicData,
+    error: profilePicDataError,
+    isLoading: profilePicDataIsLoading,
+  } = useSWR(
+    config.apiUrl + "/users/image?key=" + publicProfileUser?.profilePicUrl,
+    imgFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      dedupingInterval: 86400000, // 24 hours
+      shouldRetryOnError: false,
+    }
+  );
+
+  if ((searchParams.id && userByIdIsLoading) || !publicProfileUser) {
     return (
       <div className="flex h-screen items-center justify-center">
         <LoadingSpinner />
@@ -55,10 +77,7 @@ export default function ProfilePage({ searchParams }) {
             <div className="flex">
               <div className="mt-2 mr-4 md:mr-10">
                 <Avatar className="h-32 w-32">
-                  <AvatarImage
-                    src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
-                    alt="@avatar"
-                  />
+                  <AvatarImage src={profilePicData} alt="@avatar" />
                   <AvatarFallback />
                 </Avatar>
               </div>
@@ -68,7 +87,7 @@ export default function ProfilePage({ searchParams }) {
                     {publicProfileUser ? publicProfileUser.username : "none"}
                   </h1>
 
-                  {publicProfileUser.id === currentUser.id ? (
+                  {publicProfileUser?.id === currentUser?.id ? (
                     <Link href="/private-profile?type=update">
                       <Button
                         variant="ghost"

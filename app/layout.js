@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
           <UserProvider>
             <AuctionFilterProvider>
               <main className="flex-1">{children}</main>
-              <Toaster />
+              <Toaster richColors />
             </AuctionFilterProvider>
           </UserProvider>
         </CookiesProvider>

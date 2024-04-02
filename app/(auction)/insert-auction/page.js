@@ -7,6 +7,7 @@ import { Button } from "@/components/shadcn-ui/button";
 import { Input } from "@/components/shadcn-ui/input";
 import { Label } from "@/components/shadcn-ui/label";
 import { Textarea } from "@/components/shadcn-ui/textarea";
+import Compressor from "compressorjs";
 
 import ComboboxCategories from "@/components/dietideals24-ui/comboboxCategories";
 import ComboboxAuctions from "@/components/dietideals24-ui/comboboxAuctions.js";
@@ -104,7 +105,8 @@ export default function InsertAuctionPage() {
   // ***************************************
   const [decrementAmount, setDecrementAmount] = useState("");
   const [descendingMinimumPrice, setDescendingMinimumPrice] = useState("");
-  const [isBaseDecrementTimerValid, setIsBaseDecrementTimerValid] = useState(true);
+  const [isBaseDecrementTimerValid, setIsBaseDecrementTimerValid] =
+    useState(true);
 
   function handleDecrementAmount(decrementAmount) {
     setDecrementAmount(decrementAmount);
@@ -119,12 +121,12 @@ export default function InsertAuctionPage() {
   }
 
   function validateDescendingAuctionInputs() {
-    const isTimerValid = baseTimer && baseTimer.length !== 0 ? true : false
-    
-    if(!isTimerValid) {
-      setIsBaseDecrementTimerValid(false)
+    const isTimerValid = baseTimer && baseTimer.length !== 0 ? true : false;
+
+    if (!isTimerValid) {
+      setIsBaseDecrementTimerValid(false);
     } else {
-      setIsBaseDecrementTimerValid(true)
+      setIsBaseDecrementTimerValid(true);
     }
 
     const validState =
@@ -142,8 +144,60 @@ export default function InsertAuctionPage() {
   const createAuctionButtonRef = useRef(null);
   const hiddenFileInput = useRef(null);
 
-  const handleFileUploadClick = () => {
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleHiddenFileInput = () => {
     hiddenFileInput.current.click();
+  };
+
+  const compressImage = async (file) => {
+    return new Promise((resolve, reject) => {
+      new Compressor(file, {
+        quality: 0.6,
+        success(compressedBlob) {
+          const compressedFile = new File([compressedBlob], file.name, {
+            type: file.type,
+          });
+          resolve(compressedFile);
+        },
+        error(error) {
+          reject(error);
+        },
+      });
+    });
+  };
+
+  const handleImageUpload = async (auctionId) => {
+    const compressedFile = await compressImage(file);
+
+    const formData = new FormData();
+    formData.append("file", compressedFile);
+
+    if (compressedFile.size < 512000) {
+      try {
+        const response = await fetch(
+          config.apiUrl + "/auctions/upload-img?auctionId=" + auctionId,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          const imageUrl = await response.text();
+          console.log("Image uploaded successfully:", imageUrl);
+          return imageUrl;
+        } else {
+          toast.error("Error uploading image");
+        }
+      } catch (error) {
+        toast.error("Error uploading image", error);
+      }
+    }
   };
 
   async function onSubmit(event) {
@@ -152,6 +206,11 @@ export default function InsertAuctionPage() {
     const areFixedTimeInputsValid = validateFixedTimeAuctionInputs();
     const areEnglishInputsValid = validateEnglishAuctionInputs();
     const areDescendingInputsValid = validateDescendingAuctionInputs();
+
+    if (file.size > 512000) {
+      toast.error("Image size must be less than 500KB");
+      return;
+    }
 
     if (
       !areEnglishInputsValid &&
@@ -172,8 +231,12 @@ export default function InsertAuctionPage() {
         ? startPrice
         : 0;
 
+    const newAuctionIdFromDate = Date.now();
+
+    const imageUrl = await handleImageUpload(newAuctionIdFromDate);
+
     const auctionFromInputs = {
-      id: Date.now(),
+      id: newAuctionIdFromDate,
       auctionDescription: inputs.description.value,
       auctionName: inputs.title.value,
       auctionQuality: "Good",
@@ -181,7 +244,7 @@ export default function InsertAuctionPage() {
       auctionType: auctionType,
       auctionCategory: category,
       idUserAccount: currentUser.id,
-      auctionImages: "no-images", // mettere le foto prese dalla selezione
+      auctionImages: imageUrl ?? "no-images",
       offers: [],
       startPrice: startPrice,
       raiseThreshold: raiseThreshold,
@@ -229,18 +292,22 @@ export default function InsertAuctionPage() {
         <div className="flex flex-col md:flex-row items-center mt-12">
           <div className="mx-3 mb-6 md:m-6 md:mr-20 md:ml-48 grid md:grid-cols-2 gap-2">
             <AddAuctionImageBox
-              handleFileUploadClick={handleFileUploadClick}
+              onFileChange={handleFileChange}
+              onHiddenFileInputChange={handleHiddenFileInput}
               hiddenFileInput={hiddenFileInput}
+              disabled={false}
             />
 
             <AddAuctionImageBox
-              handleFileUploadClick={handleFileUploadClick}
-              hiddenFileInput={hiddenFileInput}
+              onFileChange={handleFileChange}
+              onHiddenFileInputChange={handleHiddenFileInput}
+              disabled={true}
             />
 
             <AddAuctionImageBox
-              handleFileUploadClick={handleFileUploadClick}
-              hiddenFileInput={hiddenFileInput}
+              onFileChange={handleFileChange}
+              onHiddenFileInputChange={handleHiddenFileInput}
+              disabled={true}
             />
           </div>
 

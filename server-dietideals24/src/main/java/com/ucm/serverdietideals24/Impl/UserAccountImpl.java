@@ -42,10 +42,13 @@ public class UserAccountImpl implements UserAccountDAO {
     @Override
     public void create(UserAccount user) {
         System.err.println("USER: " + user);
-        jdbcTemplate.execute("INSERT INTO useraccount (id, firstName, lastName, username, password, birthDate, email, provider) VALUES('" + user.getId() + "', '" + user.getFirstName()
-                + "', '" + user.getLastName() + "', '" + user.getUsername() + "', '" + user.getPassword()
-                + "', '"
-                + user.getBirthDate() + "', '" + user.getEmail() + "', '" + user.getProvider() + "')");
+        jdbcTemplate.execute(
+                "INSERT INTO useraccount (id, firstName, lastName, username, password, birthDate, email, provider, profilePicUrl) VALUES('"
+                        + user.getId() + "', '" + user.getFirstName()
+                        + "', '" + user.getLastName() + "', '" + user.getUsername() + "', '" + user.getPassword()
+                        + "', '"
+                        + user.getBirthDate() + "', '" + user.getEmail() + "', '" + user.getProvider() + "', '"
+                        + user.getProfilePicUrl() + "')");
     }
 
     @Override
@@ -54,7 +57,8 @@ public class UserAccountImpl implements UserAccountDAO {
                 + user.getLastName() + "', username = '" + user.getUsername() + "', password = '"
                 + user.getPassword() + "', birthDate = '" + user.getBirthDate() + "', email = '" + user.getEmail()
                 + "', telephoneNumber = '" + user.getTelephoneNumber()
-                + "', biography = '" + user.getBiography() + "', website = '" + user.getWebsite() + "' WHERE id = '"
+                + "', biography = '" + user.getBiography() + "', website = '" + user.getWebsite()
+                + "', profilePicUrl = '" + user.getProfilePicUrl() + "' WHERE id = '"
                 + id + "'");
     }
 

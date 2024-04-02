@@ -63,6 +63,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
 		</dependency>
+		<dependency>
+    		<groupId>com.amazonaws</groupId>
+    		<artifactId>aws-java-sdk-s3</artifactId>
+    		<version>1.12.371</version>
+		</dependency>
 	</dependencies>
 
 	<build>

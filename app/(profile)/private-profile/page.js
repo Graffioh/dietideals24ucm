@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import { Input } from "@/components/shadcn-ui/input";
 import { Textarea } from "@/components/shadcn-ui/textarea";
@@ -13,6 +13,8 @@ import {
 } from "@/components/shadcn-ui/avatar";
 import { hash } from "bcryptjs";
 import { toast } from "sonner";
+import useSWR from "swr";
+import { mutate } from "swr";
 
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { PhoneInput } from "@/components/phoneinput/phone-input";
@@ -22,12 +24,19 @@ import CancelAlertDialog from "@/components/dietideals24-ui/cancelAlertDialog";
 import { useUserContext } from "@/app/providers/userProvider";
 import LoadingSpinner from "@/components/dietideals24-ui/loadingSpinner";
 import config from "@/config";
+import Compressor from "compressorjs";
 
 export default function ProfilePage({ searchParams }) {
   const [birthDate, setBirthDate] = useState("");
 
   const { currentUser, currentUserIsLoading } = useUserContext();
-  const [phone, setPhone] = useState(currentUser ? currentUser.telephoneNumber ? currentUser.telephoneNumber : "" : "");
+  const [phone, setPhone] = useState(
+    currentUser
+      ? currentUser.telephoneNumber
+        ? currentUser.telephoneNumber
+        : ""
+      : ""
+  );
 
   const provider = currentUser ? currentUser.provider : null;
 
@@ -44,6 +53,7 @@ export default function ProfilePage({ searchParams }) {
         birthDate: user.birthDate ? user.birthDate : new Date(),
         email: user.email,
         provider: searchParams.fromProvider,
+        profilePicUrl: user.profilePicUrl
       };
 
       try {
@@ -92,13 +102,91 @@ export default function ProfilePage({ searchParams }) {
     }
   }
 
+  const [imageData, setImageData] = useState(null);
+
+  function handleImageData(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      console.log(reader.result);
+      setImageData(reader.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+
+  const hiddenFileInput = useRef(null);
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleHiddenFileInput = () => {
+    hiddenFileInput.current.click();
+  };
+
+  const handleImageUpload = async (userId) => {
+    const compressedFile = await compressImage(file);
+
+    const formData = new FormData();
+    formData.append("file", compressedFile);
+
+    if (compressedFile.size < 512000) {
+      try {
+        const response = await fetch(
+          config.apiUrl + "/users/upload-img?userId=" + userId,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          const imageUrl = await response.text();
+          console.log("Image uploaded successfully:", imageUrl);
+          return imageUrl;
+        } else {
+          console.error("Error uploading image");
+        }
+      } catch (error) {
+        console.error("Error uploading image", error);
+      }
+    }
+  };
+
+  const compressImage = async (file) => {
+    return new Promise((resolve, reject) => {
+      new Compressor(file, {
+        quality: 0.6,
+        success(compressedBlob) {
+          const compressedFile = new File([compressedBlob], file.name, {
+            type: file.type,
+          });
+          resolve(compressedFile);
+        },
+        error(error) {
+          reject(error);
+        },
+      });
+    });
+  };
+
   async function onSubmit(event) {
     event.preventDefault();
-    
+
     const inputs = event.currentTarget;
 
+    const newUserIdFromDate = Date.now();
+
+    const pfpImageUrl = await handleImageUpload(
+      currentUser?.id ?? newUserIdFromDate
+    );
+
     const userInfoFromInputs = {
-      id: Date.now(),
+      id: newUserIdFromDate,
       firstName: inputs.firstName.value,
       lastName: inputs.lastName.value,
       username: inputs.username.value,
@@ -108,10 +196,23 @@ export default function ProfilePage({ searchParams }) {
       telephoneNumber: phone,
       biography: inputs.biography ? inputs.biography.value : "",
       website: inputs.website ? inputs.website.value : "",
+      profilePicUrl: pfpImageUrl ?? "no-pfp",
     };
-    
-    if(phone !== "" && !isValidPhoneNumber(phone) && currentUser && currentUser.id) {
-      toast.error("Phone number not valid, please choose a valid number.")
+
+    console.log(userInfoFromInputs);
+
+    if (file.size > 512000) {
+      toast.error("Image size must be less than 500KB");
+      return;
+    }
+
+    if (
+      phone !== "" &&
+      !isValidPhoneNumber(phone) &&
+      currentUser &&
+      currentUser.id
+    ) {
+      toast.error("Phone number not valid, please choose a valid number.");
       return;
     }
 
@@ -121,6 +222,13 @@ export default function ProfilePage({ searchParams }) {
         body: JSON.stringify(userInfoFromInputs),
         headers: { "Content-Type": "application/json" },
       });
+
+      mutate("/users/image?key=" + currentUser.profilePicUrl);
+
+      setTimeout(() => {
+        window.location.href =
+          config.apiUrl.replace("/api", "") + "/public-profile";
+      }, 1000);
 
       toast.success("Account updated successfully.", {
         position: "bottom-center",
@@ -140,6 +248,26 @@ export default function ProfilePage({ searchParams }) {
     setBirthDate(date);
   }
 
+  const imgFetcher = (url) =>
+    fetch(url)
+      .then((res) => res.blob())
+      .then((imgBlob) => URL.createObjectURL(imgBlob));
+
+  const {
+    data: profilePicData,
+    error: profilePicDataError,
+    isLoading: profilePicDataIsLoading,
+  } = useSWR(
+    config.apiUrl + "/users/image?key=" + currentUser?.profilePicUrl,
+    imgFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      dedupingInterval: 86400000, // 24 hours
+      shouldRetryOnError: false,
+    }
+  );
+
   if (currentUserIsLoading && !searchParams.fromProvider) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -151,13 +279,28 @@ export default function ProfilePage({ searchParams }) {
   return (
     <>
       <div className="mb-10 mt-10 flex justify-center">
-        <Avatar className="h-32 w-32">
-          <AvatarImage
-            src="https://i.scdn.co/image/ab676161000051744e975208a929cd58c552c55b"
-            alt="@avatar"
-          />
-          <AvatarFallback />
-        </Avatar>
+        <Button
+          className="h-32 w-32 rounded-full"
+          onClick={(e) => {
+            e.preventDefault();
+            handleHiddenFileInput();
+          }}
+        >
+          <Avatar className="h-32 w-32">
+            <AvatarImage src={imageData ?? profilePicData} alt="@avatar" />
+            <AvatarFallback />
+          </Avatar>
+        </Button>
+        <Input
+          onChange={(e) => {
+            handleFileChange(e);
+            handleImageData(e);
+          }}
+          type="file"
+          ref={hiddenFileInput}
+          style={{ display: "none" }}
+          accept="image/jpeg, image/png"
+        />
       </div>
 
       <form onSubmit={onSubmit}>

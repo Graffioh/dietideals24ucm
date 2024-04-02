@@ -29,7 +29,6 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException {
-
         // Info from OAuth profile
         String emailOrUsernameFromOAuth = authentication.getName();
 
