@@ -12,6 +12,9 @@ module.exports = {
     const apiBaseUrl = isProd
       ? "https://server-dietideals24.onrender.com"
       : "https://server-dietideals24-render-dev.onrender.com"
+    
+    console.log("IS PROD: " + isProd);
+    console.log("API BASE URL: " + apiBaseUrl);
 
     return [
       {

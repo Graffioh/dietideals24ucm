@@ -285,23 +285,36 @@ public class AuctionController {
 
     @PostMapping("/upload-img")
     public ResponseEntity<String> uploadImage(@RequestPart("file") MultipartFile file, @RequestParam String auctionId) throws IOException {
-        String key = "auctions/" + auctionId + "/" + file.getOriginalFilename();
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(file.getSize());
-        amazonS3.putObject(S3bucketName, key, file.getInputStream(), metadata);
-        String imageUrlKey = key;
+        try {
+            String key = "auctions/" + auctionId + "/" + file.getOriginalFilename();
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.getSize());
+            amazonS3.putObject(S3bucketName, key, file.getInputStream(), metadata);
+            String imageUrlKey = key;
 
-        return ResponseEntity.ok(imageUrlKey);
+            return ResponseEntity.ok(imageUrlKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("null");
+        }
     }
-
+    
     @GetMapping("/image")
     public ResponseEntity<byte[]> getImage(@RequestParam String key) throws IOException {
-        S3Object s3Object = amazonS3.getObject(S3bucketName, key);
-        InputStream inputStream = s3Object.getObjectContent();
-        byte[] bytes = IOUtils.toByteArray(inputStream);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.parseMediaType(s3Object.getObjectMetadata().getContentType()));
-        httpHeaders.setContentLength(s3Object.getObjectMetadata().getContentLength());
-        return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
+        System.out.println("FILE KEY: " + key);
+        try {
+            System.out.println("TRY");
+            S3Object s3Object = amazonS3.getObject(S3bucketName, key);
+            InputStream inputStream = s3Object.getObjectContent();
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(MediaType.parseMediaType(s3Object.getObjectMetadata().getContentType()));
+            httpHeaders.setContentLength(s3Object.getObjectMetadata().getContentLength());
+            return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("CATCH");
+            e.printStackTrace();
+            return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
