@@ -19,10 +19,11 @@ public class UserAccount {
 
     @NonNull
     private String firstName, lastName, username, password, email; 
+
+    @NonNull
+    private Date birthDate;
     
     private String telephoneNumber, biography, website, provider, profilePicUrl;
-    
-    private Date birthDate;
 
     private ArrayList<Offer> offers;
 

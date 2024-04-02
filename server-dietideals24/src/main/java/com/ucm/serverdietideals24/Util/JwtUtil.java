@@ -1,4 +1,4 @@
-package com.ucm.serverdietideals24.Auth.util;
+package com.ucm.serverdietideals24.Util;
 
 import javax.crypto.SecretKey;
 
