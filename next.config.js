@@ -8,7 +8,7 @@ module.exports = {
     domains: ["m.media-amazon.com", "dietideals24-bucket.s3.amazonaws.com", "www.frosinonecalcio.com"],
   },
   async rewrites() {
-    const isProd = process.env.NODE_ENV === "production";
+    const isProd = process.env.VERCEL_ENV === "production";
     const apiBaseUrl = isProd
       ? "https://server-dietideals24.onrender.com"
       : "https://server-dietideals24-render-dev.onrender.com"
