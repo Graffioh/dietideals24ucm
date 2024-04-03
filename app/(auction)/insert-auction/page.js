@@ -57,10 +57,10 @@ export default function InsertAuctionPage() {
 
   // English auction inputs state
   // ***************************************
-  const [raiseThreshold, setRaiseThreshold] = useState("");
+  const [riseThreshold, setRiseThreshold] = useState("");
 
-  function handleRaiseThreshold(raiseThreshold) {
-    setRaiseThreshold(raiseThreshold);
+  function handleRiseThreshold(riseThreshold) {
+    setRiseThreshold(riseThreshold);
   }
 
   function validateEnglishAuctionInputs() {
@@ -69,7 +69,7 @@ export default function InsertAuctionPage() {
       auctionType &&
       quality &&
       startPrice &&
-      raiseThreshold &&
+      riseThreshold &&
       baseTimer;
 
     return validState;
@@ -247,7 +247,7 @@ export default function InsertAuctionPage() {
       auctionImages: imageUrl,
       offers: [],
       startPrice: startPrice,
-      raiseThreshold: raiseThreshold,
+      riseThreshold: riseThreshold,
       baseTimer: baseTimer
         ? moment(baseTimer, "HH:mm:ss").format("HH:mm:ss")
         : null,
@@ -377,7 +377,7 @@ export default function InsertAuctionPage() {
             {auctionType === "english" && (
               <EnglishInsertAuctionInputs
                 onBaseStartAuctionChange={handleStartPrice}
-                onRaiseThresholdChange={handleRaiseThreshold}
+                onRiseThresholdChange={handleRiseThreshold}
                 onBaseOfferTimerChange={handleBaseTimer}
               />
             )}

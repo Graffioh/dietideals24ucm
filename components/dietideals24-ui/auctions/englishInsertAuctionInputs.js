@@ -7,7 +7,7 @@ import PriceInput from "../priceInput";
 
 export default function EnglishInsertAuctionInputs({
   onBaseStartAuctionChange,
-  onRaiseThresholdChange,
+  onRiseThresholdChange,
   onBaseOfferTimerChange,
 }) {
   const zeroDate = new Date();
@@ -66,7 +66,7 @@ export default function EnglishInsertAuctionInputs({
         </div>
         <PriceInput
           placeholderTxt={"Rise threshold price"}
-          onFunctionChange={onRaiseThresholdChange}
+          onFunctionChange={onRiseThresholdChange}
         />
       </div>
     </>
