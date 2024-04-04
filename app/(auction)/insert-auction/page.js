@@ -30,7 +30,8 @@ export default function InsertAuctionPage() {
 
   // Category combobox state
   const [category, setCategory] = useState("");
-  function handleCategory(category) {
+
+  function setAuctionCategoryFromCombobox(category) {
     setCategory(category);
   }
 
@@ -42,7 +43,11 @@ export default function InsertAuctionPage() {
   }
 
   // Quality combobox state
-  const [quality, setQuality] = useState("Good");
+  const [quality, setQuality] = useState("");
+
+  function setAuctionQualityFromCombobox(quality) {
+    setQuality(quality);
+  }
 
   const [startPrice, setStartPrice] = useState("");
   const [baseTimer, setBaseTimer] = useState("");
@@ -218,8 +223,13 @@ export default function InsertAuctionPage() {
     const areEnglishInputsValid = validateEnglishAuctionInputs();
     const areDescendingInputsValid = validateDescendingAuctionInputs();
 
+    if(!file) {
+      toast.warning("Please select an image.");
+      return;
+    }
+
     if (file && file.size > 1500000) {
-      toast.warning("Image size must be less than 1,5MB");
+      toast.warning("Image size must be less than 1,5MB!");
       return;
     }
 
@@ -252,7 +262,7 @@ export default function InsertAuctionPage() {
       id: newAuctionIdFromDate,
       auctionDescription: inputs.description.value,
       auctionName: inputs.title.value,
-      auctionQuality: "Good",
+      auctionQuality: quality,
       currentOffer: currentOffer,
       auctionType: auctionType,
       auctionCategory: category,
@@ -358,12 +368,12 @@ export default function InsertAuctionPage() {
 
             <div className="mt-6 flex flex-col space-y-6">
               <ComboboxCategories
-                onCategoryChange={handleCategory}
+                onCategoryChange={setAuctionCategoryFromCombobox}
               ></ComboboxCategories>
               <ComboboxAuctions
                 onAuctionTypeChange={setAuctionTypeFromCombobox}
               ></ComboboxAuctions>
-              <ComboboxQuality></ComboboxQuality>
+              <ComboboxQuality onAuctionQualityChange={setAuctionQualityFromCombobox}></ComboboxQuality>
             </div>
           </div>
 

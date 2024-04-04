@@ -1,37 +1,41 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/shadcn-ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/shadcn-ui/button";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/shadcn-ui/command"
+} from "@/components/shadcn-ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/shadcn-ui/popover"
+} from "@/components/shadcn-ui/popover";
 
 const qualities = [
+  {
+    value: "excellent",
+    label: "Excellent",
+  },
   {
     value: "good",
     label: "Good",
   },
   {
-    value: "bad",
-    label: "Bad",
+    value: "poor",
+    label: "Poor",
   },
-]
+];
 
-export default function ComboboxQuality() {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+export default function ComboboxQuality({ onAuctionQualityChange }) {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -58,8 +62,9 @@ export default function ComboboxQuality() {
                 key={quality.value}
                 value={quality.value}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue)
-                  setOpen(false)
+                  setValue(currentValue === value ? "" : currentValue);
+                  setOpen(false);
+                  onAuctionQualityChange(currentValue.charAt(0).toUpperCase() + currentValue.slice(1));
                 }}
               >
                 <Check
@@ -75,5 +80,5 @@ export default function ComboboxQuality() {
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
