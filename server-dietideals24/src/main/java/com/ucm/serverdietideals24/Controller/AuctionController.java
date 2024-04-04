@@ -309,9 +309,7 @@ public class AuctionController {
     
     @GetMapping("/image")
     public ResponseEntity<byte[]> getImage(@RequestParam String key) throws IOException {
-        System.out.println("FILE KEY: " + key);
         try {
-            System.out.println("TRY");
             S3Object s3Object = amazonS3.getObject(S3bucketName, key);
             InputStream inputStream = s3Object.getObjectContent();
             byte[] bytes = IOUtils.toByteArray(inputStream);
@@ -320,7 +318,6 @@ public class AuctionController {
             httpHeaders.setContentLength(s3Object.getObjectMetadata().getContentLength());
             return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println("CATCH");
             e.printStackTrace();
             return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.BAD_REQUEST);
         }

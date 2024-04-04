@@ -58,7 +58,7 @@ public class AuctionValidatorUtil {
             Float decrementAmount = auction.getDecrementAmount();
             Float endPrice = auction.getEndPrice();
 
-            if (startPrice > decrementAmount || startPrice < 0 || startPrice > 9999 || decrementAmount < 0
+            if (decrementAmount < startPrice || endPrice < startPrice || startPrice < 0 || startPrice > 9999 || decrementAmount < 0
                     || endPrice < 0) {
                 return false;
             }

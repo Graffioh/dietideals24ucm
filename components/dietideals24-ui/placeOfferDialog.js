@@ -194,7 +194,7 @@ export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
         auction.auctionType === "fixedtime" &&
         auction.currentOffer >= offerAmount
       ) {
-        toast.error(
+        toast.warning(
           "You must place an offer greater than the max current offer!"
         );
       } else if (
@@ -204,12 +204,12 @@ export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
       ) {
         const minimumOffer = auction.currentOffer + auction.riseThreshold;
 
-        toast.error(
+        toast.warning(
           "You must place an offer greater or equal than €" + minimumOffer + "!"
         );
       }
     } else {
-      toast.error("You must place an offer less than 9999!");
+      toast.warning("You must place an offer less than 9999!");
     }
   }
 

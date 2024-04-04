@@ -203,7 +203,7 @@ export default function ProfilePage({ searchParams }) {
     };
 
     if (file && file.size > 1500000) {
-      toast.error("Image size must be less than 1,5MB");
+      toast.warning("Image size must be less than 1,5MB");
       return;
     }
 
@@ -213,7 +213,7 @@ export default function ProfilePage({ searchParams }) {
       currentUser &&
       currentUser.id
     ) {
-      toast.error("Phone number not valid, please choose a valid number.");
+      toast.warning("Phone number not valid, please choose a valid number.");
       return;
     }
 

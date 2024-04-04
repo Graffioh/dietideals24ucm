@@ -28,7 +28,7 @@ public class UserAccountTests {
 
     @ParameterizedTest
     @CsvSource({
-            "Umberto, Breglia, brr777, breglia@breglia.com, brbr172, 1990-05-15, true",
+            "Umberto, Breglia, brr_777, breglia@breglia.com, brbr172, 1990-05-15, true",
             "Andr£w, Ta$e, at, at@at.com, at1pw, 2030-09-20, false",
             "Guts, Casca, gclove232, gutscasca.com, 502er, 2025-01-01, false",
             "Anna, Oxa, aoxa, xo@xo.com, 123pw, 1969-11-11, true",

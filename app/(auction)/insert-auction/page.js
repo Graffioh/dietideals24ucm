@@ -129,6 +129,16 @@ export default function InsertAuctionPage() {
       setIsBaseDecrementTimerValid(true);
     }
 
+    if (decrementAmount < startPrice) {
+      toast.warning("Decrement amount can't be lesser than Start price!");
+      return false;
+    }
+
+    if (descendingMinimumPrice < startPrice) {
+      toast.warning("End price can't be higher than Start price!");
+      return false;
+    }
+
     const validState =
       category &&
       auctionType &&
@@ -137,6 +147,7 @@ export default function InsertAuctionPage() {
       decrementAmount &&
       isTimerValid &&
       descendingMinimumPrice;
+
     return validState;
   }
   // ***************************************
@@ -208,7 +219,7 @@ export default function InsertAuctionPage() {
     const areDescendingInputsValid = validateDescendingAuctionInputs();
 
     if (file && file.size > 1500000) {
-      toast.error("Image size must be less than 1,5MB");
+      toast.warning("Image size must be less than 1,5MB");
       return;
     }
 
@@ -217,7 +228,7 @@ export default function InsertAuctionPage() {
       !areDescendingInputsValid &&
       !areFixedTimeInputsValid
     ) {
-      toast.error("Please fill all the fields before submitting!");
+      toast.error("Please fill all the fields correctly before submitting!");
       return;
     }
 
@@ -233,7 +244,9 @@ export default function InsertAuctionPage() {
 
     const newAuctionIdFromDate = Date.now();
 
-    const imageUrl =  file ? await handleImageUpload(newAuctionIdFromDate) : "no-images"
+    const imageUrl = file
+      ? await handleImageUpload(newAuctionIdFromDate)
+      : "no-images";
 
     const auctionFromInputs = {
       id: newAuctionIdFromDate,
