@@ -318,6 +318,8 @@ export default function ProfilePage({ searchParams }) {
                   id="firstName"
                   placeholder="Name"
                   defaultValue={currentUser ? currentUser.firstName : ""}
+                  pattern="^[a-zA-Z]+$"
+                  title="Please enter only alphabetical characters for your name"
                   required
                 />
               </div>
@@ -333,6 +335,8 @@ export default function ProfilePage({ searchParams }) {
                 id="lastName"
                 placeholder="Surname"
                 defaultValue={currentUser ? currentUser.lastName : ""}
+                pattern="^[a-zA-Z]+$"
+                title="Please enter only alphabetical characters for your surname"
                 required
               />
             </div>
@@ -353,6 +357,8 @@ export default function ProfilePage({ searchParams }) {
                     ? currentUser.username
                     : ""
                 }
+                pattern="^[a-zA-Z0-9\-_]+$"
+                title="Please enter only alphanumerical characters, '-' and '_' for your username"
                 required
                 readOnly={
                   searchParams.fromProvider === "github" ||
