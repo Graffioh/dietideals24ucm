@@ -16,3 +16,5 @@ DietiDeals24 is an online auction management platform.
 - Software documentation [WIP]
 - Software presentation [WIP]
 
+## Demo [WIP]
+
