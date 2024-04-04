@@ -30,7 +30,8 @@ export default function InsertAuctionPage() {
 
   // Category combobox state
   const [category, setCategory] = useState("");
-  function handleCategory(category) {
+
+  function setAuctionCategoryFromCombobox(category) {
     setCategory(category);
   }
 
@@ -42,7 +43,11 @@ export default function InsertAuctionPage() {
   }
 
   // Quality combobox state
-  const [quality, setQuality] = useState("Good");
+  const [quality, setQuality] = useState("");
+
+  function setAuctionQualityFromCombobox(quality) {
+    setQuality(quality);
+  }
 
   const [startPrice, setStartPrice] = useState("");
   const [baseTimer, setBaseTimer] = useState("");
@@ -57,10 +62,10 @@ export default function InsertAuctionPage() {
 
   // English auction inputs state
   // ***************************************
-  const [raiseThreshold, setRaiseThreshold] = useState("");
+  const [riseThreshold, setRiseThreshold] = useState("");
 
-  function handleRaiseThreshold(raiseThreshold) {
-    setRaiseThreshold(raiseThreshold);
+  function handleRiseThreshold(riseThreshold) {
+    setRiseThreshold(riseThreshold);
   }
 
   function validateEnglishAuctionInputs() {
@@ -69,7 +74,7 @@ export default function InsertAuctionPage() {
       auctionType &&
       quality &&
       startPrice &&
-      raiseThreshold &&
+      riseThreshold &&
       baseTimer;
 
     return validState;
@@ -129,6 +134,16 @@ export default function InsertAuctionPage() {
       setIsBaseDecrementTimerValid(true);
     }
 
+    if (decrementAmount < startPrice) {
+      toast.warning("Decrement amount can't be lesser than Start price!");
+      return false;
+    }
+
+    if (descendingMinimumPrice < startPrice) {
+      toast.warning("End price can't be higher than Start price!");
+      return false;
+    }
+
     const validState =
       category &&
       auctionType &&
@@ -137,6 +152,7 @@ export default function InsertAuctionPage() {
       decrementAmount &&
       isTimerValid &&
       descendingMinimumPrice;
+
     return validState;
   }
   // ***************************************
@@ -207,8 +223,13 @@ export default function InsertAuctionPage() {
     const areEnglishInputsValid = validateEnglishAuctionInputs();
     const areDescendingInputsValid = validateDescendingAuctionInputs();
 
+    if(!file) {
+      toast.warning("Please select an image.");
+      return;
+    }
+
     if (file && file.size > 1500000) {
-      toast.error("Image size must be less than 1,5MB");
+      toast.warning("Image size must be less than 1,5MB!");
       return;
     }
 
@@ -217,7 +238,7 @@ export default function InsertAuctionPage() {
       !areDescendingInputsValid &&
       !areFixedTimeInputsValid
     ) {
-      toast.error("Please fill all the fields before submitting!");
+      toast.error("Please fill all the fields correctly before submitting!");
       return;
     }
 
@@ -233,13 +254,15 @@ export default function InsertAuctionPage() {
 
     const newAuctionIdFromDate = Date.now();
 
-    const imageUrl =  file ? await handleImageUpload(newAuctionIdFromDate) : "no-images"
+    const imageUrl = file
+      ? await handleImageUpload(newAuctionIdFromDate)
+      : "no-images";
 
     const auctionFromInputs = {
       id: newAuctionIdFromDate,
       auctionDescription: inputs.description.value,
       auctionName: inputs.title.value,
-      auctionQuality: "Good",
+      auctionQuality: quality,
       currentOffer: currentOffer,
       auctionType: auctionType,
       auctionCategory: category,
@@ -247,7 +270,7 @@ export default function InsertAuctionPage() {
       auctionImages: imageUrl,
       offers: [],
       startPrice: startPrice,
-      raiseThreshold: raiseThreshold,
+      riseThreshold: riseThreshold,
       baseTimer: baseTimer
         ? moment(baseTimer, "HH:mm:ss").format("HH:mm:ss")
         : null,
@@ -345,12 +368,12 @@ export default function InsertAuctionPage() {
 
             <div className="mt-6 flex flex-col space-y-6">
               <ComboboxCategories
-                onCategoryChange={handleCategory}
+                onCategoryChange={setAuctionCategoryFromCombobox}
               ></ComboboxCategories>
               <ComboboxAuctions
                 onAuctionTypeChange={setAuctionTypeFromCombobox}
               ></ComboboxAuctions>
-              <ComboboxQuality></ComboboxQuality>
+              <ComboboxQuality onAuctionQualityChange={setAuctionQualityFromCombobox}></ComboboxQuality>
             </div>
           </div>
 
@@ -377,7 +400,7 @@ export default function InsertAuctionPage() {
             {auctionType === "english" && (
               <EnglishInsertAuctionInputs
                 onBaseStartAuctionChange={handleStartPrice}
-                onRaiseThresholdChange={handleRaiseThreshold}
+                onRiseThresholdChange={handleRiseThreshold}
                 onBaseOfferTimerChange={handleBaseTimer}
               />
             )}

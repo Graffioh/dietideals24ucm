@@ -31,12 +31,7 @@ export default function ProfilePage({ searchParams }) {
 
   const { currentUser, currentUserIsLoading } = useUserContext();
   const [phone, setPhone] = useState(
-    currentUser
-      ? currentUser.telephoneNumber
-        ? currentUser.telephoneNumber
-        : ""
-      : ""
-  );
+    currentUser?.telephoneNumber ?? "");
 
   const provider = currentUser ? currentUser.provider : null;
 
@@ -203,7 +198,7 @@ export default function ProfilePage({ searchParams }) {
     };
 
     if (file && file.size > 1500000) {
-      toast.error("Image size must be less than 1,5MB");
+      toast.warning("Image size must be less than 1,5MB");
       return;
     }
 
@@ -213,7 +208,7 @@ export default function ProfilePage({ searchParams }) {
       currentUser &&
       currentUser.id
     ) {
-      toast.error("Phone number not valid, please choose a valid number.");
+      toast.warning("Phone number not valid, please choose a valid number.");
       return;
     }
 
@@ -287,10 +282,13 @@ export default function ProfilePage({ searchParams }) {
             handleHiddenFileInput();
           }}
         >
+          <div>
           <Avatar className="h-32 w-32">
             <AvatarImage src={imageData ?? profilePicData} alt="@avatar" />
             <AvatarFallback />
           </Avatar>
+          </div>
+        <div className="absolute mt-24 ml-20 rounded-full bg-blue-950 px-[0.5em] py-[0.1em] text-white border-2 border-white">+</div>
         </Button>
         <Input
           onChange={(e) => {
@@ -318,6 +316,8 @@ export default function ProfilePage({ searchParams }) {
                   id="firstName"
                   placeholder="Name"
                   defaultValue={currentUser ? currentUser.firstName : ""}
+                  pattern="^[a-zA-Z]+$"
+                  title="Please enter only alphabetical characters for your name"
                   required
                 />
               </div>
@@ -333,6 +333,8 @@ export default function ProfilePage({ searchParams }) {
                 id="lastName"
                 placeholder="Surname"
                 defaultValue={currentUser ? currentUser.lastName : ""}
+                pattern="^[a-zA-Z]+$"
+                title="Please enter only alphabetical characters for your surname"
                 required
               />
             </div>
@@ -353,6 +355,8 @@ export default function ProfilePage({ searchParams }) {
                     ? currentUser.username
                     : ""
                 }
+                pattern="^[a-zA-Z0-9\-_]+$"
+                title="Please enter only alphanumerical characters, '-' and '_' for your username"
                 required
                 readOnly={
                   searchParams.fromProvider === "github" ||
@@ -428,7 +432,6 @@ export default function ProfilePage({ searchParams }) {
                   <div>
                     <Label className="mb-2 flex">Phone Number</Label>
                     <PhoneInput
-                      defaultCountry="it"
                       value={phone}
                       onChange={(phone) => setPhone(phone)}
                     />
@@ -454,12 +457,20 @@ export default function ProfilePage({ searchParams }) {
           </div>
 
           <div className="flex">
-            <div className="mx-5 mb-10 mt-6">
-              <CancelAlertDialog />
-            </div>
-            <div className="mx-2">
-              <Button className="mt-6">Save</Button>
-            </div>
+            {currentUser ? (
+              <>
+                <div className="mx-5 mb-10 mt-6">
+                  <CancelAlertDialog />
+                </div>
+                <div className="mx-2">
+                  <Button className="mt-6">Save</Button>
+                </div>
+              </>
+            ) : (
+              <div className="mx-2">
+                <Button className="mb-4">Save</Button>
+              </div>
+            )}
           </div>
         </div>
       </form>

@@ -12,9 +12,11 @@ import LoadingSpinner from "./loadingSpinner";
 import useSWR from "swr";
 import { useAuctionFilter } from "../../app/providers/auctionFilterProvider";
 import config from "@/config";
+import { useUserContext } from "@/app/providers/userProvider";
 
 export default function AuctionsContainerHomepage() {
   const { filteredAuctions } = useAuctionFilter();
+  const { currentUser } = useUserContext();
 
   const isMobileScreen = useMediaQuery({ maxWidth: 767 });
   const [isMobile, setIsMobile] = useState(isMobileScreen);
@@ -104,6 +106,10 @@ export default function AuctionsContainerHomepage() {
     );
   }
 
+  if(filteredAuctions.length === 0 && filteredAuctions && currentUser) {
+    return <div className="flex justify-center">No results.</div>
+  }
+
   return (
     <>
       <div className="flex flex-col items-center">
@@ -139,7 +145,7 @@ export default function AuctionsContainerHomepage() {
               </Link>
             ))
           ) : (
-            <div></div>
+            <div>No results.</div>
           )}
         </div>
 

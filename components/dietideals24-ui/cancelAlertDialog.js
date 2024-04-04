@@ -22,15 +22,15 @@ import {
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             {/* <AlertDialogDescription>
               This action cannot be undone. This will permanently delete your
               account and remove your data from our servers.
             </AlertDialogDescription> */}
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={(e) => {e.preventDefault(); router.push("/home")}}>Continue</AlertDialogAction>
+            <AlertDialogCancel>Go back</AlertDialogCancel>
+            <AlertDialogAction onClick={(e) => {e.preventDefault(); router.push("/public-profile")}}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

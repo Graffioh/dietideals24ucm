@@ -50,7 +50,7 @@ export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
           auction.currentOffer < offerAmount) ||
         auction.auctionType === "descending" ||
         (auction.auctionType === "english" &&
-          auction.currentOffer + auction.raiseThreshold <= offerAmount)
+          auction.currentOffer + auction.riseThreshold <= offerAmount)
       ) {
         toast.success("Your offer has been placed correctly.");
         onCurrentOfferChange(offerAmount);
@@ -194,22 +194,22 @@ export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
         auction.auctionType === "fixedtime" &&
         auction.currentOffer >= offerAmount
       ) {
-        toast.error(
+        toast.warning(
           "You must place an offer greater than the max current offer!"
         );
       } else if (
         auction.auctionType === "english" &&
-        auction.currentOffer + auction.raiseThreshold >
+        auction.currentOffer + auction.riseThreshold >
           offerFromInputs.offerAmount
       ) {
-        const minimumOffer = auction.currentOffer + auction.raiseThreshold;
+        const minimumOffer = auction.currentOffer + auction.riseThreshold;
 
-        toast.error(
+        toast.warning(
           "You must place an offer greater or equal than €" + minimumOffer + "!"
         );
       }
     } else {
-      toast.error("You must place an offer less than 9999!");
+      toast.warning("You must place an offer less than 9999!");
     }
   }
 
@@ -248,7 +248,7 @@ export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
               ) : (
                 <AlertDialogDescription>
                   Minimum acceptable offer:{" "}
-                  {auction.currentOffer + auction.raiseThreshold}€
+                  {auction.currentOffer + auction.riseThreshold}€
                 </AlertDialogDescription>
               )}
 

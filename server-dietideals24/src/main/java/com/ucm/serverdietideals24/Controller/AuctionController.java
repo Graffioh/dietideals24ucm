@@ -25,12 +25,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidParameterException;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.util.IOUtils;
 import com.ucm.serverdietideals24.Models.Auction;
+import com.ucm.serverdietideals24.Util.AuctionValidatorUtil;
 import com.ucm.serverdietideals24.DAO.AuctionDAO;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -137,9 +139,15 @@ public class AuctionController {
 
     @PostMapping
     public ResponseEntity<Auction> createAuction(@RequestBody Auction entity) {
+        AuctionValidatorUtil auctionValidator = new AuctionValidatorUtil();
+
         try {
-            auctionDAO.create(entity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(entity);
+            if(auctionValidator.isAuctionValid(entity)) {
+                auctionDAO.create(entity);
+                return ResponseEntity.status(HttpStatus.CREATED).body(entity);
+            } else {
+                throw new InvalidParameterException();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Auction());
@@ -301,9 +309,7 @@ public class AuctionController {
     
     @GetMapping("/image")
     public ResponseEntity<byte[]> getImage(@RequestParam String key) throws IOException {
-        System.out.println("FILE KEY: " + key);
         try {
-            System.out.println("TRY");
             S3Object s3Object = amazonS3.getObject(S3bucketName, key);
             InputStream inputStream = s3Object.getObjectContent();
             byte[] bytes = IOUtils.toByteArray(inputStream);
@@ -312,7 +318,6 @@ public class AuctionController {
             httpHeaders.setContentLength(s3Object.getObjectMetadata().getContentLength());
             return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println("CATCH");
             e.printStackTrace();
             return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.BAD_REQUEST);
         }
