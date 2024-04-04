@@ -89,12 +89,12 @@ public class AuctionImpl implements AuctionDAO {
         // Different query based on auction type
         if (auction.getAuctionType().toString() == "english") {
             jdbcTemplate.execute(
-                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, raiseThreshold, idUserAccount, baseTimer, auctionType, currentTimer) VALUES ('"
+                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, riseThreshold, idUserAccount, baseTimer, auctionType, currentTimer) VALUES ('"
                             + auction.getId() + "', '" + auction.getAuctionDescription()
                             + "', '" + auction.getAuctionName() + "', '" + auction.getAuctionCategory() + "', '"
                             + auction.getAuctionQuality() + "', '"
                             + auction.getCurrentOffer() + "', '" + auction.getAuctionImages() + "', '"
-                            + auction.getStartPrice() + "', '" + auction.getRaiseThreshold() + "', '"
+                            + auction.getStartPrice() + "', '" + auction.getRiseThreshold() + "', '"
                             + auction.getIdUserAccount() + "', '"
                             + auction.getBaseTimer() + "', '" + auction.getAuctionType() + "', '"
                             + auction.getBaseTimer() + "')");

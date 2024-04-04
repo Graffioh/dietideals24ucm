@@ -454,12 +454,20 @@ export default function ProfilePage({ searchParams }) {
           </div>
 
           <div className="flex">
-            <div className="mx-5 mb-10 mt-6">
-              <CancelAlertDialog />
-            </div>
-            <div className="mx-2">
-              <Button className="mt-6">Save</Button>
-            </div>
+            {currentUser ? (
+              <>
+                <div className="mx-5 mb-10 mt-6">
+                  <CancelAlertDialog />
+                </div>
+                <div className="mx-2">
+                  <Button className="mt-6">Save</Button>
+                </div>
+              </>
+            ) : (
+              <div className="mx-2">
+                <Button className="mb-4">Save</Button>
+              </div>
+            )}
           </div>
         </div>
       </form>

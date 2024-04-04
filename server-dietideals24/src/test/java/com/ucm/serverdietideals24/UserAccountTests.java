@@ -6,8 +6,6 @@ import com.ucm.serverdietideals24.Util.UserAccountRegistrationValidatorUtil;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +13,6 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(MockitoExtension.class)
 public class UserAccountTests {
 
     private UserAccountRegistrationValidatorUtil userValidator;
@@ -38,9 +35,13 @@ public class UserAccountTests {
     })
     public void testIsUserAccountInfoValidForRegistration(String firstName, String lastName, String username,
             String email, String password, String birthDateStr, boolean expected) throws Exception {
+        // Arrange
         UserAccount userAccount = new UserAccount(new Date().getTime(), firstName, lastName, username, password, email, parseDate(birthDateStr));
 
+        // Act
         Boolean isValidResult = userValidator.isUserValidForRegistration(userAccount);
+        
+        // Assert
         assertEquals(expected, isValidResult);
     }
 }
