@@ -16,7 +16,10 @@ import lombok.Data;
 @Data
 public class UserFromOAuthLogin implements UserDetails, OidcUser {
 
-    String userId, email, name, imageUrl;
+    private String userId;
+    private String email;
+    private String name;
+    private String imageUrl;
 
     Map<String, Object> attributes;
     Collection<? extends GrantedAuthority> authorities;
