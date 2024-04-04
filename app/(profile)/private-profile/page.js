@@ -287,10 +287,13 @@ export default function ProfilePage({ searchParams }) {
             handleHiddenFileInput();
           }}
         >
+          <div>
           <Avatar className="h-32 w-32">
             <AvatarImage src={imageData ?? profilePicData} alt="@avatar" />
             <AvatarFallback />
           </Avatar>
+          </div>
+        <div className="absolute mt-24 ml-20 rounded-full bg-blue-950 px-[0.5em] py-[0.1em] text-white border-2 border-white">+</div>
         </Button>
         <Input
           onChange={(e) => {
