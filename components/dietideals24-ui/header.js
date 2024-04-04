@@ -25,16 +25,21 @@ import NotificationsDropdown from "./notificationsDropdown";
 import { useUserContext } from "../../app/providers/userProvider";
 import config from "@/config";
 import Image from "next/image";
-import dietidealsLogo from "@/images/dietidealslogo.jpg"
+import dietidealsLogo from "@/images/dietidealslogo.jpg";
 
 function Logo() {
   return (
-    <div className="mb-3 flex">
-      <Image alt="dietideals-logo" src={dietidealsLogo} width={32} height={22}/>
-      <Link href="/home" className="font-bold text-2xl">
+    <Link href="/home" className="font-bold text-2xl">
+      <div className="mb-3 flex">
+        <Image
+          alt="dietideals-logo"
+          src={dietidealsLogo}
+          width={32}
+          height={22}
+        />
         IETIDEALS24
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }
 
