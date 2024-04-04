@@ -31,12 +31,7 @@ export default function ProfilePage({ searchParams }) {
 
   const { currentUser, currentUserIsLoading } = useUserContext();
   const [phone, setPhone] = useState(
-    currentUser
-      ? currentUser.telephoneNumber
-        ? currentUser.telephoneNumber
-        : ""
-      : ""
-  );
+    currentUser?.telephoneNumber ?? "");
 
   const provider = currentUser ? currentUser.provider : null;
 
@@ -437,7 +432,6 @@ export default function ProfilePage({ searchParams }) {
                   <div>
                     <Label className="mb-2 flex">Phone Number</Label>
                     <PhoneInput
-                      defaultCountry="it"
                       value={phone}
                       onChange={(phone) => setPhone(phone)}
                     />
