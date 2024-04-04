@@ -69,6 +69,10 @@ export default function InsertAuctionPage() {
   }
 
   function validateEnglishAuctionInputs() {
+    if (auctionType && auctionType !== "english") {
+      return true;
+    }
+
     const validState =
       category &&
       auctionType &&
@@ -100,6 +104,9 @@ export default function InsertAuctionPage() {
   }
 
   function validateFixedTimeAuctionInputs() {
+    if (auctionType && auctionType !== "fixedtime") {
+      return true;
+    }
     const validState =
       category && auctionType && quality && expireDate && fixedTimeMinimumPrice;
     return validState;
@@ -126,6 +133,10 @@ export default function InsertAuctionPage() {
   }
 
   function validateDescendingAuctionInputs() {
+    if (auctionType && auctionType !== "descending") {
+      return true;
+    }
+
     const isTimerValid = baseTimer && baseTimer.length !== 0 ? true : false;
 
     if (!isTimerValid) {
@@ -223,7 +234,7 @@ export default function InsertAuctionPage() {
     const areEnglishInputsValid = validateEnglishAuctionInputs();
     const areDescendingInputsValid = validateDescendingAuctionInputs();
 
-    if(!file) {
+    if (!file) {
       toast.warning("Please select an image.");
       return;
     }
@@ -373,7 +384,9 @@ export default function InsertAuctionPage() {
               <ComboboxAuctions
                 onAuctionTypeChange={setAuctionTypeFromCombobox}
               ></ComboboxAuctions>
-              <ComboboxQuality onAuctionQualityChange={setAuctionQualityFromCombobox}></ComboboxQuality>
+              <ComboboxQuality
+                onAuctionQualityChange={setAuctionQualityFromCombobox}
+              ></ComboboxQuality>
             </div>
           </div>
 
