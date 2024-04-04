@@ -2,7 +2,7 @@
 
 <!-- ![dietideals-logo](./images/dietidealslogo.jpg) -->
 
-<img src="./images/dietidealslogo.jpg" width="600" height="200">
+<img src="./images/dietidealslogo.jpg" width="250" height="250">
 
 ## Software Engineering assignment for uni class
 
