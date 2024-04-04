@@ -24,12 +24,15 @@ import Searchbar from "./searchbar";
 import NotificationsDropdown from "./notificationsDropdown";
 import { useUserContext } from "../../app/providers/userProvider";
 import config from "@/config";
+import Image from "next/image";
+import dietidealsLogo from "@/images/dietidealslogo.jpg"
 
 function Logo() {
   return (
-    <div className="mb-3">
+    <div className="mb-3 flex">
+      <Image alt="dietideals-logo" src={dietidealsLogo} width={32} height={22}/>
       <Link href="/home" className="font-bold text-2xl">
-        DIETIDEALS24
+        IETIDEALS24
       </Link>
     </div>
   );
