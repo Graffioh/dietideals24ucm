@@ -12,7 +12,6 @@ public class Offer {
     @NonNull
     private Long id;
 
-    @NonNull
     private float offerAmount;
 
     @NonNull

@@ -146,7 +146,7 @@ export default function InsertAuctionPage() {
     }
 
     if (decrementAmount < startPrice) {
-      toast.warning("Decrement amount can't be lesser than Start price!");
+      toast.warning("Decrement amount can't be less than Start price!");
       return false;
     }
 

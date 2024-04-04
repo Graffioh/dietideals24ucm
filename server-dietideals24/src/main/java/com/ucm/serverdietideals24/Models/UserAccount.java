@@ -18,12 +18,28 @@ public class UserAccount {
     private Long id;
 
     @NonNull
-    private String firstName, lastName, username, password, email; 
+    private String firstName;
+
+    @NonNull
+    private String lastName;
+
+    @NonNull
+    private String username; 
+
+    @NonNull
+    private String password;
+
+    @NonNull
+    private String email; 
 
     @NonNull
     private Date birthDate;
     
-    private String telephoneNumber, biography, website, provider, profilePicUrl;
+    private String telephoneNumber;
+    private String biography;
+    private String website; 
+    private String provider;
+    private String profilePicUrl; 
 
     private ArrayList<Offer> offers;
 

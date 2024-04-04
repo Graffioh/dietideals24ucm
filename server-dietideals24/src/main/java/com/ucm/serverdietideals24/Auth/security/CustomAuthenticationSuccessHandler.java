@@ -33,8 +33,8 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String emailOrUsernameFromOAuth = authentication.getName();
 
 
-        Boolean isUserInDB = false;
-        Boolean isEmail = emailOrUsernameFromOAuth.contains("@") ? true : false;
+        boolean isUserInDB = false;
+        boolean isEmail = emailOrUsernameFromOAuth.contains("@");
 
         // Do a different query based on Google login (email) or Github login (email/username)
         if (isEmail) {

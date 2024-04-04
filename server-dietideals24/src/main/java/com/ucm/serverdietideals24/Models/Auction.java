@@ -21,7 +21,13 @@ public class Auction {
     private Long id;
 
     @NonNull
-    private String auctionDescription, auctionName, auctionQuality;
+    private String auctionDescription;
+
+    @NonNull
+    private String auctionName;
+
+    @NonNull
+    private String auctionQuality;
 
     @NonNull
     private Float currentOffer;
@@ -55,7 +61,8 @@ public class Auction {
 
     // Descending and English
     private Float startPrice;
-    private Time baseTimer, currentTimer;
+    private Time baseTimer;
+    private Time currentTimer;
 
     // Custom constructors
     // Fixed time

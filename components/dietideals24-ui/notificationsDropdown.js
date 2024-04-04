@@ -67,7 +67,6 @@ export default function NotificationsDropdown() {
       }
 
       const data = await response.json();
-      console.log(data);
     } catch (error) {
       console.error("There was an error:", error);
     }

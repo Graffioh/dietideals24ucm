@@ -206,7 +206,7 @@ public class AuctionController {
         List<Auction> auctions = auctionDAO.getAllEnglishAuctions();
 
         for (Auction auction : auctions) {
-            if(auction.getIsOver() == false) {
+            if(!auction.getIsOver()) {
                 if (auction.getCurrentTimer().equals(Time.valueOf("00:00:00"))) {
                     setCurrentOfferTimer(auction.getId(), Time.valueOf("00:00:00"));
                 } else {
@@ -233,7 +233,7 @@ public class AuctionController {
     }
 
     private void decreasePrice(Auction auction) {
-        if (auction.getIsOver() == false) {
+        if (!auction.getIsOver()) {
             if (auction.getCurrentOffer() > auction.getEndPrice()) {
                 if (auction.getCurrentOffer() > 0) {
                     auctionDAO.updateCurrentOffer(auction.getId(),
