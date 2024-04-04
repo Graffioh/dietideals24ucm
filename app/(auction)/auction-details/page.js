@@ -69,6 +69,15 @@ export default function AuctionDetailsPage({ searchParams }) {
     isLoading: userByIdIsLoading,
   } = useSWR(config.apiUrl + "/users/" + searchParams.auctionuserid, fetcher);
 
+  const {
+    data: highestOfferUserData,
+    error: highestOfferUserError,
+    isLoading: highestOfferUserIsLoading,
+  } = useSWR(
+    config.apiUrl + "/users/" + highestOfferFromAuction?.idUserAccount,
+    fetcher
+  );
+
   const auctionDetailsUser =
     searchParams.auctionuserid !== currentUser?.id
       ? userBySearchParams
@@ -85,6 +94,21 @@ export default function AuctionDetailsPage({ searchParams }) {
     isLoading: profilePicDataIsLoading,
   } = useSWR(
     config.apiUrl + "/users/image?key=" + auctionDetailsUser?.profilePicUrl,
+    imgFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      dedupingInterval: 86400000, // 24 hours
+      shouldRetryOnError: false,
+    }
+  );
+
+  const {
+    data: profilePicHighestOffererData,
+    error: profilePicHighestOffererDataError,
+    isLoading: profilePicHighestOffererDataIsLoading,
+  } = useSWR(
+    config.apiUrl + "/users/image?key=" + highestOfferUserData?.profilePicUrl,
     imgFetcher,
     {
       revalidateOnFocus: false,
@@ -210,9 +234,7 @@ export default function AuctionDetailsPage({ searchParams }) {
                     <Link href={"/public-profile?id=" + highestOfferUserId}>
                       <Avatar className="h-8 w-8 mt-0.5 mr-2.5 hover:opacity-90">
                         <AvatarImage
-                          src={
-                            "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg"
-                          }
+                          src={profilePicHighestOffererData}
                           alt="@avatar"
                         />
                         <AvatarFallback />
