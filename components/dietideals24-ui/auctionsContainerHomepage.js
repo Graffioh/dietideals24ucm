@@ -104,6 +104,10 @@ export default function AuctionsContainerHomepage() {
     );
   }
 
+  if(filteredAuctions.length === 0) {
+    return <div className="flex justify-center">No results.</div>
+  }
+
   return (
     <>
       <div className="flex flex-col items-center">
@@ -139,7 +143,7 @@ export default function AuctionsContainerHomepage() {
               </Link>
             ))
           ) : (
-            <div></div>
+            <div>No results.</div>
           )}
         </div>
 
