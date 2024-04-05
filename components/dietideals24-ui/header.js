@@ -25,7 +25,7 @@ import NotificationsDropdown from "./notificationsDropdown";
 import { useUserContext } from "../../app/providers/userProvider";
 import config from "@/config";
 import Image from "next/image";
-import dietidealsLogo from "@/images/dietidealslogo.jpg";
+import dietidealsLogo from "@/images/dietidealslogo.png";
 
 function Logo() {
   return (

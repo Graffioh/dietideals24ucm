@@ -1,8 +1,6 @@
 # DietiDeals24
 
-<!-- ![dietideals-logo](./images/dietidealslogo.jpg) -->
-
-<img src="./images/dietidealslogo.jpg" width="250" height="250">
+<img src="./images/dietidealslogo.png" width="250" height="250">
 
 ## Software Engineering assignment for uni class
 
