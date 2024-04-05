@@ -3,7 +3,7 @@
 import { Textarea } from "@/components/shadcn-ui/textarea";
 import Link from "next/link";
 import { Button } from "@/components/shadcn-ui/button";
-import { Pencil1Icon } from "@radix-ui/react-icons";
+import { Pencil1Icon, ChatBubbleIcon, GlobeIcon } from "@radix-ui/react-icons";
 import {
   Avatar,
   AvatarFallback,
@@ -101,9 +101,19 @@ export default function ProfilePage({ searchParams }) {
                   )}
                 </div>
 
-                <ShowMoreDetailsPublicProfile
-                  publicProfileUser={publicProfileUser}
-                />
+                <div className="mt-3 text-stone-600" >
+                  <div className="flex items-center">
+                    <ChatBubbleIcon width={20} height={20} className="mr-2" />{" "}
+                    {publicProfileUser?.telephoneNumber === "" ? "no phone number" : publicProfileUser.telephoneNumber ?? "no phone number"}
+                  </div>
+                </div>
+
+                <div className="mt-1.5 text-stone-600" >
+                  <div className="flex items-center">
+                    <GlobeIcon width={20} height={20} className="mr-2" />{" "}
+                    {publicProfileUser?.website === "" ? "no website" : publicProfileUser.website ?? "no website"}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
