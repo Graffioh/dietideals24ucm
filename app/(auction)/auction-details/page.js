@@ -10,12 +10,8 @@ import {
   AvatarImage,
 } from "@/components/shadcn-ui/avatar";
 import Link from "next/link";
-import Image from "next/image";
 import { useCookies } from "next-client-cookies";
 import useSWR from "swr";
-import DescendingAuctionDetailsInputs from "@/components/dietideals24-ui/auctions/descendingAuctionDetailsInputs";
-import EnglishAuctionDetailsInputs from "@/components/dietideals24-ui/auctions/englishAuctionDetailsInputs";
-import FixedTimeAuctionDetailsInputs from "@/components/dietideals24-ui/auctions/fixedTimeAuctionDetailsInputs";
 import PlaceOfferDialog from "@/components/dietideals24-ui/placeOfferDialog";
 import { cn } from "@/lib/utils";
 import { useUserContext } from "@/app/providers/userProvider";
@@ -24,6 +20,9 @@ import AuctionTimer from "@/components/dietideals24-ui/auctionTimer";
 import config from "@/config";
 import useSWRImmutable from "swr/immutable";
 import { useState, useEffect } from "react";
+import AuctionDetailsImage from "@/components/dietideals24-ui/auctionDetailsImage";
+import ProfilePic from "@/components/dietideals24-ui/profilePic";
+import PlaceOfferButton from "@/components/dietideals24-ui/placeOfferButton";
 
 export default function AuctionDetailsPage({ searchParams }) {
   const authToken = useCookies().get("auth-token");
@@ -89,21 +88,6 @@ export default function AuctionDetailsPage({ searchParams }) {
       .then((imgBlob) => URL.createObjectURL(imgBlob));
 
   const {
-    data: profilePicData,
-    error: profilePicDataError,
-    isLoading: profilePicDataIsLoading,
-  } = useSWR(
-    config.apiUrl + "/users/image?key=" + auctionDetailsUser?.profilePicUrl,
-    imgFetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      dedupingInterval: 86400000, // 24 hours
-      shouldRetryOnError: false,
-    }
-  );
-
-  const {
     data: profilePicHighestOffererData,
     error: profilePicHighestOffererDataError,
     isLoading: profilePicHighestOffererDataIsLoading,
@@ -116,15 +100,6 @@ export default function AuctionDetailsPage({ searchParams }) {
       dedupingInterval: 86400000, // 24 hours
       shouldRetryOnError: false,
     }
-  );
-
-  const {
-    data: auctionPicData,
-    error: auctionPicDataError,
-    isLoading: auctionPicDataIsLoading,
-  } = useSWRImmutable(
-    config.apiUrl + "/auctions/image?key=" + currentAuction?.auctionImages,
-    imgFetcher
   );
 
   if (currentAuctionIsLoading || userByIdIsLoading) {
@@ -170,46 +145,8 @@ export default function AuctionDetailsPage({ searchParams }) {
   return (
     <>
       <div className="flex flex-col md:flex-row mx-8 md:mx-20 justify-between">
-        <div className="flex flex-col md:ml-20 mt-4 md:mr-10">
-          <Label className="flex text-2xl mb-2">
-            {currentAuction.auctionName}
-          </Label>
-          <Image
-            alt="auction-image"
-            className="rounded-lg mb-2.5 border-2 border-input"
-            src={
-              currentAuction.auctionImages !== "no-images"
-                ? auctionPicData
-                : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"
-            }
-            width={410}
-            height={180}
-          />
-          {/* IDEA TO SHOW OTHER AUCTION IMAGES*/}
-          {/* <div className="flex">
-            <Image
-              alt="auction-image-1"
-              className="rounded-lg mx-1"
-              src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
-              width={130}
-              height={80}
-            />
-            <Image
-              alt="auction-image-2"
-              className="rounded-lg mx-1"
-              src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
-              width={130}
-              height={80}
-            />
-            <Image
-              alt="auction-image-3"
-              className="rounded-lg mx-1"
-              src="https://m.media-amazon.com/images/I/A1P5H1w-mnL._UF1000,1000_QL80_.jpg"
-              width={130}
-              height={80}
-            />
-          </div> */}
-        </div>
+        <AuctionDetailsImage auction={currentAuction} />
+
         <div className="flex flex-col max-w-2xl my-8">
           <div className="px-10 bg-stone-200 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
             <div className="flex flex-col justify-center items-center">
@@ -219,12 +156,11 @@ export default function AuctionDetailsPage({ searchParams }) {
                 Auction
               </Label>
 
-              <Link href={"/public-profile?id=" + currentAuction.idUserAccount}>
-                <Avatar className="h-32 w-32 hover:opacity-90">
-                  <AvatarImage src={profilePicData} alt="@avatar" />
-                  <AvatarFallback />
-                </Avatar>
-              </Link>
+              <ProfilePic
+                userId={currentAuction.idUserAccount}
+                picUrl={auctionDetailsUser?.profilePicUrl}
+              />
+
               <div className="flex flex-col md:flex-row w-full mt-7 justify-between mx-8">
                 <div className="flex flex-col w-full md:mr-4">
                   <Label className="flex mb-2">
@@ -314,30 +250,13 @@ export default function AuctionDetailsPage({ searchParams }) {
                   />
                 </div>
               </div>
-              <div className="mt-8 mb-5">
-                {!authToken || authToken === "no-token" ? (
-                  <Link
-                    className={cn(
-                      buttonVariants({
-                        variant: "default",
-                        size: "default",
-                        className: "p-7 text-lg",
-                      })
-                    )}
-                    href="/login"
-                  >
-                    Place offer
-                  </Link>
-                ) : currentUser &&
-                  searchParams.auctionuserid != currentUser.id ? (
-                  <PlaceOfferDialog
-                    auction={currentAuction}
-                    onCurrentOfferChange={handleCurrentOffer}
-                  />
-                ) : (
-                  <div></div>
-                )}
-              </div>
+              <PlaceOfferButton
+                auction={currentAuction}
+                authToken={authToken}
+                currentUser={currentUser}
+                searchParamsUserId={searchParams.auctionuserid}
+                handleCurrentOffer={handleCurrentOffer}
+              />
             </div>
           </div>
         </div>

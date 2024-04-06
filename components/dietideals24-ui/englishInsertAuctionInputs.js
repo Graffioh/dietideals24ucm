@@ -3,7 +3,7 @@ import { Label } from "@/components/shadcn-ui/label";
 import { Input } from "@/components/shadcn-ui/input";
 import { Button } from "@/components/shadcn-ui/button";
 import { TimePicker } from "@/components/timepicker/time-picker";
-import PriceInput from "../priceInput";
+import PriceInput from "./priceInput";
 
 export default function EnglishInsertAuctionInputs({
   onBaseStartAuctionChange,
