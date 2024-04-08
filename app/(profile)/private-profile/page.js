@@ -3,21 +3,13 @@
 import { useState, useRef } from "react";
 
 import { Input } from "@/components/shadcn-ui/input";
-import { Textarea } from "@/components/shadcn-ui/textarea";
 import { Label } from "@/components/shadcn-ui/label";
 import { Button } from "@/components/shadcn-ui/button";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/shadcn-ui/avatar";
 import { hash } from "bcryptjs";
 import { toast } from "sonner";
-import useSWR from "swr";
 import { mutate } from "swr";
 
 import { isValidPhoneNumber } from "react-phone-number-input";
-import { PhoneInput } from "@/components/phoneinput/phone-input";
 import DatePicker from "@/components/dietideals24-ui/datePicker";
 
 import CancelAlertDialog from "@/components/dietideals24-ui/cancelAlertDialog";
@@ -25,13 +17,18 @@ import { useUserContext } from "@/app/providers/userProvider";
 import LoadingSpinner from "@/components/dietideals24-ui/loadingSpinner";
 import config from "@/config";
 import Compressor from "compressorjs";
+import ProfilePic from "@/components/dietideals24-ui/profilePic";
+import AdditionalPrivateProfileInfo from "@/components/dietideals24-ui/additionalPrivateProfileInfo";
 
 export default function ProfilePage({ searchParams }) {
   const [birthDate, setBirthDate] = useState("");
 
   const { currentUser, currentUserIsLoading } = useUserContext();
-  const [phone, setPhone] = useState(
-    currentUser?.telephoneNumber ?? "");
+  const [phone, setPhone] = useState(currentUser?.telephoneNumber ?? "");
+
+  function handlePhoneChange(phone) {
+    setPhone(phone)
+  }
 
   const provider = currentUser ? currentUser.provider : null;
 
@@ -244,26 +241,6 @@ export default function ProfilePage({ searchParams }) {
     setBirthDate(date);
   }
 
-  const imgFetcher = (url) =>
-    fetch(url)
-      .then((res) => res.blob())
-      .then((imgBlob) => URL.createObjectURL(imgBlob));
-
-  const {
-    data: profilePicData,
-    error: profilePicDataError,
-    isLoading: profilePicDataIsLoading,
-  } = useSWR(
-    config.apiUrl + "/users/image?key=" + currentUser?.profilePicUrl,
-    imgFetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      dedupingInterval: 86400000, // 24 hours
-      shouldRetryOnError: false,
-    }
-  );
-
   if (currentUserIsLoading && !searchParams.fromProvider) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -282,13 +259,13 @@ export default function ProfilePage({ searchParams }) {
             handleHiddenFileInput();
           }}
         >
-          <div>
-          <Avatar className="h-32 w-32">
-            <AvatarImage src={imageData ?? profilePicData} alt="@avatar" />
-            <AvatarFallback />
-          </Avatar>
+          <ProfilePic
+            picUrl={currentUser?.profilePicUrl}
+            imageFromState={imageData}
+          />
+          <div className="absolute mt-24 ml-20 rounded-full bg-blue-950 px-[0.5em] py-[0.1em] text-white border-2 border-white">
+            +
           </div>
-        <div className="absolute mt-24 ml-20 rounded-full bg-blue-950 px-[0.5em] py-[0.1em] text-white border-2 border-white">+</div>
         </Button>
         <Input
           onChange={(e) => {
@@ -416,44 +393,7 @@ export default function ProfilePage({ searchParams }) {
               />
             </div>
 
-            {currentUser ? (
-              currentUser.id ? (
-                <>
-                  <div>
-                    <Label className="mb-2 flex">Bio</Label>
-                    <Textarea
-                      className="resize-none bg-white"
-                      placeholder="Type your description here."
-                      id="biography"
-                      defaultValue={currentUser ? currentUser.biography : ""}
-                    />
-                  </div>
-
-                  <div>
-                    <Label className="mb-2 flex">Phone Number</Label>
-                    <PhoneInput
-                      value={phone}
-                      onChange={(phone) => setPhone(phone)}
-                    />
-                  </div>
-
-                  <div>
-                    <Label className="mb-2 flex">Website</Label>
-                    <Input
-                      className="h-9 bg-white"
-                      type="url"
-                      id="website"
-                      placeholder="Website"
-                      defaultValue={currentUser ? currentUser.website : ""}
-                    />
-                  </div>
-                </>
-              ) : (
-                <div></div>
-              )
-            ) : (
-              <div></div>
-            )}
+            <AdditionalPrivateProfileInfo currentUser={currentUser} phone={phone} onPhoneChange={handlePhoneChange} />
           </div>
 
           <div className="flex">

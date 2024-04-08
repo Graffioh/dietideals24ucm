@@ -12,7 +12,7 @@ import useSWR from "swr"
 
 import LoadingSpinner from "./loadingSpinner";
 
-export default function ProfilePic({userId, picUrl}) {
+export default function ProfilePic({picUrl, imageFromState}) {
   const imgFetcher = (url) =>
     fetch(url)
       .then((res) => res.blob())
@@ -43,11 +43,9 @@ export default function ProfilePic({userId, picUrl}) {
   }
 
   return (
-    <Link href={"/public-profile?id=" + userId}>
       <Avatar className="h-32 w-32 hover:opacity-90">
-        <AvatarImage src={profilePicData} alt="@avatar" />
+        <AvatarImage src={imageFromState ?? profilePicData} alt="@avatar" />
         <AvatarFallback />
       </Avatar>
-    </Link>
   );
 }

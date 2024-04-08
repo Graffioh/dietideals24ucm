@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Label } from "@/components/shadcn-ui/label";
 import useSWR from "swr";
 import { useUserContext } from "@/app/providers/userProvider";
@@ -70,10 +71,9 @@ export default function AuctionDetailsPage({ searchParams }) {
                 Auction
               </Label>
 
-              <ProfilePic
-                userId={currentAuction.idUserAccount}
-                picUrl={auctionDetailsUser?.profilePicUrl}
-              />
+              <Link href={"/public-profile?id=" + auctionDetailsUser?.id}>
+                <ProfilePic picUrl={auctionDetailsUser?.profilePicUrl} />
+              </Link>
 
               <AuctionDetailsFields
                 auction={currentAuction}
