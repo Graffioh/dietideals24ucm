@@ -106,8 +106,8 @@ export default function AuctionsContainerHomepage() {
     );
   }
 
-  if(filteredAuctions.length === 0 && filteredAuctions && currentUser) {
-    return <div className="flex justify-center">No results.</div>
+  if (filteredAuctions.length === 0 && filteredAuctions && currentUser) {
+    return <div className="flex justify-center">No results.</div>;
   }
 
   return (
@@ -126,7 +126,11 @@ export default function AuctionsContainerHomepage() {
                   }
                   key={filteredAuction.id}
                 >
-                  <CardAuction isHomepage={true} isMobile={isMobile} auction={filteredAuction} />
+                  <CardAuction
+                    isHomepage={true}
+                    isMobile={isMobile}
+                    auction={filteredAuction}
+                  />
                 </Link>
               </>
             ))
@@ -141,7 +145,11 @@ export default function AuctionsContainerHomepage() {
                 }
                 key={auction.id}
               >
-                <CardAuction isHomepage={true} isMobile={isMobile} auction={auction} />
+                <CardAuction
+                  isHomepage={true}
+                  isMobile={isMobile}
+                  auction={auction}
+                />
               </Link>
             ))
           ) : (

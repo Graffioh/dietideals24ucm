@@ -15,9 +15,9 @@ import ComboboxQuality from "@/components/dietideals24-ui/comboboxQualities.js";
 
 import { useUserContext } from "@/app/providers/userProvider";
 
-import FixedTimeInsertAuctionInputs from "@/components/dietideals24-ui/auctions/fixedTimeInsertAuctionInputs";
-import EnglishInsertAuctionInputs from "@/components/dietideals24-ui/auctions/englishInsertAuctionInputs";
-import DescendingInsertAuctionInputs from "@/components/dietideals24-ui/auctions/descendingInsertAuctionInputs";
+import FixedTimeInsertAuctionInputs from "@/components/dietideals24-ui/fixedTimeInsertAuctionInputs";
+import EnglishInsertAuctionInputs from "@/components/dietideals24-ui/englishInsertAuctionInputs";
+import DescendingInsertAuctionInputs from "@/components/dietideals24-ui/descendingInsertAuctionInputs";
 
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";

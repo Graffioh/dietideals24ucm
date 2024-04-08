@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Label } from "@/components/shadcn-ui/label";
 import { Input } from "@/components/shadcn-ui/input";
 
-import DatePicker from "../datePicker";
-import PriceInput from "../priceInput";
+import DatePicker from "./datePicker";
+import PriceInput from "./priceInput";
 
 export default function FixedTimeInsertAuctionInputs({
   onExpireDateChange,

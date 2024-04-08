@@ -8,7 +8,10 @@ export default function GetStartedPage() {
           <h1>Sell and buy with just a few clicks. </h1>
         </div>
         <div className="mb-4 text-4xl">
-          <p>It&apos;s easy and fast to use. Are you ready? Let&apos;s get started!</p>
+          <p>
+            It&apos;s easy and fast to use. Are you ready? Let&apos;s get
+            started!
+          </p>
         </div>
         <Link href="/home">
           <div className="mt-2 bg-blue-950 text-white rounded p-3">
