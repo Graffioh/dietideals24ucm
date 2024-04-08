@@ -4,20 +4,13 @@ import { Textarea } from "@/components/shadcn-ui/textarea";
 import Link from "next/link";
 import { Button } from "@/components/shadcn-ui/button";
 import { Pencil1Icon, ChatBubbleIcon, GlobeIcon } from "@radix-ui/react-icons";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/shadcn-ui/avatar";
 import useSWR from "swr";
-import { useState } from "react";
 
-// import getCurrentUserServer from "@/app/(auth)/getCurrentUserServer";
 import AuctionsContainerPublicProfile from "@/components/dietideals24-ui/auctionsContainerPublicProfile";
-import ShowMoreDetailsPublicProfile from "@/components/dietideals24-ui/showMoreDetailsPublicProfile";
 import LoadingSpinner from "@/components/dietideals24-ui/loadingSpinner";
 import { useUserContext } from "@/app/providers/userProvider";
 import config from "@/config";
+import ProfilePic from "@/components/dietideals24-ui/profilePic";
 
 export default function ProfilePage({ searchParams }) {
   const { currentUser } = useUserContext();
@@ -41,26 +34,6 @@ export default function ProfilePage({ searchParams }) {
       : {}
     : currentUser;
 
-  const imgFetcher = (url) =>
-    fetch(url)
-      .then((res) => res.blob())
-      .then((imgBlob) => URL.createObjectURL(imgBlob));
-
-  const {
-    data: profilePicData,
-    error: profilePicDataError,
-    isLoading: profilePicDataIsLoading,
-  } = useSWR(
-    config.apiUrl + "/users/image?key=" + publicProfileUser?.profilePicUrl,
-    imgFetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      dedupingInterval: 86400000, // 24 hours
-      shouldRetryOnError: false,
-    }
-  );
-
   if ((searchParams.id && userByIdIsLoading) || !publicProfileUser) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -76,10 +49,7 @@ export default function ProfilePage({ searchParams }) {
           <div className="flex items-center mb-2 md:mb-0">
             <div className="flex">
               <div className="mt-2 mr-4 md:mr-10">
-                <Avatar className="h-32 w-32">
-                  <AvatarImage src={profilePicData} alt="@avatar" />
-                  <AvatarFallback />
-                </Avatar>
+                <ProfilePic picUrl={publicProfileUser?.profilePicUrl} />
               </div>
               <div className="flex flex-col">
                 <div className="flex w-full">
@@ -101,17 +71,21 @@ export default function ProfilePage({ searchParams }) {
                   )}
                 </div>
 
-                <div className="mt-3 text-stone-600" >
+                <div className="mt-3 text-stone-600">
                   <div className="flex items-center">
                     <ChatBubbleIcon width={20} height={20} className="mr-2" />{" "}
-                    {publicProfileUser?.telephoneNumber === "" ? "no phone number" : publicProfileUser.telephoneNumber ?? "no phone number"}
+                    {publicProfileUser?.telephoneNumber === ""
+                      ? "no phone number"
+                      : publicProfileUser.telephoneNumber ?? "no phone number"}
                   </div>
                 </div>
 
-                <div className="mt-1.5 text-stone-600" >
+                <div className="mt-1.5 text-stone-600">
                   <div className="flex items-center">
                     <GlobeIcon width={20} height={20} className="mr-2" />{" "}
-                    {publicProfileUser?.website === "" ? "no website" : publicProfileUser.website ?? "no website"}
+                    {publicProfileUser?.website === ""
+                      ? "no website"
+                      : publicProfileUser.website ?? "no website"}
                   </div>
                 </div>
               </div>

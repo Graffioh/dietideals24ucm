@@ -27,7 +27,7 @@ export default function ProfilePage({ searchParams }) {
   const [phone, setPhone] = useState(currentUser?.telephoneNumber ?? "");
 
   function handlePhoneChange(phone) {
-    setPhone(phone)
+    setPhone(phone);
   }
 
   const provider = currentUser ? currentUser.provider : null;
@@ -393,7 +393,11 @@ export default function ProfilePage({ searchParams }) {
               />
             </div>
 
-            <AdditionalPrivateProfileInfo currentUser={currentUser} phone={phone} onPhoneChange={handlePhoneChange} />
+            <AdditionalPrivateProfileInfo
+              currentUser={currentUser}
+              phone={phone}
+              onPhoneChange={handlePhoneChange}
+            />
           </div>
 
           <div className="flex">
