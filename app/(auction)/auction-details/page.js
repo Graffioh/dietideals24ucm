@@ -10,7 +10,6 @@ import {
   AvatarImage,
 } from "@/components/shadcn-ui/avatar";
 import Link from "next/link";
-import { useCookies } from "next-client-cookies";
 import useSWR from "swr";
 import PlaceOfferDialog from "@/components/dietideals24-ui/placeOfferDialog";
 import { cn } from "@/lib/utils";
@@ -25,7 +24,6 @@ import ProfilePic from "@/components/dietideals24-ui/profilePic";
 import PlaceOfferButton from "@/components/dietideals24-ui/placeOfferButton";
 
 export default function AuctionDetailsPage({ searchParams }) {
-  const authToken = useCookies().get("auth-token");
 
   const { currentUser } = useUserContext();
 
@@ -141,7 +139,7 @@ export default function AuctionDetailsPage({ searchParams }) {
     descendingDeadline,
     currentAuction.baseTimer
   );
-
+  
   return (
     <>
       <div className="flex flex-col md:flex-row mx-8 md:mx-20 justify-between">
@@ -252,9 +250,7 @@ export default function AuctionDetailsPage({ searchParams }) {
               </div>
               <PlaceOfferButton
                 auction={currentAuction}
-                authToken={authToken}
-                currentUser={currentUser}
-                searchParamsUserId={searchParams.auctionuserid}
+                isCurrentUser={currentUser && searchParams.auctionuserid == currentUser.id}
                 handleCurrentOffer={handleCurrentOffer}
               />
             </div>
