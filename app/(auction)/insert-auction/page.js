@@ -62,8 +62,7 @@ export default function InsertAuctionPage() {
   // English auction inputs state
   // ***************************************
   const [riseThreshold, setRiseThreshold] = useState("");
-  const [isOfferTimerValid, setIsOfferTimerValid] =
-  useState(true);
+  const [isOfferTimerValid, setIsOfferTimerValid] = useState(true);
 
   function handleRiseThreshold(riseThreshold) {
     setRiseThreshold(riseThreshold);
@@ -266,11 +265,8 @@ export default function InsertAuctionPage() {
 
     const inputs = event.currentTarget;
 
-    // trash
     const currentOffer =
-      auctionType === "english"
-        ? startPrice
-        : auctionType === "descending"
+      auctionType === "english" || auctionType === "descending"
         ? startPrice
         : 0;
 
@@ -304,6 +300,8 @@ export default function InsertAuctionPage() {
         ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss")
         : null,
     };
+    
+    console.log(auctionFromInputs)
 
     try {
       await fetch(config.apiUrl + "/auctions", {
