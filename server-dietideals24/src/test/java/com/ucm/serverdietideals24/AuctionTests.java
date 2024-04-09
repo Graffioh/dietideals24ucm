@@ -29,7 +29,9 @@ public class AuctionTests {
 
     @Test
     public void testIsAuctionValidForInsertion() throws Exception {
+        
         // Arrange
+        // ************************************************
         Auction validAuction1 = new Auction(
                 1L,
                 "Nice cars from cars, really good shape, i'm good",
@@ -103,8 +105,10 @@ public class AuctionTests {
                 120000.0f, // start price (not valid because > 9999)
                 new Time(43200000),
                 new Time(0));
+        // ************************************************
 
         // Act
+        // ************************************************
         boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
         boolean isAuctionValid2 =
         auctionValidator.isAuctionValid(validAuction2);
@@ -114,12 +118,15 @@ public class AuctionTests {
         auctionValidator.isAuctionValid(invalidAuction2);
         boolean isAuctionValid5 =
         auctionValidator.isAuctionValid(invalidAuction3);
+        // ************************************************
 
         // Assert
+        // ************************************************
         assertEquals(true, isAuctionValid1);
         assertEquals(true, isAuctionValid2);
         assertEquals(false, isAuctionValid3);
         assertEquals(false, isAuctionValid4);
         assertEquals(false, isAuctionValid5);
+        // ************************************************
     }
 }

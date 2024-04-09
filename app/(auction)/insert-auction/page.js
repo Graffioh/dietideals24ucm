@@ -15,12 +15,11 @@ import ComboboxQuality from "@/components/dietideals24-ui/comboboxQualities.js";
 
 import { useUserContext } from "@/app/providers/userProvider";
 
-import FixedTimeInsertAuctionInputs from "@/components/dietideals24-ui/auctions/fixedTimeInsertAuctionInputs";
-import EnglishInsertAuctionInputs from "@/components/dietideals24-ui/auctions/englishInsertAuctionInputs";
-import DescendingInsertAuctionInputs from "@/components/dietideals24-ui/auctions/descendingInsertAuctionInputs";
+import FixedTimeInsertAuctionInputs from "@/components/dietideals24-ui/fixedTimeInsertAuctionInputs";
+import EnglishInsertAuctionInputs from "@/components/dietideals24-ui/englishInsertAuctionInputs";
+import DescendingInsertAuctionInputs from "@/components/dietideals24-ui/descendingInsertAuctionInputs";
 
 import moment from "moment";
-import { v4 as uuidv4 } from "uuid";
 import AddAuctionImageBox from "@/components/dietideals24-ui/addAuctionImageBox";
 import { toast } from "sonner";
 import config from "@/config";
@@ -63,6 +62,7 @@ export default function InsertAuctionPage() {
   // English auction inputs state
   // ***************************************
   const [riseThreshold, setRiseThreshold] = useState("");
+  const [isOfferTimerValid, setIsOfferTimerValid] = useState(true);
 
   function handleRiseThreshold(riseThreshold) {
     setRiseThreshold(riseThreshold);
@@ -71,6 +71,15 @@ export default function InsertAuctionPage() {
   function validateEnglishAuctionInputs() {
     if (auctionType && auctionType !== "english") {
       return true;
+    }
+
+    const isTimerValid = baseTimer && baseTimer.length !== 0 ? true : false;
+
+    if (!isTimerValid) {
+      setIsOfferTimerValid(false);
+      toast.warning("Please set the offer timer.");
+    } else {
+      setIsOfferTimerValid(true);
     }
 
     const validState =
@@ -141,16 +150,17 @@ export default function InsertAuctionPage() {
 
     if (!isTimerValid) {
       setIsBaseDecrementTimerValid(false);
+      toast.warning("Please set the decrement timer.");
     } else {
       setIsBaseDecrementTimerValid(true);
     }
 
-    if (decrementAmount < startPrice) {
-      toast.warning("Decrement amount can't be less than Start price!");
+    if (decrementAmount > startPrice) {
+      toast.warning("Decrement amount can't be higher than Start price!");
       return false;
     }
 
-    if (descendingMinimumPrice < startPrice) {
+    if (descendingMinimumPrice > startPrice) {
       toast.warning("End price can't be higher than Start price!");
       return false;
     }
@@ -255,11 +265,8 @@ export default function InsertAuctionPage() {
 
     const inputs = event.currentTarget;
 
-    // trash
     const currentOffer =
-      auctionType === "english"
-        ? startPrice
-        : auctionType === "descending"
+      auctionType === "english" || auctionType === "descending"
         ? startPrice
         : 0;
 
@@ -293,6 +300,8 @@ export default function InsertAuctionPage() {
         ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss")
         : null,
     };
+    
+    console.log(auctionFromInputs)
 
     try {
       await fetch(config.apiUrl + "/auctions", {
@@ -415,6 +424,7 @@ export default function InsertAuctionPage() {
                 onBaseStartAuctionChange={handleStartPrice}
                 onRiseThresholdChange={handleRiseThreshold}
                 onBaseOfferTimerChange={handleBaseTimer}
+                isAuctionTimerValid={isOfferTimerValid}
               />
             )}
           </div>

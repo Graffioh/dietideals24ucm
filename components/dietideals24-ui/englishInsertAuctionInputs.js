@@ -3,12 +3,14 @@ import { Label } from "@/components/shadcn-ui/label";
 import { Input } from "@/components/shadcn-ui/input";
 import { Button } from "@/components/shadcn-ui/button";
 import { TimePicker } from "@/components/timepicker/time-picker";
-import PriceInput from "../priceInput";
+import PriceInput from "./priceInput";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 export default function EnglishInsertAuctionInputs({
   onBaseStartAuctionChange,
   onRiseThresholdChange,
   onBaseOfferTimerChange,
+  isAuctionTimerValid,
 }) {
   const zeroDate = new Date();
   zeroDate.setHours(0, 0, 0, 0);
@@ -55,6 +57,12 @@ export default function EnglishInsertAuctionInputs({
           >
             Set
           </Button>
+          <ExclamationTriangleIcon
+            hidden={isAuctionTimerValid}
+            width={23}
+            height={23}
+            className="text-red-500 mr-1 mt-8 ml-2 animate-bounce"
+          />
         </div>
       </div>
 
