@@ -332,7 +332,7 @@ export default function InsertAuctionPage() {
   return (
     <>
       <form onSubmit={onSubmit}>
-        <div className="flex flex-col md:flex-row items-center mt-12">
+        <div className="flex flex-col md:flex-row items-center mt-12 2xl:justify-center">
           <div className="mx-3 mb-6 md:m-6 md:mr-20 md:ml-48 grid md:grid-cols-2 gap-2">
             <AddAuctionImageBox
               onFileChange={handleFileChange}

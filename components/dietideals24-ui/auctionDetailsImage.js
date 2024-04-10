@@ -23,15 +23,15 @@ export default function AuctionDetailsImage({ auction }) {
     imgFetcher
   );
 
-  if(auctionPicDataIsLoading) {
+  if (auctionPicDataIsLoading) {
     return (
-        <div className="flex h-screen items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      );
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
   return (
-    <div className="flex flex-col md:ml-20 mt-4 md:mr-10">
+    <div className="flex flex-col mt-4">
       <Label className="flex text-2xl mb-2">{auction.auctionName}</Label>
       <Image
         alt="auction-image"
@@ -41,8 +41,8 @@ export default function AuctionDetailsImage({ auction }) {
             ? auctionPicData
             : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"
         }
-        width={410}
-        height={180}
+        width={600}
+        height={300}
       />
       {/* IDEA TO SHOW OTHER AUCTION IMAGES*/}
       {/* <div className="flex">

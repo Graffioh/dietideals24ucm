@@ -59,10 +59,10 @@ export default function AuctionDetailsPage({ searchParams }) {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row mx-8 md:mx-20 justify-between">
+      <div className="flex flex-col md:flex-row mx-8 md:mx-20 justify-between 2xl:justify-center">
         <AuctionDetailsImage auction={currentAuction} />
 
-        <div className="flex flex-col max-w-2xl my-8">
+        <div className="flex flex-col max-w-2xl my-8 2xl:ml-32">
           <div className="px-10 bg-stone-200 rounded-xl shadow-[0px_4px_16px_rgba(17,17,26,0.2),_0px_8px_24px_rgba(17,17,26,0.2),_0px_16px_56px_rgba(17,17,26,0.2)]">
             <div className="flex flex-col justify-center items-center">
               <Label className="flex text-base mb-4 bg-white rounded-b-lg pb-1 px-2 border border-input">
