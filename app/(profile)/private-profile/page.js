@@ -25,9 +25,14 @@ export default function ProfilePage({ searchParams }) {
 
   const { currentUser, currentUserIsLoading } = useUserContext();
   const [phone, setPhone] = useState(currentUser?.telephoneNumber ?? "");
-
+  const [country, setCountry] = useState(currentUser?.country ?? "XX")
+  
   function handlePhoneChange(phone) {
     setPhone(phone);
+  }
+
+  function handleCountryChange(country) {
+    setCountry(country);
   }
 
   const provider = currentUser ? currentUser.provider : null;
@@ -179,6 +184,8 @@ export default function ProfilePage({ searchParams }) {
       !file && currentUser
         ? currentUser.profilePicUrl
         : await handleImageUpload(currentUser?.id ?? newUserIdFromDate);
+    
+    console.log(country)
 
     const userInfoFromInputs = {
       id: newUserIdFromDate,
@@ -189,6 +196,7 @@ export default function ProfilePage({ searchParams }) {
       birthDate: birthDate !== "" ? birthDate : currentUser?.birthDate,
       email: inputs.email.value,
       telephoneNumber: phone,
+      country: country,
       biography: inputs.biography ? inputs.biography.value : "",
       website: inputs.website ? inputs.website.value : "",
       profilePicUrl: pfpImageUrl ?? "no-pfp",
@@ -396,7 +404,9 @@ export default function ProfilePage({ searchParams }) {
             <AdditionalPrivateProfileInfo
               currentUser={currentUser}
               phone={phone}
+              selectedCountry={country}
               onPhoneChange={handlePhoneChange}
+              onCountryChange={handleCountryChange}
             />
           </div>
 
