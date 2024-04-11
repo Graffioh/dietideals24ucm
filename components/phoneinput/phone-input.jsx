@@ -136,4 +136,4 @@ const FlagComponent = ({ country, countryName }) => {
 };
 FlagComponent.displayName = "FlagComponent";
 
-export { PhoneInput };
+export { PhoneInput, FlagComponent };

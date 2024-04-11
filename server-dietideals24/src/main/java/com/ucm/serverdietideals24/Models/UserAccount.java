@@ -35,6 +35,7 @@ public class UserAccount {
     @NonNull
     private Date birthDate;
     
+    private String country;
     private String telephoneNumber;
     private String biography;
     private String website; 
