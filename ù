@@ -10,10 +10,9 @@ import CountrySelector from "@/components/dietideals24-ui/countrySelector";
 export default function AdditionalPrivateProfileInfo({
   currentUser,
   phone,
-  selectedCountry,
   onPhoneChange,
-  onCountryChange
 }) {
+
   useEffect(() => {
     if (currentUser?.telephoneNumber) {
       onPhoneChange(currentUser?.telephoneNumber);
@@ -26,8 +25,8 @@ export default function AdditionalPrivateProfileInfo({
         currentUser.id ? (
           <>
             <div>
-              <Label className="mb-2 flex">Country</Label>
-              <CountrySelector countryFromUser={currentUser.country} selectedCountry={selectedCountry} onCountryChange={onCountryChange}/>
+            <Label className="mb-2 flex">Country</Label>
+            <CountrySelector />
             </div>
             <div>
               <Label className="mb-2 flex">Bio</Label>
@@ -64,3 +63,4 @@ export default function AdditionalPrivateProfileInfo({
     </>
   );
 }
+

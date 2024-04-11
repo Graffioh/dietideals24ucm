@@ -11,6 +11,7 @@ import LoadingSpinner from "@/components/dietideals24-ui/loadingSpinner";
 import { useUserContext } from "@/app/providers/userProvider";
 import config from "@/config";
 import ProfilePic from "@/components/dietideals24-ui/profilePic";
+import { FlagComponent } from "@/components/phoneinput/phone-input";
 
 export default function ProfilePage({ searchParams }) {
   const { currentUser } = useUserContext();
@@ -33,7 +34,7 @@ export default function ProfilePage({ searchParams }) {
         : currentUser
       : {}
     : currentUser;
-
+  
   if ((searchParams.id && userByIdIsLoading) || !publicProfileUser) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -52,10 +53,14 @@ export default function ProfilePage({ searchParams }) {
                 <ProfilePic picUrl={publicProfileUser?.profilePicUrl} />
               </div>
               <div className="flex flex-col">
-                <div className="flex w-full">
+                <div className="flex w-full justify-center items-center">
                   <h1 className="font-bold text-4xl md:text-5xl">
                     {publicProfileUser ? publicProfileUser.username : "none"}
                   </h1>
+
+                  <div className="mx-2">
+                  <FlagComponent country={publicProfileUser?.country ?? "XX"} />
+                  </div>
 
                   {publicProfileUser?.id === currentUser?.id ? (
                     <Link href="/private-profile?type=update">

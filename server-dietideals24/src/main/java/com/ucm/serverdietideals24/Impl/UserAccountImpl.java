@@ -12,61 +12,65 @@ import com.ucm.serverdietideals24.Models.UserAccount;
 
 @Repository
 public class UserAccountImpl implements UserAccountDAO {
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+        @Autowired
+        private JdbcTemplate jdbcTemplate;
 
-    @Override
-    public List<UserAccount> getAll() {
-        return jdbcTemplate.query("SELECT * FROM useraccount",
-                new BeanPropertyRowMapper<UserAccount>(UserAccount.class));
-    }
+        @Override
+        public List<UserAccount> getAll() {
+                return jdbcTemplate.query("SELECT * FROM useraccount",
+                                new BeanPropertyRowMapper<UserAccount>(UserAccount.class));
+        }
 
-    @Override
-    public UserAccount getViaId(Long id) {
-        return jdbcTemplate.query("SELECT * FROM useraccount WHERE id = '" + id + "'",
-                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
-    }
+        @Override
+        public UserAccount getViaId(Long id) {
+                return jdbcTemplate.query("SELECT * FROM useraccount WHERE id = '" + id + "'",
+                                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+        }
 
-    @Override
-    public UserAccount getViaEmail(String email) {
-        return jdbcTemplate.query("SELECT * FROM useraccount WHERE email = '" + email + "'",
-                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
-    }
+        @Override
+        public UserAccount getViaEmail(String email) {
+                return jdbcTemplate.query("SELECT * FROM useraccount WHERE email = '" + email + "'",
+                                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+        }
 
-    @Override
-    public UserAccount getViaUsername(String username) {
-        return jdbcTemplate.query("SELECT * FROM useraccount WHERE username = '" + username + "'",
-                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
-    }
+        @Override
+        public UserAccount getViaUsername(String username) {
+                return jdbcTemplate.query("SELECT * FROM useraccount WHERE username = '" + username + "'",
+                                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+        }
 
-    @Override
-    public void create(UserAccount user) {
-        System.err.println("USER: " + user);
-        jdbcTemplate.execute(
-                "INSERT INTO useraccount (id, firstName, lastName, username, password, birthDate, email, provider, profilePicUrl) VALUES('"
-                        + user.getId() + "', '" + user.getFirstName()
-                        + "', '" + user.getLastName() + "', '" + user.getUsername() + "', '" + user.getPassword()
-                        + "', '"
-                        + user.getBirthDate() + "', '" + user.getEmail() + "', '" + user.getProvider() + "', '"
-                        + user.getProfilePicUrl() + "')");
-    }
+        @Override
+        public void create(UserAccount user) {
+                System.err.println("USER: " + user);
+                jdbcTemplate.execute(
+                                "INSERT INTO useraccount (id, firstName, lastName, username, password, birthDate, email, provider, profilePicUrl) VALUES('"
+                                                + user.getId() + "', '" + user.getFirstName()
+                                                + "', '" + user.getLastName() + "', '" + user.getUsername() + "', '"
+                                                + user.getPassword()
+                                                + "', '"
+                                                + user.getBirthDate() + "', '" + user.getEmail() + "', '"
+                                                + user.getProvider() + "', '"
+                                                + user.getProfilePicUrl() + "')");
+        }
 
-    @Override
-    public void update(Long id, UserAccount user) {
-        jdbcTemplate.update("UPDATE useraccount SET firstName = '" + user.getFirstName() + "', lastName = '"
-                + user.getLastName() + "', username = '" + user.getUsername() + "', password = '"
-                + user.getPassword() + "', birthDate = '" + user.getBirthDate() + "', email = '" + user.getEmail()
-                + "', telephoneNumber = '" + user.getTelephoneNumber()
-                + "', biography = '" + user.getBiography() + "', website = '" + user.getWebsite()
-                + "', profilePicUrl = '" + user.getProfilePicUrl() + "' WHERE id = '"
-                + id + "'");
-    }
+        @Override
+        public void update(Long id, UserAccount user) {
+                jdbcTemplate.update("UPDATE useraccount SET firstName = '" + user.getFirstName() + "', lastName = '"
+                                + user.getLastName() + "', username = '" + user.getUsername() + "', password = '"
+                                + user.getPassword() + "', birthDate = '" + user.getBirthDate() + "', email = '"
+                                + user.getEmail()
+                                + "', telephoneNumber = '" + user.getTelephoneNumber()
+                                + "', country = '" + user.getCountry() + "' , biography = '" + user.getBiography()
+                                + "', website = '" + user.getWebsite()
+                                + "', profilePicUrl = '" + user.getProfilePicUrl() + "' WHERE id = '"
+                                + id + "'");
+        }
 
-    @Override
-    public Long getIdViaEmailAndPassword(String email, String password) {
-        return jdbcTemplate.query(
-                "SELECT id FROM useraccount WHERE email = '" + email + "' AND password = '"
-                        + password + "'",
-                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst().getId();
-    }
+        @Override
+        public Long getIdViaEmailAndPassword(String email, String password) {
+                return jdbcTemplate.query(
+                                "SELECT id FROM useraccount WHERE email = '" + email + "' AND password = '"
+                                                + password + "'",
+                                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst().getId();
+        }
 }
