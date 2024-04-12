@@ -12,14 +12,8 @@ export default function AdditionalPrivateProfileInfo({
   phone,
   selectedCountry,
   onPhoneChange,
-  onCountryChange
+  onCountryChange,
 }) {
-  useEffect(() => {
-    if (currentUser?.telephoneNumber) {
-      onPhoneChange(currentUser?.telephoneNumber);
-    }
-  }, [currentUser?.telephoneNumber, onPhoneChange]);
-
   return (
     <>
       {currentUser ? (
@@ -27,7 +21,11 @@ export default function AdditionalPrivateProfileInfo({
           <>
             <div>
               <Label className="mb-2 flex">Country</Label>
-              <CountrySelector countryFromUser={currentUser.country} selectedCountry={selectedCountry} onCountryChange={onCountryChange}/>
+              <CountrySelector
+                countryFromUser={currentUser.country}
+                selectedCountry={selectedCountry}
+                onCountryChange={onCountryChange}
+              />
             </div>
             <div>
               <Label className="mb-2 flex">Bio</Label>
@@ -41,7 +39,10 @@ export default function AdditionalPrivateProfileInfo({
 
             <div>
               <Label className="mb-2 flex">Phone Number</Label>
-              <PhoneInput value={phone} onChange={onPhoneChange} />
+              <PhoneInput
+                value={currentUser?.telephoneNumber ?? phone}
+                onChange={onPhoneChange}
+              />
             </div>
 
             <div>
