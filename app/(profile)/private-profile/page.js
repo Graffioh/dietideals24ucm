@@ -25,8 +25,8 @@ export default function ProfilePage({ searchParams }) {
 
   const { currentUser, currentUserIsLoading } = useUserContext();
   const [phone, setPhone] = useState(currentUser?.telephoneNumber ?? "");
-  const [country, setCountry] = useState(currentUser?.country ?? "XX")
-  
+  const [country, setCountry] = useState(currentUser?.country ?? "XX");
+
   function handlePhoneChange(phone) {
     setPhone(phone);
   }
@@ -184,8 +184,6 @@ export default function ProfilePage({ searchParams }) {
       !file && currentUser
         ? currentUser.profilePicUrl
         : await handleImageUpload(currentUser?.id ?? newUserIdFromDate);
-    
-    console.log(country)
 
     const userInfoFromInputs = {
       id: newUserIdFromDate,
