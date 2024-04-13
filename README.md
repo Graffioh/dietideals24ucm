@@ -16,5 +16,7 @@ You need to create one of those computer systems, specifically DietiDeals24, an 
 - Software documentation [WIP]
 - Software presentation [WIP]
 
-## Demo [WIP]
+## Demo
+https://github.com/Graffioh/dietideals24ucm/assets/93008765/5ce322dd-cfe4-4f2f-8b5a-e7c43fa76f49
+
 
