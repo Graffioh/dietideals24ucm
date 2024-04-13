@@ -11,6 +11,7 @@ import AuctionDetailsImage from "@/components/dietideals24-ui/auctionDetailsImag
 import ProfilePic from "@/components/dietideals24-ui/profilePic";
 import PlaceOfferButton from "@/components/dietideals24-ui/placeOfferButton";
 import AuctionDetailsFields from "@/components/dietideals24-ui/auctionDetailsFields";
+import { Button } from "@/components/shadcn-ui/button";
 
 export default function AuctionDetailsPage({ searchParams }) {
   const { currentUser } = useUserContext();
@@ -57,6 +58,9 @@ export default function AuctionDetailsPage({ searchParams }) {
     );
   }
 
+  const isAuctionOwner =
+    currentUser && searchParams.auctionuserid == currentUser.id;
+
   return (
     <>
       <div className="flex flex-col md:flex-row mx-8 md:mx-20 justify-between 2xl:justify-center">
@@ -83,11 +87,26 @@ export default function AuctionDetailsPage({ searchParams }) {
 
               <PlaceOfferButton
                 auction={currentAuction}
-                isCurrentUser={
-                  currentUser && searchParams.auctionuserid == currentUser.id
-                }
+                isAuctionOwner={isAuctionOwner}
                 handleCurrentOffer={handleCurrentOffer}
               />
+
+              <div
+                hidden={!isAuctionOwner || !currentAuction.isOver}
+                className="mb-5"
+              >
+                <Button
+                  className="bg-red-800"
+                  onClick={() => {
+                    fetch(config.apiUrl + "/auctions/" + currentAuction.id, {
+                      method: "DELETE",
+                    });
+                    window.location.href = config.apiUrl.replace("/api", "") + "/home";
+                  }}
+                >
+                  Delete auction
+                </Button>
+              </div>
             </div>
           </div>
         </div>

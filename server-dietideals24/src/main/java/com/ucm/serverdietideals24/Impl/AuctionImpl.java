@@ -84,6 +84,15 @@ public class AuctionImpl implements AuctionDAO {
                 new BeanPropertyRowMapper<Auction>(Auction.class));
     }
 
+    // Delete auction, delete offers, don't delete notifications
+    // 1) SET in notification idauction NOT NULL
+    // 2) FOREIGN KEY (auction_id) REFERENCES auction(id) ON DELETE CASCADE
+    // 3) FOREIGN KEY (auction_id) REFERENCES auction(id) ON DELETE SET NULL
+    @Override
+    public void delete(Long auctionId) {
+        jdbcTemplate.update("DELETE FROM auction WHERE id = " + auctionId);
+    }
+
     @Override
     public void create(Auction auction) {
         // Different query based on auction type
