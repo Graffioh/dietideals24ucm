@@ -230,9 +230,11 @@ export default function InsertAuctionPage() {
           return imageUrl;
         } else {
           toast.error("Error uploading image");
+          return null;
         }
       } catch (error) {
         toast.error("Error uploading image", error);
+        return null;
       }
     }
   };
@@ -276,6 +278,11 @@ export default function InsertAuctionPage() {
       ? await handleImageUpload(newAuctionIdFromDate)
       : "no-images";
 
+    if (!imageUrl) {
+      toast.error("Please upload a different image.");
+      return;
+    }
+
     const auctionFromInputs = {
       id: newAuctionIdFromDate,
       auctionDescription: inputs.description.value,
@@ -300,8 +307,6 @@ export default function InsertAuctionPage() {
         ? moment(expireTime, "HH:mm:ss").format("HH:mm:ss")
         : null,
     };
-    
-    console.log(auctionFromInputs)
 
     try {
       await fetch(config.apiUrl + "/auctions", {

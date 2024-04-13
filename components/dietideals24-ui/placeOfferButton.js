@@ -7,7 +7,7 @@ import PlaceOfferDialog from "./placeOfferDialog";
 
 export default function PlaceOfferButton({
   auction,
-  isCurrentUser,
+  isAuctionOwner,
   handleCurrentOffer,
 }) {
   const authToken = useCookies().get("auth-token");
@@ -26,7 +26,7 @@ export default function PlaceOfferButton({
         >
           Place offer
         </Link>
-      ) : !isCurrentUser ? (
+      ) : !isAuctionOwner ? (
         <PlaceOfferDialog
           auction={auction}
           onCurrentOfferChange={handleCurrentOffer}

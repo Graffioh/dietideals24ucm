@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,8 @@ import com.ucm.serverdietideals24.DAO.AuctionDAO;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "https://dietideals24.vercel.app", "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app"}, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:3000", "https://dietideals24.vercel.app",
+        "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app" }, allowCredentials = "true")
 @RequestMapping("/auctions")
 public class AuctionController {
     @Autowired
@@ -54,7 +56,7 @@ public class AuctionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
     }
-    
+
     @PostMapping("/name")
     public ResponseEntity<List<Auction>> fetchAuctionBasedOnName(@RequestBody String name) {
         try {
@@ -92,7 +94,8 @@ public class AuctionController {
     }
 
     @GetMapping("/paginated/user/{userId}")
-    public ResponseEntity<List<Auction>> fetchPaginatedUsersAuctions(@PathVariable Long userId, @RequestParam int page) {
+    public ResponseEntity<List<Auction>> fetchPaginatedUsersAuctions(@PathVariable Long userId,
+            @RequestParam int page) {
         try {
             List<Auction> auctions = auctionDAO.getAllPaginatedViaUserId(userId, page);
 
@@ -104,7 +107,8 @@ public class AuctionController {
     }
 
     @GetMapping("/paginated/from-offers/{userId}")
-    public ResponseEntity<List<Auction>> fetchPaginatedUsersAuctionsFromOffers(@PathVariable Long userId, @RequestParam int page) {
+    public ResponseEntity<List<Auction>> fetchPaginatedUsersAuctionsFromOffers(@PathVariable Long userId,
+            @RequestParam int page) {
         try {
             List<Auction> auctions = auctionDAO.getAllPaginatedViaOffers(userId, page);
 
@@ -137,12 +141,23 @@ public class AuctionController {
         }
     }
 
+    @DeleteMapping("/{auctionId}")
+    public ResponseEntity<Long> deleteAuction(@PathVariable Long auctionId) {
+        try {
+            auctionDAO.delete(auctionId);
+            return ResponseEntity.status(HttpStatus.OK).body(auctionId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(auctionId);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Auction> createAuction(@RequestBody Auction entity) {
         AuctionValidatorUtil auctionValidator = new AuctionValidatorUtil();
 
         try {
-            if(auctionValidator.isAuctionValid(entity)) {
+            if (auctionValidator.isAuctionValid(entity)) {
                 auctionDAO.create(entity);
                 return ResponseEntity.status(HttpStatus.CREATED).body(entity);
             } else {
@@ -206,7 +221,7 @@ public class AuctionController {
         List<Auction> auctions = auctionDAO.getAllEnglishAuctions();
 
         for (Auction auction : auctions) {
-            if(!auction.getIsOver()) {
+            if (!auction.getIsOver()) {
                 if (auction.getCurrentTimer().equals(Time.valueOf("00:00:00"))) {
                     setCurrentOfferTimer(auction.getId(), Time.valueOf("00:00:00"));
                 } else {
@@ -247,7 +262,7 @@ public class AuctionController {
             }
         }
     }
-    
+
     @GetMapping("/count")
     public ResponseEntity<Integer> countAllAuctions() {
         try {
@@ -264,7 +279,7 @@ public class AuctionController {
     public ResponseEntity<Integer> countUsersAuctions(@PathVariable Long userId) {
         try {
             Integer auctionsCount = auctionDAO.countAllViaUserId(userId);
-            
+
             return ResponseEntity.ok(auctionsCount);
         } catch (Exception e) {
             e.printStackTrace();
@@ -283,7 +298,7 @@ public class AuctionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
         }
     }
-    
+
     // AWS S3 for images
     @Autowired
     private AmazonS3 amazonS3;
@@ -292,7 +307,8 @@ public class AuctionController {
     private String S3bucketName;
 
     @PostMapping("/upload-img")
-    public ResponseEntity<String> uploadImage(@RequestPart("file") MultipartFile file, @RequestParam String auctionId) throws IOException {
+    public ResponseEntity<String> uploadImage(@RequestPart("file") MultipartFile file, @RequestParam String auctionId)
+            throws IOException {
         try {
             String key = "auctions/" + auctionId + "/" + file.getOriginalFilename();
             ObjectMetadata metadata = new ObjectMetadata();
@@ -306,7 +322,7 @@ public class AuctionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("null");
         }
     }
-    
+
     @GetMapping("/image")
     public ResponseEntity<byte[]> getImage(@RequestParam String key) throws IOException {
         try {
@@ -322,4 +338,5 @@ public class AuctionController {
             return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.BAD_REQUEST);
         }
     }
+
 }
