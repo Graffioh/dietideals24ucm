@@ -35,14 +35,15 @@ export default function AuctionDetailsImage({ auction }) {
       <Label className="flex text-2xl mb-2">{auction.auctionName}</Label>
       <Image
         alt="auction-image"
-        className="rounded-lg mb-2.5 border-2 border-input"
+        className="w-[500px] h-[500px] rounded-lg mb-2.5 border-2 border-input object-contain"
         src={
           auction.auctionImages !== "no-images"
             ? auctionPicData
             : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"
         }
-        width={600}
-        height={300}
+        width={500}
+        height={500}
+        style={{ objectFit: "cover" }}
       />
       {/* IDEA TO SHOW OTHER AUCTION IMAGES*/}
       {/* <div className="flex">
