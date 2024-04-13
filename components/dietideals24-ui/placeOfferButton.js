@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useCookies } from "next-client-cookies";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "../shadcn-ui/button";
 
 import PlaceOfferDialog from "./placeOfferDialog";
 
