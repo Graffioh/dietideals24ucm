@@ -59,7 +59,7 @@ public class AuctionValidatorUtil {
         Float startPrice = auction.getStartPrice();
         Float riseThresholdPrice = auction.getRiseThreshold();
 
-        if (startPrice < 0 || startPrice > 9999 || riseThresholdPrice < 0) {
+        if (startPrice < 0 || startPrice > 9999 || riseThresholdPrice <= 0 || riseThresholdPrice > 9999) {
             return false;
         }
 
@@ -79,7 +79,7 @@ public class AuctionValidatorUtil {
         Float endPrice = auction.getEndPrice();
 
         if (decrementAmount > startPrice || endPrice > startPrice || startPrice < 0 || startPrice > 9999
-                || decrementAmount < 0
+                || decrementAmount <= 0
                 || endPrice < 0) {
             return false;
         }
@@ -91,7 +91,7 @@ public class AuctionValidatorUtil {
         String type = auction.getAuctionType().toString();
 
         switch (type) {
-            case "fixed-time":
+            case "fixedtime":
                 return isFixedTimeAuctionValid(auction);
             case "english":
                 return isEnglishAuctionValid(auction);
