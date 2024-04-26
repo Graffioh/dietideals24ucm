@@ -105,7 +105,6 @@ export default function ProfilePage({ searchParams }) {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = () => {
-      console.log(reader.result);
       setImageData(reader.result);
     };
 
@@ -143,7 +142,6 @@ export default function ProfilePage({ searchParams }) {
 
         if (response.ok) {
           const imageUrl = await response.text();
-          console.log("Image uploaded successfully:", imageUrl);
           return imageUrl;
         } else {
           console.error("Error uploading image");

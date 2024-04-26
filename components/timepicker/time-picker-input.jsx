@@ -25,6 +25,7 @@ const TimePickerInput = React.forwardRef(
       picker,
       onLeftFocus,
       onRightFocus,
+      onTimerChange,
       ...props
     },
     ref
@@ -46,6 +47,16 @@ const TimePickerInput = React.forwardRef(
       [date, picker]
     );
 
+    function convertDateIntoTime(dateForTimer) {
+      const timer =
+        dateForTimer.getHours() +
+        ":" +
+        dateForTimer.getMinutes() +
+        ":" +
+        dateForTimer.getSeconds();
+      return timer;
+    }
+
     const handleKeyDown = (e) => {
       if (e.key === "Tab") return;
       e.preventDefault();
@@ -66,6 +77,7 @@ const TimePickerInput = React.forwardRef(
         setFlag((prev) => !prev);
         const tempDate = new Date(date);
         setDate(setDateByType(tempDate, newValue, picker));
+        onTimerChange(convertDateIntoTime(setDateByType(tempDate, newValue, picker)));
       }
     };
 

@@ -5,7 +5,7 @@ import { Clock } from "lucide-react";
 import { Label } from "@/components/shadcn-ui/label";
 import { TimePickerInput } from "./time-picker-input";
 
-export function TimePicker({ date, setDate }) {
+export function TimePicker({ date, setDate, onTimerChange }) {
   const minuteRef = React.useRef(null);
   const hourRef = React.useRef(null);
   const secondRef = React.useRef(null);
@@ -22,6 +22,7 @@ export function TimePicker({ date, setDate }) {
           setDate={setDate}
           ref={hourRef}
           onRightFocus={() => minuteRef.current?.focus()}
+          onTimerChange={onTimerChange}
         />
       </div>
       <div className="grid gap-1 text-center">
@@ -35,6 +36,7 @@ export function TimePicker({ date, setDate }) {
           ref={minuteRef}
           onLeftFocus={() => hourRef.current?.focus()}
           onRightFocus={() => secondRef.current?.focus()}
+          onTimerChange={onTimerChange}
         />
       </div>
       <div className="grid gap-1 text-center">
@@ -47,6 +49,7 @@ export function TimePicker({ date, setDate }) {
           setDate={setDate}
           ref={secondRef}
           onLeftFocus={() => minuteRef.current?.focus()}
+          onTimerChange={onTimerChange}
         />
       </div>
     </div>
