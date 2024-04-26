@@ -17,7 +17,6 @@ export default function AddAuctionImageBox({
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = () => {
-      console.log(reader.result);
       setImageData(reader.result);
     };
 

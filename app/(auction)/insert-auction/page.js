@@ -78,6 +78,7 @@ export default function InsertAuctionPage() {
     if (!isTimerValid) {
       setIsOfferTimerValid(false);
       toast.warning("Please set the offer timer.");
+      return false;
     } else {
       setIsOfferTimerValid(true);
     }
@@ -155,12 +156,12 @@ export default function InsertAuctionPage() {
       setIsBaseDecrementTimerValid(true);
     }
 
-    if (decrementAmount > startPrice) {
+    if (parseInt(decrementAmount) > parseInt(startPrice)) {
       toast.warning("Decrement amount can't be higher than Start price!");
       return false;
     }
 
-    if (descendingMinimumPrice > startPrice) {
+    if (parseInt(descendingMinimumPrice) > parseInt(startPrice)) {
       toast.warning("End price can't be higher than Start price!");
       return false;
     }
@@ -226,7 +227,6 @@ export default function InsertAuctionPage() {
 
         if (response.ok) {
           const imageUrl = await response.text();
-          console.log("Image uploaded successfully:", imageUrl);
           return imageUrl;
         } else {
           toast.error("Error uploading image");
@@ -257,8 +257,8 @@ export default function InsertAuctionPage() {
     }
 
     if (
-      !areEnglishInputsValid &&
-      !areDescendingInputsValid &&
+      !areEnglishInputsValid ||
+      !areDescendingInputsValid ||
       !areFixedTimeInputsValid
     ) {
       toast.error("Please fill all the fields correctly before submitting!");

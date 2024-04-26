@@ -65,32 +65,7 @@ export default function DescendingInsertAuctionInputs({
           </Label>
         </div>
         <div className="flex">
-          <TimePicker date={dateForTimer} setDate={setDateForTimer} />
-          <Button
-            className="mt-5 ml-4"
-            onClick={(e) => {
-              e.preventDefault();
-              if (
-                dateForTimer.getHours() === 0 &&
-                dateForTimer.getMinutes() === 0 &&
-                dateForTimer.getSeconds() === 0
-              ) {
-                onAuctionTimerValidChange(false);
-              } else {
-                onAuctionTimerValidChange(true);
-                onDecrementTimerChange(convertDateIntoTime(dateForTimer));
-              }
-            }}
-          >
-            Set
-          </Button>
-
-          <ExclamationTriangleIcon
-            hidden={isAuctionTimerValid}
-            width={23}
-            height={23}
-            className="text-red-500 mr-1 mt-8 ml-2 animate-bounce"
-          />
+          <TimePicker date={dateForTimer} setDate={setDateForTimer} onTimerChange={onDecrementTimerChange} />
         </div>
       </div>
 
@@ -106,7 +81,8 @@ export default function DescendingInsertAuctionInputs({
           placeholder="End price"
           className="bg-white"
           onChange={(e) => {
-            onDescendingMinimumPriceChange(e.target.value);
+            const price = e.target.value;
+            onDescendingMinimumPriceChange(price);
           }}
         ></Input>
       </div>

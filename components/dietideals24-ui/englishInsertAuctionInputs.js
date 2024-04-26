@@ -16,16 +16,6 @@ export default function EnglishInsertAuctionInputs({
   zeroDate.setHours(0, 0, 0, 0);
   const [dateForTimer, setDateForTimer] = React.useState(zeroDate);
 
-  function convertDateIntoTime() {
-    const timer =
-      dateForTimer.getHours() +
-      ":" +
-      dateForTimer.getMinutes() +
-      ":" +
-      dateForTimer.getSeconds();
-    return timer;
-  }
-
   return (
     <>
       <div>
@@ -47,22 +37,7 @@ export default function EnglishInsertAuctionInputs({
           </Label>
         </div>
         <div className="flex">
-          <TimePicker date={dateForTimer} setDate={setDateForTimer} />
-          <Button
-            className="mt-5 ml-4"
-            onClick={(e) => {
-              e.preventDefault();
-              onBaseOfferTimerChange(convertDateIntoTime(dateForTimer));
-            }}
-          >
-            Set
-          </Button>
-          <ExclamationTriangleIcon
-            hidden={isAuctionTimerValid}
-            width={23}
-            height={23}
-            className="text-red-500 mr-1 mt-8 ml-2 animate-bounce"
-          />
+          <TimePicker date={dateForTimer} setDate={setDateForTimer} onTimerChange={onBaseOfferTimerChange}/>
         </div>
       </div>
 
