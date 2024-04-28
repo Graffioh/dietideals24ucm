@@ -2,6 +2,8 @@ import AuctionsContainerHomepage from "@/components/dietideals24-ui/auctionsCont
 
 export default function Home() {
   return (
-    <AuctionsContainerHomepage />
+    <>
+      <AuctionsContainerHomepage />
+    </>
   );
 }
