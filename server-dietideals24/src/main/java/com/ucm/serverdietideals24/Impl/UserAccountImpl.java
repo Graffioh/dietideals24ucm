@@ -17,60 +17,78 @@ public class UserAccountImpl implements UserAccountDAO {
 
         @Override
         public List<UserAccount> getAll() {
-                return jdbcTemplate.query("SELECT * FROM useraccount",
-                                new BeanPropertyRowMapper<UserAccount>(UserAccount.class));
+                String sql = "SELECT * FROM useraccount";
+                return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserAccount.class));
         }
 
         @Override
         public UserAccount getViaId(Long id) {
-                return jdbcTemplate.query("SELECT * FROM useraccount WHERE id = '" + id + "'",
-                                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+                String sql = "SELECT * FROM useraccount WHERE id = ?";
+                return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserAccount.class), id)
+                                .stream()
+                                .findFirst()
+                                .orElse(null);
         }
 
         @Override
         public UserAccount getViaEmail(String email) {
-                return jdbcTemplate.query("SELECT * FROM useraccount WHERE email = '" + email + "'",
-                                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+                String sql = "SELECT * FROM useraccount WHERE email = ?";
+                return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserAccount.class), email)
+                                .stream()
+                                .findFirst()
+                                .orElse(null);
         }
 
         @Override
         public UserAccount getViaUsername(String username) {
-                return jdbcTemplate.query("SELECT * FROM useraccount WHERE username = '" + username + "'",
-                                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+                String sql = "SELECT * FROM useraccount WHERE username = ?";
+                return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserAccount.class), username)
+                                .stream()
+                                .findFirst()
+                                .orElse(null);
         }
 
         @Override
         public void create(UserAccount user) {
-                System.err.println("USER: " + user);
-                jdbcTemplate.execute(
-                                "INSERT INTO useraccount (id, firstName, lastName, username, password, birthDate, email, provider, profilePicUrl) VALUES('"
-                                                + user.getId() + "', '" + user.getFirstName()
-                                                + "', '" + user.getLastName() + "', '" + user.getUsername() + "', '"
-                                                + user.getPassword()
-                                                + "', '"
-                                                + user.getBirthDate() + "', '" + user.getEmail() + "', '"
-                                                + user.getProvider() + "', '"
-                                                + user.getProfilePicUrl() + "')");
+                String sql = "INSERT INTO useraccount (id, firstName, lastName, username, password, birthDate, email, provider, profilePicUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                Object[] args = {
+                                user.getId(),
+                                user.getFirstName(),
+                                user.getLastName(),
+                                user.getUsername(),
+                                user.getPassword(),
+                                user.getBirthDate(),
+                                user.getEmail(),
+                                user.getProvider(),
+                                user.getProfilePicUrl()
+                };
+                jdbcTemplate.update(sql, args);
         }
 
         @Override
         public void update(Long id, UserAccount user) {
-                jdbcTemplate.update("UPDATE useraccount SET firstName = '" + user.getFirstName() + "', lastName = '"
-                                + user.getLastName() + "', username = '" + user.getUsername() + "', password = '"
-                                + user.getPassword() + "', birthDate = '" + user.getBirthDate() + "', email = '"
-                                + user.getEmail()
-                                + "', telephoneNumber = '" + user.getTelephoneNumber()
-                                + "', country = '" + user.getCountry() + "' , biography = '" + user.getBiography()
-                                + "', website = '" + user.getWebsite()
-                                + "', profilePicUrl = '" + user.getProfilePicUrl() + "' WHERE id = '"
-                                + id + "'");
+                String sql = "UPDATE useraccount SET firstName = ?, lastName = ?, username = ?, password = ?, birthDate = ?, email = ?, telephoneNumber = ?, country = ?, biography = ?, website = ?, profilePicUrl = ? WHERE id = ?";
+                Object[] args = {
+                                user.getFirstName(),
+                                user.getLastName(),
+                                user.getUsername(),
+                                user.getPassword(),
+                                user.getBirthDate(),
+                                user.getEmail(),
+                                user.getTelephoneNumber(),
+                                user.getCountry(),
+                                user.getBiography(),
+                                user.getWebsite(),
+                                user.getProfilePicUrl(),
+                                id
+                };
+                jdbcTemplate.update(sql, args);
         }
 
         @Override
         public Long getIdViaEmailAndPassword(String email, String password) {
-                return jdbcTemplate.query(
-                                "SELECT id FROM useraccount WHERE email = '" + email + "' AND password = '"
-                                                + password + "'",
-                                new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst().getId();
+                String sql = "SELECT id FROM useraccount WHERE email = ? AND password = ?";
+                return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserAccount.class), email, password)
+                                .getFirst().getId();
         }
 }
