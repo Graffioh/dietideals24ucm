@@ -25,63 +25,60 @@ public class AuctionImpl implements AuctionDAO {
 
     @Override
     public List<Auction> getViaName(String name) {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionName = '" + name + "' ORDER BY id",
-                new BeanPropertyRowMapper<Auction>(Auction.class));
+        String sql = "SELECT * FROM auction WHERE auctionName = ? ORDER BY id";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Auction.class), name);
     }
 
     @Override
     public List<Auction> getViaCategory(String category) {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionCategory = '" + category + "' ORDER BY id",
-                new BeanPropertyRowMapper<Auction>(Auction.class));
+        String sql = "SELECT * FROM auction WHERE auctionCategory = ?::auctioncategory ORDER BY id";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Auction.class), category);
     }
 
     @Override
     public List<Auction> getAllViaUserId(Long userId) {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE idUserAccount = '" + userId + "' ORDER BY id",
-                new BeanPropertyRowMapper<Auction>(Auction.class));
+        String sql = "SELECT * FROM auction WHERE idUserAccount = ? ORDER BY id";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Auction.class), userId);
     }
 
     @Override
     public List<Auction> getAllPaginated(int pageNumber) {
         int offset = (pageNumber - 1) * 20;
-        return jdbcTemplate.query("SELECT * FROM auction ORDER BY id LIMIT 20 OFFSET " + offset,
-                new BeanPropertyRowMapper<Auction>(Auction.class));
+        String sql = "SELECT * FROM auction ORDER BY id LIMIT 20 OFFSET ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Auction.class), offset);
     }
 
     @Override
     public List<Auction> getAllPaginatedViaUserId(Long userId, int pageNumber) {
         int offset = (pageNumber - 1) * 8;
-        return jdbcTemplate.query(
-                "SELECT * FROM auction WHERE idUserAccount = " + userId + "ORDER BY id LIMIT 8 OFFSET " + offset,
-                new BeanPropertyRowMapper<Auction>(Auction.class));
+        String sql = "SELECT * FROM auction WHERE idUserAccount = ? ORDER BY id LIMIT 8 OFFSET ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Auction.class), userId, offset);
     }
 
     @Override
     public List<Auction> getAllPaginatedViaOffers(Long userId, int pageNumber) {
         int offset = (pageNumber - 1) * 8;
-        return jdbcTemplate.query(
-                "SELECT DISTINCT a.* FROM auction a JOIN offer o ON a.id = o.idAuction WHERE o.idUserAccount = "
-                        + userId
-                        + "ORDER BY id LIMIT 8 OFFSET " + offset,
-                new BeanPropertyRowMapper<Auction>(Auction.class));
+        String sql = "SELECT DISTINCT a.* FROM auction a JOIN offer o ON a.id = o.idAuction WHERE o.idUserAccount = ? ORDER BY id LIMIT 8 OFFSET ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Auction.class), userId, offset);
     }
 
     @Override
     public Auction getViaId(Long id) {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE id = '" + id + "'",
-                new BeanPropertyRowMapper<Auction>(Auction.class)).getFirst();
+        String sql = "SELECT * FROM auction WHERE id = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Auction.class), id).stream().findFirst()
+                .orElse(null);
     }
 
     @Override
     public List<Auction> getAllDescendingAuctions() {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'descending' ORDER BY id",
-                new BeanPropertyRowMapper<Auction>(Auction.class));
+        String sql = "SELECT * FROM auction WHERE auctionType = 'descending' ORDER BY id";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Auction.class));
     }
 
     @Override
     public List<Auction> getAllEnglishAuctions() {
-        return jdbcTemplate.query("SELECT * FROM auction WHERE auctionType = 'english' ORDER BY id",
-                new BeanPropertyRowMapper<Auction>(Auction.class));
+        String sql = "SELECT * FROM auction WHERE auctionType = 'english' ORDER BY id";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Auction.class));
     }
 
     // Delete auction, delete offers, don't delete notifications
@@ -90,84 +87,111 @@ public class AuctionImpl implements AuctionDAO {
     // 3) FOREIGN KEY (auction_id) REFERENCES auction(id) ON DELETE SET NULL
     @Override
     public void delete(Long auctionId) {
-        jdbcTemplate.update("DELETE FROM auction WHERE id = " + auctionId);
+        String sql = "DELETE FROM auction WHERE id = ?";
+        jdbcTemplate.update(sql, auctionId);
     }
 
     @Override
     public void create(Auction auction) {
         // Different query based on auction type
-        if (auction.getAuctionType().toString() == "english") {
-            jdbcTemplate.execute(
-                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, riseThreshold, idUserAccount, baseTimer, auctionType, currentTimer) VALUES ('"
-                            + auction.getId() + "', '" + auction.getAuctionDescription()
-                            + "', '" + auction.getAuctionName() + "', '" + auction.getAuctionCategory() + "', '"
-                            + auction.getAuctionQuality() + "', '"
-                            + auction.getCurrentOffer() + "', '" + auction.getAuctionImages() + "', '"
-                            + auction.getStartPrice() + "', '" + auction.getRiseThreshold() + "', '"
-                            + auction.getIdUserAccount() + "', '"
-                            + auction.getBaseTimer() + "', '" + auction.getAuctionType() + "', '"
-                            + auction.getBaseTimer() + "')");
-        } else if (auction.getAuctionType().toString() == "fixedtime") {
-            jdbcTemplate.execute(
-                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, expireDate, minimumAcceptablePrice, expireTime, idUserAccount, auctionType) VALUES ('"
-                            + auction.getId() + "', '" + auction.getAuctionDescription()
-                            + "', '" + auction.getAuctionName() + "', '" + auction.getAuctionCategory() + "', '"
-                            + auction.getAuctionQuality() + "', '"
-                            + auction.getCurrentOffer() + "', '" + auction.getAuctionImages() + "', '"
-                            + auction.getExpireDate() + "', '" + auction.getMinimumAcceptablePrice() + "', '"
-                            + auction.getExpireTime() + "','"
-                            + auction.getIdUserAccount() + "', '"
-                            + auction.getAuctionType() + "')");
+        String sql;
+        Object[] args;
 
+        if (auction.getAuctionType().toString().equals("english")) {
+            sql = "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, riseThreshold, idUserAccount, baseTimer, auctionType, currentTimer) VALUES (?, ?, ?, ?::auctioncategory, ?, ?, ?, ?, ?, ?, ?, ?::auctiontype, ?)";
+            args = new Object[] {
+                    auction.getId(),
+                    auction.getAuctionDescription(),
+                    auction.getAuctionName(),
+                    auction.getAuctionCategory().name(),
+                    auction.getAuctionQuality(),
+                    auction.getCurrentOffer(),
+                    auction.getAuctionImages(),
+                    auction.getStartPrice(),
+                    auction.getRiseThreshold(),
+                    auction.getIdUserAccount(),
+                    auction.getBaseTimer(),
+                    auction.getAuctionType().name(),
+                    auction.getBaseTimer()
+            };
+        } else if (auction.getAuctionType().toString().equals("fixedtime")) {
+            sql = "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, expireDate, minimumAcceptablePrice, expireTime, idUserAccount, auctionType) VALUES (?, ?, ?, ?::auctioncategory, ?, ?, ?, ?, ?, ?, ?, ?::auctiontype)";
+            args = new Object[] {
+                    auction.getId(),
+                    auction.getAuctionDescription(),
+                    auction.getAuctionName(),
+                    auction.getAuctionCategory().name(),
+                    auction.getAuctionQuality(),
+                    auction.getCurrentOffer(),
+                    auction.getAuctionImages(),
+                    auction.getExpireDate(),
+                    auction.getMinimumAcceptablePrice(),
+                    auction.getExpireTime(),
+                    auction.getIdUserAccount(),
+                    auction.getAuctionType().name()
+            };
         } else {
-            jdbcTemplate.execute(
-                    "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, baseTimer, decrementAmount, endPrice, idUserAccount, auctionType, currentTimer) VALUES ('"
-                            + auction.getId() + "', '" + auction.getAuctionDescription()
-                            + "', '" + auction.getAuctionName() + "', '" + auction.getAuctionCategory() + "', '"
-                            + auction.getAuctionQuality() + "', '"
-                            + auction.getStartPrice() + "', '" + auction.getAuctionImages() + "', '"
-                            + auction.getStartPrice() + "', '" + auction.getBaseTimer()
-                            + "', '" + auction.getDecrementAmount() + "', '" + auction.getEndPrice() + "', '"
-                            + auction.getIdUserAccount() + "', '"
-                            + auction.getAuctionType() + "', '" + auction.getBaseTimer() + "')");
+            sql = "INSERT INTO auction (id, auctionDescription, auctionName, auctionCategory, auctionQuality, currentOffer, auctionImages, startPrice, baseTimer, decrementAmount, endPrice, idUserAccount, auctionType, currentTimer) VALUES (?, ?, ?, ?::auctioncategory, ?, ?, ?, ?, ?, ?, ?, ?, ?::auctiontype, ?)";
+            args = new Object[] {
+                    auction.getId(),
+                    auction.getAuctionDescription(),
+                    auction.getAuctionName(),
+                    auction.getAuctionCategory().name(),
+                    auction.getAuctionQuality(),
+                    auction.getStartPrice(),
+                    auction.getAuctionImages(),
+                    auction.getStartPrice(),
+                    auction.getBaseTimer(),
+                    auction.getDecrementAmount(),
+                    auction.getEndPrice(),
+                    auction.getIdUserAccount(),
+                    auction.getAuctionType().name(),
+                    auction.getBaseTimer()
+            };
         }
+
+        jdbcTemplate.update(sql, args);
     }
 
     @Override
     public void updateIsOver(Long id) {
-        jdbcTemplate.update("UPDATE auction SET isOver = 'true' WHERE id = " + id);
+        String sql = "UPDATE auction SET isOver = true WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
     public void updateCurrentOffer(Long id, Float newCurrentOffer) {
-        jdbcTemplate.update("UPDATE auction SET currentOffer = '" + newCurrentOffer + "' WHERE id = " + id);
+        String sql = "UPDATE auction SET currentOffer = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newCurrentOffer, id);
     }
 
     @Override
     public void updateCurrentDecrementTimer(Long id, Time newTimerValue) {
-        jdbcTemplate.update("UPDATE auction SET currentTimer = '" + newTimerValue + "' WHERE id = " + id);
+        String sql = "UPDATE auction SET currentTimer = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newTimerValue, id);
     }
 
     @Override
     public void updateCurrentOfferTimer(Long id, Time newTimerValue) {
-        jdbcTemplate.update("UPDATE auction SET currentTimer = '" + newTimerValue + "' WHERE id = " + id);
+        String sql = "UPDATE auction SET currentTimer = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newTimerValue, id);
     }
 
     @Override
     public Integer countAll() {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM auction", Integer.class);
+        String sql = "SELECT COUNT(*) FROM auction";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     @Override
     public Integer countAllViaUserId(Long userId) {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM auction WHERE idUserAccount = " + userId,
-                Integer.class);
+        String sql = "SELECT COUNT(*) FROM auction WHERE idUserAccount = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, userId);
     }
 
     @Override
     public Integer countAllViaOffersAndUserId(Long userId) {
-        return jdbcTemplate.queryForObject(
-                "SELECT COUNT(DISTINCT idAuction) AS total_auctions_offered FROM offer WHERE idUserAccount = " + userId,
-                Integer.class);
+        String sql = "SELECT COUNT(DISTINCT idAuction) AS total_auctions_offered FROM offer WHERE idUserAccount = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, userId);
     }
 }

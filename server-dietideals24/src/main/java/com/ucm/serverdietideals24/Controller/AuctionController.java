@@ -33,6 +33,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.util.IOUtils;
 import com.ucm.serverdietideals24.Models.Auction;
+import com.ucm.serverdietideals24.Models.Enums.AuctionCategory;
 import com.ucm.serverdietideals24.Util.AuctionValidatorUtil;
 import com.ucm.serverdietideals24.DAO.AuctionDAO;
 import org.springframework.web.bind.annotation.PutMapping;
