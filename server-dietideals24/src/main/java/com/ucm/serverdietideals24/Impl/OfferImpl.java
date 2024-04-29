@@ -19,22 +19,26 @@ public class OfferImpl implements OfferDAO {
 
     @Override
     public void create(Offer placeOffer) {
-        jdbcTemplate.execute("INSERT INTO offer (id, offerAmount, idUserAccount, idAuction) VALUES ('"
-                + placeOffer.getId() + "', '" + placeOffer.getOfferAmount() + "', '" + placeOffer.getIdUserAccount()
-                + "', '" + placeOffer.getIdAuction() + "')");
-        new BeanPropertyRowMapper<Auction>(Auction.class);
+        String sql = "INSERT INTO offer (id, offerAmount, idUserAccount, idAuction) VALUES (?, ?, ?, ?)";
+        Object[] args = {
+                placeOffer.getId(),
+                placeOffer.getOfferAmount(),
+                placeOffer.getIdUserAccount(),
+                placeOffer.getIdAuction()
+        };
+        jdbcTemplate.update(sql, args);
     }
 
     @Override
     public List<Offer> getAllViaAuctionId(String auctionId) {
-        return jdbcTemplate.query("SELECT * FROM offer WHERE idAuction = " + auctionId,
-                new BeanPropertyRowMapper<Offer>(Offer.class));
+        String sql = "SELECT * FROM offer WHERE idAuction = ?::bigint";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Offer.class), auctionId);
     }
 
     @Override
     public Offer getHighestOffererIdViaAuctionId(String auctionId) {
-        return jdbcTemplate.query("SELECT * FROM offer WHERE idAuction = " + auctionId + " ORDER BY offeramount DESC LIMIT 1",
-                new BeanPropertyRowMapper<Offer>(Offer.class)).getFirst();
+        return jdbcTemplate.query("SELECT * FROM offer WHERE idAuction = ?::bigint ORDER BY offeramount DESC LIMIT 1",
+                new BeanPropertyRowMapper<Offer>(Offer.class), auctionId).getFirst();
     }
 
 }

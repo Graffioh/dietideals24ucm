@@ -87,7 +87,7 @@ public class AuctionImpl implements AuctionDAO {
     // 3) FOREIGN KEY (auction_id) REFERENCES auction(id) ON DELETE SET NULL
     @Override
     public void delete(Long auctionId) {
-        String sql = "DELETE FROM auction WHERE id = ?";
+        String sql = "DELETE FROM auction WHERE id = ?::bigint";
         jdbcTemplate.update(sql, auctionId);
     }
 
