@@ -2,7 +2,6 @@ package com.ucm.serverdietideals24.Impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,8 +11,11 @@ import com.ucm.serverdietideals24.Models.UserAccount;
 
 @Repository
 public class UserAccountImpl implements UserAccountDAO {
-        @Autowired
-        private JdbcTemplate jdbcTemplate;
+        private final JdbcTemplate jdbcTemplate;
+
+        public UserAccountImpl(JdbcTemplate jdbcTemplate) {
+                this.jdbcTemplate = jdbcTemplate;
+        }
 
         @Override
         public List<UserAccount> getAll() {

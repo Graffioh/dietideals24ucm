@@ -1,6 +1,5 @@
 package com.ucm.serverdietideals24.Auth.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,9 +16,11 @@ import com.ucm.serverdietideals24.Models.UserFromOAuthLogin;
 
 @Configuration
 public class SecurityConfiguration {
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
-    @Autowired
-    CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    public SecurityConfiguration(CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

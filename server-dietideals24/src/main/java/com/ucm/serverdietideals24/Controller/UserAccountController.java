@@ -6,7 +6,6 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -39,8 +38,13 @@ import com.ucm.serverdietideals24.Util.UserAccountRegistrationValidatorUtil;
         "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app" }, allowCredentials = "true")
 @RequestMapping("/users")
 public class UserAccountController {
-    @Autowired
-    private UserAccountDAO userAccountDAO;
+    private final UserAccountDAO userAccountDAO;
+    private final AmazonS3 amazonS3;
+
+    public UserAccountController(UserAccountDAO userAccountDAO, AmazonS3 amazonS3) {
+        this.userAccountDAO = userAccountDAO;
+        this.amazonS3 = amazonS3;
+    }
 
     // User from DB
     // *************************************************************
@@ -92,7 +96,7 @@ public class UserAccountController {
         UserAccountRegistrationValidatorUtil userValidator = new UserAccountRegistrationValidatorUtil();
 
         try {
-            if(userValidator.isUserValidForRegistration(entity)) {
+            if (userValidator.isUserValidForRegistration(entity)) {
                 userAccountDAO.create(entity);
                 return ResponseEntity.status(HttpStatus.CREATED).body(entity);
             } else {
@@ -120,10 +124,6 @@ public class UserAccountController {
     public OAuth2User oauthUser(@AuthenticationPrincipal OAuth2User principal) {
         return principal;
     }
-
-    // AWS S3 for images
-    @Autowired
-    private AmazonS3 amazonS3;
 
     @Value("${aws.s3.bucketName}")
     private String S3bucketName;

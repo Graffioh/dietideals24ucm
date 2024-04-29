@@ -2,20 +2,20 @@ package com.ucm.serverdietideals24.Impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.ucm.serverdietideals24.DAO.OfferDAO;
-import com.ucm.serverdietideals24.Models.Auction;
 import com.ucm.serverdietideals24.Models.Offer;
 
 @Repository
 public class OfferImpl implements OfferDAO {
+    private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    public OfferImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public void create(Offer placeOffer) {

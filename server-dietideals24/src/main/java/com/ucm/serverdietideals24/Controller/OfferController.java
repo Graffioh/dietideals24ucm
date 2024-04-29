@@ -3,7 +3,6 @@ package com.ucm.serverdietideals24.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,11 +17,15 @@ import com.ucm.serverdietideals24.DAO.OfferDAO;
 import com.ucm.serverdietideals24.Models.Offer;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "https://dietideals24.vercel.app", "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app"}, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:3000", "https://dietideals24.vercel.app",
+        "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app" }, allowCredentials = "true")
 @RequestMapping("/offers")
 public class OfferController {
-    @Autowired
-    private OfferDAO offerDAO;
+    private final OfferDAO offerDAO;
+
+    public OfferController(OfferDAO offerDAO) {
+        this.offerDAO = offerDAO;
+    }
 
     @PostMapping("/insert")
     public ResponseEntity<Offer> createOffer(@RequestBody Offer entity) {

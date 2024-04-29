@@ -3,7 +3,6 @@ package com.ucm.serverdietideals24.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,8 +22,11 @@ import com.ucm.serverdietideals24.Models.Notification;
 @CrossOrigin(origins = {"http://localhost:3000", "https://dietideals24.vercel.app", "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app"}, allowCredentials = "true")
 @RequestMapping("/notifications")
 public class NotificationController {
-    @Autowired
-    private NotificationDAO notificationDAO;
+    private final NotificationDAO notificationDAO;
+
+    public NotificationController(NotificationDAO notificationDAO) {
+        this.notificationDAO = notificationDAO;
+    }
 
     @GetMapping
     public ResponseEntity<List<Notification>> fetchAllNotifications() {
