@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,8 +41,13 @@ import org.springframework.web.bind.annotation.PutMapping;
         "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app" }, allowCredentials = "true")
 @RequestMapping("/auctions")
 public class AuctionController {
-    @Autowired
-    private AuctionDAO auctionDAO;
+    private final AuctionDAO auctionDAO;
+    private final AmazonS3 amazonS3;
+
+    public AuctionController(AuctionDAO auctionDAO, AmazonS3 amazonS3) {
+        this.auctionDAO = auctionDAO;
+        this.amazonS3 = amazonS3;
+    }
 
     @GetMapping
     public ResponseEntity<List<Auction>> fetchAllAuctions() {
@@ -298,10 +302,6 @@ public class AuctionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
         }
     }
-
-    // AWS S3 for images
-    @Autowired
-    private AmazonS3 amazonS3;
 
     @Value("${aws.s3.bucketName}")
     private String S3bucketName;
