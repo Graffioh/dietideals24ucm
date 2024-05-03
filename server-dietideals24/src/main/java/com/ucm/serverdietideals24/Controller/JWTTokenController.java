@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ucm.serverdietideals24.DAO.UserAccountDAO;
-import com.ucm.serverdietideals24.Models.UserFromLoginForm;
+import com.ucm.serverdietideals24.Models.Login.UserFromLoginForm;
 import com.ucm.serverdietideals24.Util.JwtUtil;
 
 import jakarta.servlet.http.Cookie;

@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.ucm.serverdietideals24.Models.UserFromOAuthLogin;
+import com.ucm.serverdietideals24.Models.Login.UserFromOAuthLogin;
 
 @Configuration
 public class SecurityConfiguration {

@@ -44,7 +44,7 @@ public class AuctionValidatorUtil {
         if (!isExpireDateValid(expireDate) || minimumAcceptablePrice < 0 || minimumAcceptablePrice > 9999) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -88,6 +88,11 @@ public class AuctionValidatorUtil {
     }
 
     public boolean isAuctionValid(Auction auction) {
+        if (auction.getAuctionType() == null || auction.getAuctionCategory() == null
+                || auction.getAuctionQuality() == null) {
+            return false;
+        }
+
         String type = auction.getAuctionType().toString();
 
         switch (type) {
