@@ -38,7 +38,6 @@ public class Auction {
     @NonNull
     private Long idUserAccount;
 
-    @NonNull
     private String auctionImages;
 
     private Boolean isOver;
@@ -65,7 +64,7 @@ public class Auction {
     // Fixed time
     public Auction(@NonNull Long id, @NonNull String auctionDescription, @NonNull String auctionName,
             String auctionQuality, @NonNull Float currentOffer, AuctionType auctionType,
-            AuctionCategory auctionCategory, @NonNull Long idUserAccount, @NonNull String auctionImages,
+            AuctionCategory auctionCategory, @NonNull Long idUserAccount, String auctionImages,
             Date expireDate, Time expireTime, Float minimumAcceptablePrice) {
         this.id = id;
         this.auctionDescription = auctionDescription;
@@ -84,7 +83,7 @@ public class Auction {
     // English
     public Auction(@NonNull Long id, @NonNull String auctionDescription, @NonNull String auctionName,
             String auctionQuality, @NonNull Float currentOffer, AuctionType auctionType,
-            AuctionCategory auctionCategory, @NonNull Long idUserAccount, @NonNull String auctionImages,
+            AuctionCategory auctionCategory, @NonNull Long idUserAccount, String auctionImages,
             Float riseThreshold, Float startPrice, Time baseTimer, Time currentTimer) {
         this.id = id;
         this.auctionDescription = auctionDescription;
@@ -104,7 +103,7 @@ public class Auction {
     // Descending
     public Auction(@NonNull Long id, @NonNull String auctionDescription, @NonNull String auctionName,
             String auctionQuality, @NonNull Float currentOffer, AuctionType auctionType,
-            AuctionCategory auctionCategory, @NonNull Long idUserAccount, @NonNull String auctionImages,
+            AuctionCategory auctionCategory, @NonNull Long idUserAccount, String auctionImages,
             Float decrementAmount, Float endPrice, Float startPrice, Time baseTimer, Time currentTimer) {
         this.id = id;
         this.auctionDescription = auctionDescription;

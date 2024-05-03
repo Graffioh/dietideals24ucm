@@ -35,11 +35,10 @@ public class AuctionTests {
 
         // GENERALI
         // ---------------------------------------------------------------------------
-
         @Nested
-        class BasicAuctionValidation {
+        class InsertBaseAttributesAuctionValidation {
                 @Test
-                public void testAuctionTypeNull() {
+                public void testAuctionTypeAndCategoryAndQualityAndImagesNull() {
                         Auction validAuction1 = new Auction(
                                         5L,
                                         "Table tennis table for sell, used by the best tennis table player in the world and rank 94 on leetcode, Ma Lin",
@@ -54,6 +53,21 @@ public class AuctionTests {
                                         100.0f,
                                         new Time(13200000),
                                         new Time(0));
+                        Auction validAuction2 = new Auction(
+                                        1L,
+                                        "Brand new bike, never used",
+                                        "Bike",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.english,
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        "bike.jpg",
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
+                                        new Time(0));
+
                         Auction invalidAuction1 = new Auction(
                                         7L,
                                         "New phone, unlocked",
@@ -69,15 +83,51 @@ public class AuctionTests {
                                         new Time(18200000),
                                         new Time(0));
 
+                        Auction invalidAuction2 = new Auction(
+                                        1L,
+                                        "Brand new bike, never used",
+                                        "Bike",
+                                        null,
+                                        0.0f,
+                                        AuctionType.english,
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        "bike.jpg",
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
+                                        new Time(0));
+
+                        Auction invalidAuction3 = new Auction(
+                                        7L,
+                                        "New phone, unlocked",
+                                        "Phone",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.english,
+                                        AuctionCategory.Electronics,
+                                        7L,
+                                        null,
+                                        1.0f,
+                                        100.0f,
+                                        new Time(18200000),
+                                        new Time(0));
+
                         boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
                         boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
+                        boolean isAuctionValid3 = auctionValidator.isAuctionValid(validAuction2);
+                        boolean isAuctionValid4 = auctionValidator.isAuctionValid(invalidAuction2);
+                        boolean isAuctionValid5 = auctionValidator.isAuctionValid(invalidAuction3);
 
                         assertEquals(true, isAuctionValid1);
                         assertEquals(false, isAuctionValid2);
+                        assertEquals(true, isAuctionValid3);
+                        assertEquals(false, isAuctionValid4);
+                        assertEquals(false, isAuctionValid5);
                 }
 
                 @Test
-                public void testAuctionNameEmpty() {
+                public void testAuctionNameAndImagesEmpty() {
                         Auction validAuction1 = new Auction(
                                         1L,
                                         "Nice cars from cars, really good shape",
@@ -92,108 +142,7 @@ public class AuctionTests {
                                         new Time(33200000),
                                         23.0f);
 
-                        Auction invalidAuction1 = new Auction(
-                                        1L,
-                                        "Nice cars from cars, really good shape",
-                                        "",
-                                        "Bad",
-                                        0.0f,
-                                        AuctionType.fixedtime,
-                                        AuctionCategory.Toys,
-                                        1L,
-                                        "carsfromcars.jpeg",
-                                        parseDate("2024-10-10"),
-                                        new Time(33200000),
-                                        23.0f);
-
-                        boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
-                        boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
-
-                        assertEquals(true, isAuctionValid1);
-                        assertEquals(false, isAuctionValid2);
-                }
-
-                @Test
-                public void testAuctionQualityNull() {
-                        Auction validAuction1 = new Auction(
-                                        1L,
-                                        "Brand new bike, never used",
-                                        "Bike",
-                                        "Good",
-                                        0.0f,
-                                        AuctionType.english,
-                                        AuctionCategory.Toys,
-                                        1L,
-                                        "bike.jpg",
-                                        10.0f,
-                                        100.0f,
-                                        new Time(34200000),
-                                        new Time(0));
-
-                        Auction invalidAuction1 = new Auction(
-                                        1L,
-                                        "Brand new bike, never used",
-                                        "Bike",
-                                        null,
-                                        0.0f,
-                                        AuctionType.english,
-                                        AuctionCategory.Toys,
-                                        1L,
-                                        "bike.jpg",
-                                        10.0f,
-                                        100.0f,
-                                        new Time(34200000),
-                                        new Time(0));
-
-                        boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
-                        boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
-
-                        assertEquals(true, isAuctionValid1);
-                        assertEquals(false, isAuctionValid2);
-                }
-
-                @Test
-                public void testAuctionCategoryNull() {
-                        Auction validAuction1 = new Auction(
-                                        3L,
-                                        "Old book, great condition",
-                                        "Book",
-                                        "Fair",
-                                        0.0f,
-                                        AuctionType.english,
-                                        AuctionCategory.Books,
-                                        3L,
-                                        "book.png",
-                                        5.0f,
-                                        50.0f,
-                                        new Time(34200000),
-                                        new Time(0));
-
-                        Auction invalidAuction1 = new Auction(
-                                        3L,
-                                        "Old book, great condition",
-                                        "Book",
-                                        "Fair",
-                                        0.0f,
-                                        AuctionType.english,
-                                        null,
-                                        3L,
-                                        "book.png",
-                                        5.0f,
-                                        50.0f,
-                                        new Time(34200000),
-                                        new Time(0));
-
-                        boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
-                        boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
-
-                        assertEquals(true, isAuctionValid1);
-                        assertEquals(false, isAuctionValid2);
-                }
-
-                @Test
-                public void testAuctionImagesEmpty() {
-                        Auction validAuction1 = new Auction(
+                        Auction validAuction2 = new Auction(
                                         6L,
                                         "Old chair, great condition",
                                         "Chair",
@@ -209,6 +158,20 @@ public class AuctionTests {
                                         new Time(0));
 
                         Auction invalidAuction1 = new Auction(
+                                        1L,
+                                        "Nice cars from cars, really good shape",
+                                        "",
+                                        "Bad",
+                                        0.0f,
+                                        AuctionType.fixedtime,
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        "carsfromcars.jpeg",
+                                        parseDate("2024-10-10"),
+                                        new Time(33200000),
+                                        23.0f);
+
+                        Auction invalidAuction2 = new Auction(
                                         6L,
                                         "Old chair, great condition",
                                         "Chair",
@@ -225,9 +188,13 @@ public class AuctionTests {
 
                         boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
                         boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
+                        boolean isAuctionValid3 = auctionValidator.isAuctionValid(validAuction2);
+                        boolean isAuctionValid4 = auctionValidator.isAuctionValid(invalidAuction2);
 
                         assertEquals(true, isAuctionValid1);
                         assertEquals(false, isAuctionValid2);
+                        assertEquals(true, isAuctionValid3);
+                        assertEquals(false, isAuctionValid4);
                 }
 
                 @Test
@@ -274,7 +241,7 @@ public class AuctionTests {
         // Fixed time
         // ---------------------------------------------------------------------------
         @Nested
-        class FixedTimeAuctionValidation {
+        class InsertFixedTimeAuctionValidation {
                 @Test
                 public void testFixedTimeAuctionExpireDate() {
                         Auction validAuction1 = new Auction(
@@ -296,6 +263,7 @@ public class AuctionTests {
                                         parseDate("2025-01-01"),
                                         new Time(34200000), 50.0f);
 
+                        // expireDate not valid
                         Auction invalidAuction1 = new Auction(
                                         3L,
                                         "Table tennis table for sell, used by the best tennis table player in the world and rank 94 on leetcode, Ma Lin",
@@ -306,17 +274,34 @@ public class AuctionTests {
                                         AuctionCategory.Sport,
                                         3L,
                                         "tabletennis123.jpg",
-                                        parseDate("2010-10-10"), // expireDate (not valid)
+                                        parseDate("2010-10-10"),
+                                        new Time(13200000),
+                                        80.0f);
+
+                        // expireDate null
+                        Auction invalidAuction2 = new Auction(
+                                        3L,
+                                        "Table tennis table for sell, used by the best tennis table player in the world and rank 94 on leetcode, Ma Lin",
+                                        "Table tennis table",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.fixedtime,
+                                        AuctionCategory.Sport,
+                                        3L,
+                                        "tabletennis123.jpg",
+                                        null,
                                         new Time(13200000),
                                         80.0f);
 
                         boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
                         boolean isAuctionValid2 = auctionValidator.isAuctionValid(validAuction2);
                         boolean isAuctionValid3 = auctionValidator.isAuctionValid(invalidAuction1);
+                        boolean isAuctionValid4 = auctionValidator.isAuctionValid(invalidAuction2);
 
                         assertEquals(true, isAuctionValid1);
                         assertEquals(true, isAuctionValid2);
                         assertEquals(false, isAuctionValid3);
+                        assertEquals(false, isAuctionValid4);
                 }
 
                 @Test
@@ -336,13 +321,20 @@ public class AuctionTests {
                                         AuctionType.fixedtime, AuctionCategory.Electronics, 8L, "laptop.jpg",
                                         parseDate("2026-01-01"), new Time(19200000), 10000.1f);
 
+                        // minimumAcceptablePrice null
+                        Auction invalidAuction3 = new Auction(8L, "Old laptop, great condition", "Laptop", "Good", 0.0f,
+                                        AuctionType.fixedtime, AuctionCategory.Electronics, 8L, "laptop.jpg",
+                                        parseDate("2026-01-01"), new Time(19200000), null);
+
                         boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
                         boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
                         boolean isAuctionValid3 = auctionValidator.isAuctionValid(invalidAuction2);
+                        boolean isAuctionValid4 = auctionValidator.isAuctionValid(invalidAuction3);
 
                         assertEquals(true, isAuctionValid1);
                         assertEquals(false, isAuctionValid2);
                         assertEquals(false, isAuctionValid3);
+                        assertEquals(false, isAuctionValid4);
                 }
         }
         // ---------------------------------------------------------------------------
@@ -350,10 +342,9 @@ public class AuctionTests {
         // English
         // ---------------------------------------------------------------------------
         @Nested
-        class EnglishAuctionValidation {
+        class InsertEnglishAuctionValidation {
                 @Test
                 public void testEnglishAuctionStartPrice() {
-
                         Auction validAuction1 = new Auction(
                                         1L,
                                         "Brand new bike, never used",
@@ -399,13 +390,30 @@ public class AuctionTests {
                                         new Time(19200000),
                                         new Time(0));
 
+                        Auction invalidAuction3 = new Auction(
+                                        8L,
+                                        "Old laptop, great condition",
+                                        "Laptop",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.english,
+                                        AuctionCategory.Electronics,
+                                        8L,
+                                        "laptop.jpg",
+                                        10000.1f,
+                                        null,
+                                        new Time(19200000),
+                                        new Time(0));
+
                         boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
                         boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
                         boolean isAuctionValid3 = auctionValidator.isAuctionValid(invalidAuction2);
+                        boolean isAuctionValid4 = auctionValidator.isAuctionValid(invalidAuction3);
 
                         assertEquals(true, isAuctionValid1);
                         assertEquals(false, isAuctionValid2);
                         assertEquals(false, isAuctionValid3);
+                        assertEquals(false, isAuctionValid4);
                 }
 
                 @Test
@@ -424,6 +432,7 @@ public class AuctionTests {
                                         1000.0f,
                                         new Time(43200000),
                                         new Time(0));
+
                         Auction invalidAuction1 = new Auction(
                                         7L,
                                         "New phone, unlocked",
@@ -438,6 +447,7 @@ public class AuctionTests {
                                         100.0f,
                                         new Time(18200000),
                                         new Time(0));
+
                         Auction invalidAuction2 = new Auction(
                                         4L,
                                         "selling this really new iPhone, the best in the current market, if you think it's old, then you are old",
@@ -453,13 +463,30 @@ public class AuctionTests {
                                         new Time(43200000),
                                         new Time(0));
 
+                        Auction invalidAuction3 = new Auction(
+                                        4L,
+                                        "selling this really new iPhone, the best in the current market, if you think it's old, then you are old",
+                                        "iPhone 3G",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.english,
+                                        AuctionCategory.Collectibles,
+                                        4L,
+                                        "phone3G.txt",
+                                        null,
+                                        12.0f,
+                                        new Time(43200000),
+                                        new Time(0));
+
                         boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
                         boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
                         boolean isAuctionValid3 = auctionValidator.isAuctionValid(invalidAuction2);
+                        boolean isAuctionValid4 = auctionValidator.isAuctionValid(invalidAuction3);
 
                         assertEquals(true, isAuctionValid1);
                         assertEquals(false, isAuctionValid2);
                         assertEquals(false, isAuctionValid3);
+                        assertEquals(false, isAuctionValid4);
                 }
         }
         // ---------------------------------------------------------------------------
@@ -467,7 +494,7 @@ public class AuctionTests {
         // Descending
         // ---------------------------------------------------------------------------
         @Nested
-        class DescendingAuctionValidation {
+        class InsertDescendingAuctionValidation {
                 @Test
                 public void testDescendingAuctionStartPrice() {
                         Auction validAuction1 = new Auction(
@@ -502,11 +529,29 @@ public class AuctionTests {
                                         new Time(19200000),
                                         new Time(0));
 
+                        Auction invalidAuction2 = new Auction(
+                                        8L,
+                                        "Old but powerful laptop, great condition",
+                                        "Laptop",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.descending,
+                                        AuctionCategory.Electronics,
+                                        8L,
+                                        "laptop.jpg",
+                                        10.1f,
+                                        5000.0f,
+                                        null,
+                                        new Time(19200000),
+                                        new Time(0));
+
                         boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
                         boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
+                        boolean isAuctionValid3 = auctionValidator.isAuctionValid(invalidAuction2);
 
                         assertEquals(true, isAuctionValid1);
                         assertEquals(false, isAuctionValid2);
+                        assertEquals(false, isAuctionValid3);
                 }
 
                 @Test
@@ -543,11 +588,29 @@ public class AuctionTests {
                                         new Time(18200000),
                                         new Time(0));
 
+                        Auction invalidAuction2 = new Auction(
+                                        7L,
+                                        "New smartphone, unlocked",
+                                        "Smartphone",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.descending,
+                                        AuctionCategory.Electronics,
+                                        7L,
+                                        "smartphone.jpg",
+                                        null,
+                                        50.0f,
+                                        0.0f,
+                                        new Time(18200000),
+                                        new Time(0));
+
                         boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
                         boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
+                        boolean isAuctionValid3 = auctionValidator.isAuctionValid(invalidAuction2);
 
                         assertEquals(true, isAuctionValid1);
                         assertEquals(false, isAuctionValid2);
+                        assertEquals(false, isAuctionValid3);
                 }
 
                 @Test
@@ -567,6 +630,7 @@ public class AuctionTests {
                                         1000.0f,
                                         new Time(34200000),
                                         new Time(0));
+
                         Auction invalidAuction1 = new Auction(
                                         4L,
                                         "Selling this newborn puppy named Max, it's really cute and affordable",
@@ -583,12 +647,89 @@ public class AuctionTests {
                                         new Time(25200000),
                                         new Time(0));
 
+                        Auction invalidAuction2 = new Auction(
+                                        4L,
+                                        "Selling this newborn puppy named Max, it's really cute and affordable",
+                                        "Puppy Max",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.descending,
+                                        AuctionCategory.Collectibles,
+                                        4L,
+                                        "puppyMax.jpg",
+                                        5.0f,
+                                        null,
+                                        4200.0f,
+                                        new Time(25200000),
+                                        new Time(0));
+
                         boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
                         boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
+                        boolean isAuctionValid3 = auctionValidator.isAuctionValid(invalidAuction2);
 
                         assertEquals(true, isAuctionValid1);
                         assertEquals(false, isAuctionValid2);
+                        assertEquals(false, isAuctionValid3);
+                }
 
+                @Test
+                public void testDescendingAuctionStartPriceEndPriceRelationship() {
+                        float[] startPrices = { 2.0f, 1.0f, 99.9f, 100.0f };
+                        float[] endPrices = { 1.0f, 100.0f, 101.0f, 50.0f };
+
+                        for (float startPrice : startPrices) {
+                                for (float endPrice : endPrices) {
+                                        Auction auction = new Auction(
+                                                        new Date().getTime(),
+                                                        "Brand new mountain bike, never used",
+                                                        "Mountain Bike",
+                                                        "Good",
+                                                        0.0f,
+                                                        AuctionType.descending,
+                                                        AuctionCategory.Toys,
+                                                        1L,
+                                                        "mountainbike.jpg",
+                                                        1.0f,
+                                                        endPrice,
+                                                        startPrice,
+                                                        new Time(34200000),
+                                                        new Time(0));
+                                        boolean isValid = startPrice > endPrice;
+                                        boolean isAuctionValid = auctionValidator.isAuctionValid(auction);
+
+                                        assertEquals(isValid, isAuctionValid);
+                                }
+                        }
+                }
+
+                @Test
+                public void testDescendingAuctionStartPriceDecrementAmountRelationship() {
+                        float[] startPrices = { 2.0f, 1.0f, 99.9f, 100.0f };
+                        float[] decrementAmounts = { 1.0f, 100.0f, 101.0f, 50.0f };
+
+                        for (float startPrice : startPrices) {
+                                for (float decrementAmount : decrementAmounts) {
+                                        Auction auction = new Auction(
+                                                        new Date().getTime(),
+                                                        "Brand new mountain bike, never used",
+                                                        "Mountain Bike",
+                                                        "Good",
+                                                        0.0f,
+                                                        AuctionType.descending,
+                                                        AuctionCategory.Toys,
+                                                        1L,
+                                                        "mountainbike.jpg",
+                                                        decrementAmount,
+                                                        1.0f,
+                                                        startPrice,
+                                                        new Time(34200000),
+                                                        new Time(0));
+                                        boolean isValid = startPrice > decrementAmount;
+                                        boolean isAuctionValid = auctionValidator.isAuctionValid(auction);
+
+                                        assertEquals(isValid, isAuctionValid);
+                                }
+                        }
                 }
         }
         // ---------------------------------------------------------------------------

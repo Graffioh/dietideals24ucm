@@ -30,11 +30,41 @@ public class AuctionValidatorUtil {
         return VALID_IMAGE_EXTENSION_PATTERN.matcher(image).matches();
     }
 
-    private boolean isFixedTimeAuctionValid(Auction auction) {
+    private static boolean areAttributesNull(Auction auction) {
+        if (auction.getAuctionType() == null || auction.getAuctionCategory() == null
+                || auction.getAuctionQuality() == null || auction.getAuctionName() == null
+                || auction.getAuctionImages() == null) {
+            return true;
+        }
+
+        String type = auction.getAuctionType().toString();
+
+        switch (type) {
+            case "fixedtime":
+                return (auction.getExpireDate() == null || auction.getMinimumAcceptablePrice() == null);
+            case "english":
+                return (auction.getStartPrice() == null || auction.getRiseThreshold() == null);
+            case "descending":
+                return (auction.getStartPrice() == null || auction.getDecrementAmount() == null
+                        || auction.getEndPrice() == null);
+            default:
+                return false;
+        }
+    }
+
+    private static boolean areBaseAttributesValid(Auction auction) {
         String title = auction.getAuctionName();
         String image = auction.getAuctionImages();
 
         if (!isValidTitle(title) || !isValidImageExtension(image)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isFixedTimeAuctionValid(Auction auction) {
+        if (!areBaseAttributesValid(auction)) {
             return false;
         }
 
@@ -49,10 +79,7 @@ public class AuctionValidatorUtil {
     }
 
     private boolean isEnglishAuctionValid(Auction auction) {
-        String title = auction.getAuctionName();
-        String image = auction.getAuctionImages();
-
-        if (!isValidTitle(title) || !isValidImageExtension(image)) {
+        if (!areBaseAttributesValid(auction)) {
             return false;
         }
 
@@ -67,10 +94,7 @@ public class AuctionValidatorUtil {
     }
 
     private boolean isDescendingAuctionValid(Auction auction) {
-        String title = auction.getAuctionName();
-        String image = auction.getAuctionImages();
-
-        if (!isValidTitle(title) || !isValidImageExtension(image)) {
+        if (!areBaseAttributesValid(auction)) {
             return false;
         }
 
@@ -78,7 +102,7 @@ public class AuctionValidatorUtil {
         Float decrementAmount = auction.getDecrementAmount();
         Float endPrice = auction.getEndPrice();
 
-        if (decrementAmount > startPrice || endPrice > startPrice || startPrice < 0 || startPrice > 9999
+        if (decrementAmount >= startPrice || endPrice >= startPrice || startPrice < 0 || startPrice > 9999
                 || decrementAmount <= 0
                 || endPrice < 0) {
             return false;
@@ -88,8 +112,7 @@ public class AuctionValidatorUtil {
     }
 
     public boolean isAuctionValid(Auction auction) {
-        if (auction.getAuctionType() == null || auction.getAuctionCategory() == null
-                || auction.getAuctionQuality() == null) {
+        if (areAttributesNull(auction)) {
             return false;
         }
 
