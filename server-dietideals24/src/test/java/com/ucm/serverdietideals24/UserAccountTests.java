@@ -32,84 +32,124 @@ public class UserAccountTests {
     }
 
     // REGISTRAZIONE
-    // ---------------------------------------------------------------------------
+    // ------------------------------------------
     @Nested
     class UserAccountRegistrationValidation {
         @Test
         public void testUserAccountName() {
+            // Arrange
+            // **********************************************
             UserAccount validUserAccount1 = new UserAccount(new Date().getTime(), "Umberto", "Breglia", "brr_777",
                     "brbr172",
                     "breglia@breglia.com",
                     parseDate("1990-05-15"));
 
+            // Name not valid
             UserAccount invalidUserAccount1 = new UserAccount(new Date().getTime(), "Umberto$", "Breg//ia", "brr_777",
                     "brbr172",
                     "breglia@breglia.com",
                     parseDate("1990-05-15"));
+            // **********************************************
 
+            // Act
+            // **********************************************
             Boolean isUserAccountValid1 = userValidator.isUserValidForRegistration(validUserAccount1);
             Boolean isUserAccountValid2 = userValidator.isUserValidForRegistration(invalidUserAccount1);
+            // **********************************************
 
+            // Assert
+            // **********************************************
             assertEquals(true, isUserAccountValid1);
             assertEquals(false, isUserAccountValid2);
+            // **********************************************
         }
 
         @Test
         public void testUserAccountEmail() {
+            // Arrange
+            // **********************************************
             UserAccount validUserAccount1 = new UserAccount(new Date().getTime(), "Andrea", "Rossi", "arossi",
                     "arossirossi",
                     "andrea.rossi@gmail.com",
                     parseDate("2000-10-01"));
 
+            // Email not valid
             UserAccount invalidUserAccount1 = new UserAccount(new Date().getTime(), "Andrea", "Rossi", "arossi",
                     "arossirossi",
                     "andrea.rossi-gmail.com",
                     parseDate("2000-10-01"));
+            // **********************************************
 
+            // Act
+            // **********************************************
             Boolean isUserAccountValid1 = userValidator.isUserValidForRegistration(validUserAccount1);
             Boolean isUserAccountValid2 = userValidator.isUserValidForRegistration(invalidUserAccount1);
+            // **********************************************
 
+            // Assert
+            // **********************************************
             assertEquals(true, isUserAccountValid1);
             assertEquals(false, isUserAccountValid2);
+            // **********************************************
         }
 
         @Test
         public void testUserAccountUsername() {
+            // Arrange
+            // **********************************************
             UserAccount validUserAccount1 = new UserAccount(new Date().getTime(), "Francesca", "Verde", "francy22",
                     "fraverde1990",
                     "francesca.verde2@outlook.com",
                     parseDate("1990-07-21"));
 
+            // Username not valid
             UserAccount invalidUserAccount1 = new UserAccount(new Date().getTime(), "Francesca", "Verde",
-                    "francy22_-££", "fraverde1990",
+                    "francy22_-%%", "fraverde1990",
                     "francesca.verde2@outlook.com",
                     parseDate("1990-07-21"));
+            // **********************************************
 
+            // Act
+            // **********************************************
             Boolean isUserAccountValid1 = userValidator.isUserValidForRegistration(validUserAccount1);
             Boolean isUserAccountValid2 = userValidator.isUserValidForRegistration(invalidUserAccount1);
+            // **********************************************
 
+            // Assert
+            // **********************************************
             assertEquals(true, isUserAccountValid1);
             assertEquals(false, isUserAccountValid2);
+            // **********************************************
         }
 
         @Test
         public void testUserAccountBirthDate() {
+            // Arrange
+            // **********************************************
             UserAccount validUserAccount1 = new UserAccount(new Date().getTime(), "Thomas", "Pocoturbato",
                     "destroyer12_12", "napoli123",
                     "nonturbatothom@gmail.com",
                     parseDate("2002-11-20"));
 
+            // BirthDate in the future not valid
             UserAccount invalidUserAccount1 = new UserAccount(new Date().getTime(), "Thomas", "Pocoturbato",
                     "destroyer12_12", "napoli123",
                     "nonturbatothom@gmail.com",
                     parseDate("2025-11-20"));
+            // **********************************************
 
+            // Act
+            // **********************************************
             Boolean isUserAccountValid1 = userValidator.isUserValidForRegistration(validUserAccount1);
             Boolean isUserAccountValid2 = userValidator.isUserValidForRegistration(invalidUserAccount1);
+            // **********************************************
 
+            // Assert
+            // **********************************************
             assertEquals(true, isUserAccountValid1);
             assertEquals(false, isUserAccountValid2);
+            // **********************************************
         }
     }
-    // ---------------------------------------------------------------------------
+    // ------------------------------------------
 }
