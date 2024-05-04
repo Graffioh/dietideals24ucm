@@ -3,7 +3,6 @@ package com.ucm.serverdietideals24.Auth.security;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,9 +19,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-    
+    private final JdbcTemplate jdbcTemplate;
+
+    public CustomAuthenticationSuccessHandler(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     @Value("${frontendurl}")
     private String frontendUrl;
 
@@ -32,15 +34,15 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // Info from OAuth profile
         String emailOrUsernameFromOAuth = authentication.getName();
 
-
         boolean isUserInDB = false;
         boolean isEmail = emailOrUsernameFromOAuth.contains("@");
 
-        // Do a different query based on Google login (email) or Github login (email/username)
+        // Do a different query based on Google login (email) or Github login
+        // (email/username)
         if (isEmail) {
             try {
-                jdbcTemplate.query("SELECT * FROM useraccount WHERE email = '" + emailOrUsernameFromOAuth + "'",
-                        new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+                jdbcTemplate.query("SELECT * FROM useraccount WHERE email = ?",
+                        new BeanPropertyRowMapper<UserAccount>(UserAccount.class), emailOrUsernameFromOAuth).getFirst();
                 isUserInDB = true;
             } catch (NoSuchElementException e) {
                 isUserInDB = false;
@@ -48,8 +50,8 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             }
         } else {
             try {
-                jdbcTemplate.query("SELECT * FROM useraccount WHERE username = '" + emailOrUsernameFromOAuth + "'",
-                        new BeanPropertyRowMapper<UserAccount>(UserAccount.class)).getFirst();
+                jdbcTemplate.query("SELECT * FROM useraccount WHERE username = ?",
+                        new BeanPropertyRowMapper<UserAccount>(UserAccount.class), emailOrUsernameFromOAuth).getFirst();
                 isUserInDB = true;
             } catch (NoSuchElementException e) {
                 isUserInDB = false;

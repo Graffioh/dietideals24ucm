@@ -33,7 +33,7 @@ const auctions = [
   },
 ];
 
-export default function ComboboxAuctions({ onAuctionTypeChange }) {
+export default function ComboboxAuctionType({ onAuctionTypeChange }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 

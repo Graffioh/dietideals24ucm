@@ -10,7 +10,7 @@ import { Textarea } from "@/components/shadcn-ui/textarea";
 import Compressor from "compressorjs";
 
 import ComboboxCategories from "@/components/dietideals24-ui/comboboxCategories";
-import ComboboxAuctions from "@/components/dietideals24-ui/comboboxAuctions.js";
+import ComboboxAuctionType from "@/components/dietideals24-ui/comboboxAuctionType.js";
 import ComboboxQuality from "@/components/dietideals24-ui/comboboxQualities.js";
 
 import { useUserContext } from "@/app/providers/userProvider";
@@ -23,6 +23,7 @@ import moment from "moment";
 import AddAuctionImageBox from "@/components/dietideals24-ui/addAuctionImageBox";
 import { toast } from "sonner";
 import config from "@/config";
+import AuctionTypeInfoDialog from "@/components/dietideals24-ui/auctionTypeInfoDialog";
 
 export default function InsertAuctionPage() {
   const { currentUser, currentUserIsLoading } = useUserContext();
@@ -395,9 +396,12 @@ export default function InsertAuctionPage() {
               <ComboboxCategories
                 onCategoryChange={setAuctionCategoryFromCombobox}
               ></ComboboxCategories>
-              <ComboboxAuctions
-                onAuctionTypeChange={setAuctionTypeFromCombobox}
-              ></ComboboxAuctions>
+              <div className="flex">
+                <ComboboxAuctionType
+                  onAuctionTypeChange={setAuctionTypeFromCombobox}
+                ></ComboboxAuctionType>
+                <AuctionTypeInfoDialog />
+              </div>
               <ComboboxQuality
                 onAuctionQualityChange={setAuctionQualityFromCombobox}
               ></ComboboxQuality>

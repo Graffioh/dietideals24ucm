@@ -1,4 +1,4 @@
-package com.ucm.serverdietideals24.Models;
+package com.ucm.serverdietideals24.Models.Login;
 
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;

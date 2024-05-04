@@ -2,7 +2,6 @@ package com.ucm.serverdietideals24.Controller;
 
 import java.util.NoSuchElementException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -13,17 +12,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ucm.serverdietideals24.DAO.UserAccountDAO;
-import com.ucm.serverdietideals24.Models.UserFromLoginForm;
+import com.ucm.serverdietideals24.Models.Login.UserFromLoginForm;
 import com.ucm.serverdietideals24.Util.JwtUtil;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "https://dietideals24.vercel.app", "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app"}, allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:3000", "https://dietideals24.vercel.app",
+        "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app" }, allowCredentials = "true")
 public class JWTTokenController {
-    @Autowired
-    private UserAccountDAO userAccountDAO;
+    private final UserAccountDAO userAccountDAO;
+
+    public JWTTokenController(UserAccountDAO userAccountDAO) {
+        this.userAccountDAO = userAccountDAO;
+    }
 
     // JWT Token handling
     // *************************************************************
@@ -59,7 +62,8 @@ public class JWTTokenController {
     }
 
     @GetMapping("/get-login-token")
-    public ResponseEntity<String> getLoginToken(@CookieValue(name = "auth-token", required = false) String tokenFromCookie) {
+    public ResponseEntity<String> getLoginToken(
+            @CookieValue(name = "auth-token", required = false) String tokenFromCookie) {
         if (tokenFromCookie != null) {
             return new ResponseEntity<String>(tokenFromCookie, HttpStatus.OK);
         } else {
