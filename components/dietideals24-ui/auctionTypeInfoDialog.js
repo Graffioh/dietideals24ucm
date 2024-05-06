@@ -1,16 +1,9 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/UTJnUXifJWh
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import { Button } from "@/components/shadcn-ui/button";
 import {
   AlertDialogTrigger,
   AlertDialogTitle,
   AlertDialogDescription,
-  AlertDialogHeader,
   AlertDialogCancel,
-  AlertDialogAction,
   AlertDialogFooter,
   AlertDialogContent,
   AlertDialog,
@@ -34,13 +27,6 @@ export default function Component() {
           have been placed, or the highest bid does not exceed the{" "}
           <a className="font-bold">reserve price</a>, the auction is considered
           failed. In any case, it ends once the <a className="font-bold">expire date</a> has been reached.
-          {/* <div className="mt-2">
-            <ul>
-              <li>Start price:</li>
-              <li>Expire date: </li>
-              <li>Reserve price:</li>
-            </ul>
-          </div> */}
         </AlertDialogDescription>
         <AlertDialogTitle>English auction</AlertDialogTitle>
         <AlertDialogDescription>
@@ -51,13 +37,6 @@ export default function Component() {
           the <a className="font-bold">rise threshold price</a>, which is set at
           €X (e.g., if the current bid is €10 and the rise threshold is €5, the
           next bidder must offer at least €15 to be considered).
-          {/* <div className="mt-2">
-            <ul>
-              <li>Start price:</li>
-              <li>Expire date: </li>
-              <li>Reserve price:</li>
-            </ul>
-          </div> */}
         </AlertDialogDescription>
         <AlertDialogTitle>Descending auction</AlertDialogTitle>
         <AlertDialogDescription>
@@ -67,13 +46,6 @@ export default function Component() {
           <a className="font-bold">decrement timer</a> counts down, and every
           time it expires, it resets and automatically lowers the current offer
           by a set <a className="font-bold">decrement amount</a>.
-          {/* <div className="mt-2">
-            <ul>
-              <li>Start price:</li>
-              <li>Expire date: </li>
-              <li>Reserve price:</li>
-            </ul>
-          </div> */}
         </AlertDialogDescription>
         <AlertDialogFooter>
           <AlertDialogCancel>Ok</AlertDialogCancel>
