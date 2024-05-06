@@ -46,7 +46,7 @@ export function UserAuthForm({ className, createOrLogin }) {
 
       if (passwordCorrect) {
         const responseToken = await fetch(
-          config.apiUrl + "/generate-login-token",
+          config.apiUrl + "/jwt/generate-login-token",
           {
             method: "POST",
             headers: {
