@@ -6,9 +6,8 @@ const nextConfig = {
   async rewrites() {
     const isProd = process.env.VERCEL_ENV === "production";
     const apiBaseUrl = isProd
-      // ? "https://server-dietideals24.fly.dev"
-      ? "https://server-dietideals24.onrender.com"
-      : "https://server-dietideals24-render-dev.onrender.com"
+      ? "https://server-dietideals24.fly.dev"
+      : "https://server-dietideals24.fly.dev"
     
     console.log("IS PROD: " + isProd);
     console.log("API BASE URL: " + apiBaseUrl);
