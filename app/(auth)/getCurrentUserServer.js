@@ -13,7 +13,7 @@ export default async function getCurrentUserServer() {
 
   try {
     const subjectFromToken = await fetch(
-      config.apiUrl + "/get-subject-from-token",
+      config.apiUrl + "/jwt/get-subject-from-token",
       {
         method: "POST",
         credentials: "include",

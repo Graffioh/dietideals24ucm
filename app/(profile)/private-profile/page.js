@@ -79,7 +79,7 @@ export default function ProfilePage({ searchParams }) {
 
         const responseTokenText = await responseToken.text();
 
-        await fetch(config.apiUrl + "/set-login-token", {
+        await fetch(config.apiUrl + "/jwt/set-login-token", {
           method: "POST",
           credentials: "include",
           headers: {
