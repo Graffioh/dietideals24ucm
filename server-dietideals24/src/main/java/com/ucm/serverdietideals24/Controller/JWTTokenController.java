@@ -17,13 +17,10 @@ import com.ucm.serverdietideals24.Util.JwtUtil;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:3000", "https://dietideals24.vercel.app",
         "https://dietideals24-git-deploy-render-vercel-graffioh.vercel.app" }, allowCredentials = "true")
-@RequestMapping("/jwt")
-
 public class JWTTokenController {
     private final UserAccountDAO userAccountDAO;
 
