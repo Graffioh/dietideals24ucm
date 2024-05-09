@@ -6,7 +6,8 @@ const nextConfig = {
   async rewrites() {
     const isProd = process.env.VERCEL_ENV === "production";
     const apiBaseUrl = isProd
-      ? "https://server-dietideals24.fly.dev"
+      // ? "https://server-dietideals24.fly.dev"
+      ? "https://server-dietideals24.onrender.com"
       : "https://server-dietideals24-render-dev.onrender.com"
     
     console.log("IS PROD: " + isProd);
@@ -19,7 +20,7 @@ const nextConfig = {
       },
       {
         source: "/login/oauth2/:path*",
-        destination: process.env.NEXT_PUBLIC_API_URL + "/login/oauth2/:path*"
+        destination: apiBaseUrl + "/login/oauth2/:path*"
       },
     ];
   },
