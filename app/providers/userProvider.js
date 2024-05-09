@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
     }).then((res) => res.text());
 
   const { data: subject, error: subjectError } = useSWR(
-    config.apiUrl + "/jwt/get-subject-from-token",
+    config.apiUrl + "/get-subject-from-token",
     userInfoFetcher
   );
 

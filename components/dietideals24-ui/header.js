@@ -169,7 +169,7 @@ function LoggedFullSection() {
 
 async function logOut() {
   try {
-    await fetch(config.apiUrl + "/jwt/delete-login-token", {
+    await fetch(config.apiUrl + "/delete-login-token", {
       method: "GET",
       credentials: "include",
     });

@@ -59,7 +59,7 @@ export function UserAuthForm({ className, createOrLogin }) {
         const responseTokenText = await responseToken.text();
 
         const responseCookie = await fetch(
-          config.apiUrl + "/jwt/set-login-token",
+          config.apiUrl + "/set-login-token",
           {
             method: "POST",
             credentials: "include",
