@@ -3,7 +3,7 @@
 import { Textarea } from "@/components/shadcn-ui/textarea";
 import Link from "next/link";
 import { Button } from "@/components/shadcn-ui/button";
-import { Pencil1Icon, ChatBubbleIcon, GlobeIcon } from "@radix-ui/react-icons";
+import { Pencil1Icon, ChatBubbleIcon, GlobeIcon, ExitIcon } from "@radix-ui/react-icons";
 import useSWR from "swr";
 
 import AuctionsContainerPublicProfile from "@/components/dietideals24-ui/auctionsContainerPublicProfile";
@@ -24,6 +24,19 @@ export default function ProfilePage({ searchParams }) {
     error: userByIdError,
     isLoading: userByIdIsLoading,
   } = useSWR(config.apiUrl + "/users/" + searchParams.id, fetcher);
+
+  async function logOut() {
+    try {
+      await fetch(config.apiUrl + "/delete-login-token", {
+        method: "GET",
+        credentials: "include",
+      });
+  
+      window.location.href = "/";
+    } catch (e) {
+      console.error("Error while deleting auth token in log out: " + e);
+    }
+  }
 
   // if searchParams is not present or if searchParams.id == currentUser.id,
   //   then display currentUser, otherwise display the queried user by id
@@ -63,14 +76,23 @@ export default function ProfilePage({ searchParams }) {
                   </div>
 
                   {publicProfileUser?.id === currentUser?.id ? (
+                    <>
                     <Link href="/private-profile?type=update">
                       <Button
                         variant="ghost"
-                        className="md:mt-1.5 mt-1 px-0.5 md:px-1"
+                        className="md:mt-1.5 mt-1 px-1.5"
                       >
-                        <Pencil1Icon width="23" height="23" />
+                        <Pencil1Icon width="25" height="25" />
                       </Button>
                     </Link>
+                    <Button
+                    variant="ghost"
+                    className="md:mt-1.5 mt-1 px-1.5"
+                    onClick={logOut}
+                  >
+                    <ExitIcon width="25" height="25" className="text-red-500"/>
+                  </Button>
+                    </>
                   ) : (
                     <div></div>
                   )}
