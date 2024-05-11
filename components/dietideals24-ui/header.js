@@ -16,6 +16,7 @@ import {
   Pencil1Icon,
   HamburgerMenuIcon,
   Cross1Icon,
+  ExitIcon,
 } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
@@ -67,12 +68,12 @@ function LoggedSection() {
   return isUserAdult(currentUser ? currentUser.birthDate : new Date()) ? (
     <LoggedFullSection />
   ) : (
-    <LoggedPartialSection />
+    <LoggedPublicProfileSection />
   );
 }
 
 // Only notifications and profile icon
-function LoggedPartialSection() {
+function LoggedPublicProfileSection() {
   const { currentUser } = useUserContext();
 
   const imgFetcher = (url) =>
@@ -97,6 +98,19 @@ function LoggedPartialSection() {
 
   return (
     <div className="mr-3 flex justify-between mb-2">
+      <Link
+        href="/insert-auction"
+        className={cn(
+          buttonVariants({
+            variant: "default",
+            size: "default",
+            className: "h-9",
+          })
+        )}
+      >
+        Insert auction
+      </Link>
+
       <NotificationsDropdown />
 
       <Link href="/public-profile" className="mt-0.5">
@@ -110,7 +124,7 @@ function LoggedPartialSection() {
 }
 
 // Categories, searchbar, create auction, notifications, profile icon
-function LoggedFullSection() {
+function LoggedFullSection({ searchParams }) {
   const { currentUser } = useUserContext();
 
   const imgFetcher = (url) =>
@@ -183,7 +197,13 @@ async function logOut() {
 function PrivateProfileSection() {
   return (
     <div className="flex mr-4">
-      <Button onClick={logOut}>Log out</Button>
+      <Button
+        variant="ghost"
+        className="px-1.5"
+        onClick={logOut}
+      >
+        <ExitIcon width="25" height="25" className="text-red-500" />
+      </Button>
     </div>
   );
 }
@@ -236,14 +256,18 @@ function LoggedSectionMobile() {
   return isUserAdult(currentUser ? currentUser.birthDate : new Date()) ? (
     <LoggedFullSectionMobile />
   ) : (
-    <LoggedPartialSectionMobile />
+    <LoggedPublicProfileSectionMobile />
   );
 }
 
 // Only notifications and profile icon
-function LoggedPartialSectionMobile() {
+function LoggedPublicProfileSectionMobile() {
   return (
     <div className="flex justify-center flex-col gap-4">
+      <Link href="/insert-auction" className="hover:text-stone-400">
+        Insert auction
+      </Link>
+
       <Link href="/public-profile" className="hover:text-stone-400">
         <div>Profile</div>
       </Link>
@@ -281,9 +305,9 @@ function PrivateProfileSectionMobile() {
   return (
     <div>
       <Button
+        variant="ghost"
+        className="px-1.5"
         onClick={logOut}
-        className="mb-1 ml-1.5 hover:text-stone-400"
-        variant="none"
       >
         Log out
       </Button>
@@ -320,9 +344,9 @@ export default function Header({ headerType, token }) {
         {headerType === "headerLoggedFull" &&
           token !== "no-token" &&
           token !== "" && <LoggedFullSection />}
-        {headerType === "headerLoggedPartial" &&
+        {headerType === "headerPublicProfile" &&
           token !== "no-token" &&
-          token !== "" && <LoggedPartialSection />}
+          token !== "" && <LoggedPublicProfileSection />}
         {headerType === "headerPrivateProfile" && <PrivateProfileSection />}
         {(token === "no-token" || token === "") && <NotLoggedSection />}
         {headerType === "headerNotifications" && <NotificationsSection />}
@@ -391,9 +415,9 @@ export default function Header({ headerType, token }) {
                 {headerType === "headerLoggedFull" &&
                   token !== "no-token" &&
                   token !== "" && <LoggedFullSectionMobile />}
-                {headerType === "headerLoggedPartial" &&
+                {headerType === "headerPublicProfile" &&
                   token !== "no-token" &&
-                  token !== "" && <LoggedPartialSectionMobile />}
+                  token !== "" && <LoggedPublicProfileSectionMobile />}
                 {headerType === "headerPrivateProfile" && (
                   <PrivateProfileSectionMobile />
                 )}
