@@ -6,8 +6,8 @@ const nextConfig = {
   async rewrites() {
     const isProd = process.env.VERCEL_ENV === "production";
     const apiBaseUrl = isProd
-      ? "https://server-dietideals24.fly.dev"
-      : "https://server-dietideals24.fly.dev"
+      ? "https://dietideals24containerapp.greenmushroom-970193d0.italynorth.azurecontainerapps.io"
+      : "https://dietideals24containerapp.greenmushroom-970193d0.italynorth.azurecontainerapps.io"
     
     console.log("IS PROD: " + isProd);
     console.log("API BASE URL: " + apiBaseUrl);
@@ -19,7 +19,7 @@ const nextConfig = {
       },
       {
         source: "/login/oauth2/:path*",
-        destination: apiBaseUrl + "/login/oauth2/:path*"
+        destination: process.env.NEXT_PUBLIC_API_URL + "/login/oauth2/:path*"
       },
     ];
   },
