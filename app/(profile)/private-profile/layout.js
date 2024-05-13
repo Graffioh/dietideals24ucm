@@ -28,7 +28,7 @@ export default function PrivateProfileLayout({ children }) {
   
   return (
     <div className="relative flex min-h-screen flex-col">
-      <Header headerType={token !== "no-token" ? "headerPrivateProfile" : "headerEmpty"} />
+      <Header headerType={token !== "no-token" ? "headerLoggedPartial" : "headerEmpty"} />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>

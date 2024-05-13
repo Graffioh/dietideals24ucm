@@ -221,7 +221,7 @@ export default function ComboboxCategories({ onCategoryChange }) {
               >
                 <Check
                   className={cn(
-                    "mr-2 h-4 w-4",
+                    "mx-2 h-4 w-4",
                     value === category.value ? "opacity-100" : "opacity-0"
                   )}
                 />
