@@ -68,11 +68,11 @@ function LoggedSection() {
   return isUserAdult(currentUser ? currentUser.birthDate : new Date()) ? (
     <LoggedFullSection />
   ) : (
-    <LoggedPublicProfileSection />
+    <LoggedPartialSection />
   );
 }
 
-function LoggedPublicProfileSection() {
+function LoggedPartialSection() {
   const { currentUser } = useUserContext();
 
   const imgFetcher = (url) =>
@@ -180,34 +180,6 @@ function LoggedFullSection() {
   );
 }
 
-async function logOut() {
-  try {
-    await fetch(config.apiUrl + "/delete-login-token", {
-      method: "GET",
-      credentials: "include",
-    });
-
-    window.location.href = "/";
-  } catch (e) {
-    console.error("Error while deleting auth token in log out: " + e);
-  }
-}
-
-function PrivateProfileSection() {
-  return (
-    // <div className="flex mr-4">
-    //   <Button
-    //     variant="ghost"
-    //     className="px-1.5"
-    //     onClick={logOut}
-    //   >
-    //     <ExitIcon width="25" height="25" className="text-red-500" />
-    //   </Button>
-    // </div>
-    <LoggedPublicProfileSection />
-  );
-}
-
 function NotLoggedSection() {
   return (
     <Link
@@ -225,13 +197,41 @@ function NotLoggedSection() {
   );
 }
 
-function NotificationsSection() {
-  return (
-    <div className="mr-4 flex justify-between mb-2">
-      <NotificationsDropdown />
-    </div>
-  );
-}
+// async function logOut() {
+//   try {
+//     await fetch(config.apiUrl + "/delete-login-token", {
+//       method: "GET",
+//       credentials: "include",
+//     });
+
+//     window.location.href = "/";
+//   } catch (e) {
+//     console.error("Error while deleting auth token in log out: " + e);
+//   }
+// }
+
+// function PrivateProfileSection() {
+//   return (
+//     // <div className="flex mr-4">
+//     //   <Button
+//     //     variant="ghost"
+//     //     className="px-1.5"
+//     //     onClick={logOut}
+//     //   >
+//     //     <ExitIcon width="25" height="25" className="text-red-500" />
+//     //   </Button>
+//     // </div>
+//     <LoggedPartialSection />
+//   );
+// }
+
+// function NotificationsSection() {
+//   return (
+//     <div className="mr-4 flex justify-between mb-2">
+//       <NotificationsDropdown />
+//     </div>
+//   );
+// }
 
 // *******************************
 // Various header sections MOBILE
@@ -256,12 +256,12 @@ function LoggedSectionMobile() {
   return isUserAdult(currentUser ? currentUser.birthDate : new Date()) ? (
     <LoggedFullSectionMobile />
   ) : (
-    <LoggedPublicProfileSectionMobile />
+    <LoggedPartialSectionMobile />
   );
 }
 
 // Only notifications and profile icon
-function LoggedPublicProfileSectionMobile() {
+function LoggedPartialSectionMobile() {
   return (
     <div className="flex justify-center flex-col gap-4">
       <Link href="/insert-auction" className="hover:text-stone-400">
@@ -301,20 +301,20 @@ function LoggedFullSectionMobile() {
   );
 }
 
-function PrivateProfileSectionMobile() {
-  return (
-    // <div>
-    //   <Button
-    //     variant="ghost"
-    //     className="px-1.5"
-    //     onClick={logOut}
-    //   >
-    //     Log out
-    //   </Button>
-    // </div>
-    <LoggedPublicProfileSectionMobile />
-  );
-}
+// function PrivateProfileSectionMobile() {
+//   return (
+//     // <div>
+//     //   <Button
+//     //     variant="ghost"
+//     //     className="px-1.5"
+//     //     onClick={logOut}
+//     //   >
+//     //     Log out
+//     //   </Button>
+//     // </div>
+//     <LoggedPartialSectionMobile />
+//   );
+// }
 
 function NotLoggedSectionMobile() {
   return (
@@ -345,13 +345,13 @@ export default function Header({ headerType, token }) {
         {headerType === "headerLoggedFull" &&
           token !== "no-token" &&
           token !== "" && <LoggedFullSection />}
-        {headerType === "headerPublicProfile" &&
+        {headerType === "headerLoggedPartial" &&
           token !== "no-token" &&
-          token !== "" && <LoggedPublicProfileSection />}
-        {headerType === "headerPrivateProfile" && <PrivateProfileSection />}
+          token !== "" && <LoggedPartialSection />}
         {(token === "no-token" || token === "") && <NotLoggedSection />}
-        {headerType === "headerNotifications" && <NotificationsSection />}
         {headerType === "headerEmpty"}
+        {/* {headerType === "headerPrivateProfile" && <PrivateProfileSection />} */}
+        {/* {headerType === "headerNotifications" && <NotificationsSection />} */}
       </div>
 
       {/* Mobile (thx chatgpt) */}
@@ -416,16 +416,16 @@ export default function Header({ headerType, token }) {
                 {headerType === "headerLoggedFull" &&
                   token !== "no-token" &&
                   token !== "" && <LoggedFullSectionMobile />}
-                {headerType === "headerPublicProfile" &&
+                {headerType === "headerLoggedPartial" &&
                   token !== "no-token" &&
-                  token !== "" && <LoggedPublicProfileSectionMobile />}
-                {headerType === "headerPrivateProfile" && (
-                  <PrivateProfileSectionMobile />
-                )}
+                  token !== "" && <LoggedPartialSectionMobile />}
                 {headerType === "headerEmpty"}
                 {(token === "no-token" || token === "") && (
                   <NotLoggedSectionMobile />
                 )}
+                {/* {headerType === "headerPrivateProfile" && (
+                  <PrivateProfileSectionMobile />
+                )} */}
               </div>
             </div>
           </div>
