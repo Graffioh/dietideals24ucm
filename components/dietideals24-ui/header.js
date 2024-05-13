@@ -72,7 +72,6 @@ function LoggedSection() {
   );
 }
 
-// Only notifications and profile icon
 function LoggedPublicProfileSection() {
   const { currentUser } = useUserContext();
 
@@ -124,7 +123,7 @@ function LoggedPublicProfileSection() {
 }
 
 // Categories, searchbar, create auction, notifications, profile icon
-function LoggedFullSection({ searchParams }) {
+function LoggedFullSection() {
   const { currentUser } = useUserContext();
 
   const imgFetcher = (url) =>
@@ -196,15 +195,16 @@ async function logOut() {
 
 function PrivateProfileSection() {
   return (
-    <div className="flex mr-4">
-      <Button
-        variant="ghost"
-        className="px-1.5"
-        onClick={logOut}
-      >
-        <ExitIcon width="25" height="25" className="text-red-500" />
-      </Button>
-    </div>
+    // <div className="flex mr-4">
+    //   <Button
+    //     variant="ghost"
+    //     className="px-1.5"
+    //     onClick={logOut}
+    //   >
+    //     <ExitIcon width="25" height="25" className="text-red-500" />
+    //   </Button>
+    // </div>
+    <LoggedPublicProfileSection />
   );
 }
 
@@ -303,15 +303,16 @@ function LoggedFullSectionMobile() {
 
 function PrivateProfileSectionMobile() {
   return (
-    <div>
-      <Button
-        variant="ghost"
-        className="px-1.5"
-        onClick={logOut}
-      >
-        Log out
-      </Button>
-    </div>
+    // <div>
+    //   <Button
+    //     variant="ghost"
+    //     className="px-1.5"
+    //     onClick={logOut}
+    //   >
+    //     Log out
+    //   </Button>
+    // </div>
+    <LoggedPublicProfileSectionMobile />
   );
 }
 

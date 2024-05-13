@@ -345,6 +345,7 @@ export default function ProfilePage({ searchParams }) {
                     ? true
                     : false
                 }
+                maxLength={12}
               />
             </div>
 

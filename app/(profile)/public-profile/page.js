@@ -66,12 +66,12 @@ export default function ProfilePage({ searchParams }) {
                 <ProfilePic picUrl={publicProfileUser?.profilePicUrl} />
               </div>
               <div className="flex flex-col">
-                <div className="flex w-full justify-center items-center">
+                <div className="flex flex-wrap">
                   <h1 className="font-bold text-4xl md:text-5xl">
                     {publicProfileUser ? publicProfileUser.username : "none"}
                   </h1>
 
-                  <div className="mx-2">
+                  <div className="mx-2 mt-4">
                   <FlagComponent country={publicProfileUser?.country ?? "XX"} />
                   </div>
 
