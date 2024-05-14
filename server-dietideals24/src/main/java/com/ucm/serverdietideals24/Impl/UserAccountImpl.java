@@ -33,6 +33,12 @@ public class UserAccountImpl implements UserAccountDAO {
         }
 
         @Override
+        public Long getIdViaEmail(String email) {
+                String sql = "SELECT id FROM useraccount WHERE email = ?";
+                return jdbcTemplate.queryForObject(sql, Long.class, email);
+        }
+
+        @Override
         public UserAccount getViaEmail(String email) {
                 String sql = "SELECT * FROM useraccount WHERE email = ?";
                 return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserAccount.class), email)
@@ -82,6 +88,16 @@ public class UserAccountImpl implements UserAccountDAO {
                                 user.getBiography(),
                                 user.getWebsite(),
                                 user.getProfilePicUrl(),
+                                id
+                };
+                jdbcTemplate.update(sql, args);
+        }
+
+        @Override
+        public void updatePassword(Long id, String password) {
+                String sql = "UPDATE useraccount SET password = ? WHERE id = ?";
+                Object[] args = {
+                                password,
                                 id
                 };
                 jdbcTemplate.update(sql, args);

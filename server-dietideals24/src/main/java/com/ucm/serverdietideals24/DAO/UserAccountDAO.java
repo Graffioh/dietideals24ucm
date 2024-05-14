@@ -9,6 +9,8 @@ public interface UserAccountDAO {
 
     public UserAccount getViaId(Long id);
 
+    public Long getIdViaEmail(String email);
+
     public UserAccount getViaEmail(String email);
 
     public UserAccount getViaUsername(String username);
@@ -18,4 +20,6 @@ public interface UserAccountDAO {
     public void create(UserAccount user);
 
     public void update(Long id, UserAccount user);
+
+    public void updatePassword(Long id, String password);
 }

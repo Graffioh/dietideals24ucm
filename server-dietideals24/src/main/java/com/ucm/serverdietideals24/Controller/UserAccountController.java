@@ -70,6 +70,17 @@ public class UserAccountController {
         }
     }
 
+    @GetMapping("/get-id/{email}")
+    public ResponseEntity<Long> fetchUserBasedOnId(@PathVariable String email) {
+        try {
+            Long id = userAccountDAO.getIdViaEmail(email);
+            return ResponseEntity.ok(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1L);
+        }
+    }
+
     @GetMapping("/email")
     public ResponseEntity<UserAccount> fetchUserBasedOnEmail(@RequestParam String email) {
         try {
@@ -112,6 +123,17 @@ public class UserAccountController {
     public ResponseEntity<Void> updateUserAccount(@PathVariable Long id, @RequestBody UserAccount entity) {
         try {
             userAccountDAO.update(id, entity);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/change-password/{id}")
+    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody String password) {
+        try {
+            userAccountDAO.updatePassword(id, password);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             e.printStackTrace();
