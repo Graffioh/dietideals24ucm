@@ -11,20 +11,26 @@ export default function ResetPasswordPage({ searchParams }) {
   async function onSubmit(event) {
     event.preventDefault();
 
-    if (
-      event.currentTarget.password.value ===
-      event.currentTarget.password_check.value
-    ) {
-      const hashedPassword = await hash(event.currentTarget.password.value, 10);
+    const newPassword = event.target.elements.password.value;
+    const passwordCheck = event.target.elements.password_check.value;
+
+    if (newPassword === passwordCheck) {
+      const idResponse = await fetch(
+        config.apiUrl + "/users/get-id/" + searchParams.email,
+        {
+          method: "GET",
+        }
+      );
+
+      const idFromEmail = await idResponse.text();
+
+      const hashedPassword = await hash(newPassword, 10);
 
       try {
-        await fetch(
-          config.apiUrl + "/users/change-password/" + searchParams.id,
-          {
-            method: "PUT",
-            body: hashedPassword,
-          }
-        );
+        await fetch(config.apiUrl + "/users/change-password/" + idFromEmail, {
+          method: "PUT",
+          body: hashedPassword,
+        });
       } catch (e) {
         console.error("Error in /change-password: " + e);
       }

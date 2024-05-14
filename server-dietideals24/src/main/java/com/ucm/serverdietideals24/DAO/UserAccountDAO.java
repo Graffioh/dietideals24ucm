@@ -9,6 +9,8 @@ public interface UserAccountDAO {
 
     public UserAccount getViaId(Long id);
 
+    public Long getIdViaEmail(String email);
+
     public UserAccount getViaEmail(String email);
 
     public UserAccount getViaUsername(String username);

@@ -70,6 +70,17 @@ public class UserAccountController {
         }
     }
 
+    @GetMapping("/get-id/{email}")
+    public ResponseEntity<Long> fetchUserBasedOnId(@PathVariable String email) {
+        try {
+            Long id = userAccountDAO.getIdViaEmail(email);
+            return ResponseEntity.ok(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1L);
+        }
+    }
+
     @GetMapping("/email")
     public ResponseEntity<UserAccount> fetchUserBasedOnEmail(@RequestParam String email) {
         try {

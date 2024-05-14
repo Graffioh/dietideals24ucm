@@ -19,8 +19,14 @@ import config from "@/config";
 
 export function UserAuthForm({ className, createOrLogin }) {
   const router = useRouter();
-  const [email, setEmail] = useState("test@test.com");
+  const [email, setEmail] = useState(null);
   const [error, setError] = useState("");
+
+  function isEmailValid(email) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    return emailPattern.test(email);
+  }
 
   // LOGIN
   // **************************
@@ -33,8 +39,7 @@ export function UserAuthForm({ className, createOrLogin }) {
 
     try {
       const userFromEmailResponse = await fetch(
-        config.apiUrl + "/users/email?email=" +
-          userInfoFromInputs.email.value
+        config.apiUrl + "/users/email?email=" + userInfoFromInputs.email.value
       );
 
       const userFromEmail = await userFromEmailResponse.json();
@@ -58,17 +63,14 @@ export function UserAuthForm({ className, createOrLogin }) {
 
         const responseTokenText = await responseToken.text();
 
-        const responseCookie = await fetch(
-          config.apiUrl + "/set-login-token",
-          {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(responseTokenText),
-          }
-        );
+        const responseCookie = await fetch(config.apiUrl + "/set-login-token", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(responseTokenText),
+        });
 
         window.location.href = "/home";
 
@@ -93,7 +95,9 @@ export function UserAuthForm({ className, createOrLogin }) {
   async function pushEmailAsUrlParameter(event) {
     event.preventDefault();
 
-    router.push(event.target.href + "?email=" + email + "&fromProvider=credentials");
+    router.push(
+      event.target.href + "?email=" + email + "&fromProvider=credentials"
+    );
   }
   // **************************
 
@@ -114,6 +118,10 @@ export function UserAuthForm({ className, createOrLogin }) {
                 autoComplete="email"
                 autoCorrect="off"
                 className="bg-white"
+                onChange={(e) => {
+                  e.preventDefault();
+                  setEmail(e.currentTarget.value);
+                }}
               />
               <Label className="sr-only" htmlFor="password">
                 Password
@@ -128,6 +136,7 @@ export function UserAuthForm({ className, createOrLogin }) {
                 className="bg-white"
               />
             </div>
+
             <Button
               className={cn(
                 buttonVariants({
@@ -139,6 +148,23 @@ export function UserAuthForm({ className, createOrLogin }) {
             >
               {createOrLogin}
             </Button>
+            <div className="flex justify-center items-center flex-wrap">
+              <p className="text-sm text-slate-500">
+                Forgot the password? Enter the email and
+              </p>
+              {email && isEmailValid(email) ? (
+                <Link
+                  href={`/reset-password?email=${email}`}
+                  className="font-bold text-sm ml-1"
+                >
+                  Click here
+                </Link>
+              ) : (
+                <span className="font-bold text-sm ml-1 text-gray-400 cursor-not-allowed">
+                  Click here
+                </span>
+              )}
+            </div>
           </div>
         </form>
       ) : (
