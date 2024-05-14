@@ -118,6 +118,17 @@ public class UserAccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PutMapping("/change-password/{id}")
+    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody String password) {
+        try {
+            userAccountDAO.updatePassword(id, password);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     // *************************************************************
 
     @GetMapping("/oauth-user")

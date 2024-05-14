@@ -18,4 +18,6 @@ public interface UserAccountDAO {
     public void create(UserAccount user);
 
     public void update(Long id, UserAccount user);
+
+    public void updatePassword(Long id, String password);
 }

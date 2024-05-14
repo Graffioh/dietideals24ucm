@@ -8,6 +8,7 @@ import { Button } from "@/components/shadcn-ui/button";
 import { hash } from "bcryptjs";
 import { toast } from "sonner";
 import { mutate } from "swr";
+import Link from "next/link";
 
 import { isValidPhoneNumber } from "react-phone-number-input";
 import DatePicker from "@/components/dietideals24-ui/datePicker";
@@ -382,6 +383,7 @@ export default function ProfilePage({ searchParams }) {
                 required
                 readOnly={currentUser ? (currentUser.id ? true : false) : false}
               />
+              <Link href={"/reset-password?id=" + currentUser.id}>Change password</Link>
             </div>
 
             <div>

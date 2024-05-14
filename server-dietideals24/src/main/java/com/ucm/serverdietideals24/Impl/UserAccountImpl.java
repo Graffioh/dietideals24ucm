@@ -86,6 +86,16 @@ public class UserAccountImpl implements UserAccountDAO {
                 };
                 jdbcTemplate.update(sql, args);
         }
+        
+        @Override
+        public void updatePassword(Long id, String password) {
+                String sql = "UPDATE useraccount SET password = ? WHERE id = ?";
+                Object[] args = {
+                        password,
+                        id
+                };
+                jdbcTemplate.update(sql, args);
+        }
 
         @Override
         public Long getIdViaEmailAndPassword(String email, String password) {
