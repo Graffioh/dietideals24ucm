@@ -81,6 +81,28 @@ public class UserAccountController {
         }
     }
 
+    @GetMapping("/get-email/{email}")
+    public ResponseEntity<Boolean> checkIsEmailAlreadyRegistered(@PathVariable String email) {
+        try {
+            Boolean check = userAccountDAO.isEmailAlreadyRegistered(email);
+            return ResponseEntity.ok(check);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping("/get-username/{username}")
+    public ResponseEntity<Boolean> checkIsUsernameAlreadyRegistered(@PathVariable String username) {
+        try {
+            Boolean check = userAccountDAO.isUsernameAlreadyRegistered(username);
+            return ResponseEntity.ok(check);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
     @GetMapping("/email")
     public ResponseEntity<UserAccount> fetchUserBasedOnEmail(@RequestParam String email) {
         try {

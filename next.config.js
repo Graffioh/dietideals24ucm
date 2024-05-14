@@ -7,7 +7,7 @@ const nextConfig = {
     const isProd = process.env.VERCEL_ENV === "production";
     const apiBaseUrl = isProd
       ? "https://dietideals24containerapp.greenmushroom-970193d0.italynorth.azurecontainerapps.io"
-      : "https://server-dietideals24.fly.dev"
+      : "http://localhost:8080"
     
     console.log("IS PROD: " + isProd);
     console.log("API BASE URL: " + apiBaseUrl);

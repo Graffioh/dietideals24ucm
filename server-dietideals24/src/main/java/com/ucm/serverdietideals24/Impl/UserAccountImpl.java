@@ -39,6 +39,28 @@ public class UserAccountImpl implements UserAccountDAO {
         }
 
         @Override
+        public Boolean isEmailAlreadyRegistered(String email) {
+                String sql = "SELECT id FROM useraccount WHERE email = ?";
+                try {
+                        jdbcTemplate.queryForObject(sql, Long.class, email);
+                        return true;
+                } catch (Exception e) {
+                        return false;
+                }
+        }
+
+        @Override
+        public Boolean isUsernameAlreadyRegistered(String username) {
+                String sql = "SELECT id FROM useraccount WHERE username = ?";
+                try {
+                        jdbcTemplate.queryForObject(sql, Long.class, username);
+                        return true;
+                } catch (Exception e) {
+                        return false;
+                }
+        }
+
+        @Override
         public UserAccount getViaEmail(String email) {
                 String sql = "SELECT * FROM useraccount WHERE email = ?";
                 return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserAccount.class), email)

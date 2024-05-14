@@ -11,6 +11,9 @@ public interface UserAccountDAO {
 
     public Long getIdViaEmail(String email);
 
+    public Boolean isEmailAlreadyRegistered(String email);
+    public Boolean isUsernameAlreadyRegistered(String username);
+
     public UserAccount getViaEmail(String email);
 
     public UserAccount getViaUsername(String username);
