@@ -39,6 +39,38 @@ export default function ProfilePage({ searchParams }) {
 
   async function createUserAccount(user) {
     try {
+      // Check email and username if already in DB
+      const isEmailInDBResponse = await fetch(
+        config.apiUrl + "/users/get-email/" + user.email,
+        {
+          method: "GET",
+        }
+      );
+
+      const isEmailInDB = await isEmailInDBResponse.text();
+
+      if (isEmailInDB === "true") {
+        console.log("YOO")
+        toast.error("Email already registered, please use another email!");
+        return false;
+      }
+
+      const isUsernameInDBResponse = await fetch(
+        config.apiUrl + "/users/get-username/" + user.username,
+        {
+          method: "GET",
+        }
+      );
+
+      const isUsernameInDB = await isUsernameInDBResponse.text();
+
+      if (isUsernameInDB === "true") {
+        toast.error(
+          "Username already registered, please use another username!"
+        );
+        return false;
+      }
+
       const hashedPassword = await hash(user.password, 10);
 
       const userWithHashedPassword = {
@@ -96,7 +128,11 @@ export default function ProfilePage({ searchParams }) {
       });
 
       console.error("Error while creating the account: " + e);
+
+      return false;
     }
+
+    return true;
   }
 
   const [imageData, setImageData] = useState(null);
@@ -231,13 +267,15 @@ export default function ProfilePage({ searchParams }) {
         position: "bottom-center",
       });
     } else {
-      await createUserAccount(userInfoFromInputs);
+      const creationCheck = await createUserAccount(userInfoFromInputs);
 
-      window.location.href = "/home";
+      if (creationCheck) {
+        window.location.href = "/home";
 
-      toast.success("Account created successfully.", {
-        position: "bottom-center",
-      });
+        toast.success("Account created successfully.", {
+          position: "bottom-center",
+        });
+      }
     }
   }
 
