@@ -76,7 +76,11 @@ export default function AuctionDetailsPage({ searchParams }) {
               </Label>
 
               <Link href={"/public-profile?id=" + auctionDetailsUser?.id}>
-                <ProfilePic picUrl={auctionDetailsUser?.profilePicUrl} />
+                <ProfilePic
+                  picUrl={auctionDetailsUser?.profilePicUrl}
+                  width={32}
+                  height={32}
+                />
               </Link>
 
               <AuctionDetailsFields
@@ -101,7 +105,8 @@ export default function AuctionDetailsPage({ searchParams }) {
                     fetch(config.apiUrl + "/auctions/" + currentAuction.id, {
                       method: "DELETE",
                     });
-                    window.location.href = config.apiUrl.replace("/api", "") + "/home";
+                    window.location.href =
+                      config.apiUrl.replace("/api", "") + "/home";
                   }}
                 >
                   Delete auction

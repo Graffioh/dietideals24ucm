@@ -1,24 +1,8 @@
 "use client";
 
 import Link from "next/link";
-
 import { useState, useEffect } from "react";
-import useSWR from "swr";
-
 import { Button, buttonVariants } from "@/components/shadcn-ui/button";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/shadcn-ui/avatar";
-import {
-  BellIcon,
-  Pencil1Icon,
-  HamburgerMenuIcon,
-  Cross1Icon,
-  ExitIcon,
-} from "@radix-ui/react-icons";
-
 import { cn } from "@/lib/utils";
 import ComboboxCategories from "./comboboxCategories";
 import Searchbar from "./searchbar";
@@ -27,6 +11,7 @@ import { useUserContext } from "../../app/providers/userProvider";
 import config from "@/config";
 import Image from "next/image";
 import dietidealsLogo from "@/images/dietidealslogo.png";
+import ProfilePic from "./profilePic";
 
 function Logo() {
   return (
@@ -75,26 +60,6 @@ function LoggedSection() {
 function LoggedPartialSection() {
   const { currentUser } = useUserContext();
 
-  const imgFetcher = (url) =>
-    fetch(url)
-      .then((res) => res.blob())
-      .then((imgBlob) => URL.createObjectURL(imgBlob));
-
-  const {
-    data: profilePicData,
-    error: profilePicDataError,
-    isLoading: profilePicDataIsLoading,
-  } = useSWR(
-    config.apiUrl + "/users/image?key=" + currentUser?.profilePicUrl,
-    imgFetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      dedupingInterval: 86400000, // 24 hours
-      shouldRetryOnError: false,
-    }
-  );
-
   return (
     <div className="mr-3 flex justify-between mb-2">
       <Link
@@ -113,10 +78,7 @@ function LoggedPartialSection() {
       <NotificationsDropdown />
 
       <Link href="/public-profile" className="mt-0.5">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src={profilePicData} alt="@avatar" />
-          <AvatarFallback />
-        </Avatar>
+        <ProfilePic picUrl={currentUser?.profilePicUrl} width={9} height={9} />
       </Link>
     </div>
   );
@@ -125,26 +87,6 @@ function LoggedPartialSection() {
 // Categories, searchbar, create auction, notifications, profile icon
 function LoggedFullSection() {
   const { currentUser } = useUserContext();
-
-  const imgFetcher = (url) =>
-    fetch(url)
-      .then((res) => res.blob())
-      .then((imgBlob) => URL.createObjectURL(imgBlob));
-
-  const {
-    data: profilePicData,
-    error: profilePicDataError,
-    isLoading: profilePicDataIsLoading,
-  } = useSWR(
-    config.apiUrl + "/users/image?key=" + currentUser?.profilePicUrl,
-    imgFetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      dedupingInterval: 86400000, // 24 hours
-      shouldRetryOnError: false,
-    }
-  );
 
   return (
     <>
@@ -170,10 +112,11 @@ function LoggedFullSection() {
         <NotificationsDropdown />
 
         <Link href="/public-profile" className="mt-0.5 flex justify-center">
-          <Avatar className="h-9 w-9">
-            <AvatarImage src={profilePicData} alt="@avatar" />
-            <AvatarFallback />
-          </Avatar>
+          <ProfilePic
+            picUrl={currentUser?.profilePicUrl}
+            width={9}
+            height={9}
+          />
         </Link>
       </div>
     </>

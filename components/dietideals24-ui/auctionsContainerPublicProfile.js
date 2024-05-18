@@ -197,7 +197,7 @@ export default function AuctionsContainerPublicProfile({
         <div className="flex ml-auto mt-4 px-5 py-1.5 rounded-md focus:outline-none focus:border-blue-500">
           {" "}
         </div>
-        <div className="grid md:overflow-hidden overflow-x-auto overscroll-y-none md:grid-rows-2 md:grid-cols-4 2xl:grid-cols-6 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
+        <div className="grid md:overflow-hidden overflow-x-auto overscroll-y-none overflow-y-hidden md:grid-rows-2 md:grid-cols-4 2xl:grid-cols-6 grid-flow-col md:gap-10 gap-5 md:mx-12 mx-4">
           {isSellingSelected ? (
             paginatedSellingAuctions && paginatedSellingAuctions.length > 0 ? (
               paginatedSellingAuctions.map((auction) => (

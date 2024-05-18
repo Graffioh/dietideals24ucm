@@ -304,6 +304,8 @@ export default function ProfilePage({ searchParams }) {
           <ProfilePic
             picUrl={currentUser?.profilePicUrl}
             imageFromState={imageData}
+            width={32}
+            height={32}
           />
           <div className="absolute mt-24 ml-20 rounded-full bg-blue-950 px-[0.5em] py-[0.1em] text-white border-2 border-white">
             +
