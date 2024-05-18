@@ -2,16 +2,12 @@
 
 import { Label } from "@/components/shadcn-ui/label";
 import Link from "next/link";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/shadcn-ui/avatar";
 import { Input } from "@/components/shadcn-ui/input";
 import AuctionTimer from "@/components/dietideals24-ui/auctionTimer";
 import { Textarea } from "@/components/shadcn-ui/textarea";
 import useSWR from "swr";
 import config from "@/config";
+import ProfilePic from "./profilePic";
 
 export default function AuctionDetailsFields({
   auction,
@@ -70,26 +66,6 @@ export default function AuctionDetailsFields({
     ? highestOfferFromAuction.idUserAccount
     : auction.idUserAccount;
 
-  const imgFetcher = (url) =>
-    fetch(url)
-      .then((res) => res.blob())
-      .then((imgBlob) => URL.createObjectURL(imgBlob));
-
-  const {
-    data: profilePicHighestOffererData,
-    error: profilePicHighestOffererDataError,
-    isLoading: profilePicHighestOffererDataIsLoading,
-  } = useSWR(
-    config.apiUrl + "/users/image?key=" + highestOfferUserData?.profilePicUrl,
-    imgFetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      dedupingInterval: 86400000, // 24 hours
-      shouldRetryOnError: false,
-    }
-  );
-
   return (
     <>
       <div className="flex flex-col md:flex-row w-full mt-7 justify-between mx-8">
@@ -98,11 +74,15 @@ export default function AuctionDetailsFields({
             Current offer<div className="text-red-500"></div>
           </Label>
           <div className="flex">
-            <Link href={"/public-profile?id=" + highestOfferUserId}>
-              <Avatar className="h-8 w-8 mt-0.5 mr-2.5 hover:opacity-90">
-                <AvatarImage src={profilePicHighestOffererData} alt="@avatar" />
-                <AvatarFallback />
-              </Avatar>
+            <Link
+              href={"/public-profile?id=" + highestOfferUserId}
+              className="mr-1"
+            >
+              <ProfilePic
+                picUrl={highestOfferUserData?.profilePicUrl}
+                width={9}
+                height={9}
+              />
             </Link>
             <Input
               className="h-9 bg-white mb-4 md:mb-0"

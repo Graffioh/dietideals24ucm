@@ -3,7 +3,12 @@
 import { Textarea } from "@/components/shadcn-ui/textarea";
 import Link from "next/link";
 import { Button } from "@/components/shadcn-ui/button";
-import { Pencil1Icon, ChatBubbleIcon, GlobeIcon, ExitIcon } from "@radix-ui/react-icons";
+import {
+  Pencil1Icon,
+  ChatBubbleIcon,
+  GlobeIcon,
+  ExitIcon,
+} from "@radix-ui/react-icons";
 import useSWR from "swr";
 
 import AuctionsContainerPublicProfile from "@/components/dietideals24-ui/auctionsContainerPublicProfile";
@@ -31,7 +36,7 @@ export default function ProfilePage({ searchParams }) {
         method: "GET",
         credentials: "include",
       });
-  
+
       window.location.href = "/";
     } catch (e) {
       console.error("Error while deleting auth token in log out: " + e);
@@ -47,7 +52,7 @@ export default function ProfilePage({ searchParams }) {
         : currentUser
       : {}
     : currentUser;
-  
+
   if ((searchParams.id && userByIdIsLoading) || !publicProfileUser) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -63,35 +68,43 @@ export default function ProfilePage({ searchParams }) {
           <div className="flex items-center mb-2 md:mb-0">
             <div className="flex">
               <div className="mt-2 mr-4 md:mr-10">
-                <ProfilePic picUrl={publicProfileUser?.profilePicUrl} />
+                <ProfilePic picUrl={publicProfileUser?.profilePicUrl} width={32} height={32}/>
               </div>
               <div className="flex flex-col">
                 <div className="flex flex-wrap">
-                  <h1 className="font-bold text-4xl md:text-5xl">
-                    {publicProfileUser ? publicProfileUser.username : "none"}
-                  </h1>
+                  <div className="flex w-full md:w-fit">
+                    <h1 className="font-bold text-4xl md:text-5xl">
+                      {publicProfileUser ? publicProfileUser.username : "none"}
+                    </h1>
 
-                  <div className="mx-2 mt-4">
-                  <FlagComponent country={publicProfileUser?.country ?? "XX"} />
+                    <div className="mx-2 mt-4">
+                      <FlagComponent
+                        country={publicProfileUser?.country ?? "XX"}
+                      />
+                    </div>
                   </div>
 
                   {publicProfileUser?.id === currentUser?.id ? (
                     <>
-                    <Link href="/private-profile?type=update">
+                      <Link href="/private-profile?type=update">
+                        <Button
+                          variant="ghost"
+                          className="md:mt-1.5 mt-1 px-1.5"
+                        >
+                          <Pencil1Icon width="25" height="25" />
+                        </Button>
+                      </Link>
                       <Button
                         variant="ghost"
                         className="md:mt-1.5 mt-1 px-1.5"
+                        onClick={logOut}
                       >
-                        <Pencil1Icon width="25" height="25" />
+                        <ExitIcon
+                          width="25"
+                          height="25"
+                          className="text-red-500"
+                        />
                       </Button>
-                    </Link>
-                    <Button
-                    variant="ghost"
-                    className="md:mt-1.5 mt-1 px-1.5"
-                    onClick={logOut}
-                  >
-                    <ExitIcon width="25" height="25" className="text-red-500"/>
-                  </Button>
                     </>
                   ) : (
                     <div></div>
