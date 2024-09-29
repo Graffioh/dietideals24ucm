@@ -68,7 +68,11 @@ export default function ProfilePage({ searchParams }) {
           <div className="flex items-center mb-2 md:mb-0">
             <div className="flex">
               <div className="mt-2 mr-4 md:mr-10">
-                <ProfilePic picUrl={publicProfileUser?.profilePicUrl} width={32} height={32}/>
+                <ProfilePic
+                  picUrl={publicProfileUser?.profilePicUrl}
+                  width={32}
+                  height={32}
+                />
               </div>
               <div className="flex flex-col">
                 <div className="flex flex-wrap">
@@ -122,10 +126,24 @@ export default function ProfilePage({ searchParams }) {
 
                 <div className="mt-1.5 text-stone-600">
                   <div className="flex items-center">
-                    <GlobeIcon width={20} height={20} className="mr-2" />{" "}
-                    {publicProfileUser?.website === ""
-                      ? "no website"
-                      : publicProfileUser.website ?? "no website"}
+                    <GlobeIcon width={20} height={20} className="mr-2" />
+                    {publicProfileUser?.website &&
+                    publicProfileUser.website !== "" ? (
+                      <a
+                        href={
+                          publicProfileUser.website.startsWith("http")
+                            ? publicProfileUser.website
+                            : `https://${publicProfileUser.website}`
+                        } 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-blue-500 underline" 
+                      >
+                        {publicProfileUser.website}
+                      </a>
+                    ) : (
+                      "no website"
+                    )}
                   </div>
                 </div>
               </div>
