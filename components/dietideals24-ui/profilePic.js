@@ -33,7 +33,7 @@ export default function ProfilePic({ picUrl, imageFromState, width, height }) {
 
   if (profilePicDataIsLoading) {
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex mt-1 items-center justify-center">
         <LoadingSpinner />
       </div>
     );

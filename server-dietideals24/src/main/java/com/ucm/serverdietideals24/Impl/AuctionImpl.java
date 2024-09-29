@@ -26,8 +26,8 @@ public class AuctionImpl implements AuctionDAO {
 
     @Override
     public List<Auction> getViaName(String name) {
-        String sql = "SELECT * FROM auction WHERE auctionName = ? ORDER BY id";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Auction.class), name);
+        String sql = "SELECT * FROM auction WHERE auctionName LIKE ? ORDER BY id";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Auction.class), name + "%");
     }
 
     @Override
