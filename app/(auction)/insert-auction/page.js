@@ -338,25 +338,13 @@ export default function InsertAuctionPage() {
   return (
     <>
       <form onSubmit={onSubmit}>
-        <div className="flex flex-col md:flex-row items-center mt-12 2xl:justify-center">
-          <div className="mx-3 mb-6 md:m-6 md:mr-20 md:ml-48 grid md:grid-cols-2 gap-2">
+        <div className="flex flex-col md:flex-row items-center mt-12 justify-center">
+          <div className="mr-12">
             <AddAuctionImageBox
               onFileChange={handleFileChange}
               onHiddenFileInputChange={handleHiddenFileInput}
               hiddenFileInput={hiddenFileInput}
               disabled={false}
-            />
-
-            <AddAuctionImageBox
-              onFileChange={handleFileChange}
-              onHiddenFileInputChange={handleHiddenFileInput}
-              disabled={true}
-            />
-
-            <AddAuctionImageBox
-              onFileChange={handleFileChange}
-              onHiddenFileInputChange={handleHiddenFileInput}
-              disabled={true}
             />
           </div>
 
@@ -439,7 +427,7 @@ export default function InsertAuctionPage() {
           </div>
         </div>
 
-        <div className="flex justify-center items-center mb-4">
+        <div className="flex justify-center items-center my-12">
           <Button ref={createAuctionButtonRef} className="p-7 text-lg">
             Create Auction
           </Button>

@@ -41,7 +41,7 @@ public class Auction {
     private String auctionImages;
 
     private Boolean isOver;
-    private ArrayList<Offer> offers;
+    //private ArrayList<Offer> offers;
 
     // Fixed time
     private Date expireDate;

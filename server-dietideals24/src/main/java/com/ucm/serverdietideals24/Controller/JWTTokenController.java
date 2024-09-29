@@ -72,17 +72,27 @@ public class JWTTokenController {
     }
 
     @GetMapping("/delete-login-token")
-    public ResponseEntity<String> deleteLoginToken(HttpServletResponse response) {
-        Cookie tokenCookie = new Cookie("auth-token", null);
-        tokenCookie.setSecure(false);
-        tokenCookie.setHttpOnly(false);
-        tokenCookie.setMaxAge(0);
-        tokenCookie.setPath("/");
-
-        response.addCookie(tokenCookie);
-
-        return new ResponseEntity<String>("Cookie auth token delete successfully.", HttpStatus.OK);
+    public ResponseEntity<String> deleteLoginTokens(HttpServletResponse response) {
+        // Delete the "auth-token" cookie
+        Cookie authTokenCookie = new Cookie("auth-token", null);
+        authTokenCookie.setSecure(false);
+        authTokenCookie.setHttpOnly(false);
+        authTokenCookie.setMaxAge(0);  // Mark for deletion
+        authTokenCookie.setPath("/");  // Apply to the whole application
+    
+        // Delete the "JSESSIONID" cookie if present
+        Cookie jsessionidCookie = new Cookie("JSESSIONID", null);
+        jsessionidCookie.setSecure(false);
+        jsessionidCookie.setHttpOnly(false);
+        jsessionidCookie.setMaxAge(0);  // Mark for deletion
+        jsessionidCookie.setPath("/");  // Apply to the whole application
+    
+        response.addCookie(authTokenCookie);
+        response.addCookie(jsessionidCookie);
+    
+        return new ResponseEntity<String>("Cookies 'auth-token' and 'JSESSIONID' deleted successfully.", HttpStatus.OK);
     }
+    
 
     @PostMapping("/get-subject-from-token")
     public ResponseEntity<String> getSubjectFromToken(@RequestBody String token) {
