@@ -243,6 +243,30 @@ export default function InsertAuctionPage() {
   async function onSubmit(event) {
     event.preventDefault();
 
+    const inputs = event.currentTarget;
+    const title = inputs.title.value;
+    const description = inputs.description.value;
+
+    // Check for special characters in title
+    const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialChars.test(title)) {
+      toast.warning("Special characters are not allowed in the title.");
+      return;
+    }
+
+    const hasNumbers = /\d/;  // Regular expression to check for digits
+    if (hasNumbers.test(title)) {
+      toast.warning("Numbers are not allowed in the title.");
+      return;
+    }
+
+    // Check description length
+    if (description.length > 250) {
+      toast.warning("Description cannot exceed 250 characters.");
+      return;
+    }
+
+    // Validate other inputs
     const areFixedTimeInputsValid = validateFixedTimeAuctionInputs();
     const areEnglishInputsValid = validateEnglishAuctionInputs();
     const areDescendingInputsValid = validateDescendingAuctionInputs();
@@ -266,8 +290,7 @@ export default function InsertAuctionPage() {
       return;
     }
 
-    const inputs = event.currentTarget;
-
+    // Proceed with auction creation
     const currentOffer =
       auctionType === "english" || auctionType === "descending"
         ? startPrice
@@ -286,8 +309,8 @@ export default function InsertAuctionPage() {
 
     const auctionFromInputs = {
       id: newAuctionIdFromDate,
-      auctionDescription: inputs.description.value,
-      auctionName: inputs.title.value,
+      auctionDescription: description,
+      auctionName: title,
       auctionQuality: quality,
       currentOffer: currentOffer,
       auctionType: auctionType,
@@ -310,11 +333,19 @@ export default function InsertAuctionPage() {
     };
 
     try {
-      await fetch(config.apiUrl + "/auctions", {
+      const creationResponse = await fetch(config.apiUrl + "/auctions", {
         method: "POST",
         body: JSON.stringify(auctionFromInputs),
         headers: { "Content-Type": "application/json" },
       });
+
+      if (!creationResponse.ok) {
+        toast.error("An error occurred during auction creation.", {
+          position: "bottom-center",
+        });
+
+        return;
+      }
 
       toast.success("The auction has been created.", {
         position: "bottom-center",
@@ -381,15 +412,15 @@ export default function InsertAuctionPage() {
             </div>
 
             <div className="mt-6 flex flex-col space-y-6">
-              <ComboboxCategories
-                onCategoryChange={setAuctionCategoryFromCombobox}
-              ></ComboboxCategories>
               <div className="flex">
                 <ComboboxAuctionType
                   onAuctionTypeChange={setAuctionTypeFromCombobox}
                 ></ComboboxAuctionType>
                 <AuctionTypeInfoDialog />
               </div>
+              <ComboboxCategories
+                onCategoryChange={setAuctionCategoryFromCombobox}
+              ></ComboboxCategories>
               <ComboboxQuality
                 onAuctionQualityChange={setAuctionQualityFromCombobox}
               ></ComboboxQuality>

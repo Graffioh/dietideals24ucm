@@ -245,18 +245,6 @@ export function UserAuthForm({ className, createOrLogin }) {
         />
         Google
       </Link>
-      <Button disabled={true} variant="Facebook" type="button">
-        <div className="flex ml-3">
-          {/* <Image
-            src={facebookIcon}
-            alt="My SVG"
-            width={23}
-            height={23}
-            className="mr-2"
-          />
-          Facebook */}
-        </div>
-      </Button>
     </div>
   );
 }
