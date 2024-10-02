@@ -198,7 +198,7 @@ public class AuctionController {
     @PutMapping("/{id}/current-offertimer")
     public ResponseEntity<Void> setCurrentOfferTimer(@PathVariable Long id, @RequestParam Time newTimerValue) {
         try {
-            auctionDAO.updateCurrentOfferTimer(id, newTimerValue);
+            auctionDAO.updateCurrentTimer(id, newTimerValue);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -237,7 +237,7 @@ public class AuctionController {
 
     private void setCurrentDecrementTimer(Long id, Time newTimerValue) {
         try {
-            auctionDAO.updateCurrentDecrementTimer(id, newTimerValue);
+            auctionDAO.updateCurrentTimer(id, newTimerValue);
         } catch (Exception e) {
             e.printStackTrace();
         }

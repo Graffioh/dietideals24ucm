@@ -38,7 +38,7 @@ public class AuctionTests {
         @Nested
         class InsertBaseAttributesAuctionValidation {
                 @Test
-                public void testAuctionTypeAndCategoryAndQualityAndImagesNull() {
+                void testAuctionTypeAndCategoryAndQualityAndImagesNull() {
                         // Arrange
                         // **********************************************
                         Auction validAuction1 = new Auction(
@@ -158,7 +158,7 @@ public class AuctionTests {
                 }
 
                 @Test
-                public void testAuctionNameAndImagesEmpty() {
+                void testAuctionNameAndImagesEmpty() {
                         // Arrange
                         // **********************************************
                         Auction validAuction1 = new Auction(
@@ -240,7 +240,7 @@ public class AuctionTests {
                 }
 
                 @Test
-                public void testAuctionImagesWrongExtension() {
+                void testAuctionImagesWrongExtension() {
                         // Arrange
                         // **********************************************
                         Auction validAuction1 = new Auction(
@@ -295,7 +295,7 @@ public class AuctionTests {
         @Nested
         class InsertFixedTimeAuctionValidation {
                 @Test
-                public void testFixedTimeAuctionExpireDate() {
+                void testFixedTimeAuctionExpireDate() {
                         // Arrange
                         // **********************************************
                         Auction validAuction1 = new Auction(
@@ -375,7 +375,7 @@ public class AuctionTests {
                 }
 
                 @Test
-                public void testFixedTimeAuctionMinimumAcceptable() {
+                void testFixedTimeAuctionMinimumAcceptable() {
                         // Arrange
                         // **********************************************
                         Auction validAuction1 = new Auction(
@@ -458,7 +458,7 @@ public class AuctionTests {
         @Nested
         class InsertEnglishAuctionValidation {
                 @Test
-                public void testEnglishAuctionStartPrice() {
+                void testEnglishAuctionStartPrice() {
                         // Arrange
                         // **********************************************
                         Auction validAuction1 = new Auction(
@@ -525,7 +525,7 @@ public class AuctionTests {
                 }
 
                 @Test
-                public void testEnglishAuctionRiseThresholdPrice() {
+                void testEnglishAuctionRiseThresholdPrice() {
                         // Arrange
                         // **********************************************
                         Auction validAuction1 = new Auction(
@@ -616,7 +616,7 @@ public class AuctionTests {
         @Nested
         class InsertDescendingAuctionValidation {
                 @Test
-                public void testDescendingAuctionStartPrice() {
+                void testDescendingAuctionStartPrice() {
                         // Arrange
                         // **********************************************
                         Auction validAuction1 = new Auction(
@@ -686,7 +686,7 @@ public class AuctionTests {
                 }
 
                 @Test
-                public void testDescendingAuctionDecrementAmount() {
+                void testDescendingAuctionDecrementAmount() {
                         // Arrange
                         // **********************************************
                         Auction validAuction1 = new Auction(
@@ -756,7 +756,7 @@ public class AuctionTests {
                 }
 
                 @Test
-                public void testDescendingAuctionEndPrice() {
+                void testDescendingAuctionEndPrice() {
                         // Arrange
                         // **********************************************
                         Auction validAuction1 = new Auction(
@@ -845,7 +845,7 @@ public class AuctionTests {
                 }
 
                 @Test
-                public void testDescendingAuctionStartPriceEndPriceRelationship() {
+                void testDescendingAuctionStartPriceEndPriceRelationship() {
                         float[] startPrices = { 2.0f, 1.0f, 99.9f, 100.0f };
                         float[] endPrices = { 1.0f, 100.0f, 101.0f, 50.0f };
 
@@ -875,7 +875,7 @@ public class AuctionTests {
                 }
 
                 @Test
-                public void testDescendingAuctionStartPriceDecrementAmountRelationship() {
+                void testDescendingAuctionStartPriceDecrementAmountRelationship() {
                         float[] startPrices = { 2.0f, 1.0f, 99.9f, 100.0f };
                         float[] decrementAmounts = { 1.0f, 100.0f, 101.0f, 50.0f };
 

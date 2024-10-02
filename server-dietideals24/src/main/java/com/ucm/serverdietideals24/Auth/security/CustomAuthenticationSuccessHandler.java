@@ -46,7 +46,6 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 isUserInDB = true;
             } catch (NoSuchElementException e) {
                 isUserInDB = false;
-                System.out.println("No such user in the Database.");
             }
         } else {
             try {
@@ -55,7 +54,6 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 isUserInDB = true;
             } catch (NoSuchElementException e) {
                 isUserInDB = false;
-                System.out.println("No such user in the Database.");
             }
         }
 

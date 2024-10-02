@@ -37,7 +37,6 @@ public class JWTTokenController {
         try {
             userId = userAccountDAO.getIdViaEmailAndPassword(loginReq.getEmail(), loginReq.getPassword());
         } catch (NoSuchElementException e) {
-            System.out.println("Error, invalid email or password sent to login route.");
         }
 
         if (userId != -1) {

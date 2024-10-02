@@ -36,7 +36,7 @@ public class UserAccountTests {
     @Nested
     class UserAccountRegistrationValidation {
         @Test
-        public void testUserAccountName() {
+        void testUserAccountName() {
             // Arrange
             // **********************************************
             UserAccount validUserAccount1 = new UserAccount(new Date().getTime(), "Umberto", "Breglia", "brr_777",
@@ -65,7 +65,7 @@ public class UserAccountTests {
         }
 
         @Test
-        public void testUserAccountEmail() {
+        void testUserAccountEmail() {
             // Arrange
             // **********************************************
             UserAccount validUserAccount1 = new UserAccount(new Date().getTime(), "Andrea", "Rossi", "arossi",
@@ -94,7 +94,7 @@ public class UserAccountTests {
         }
 
         @Test
-        public void testUserAccountUsername() {
+        void testUserAccountUsername() {
             // Arrange
             // **********************************************
             UserAccount validUserAccount1 = new UserAccount(new Date().getTime(), "Francesca", "Verde", "francy22",
@@ -123,7 +123,7 @@ public class UserAccountTests {
         }
 
         @Test
-        public void testUserAccountBirthDate() {
+        void testUserAccountBirthDate() {
             // Arrange
             // **********************************************
             UserAccount validUserAccount1 = new UserAccount(new Date().getTime(), "Thomas", "Pocoturbato",

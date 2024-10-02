@@ -1,6 +1,5 @@
 package com.ucm.serverdietideals24.Models;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Time;
 import lombok.AllArgsConstructor;
@@ -41,7 +40,6 @@ public class Auction {
     private String auctionImages;
 
     private Boolean isOver;
-    //private ArrayList<Offer> offers;
 
     // Fixed time
     private Date expireDate;
