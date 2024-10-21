@@ -50,7 +50,6 @@ export default function ProfilePage({ searchParams }) {
       const isEmailInDB = await isEmailInDBResponse.text();
 
       if (isEmailInDB === "true") {
-        console.log("YOO")
         toast.error("Email already registered, please use another email!");
         return false;
       }

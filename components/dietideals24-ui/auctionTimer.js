@@ -93,23 +93,14 @@ export default function AuctionTimer({ deadline, auction }) {
               clearInterval(timer);
 
               // set isOver attribute in DB to true
-              fetch(
-                config.apiUrl +
-                  "/auctions/" +
-                  auction.id +
-                  "/is-over",
-                {
-                  method: "PUT",
-                  headers: { "Content-Type": "application/json" },
-                }
-              )
+              fetch(config.apiUrl + "/auctions/" + auction.id + "/is-over", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+              })
                 .then((response) => {
                   if (!response.ok) {
                     throw new Error("Network response was not ok");
                   }
-                })
-                .then(() => {
-                  console.log("Auction has ended");
                 })
                 .catch((error) => {
                   console.error(
@@ -136,11 +127,6 @@ export default function AuctionTimer({ deadline, auction }) {
                     throw new Error("Network response was not ok");
                   }
                 })
-                .then(() => {
-                  console.log(
-                    "Notifications for auction ended created successfully"
-                  );
-                })
                 .catch((error) => {
                   console.error(
                     "Error while creating notification: " + error.message
@@ -160,8 +146,6 @@ export default function AuctionTimer({ deadline, auction }) {
                   return response.json();
                 })
                 .then((offers) => {
-                  console.log("Offers from auction id fetched successfully!");
-
                   offers.map((offer) => {
                     const fixedTimeNoti = {
                       id: auction.id + auction.idUserAccount,
@@ -170,23 +154,15 @@ export default function AuctionTimer({ deadline, auction }) {
                       idUserAccount: offer.idUserAccount,
                     };
 
-                    fetch(
-                      config.apiUrl + "/notifications/create",
-                      {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(fixedTimeNoti),
-                      }
-                    )
+                    fetch(config.apiUrl + "/notifications/create", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(fixedTimeNoti),
+                    })
                       .then((response) => {
                         if (!response.ok) {
                           throw new Error("Network response was not ok");
                         }
-                      })
-                      .then(() => {
-                        console.log(
-                          "Notifications for auction ended created successfully"
-                        );
                       })
                       .catch((error) => {
                         console.error(
@@ -209,23 +185,14 @@ export default function AuctionTimer({ deadline, auction }) {
                 clearInterval(timer);
 
                 // set isOver attribute in DB to true
-                fetch(
-                  config.apiUrl +
-                    "/auctions/" +
-                    auction.id +
-                    "/is-over",
-                  {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                  }
-                )
+                fetch(config.apiUrl + "/auctions/" + auction.id + "/is-over", {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                })
                   .then((response) => {
                     if (!response.ok) {
                       throw new Error("Network response was not ok");
                     }
-                  })
-                  .then(() => {
-                    console.log("Auction has ended");
                   })
                   .catch((error) => {
                     console.error(
@@ -243,23 +210,15 @@ export default function AuctionTimer({ deadline, auction }) {
                   idUserAccount: auction.idUserAccount,
                 };
 
-                fetch(
-                  config.apiUrl + "/notifications/create",
-                  {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(englishNoti),
-                  }
-                )
+                fetch(config.apiUrl + "/notifications/create", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(englishNoti),
+                })
                   .then((response) => {
                     if (!response.ok) {
                       throw new Error("Network response was not ok");
                     }
-                  })
-                  .then(() => {
-                    console.log(
-                      "Notifications for auction ended created successfully"
-                    );
                   })
                   .catch((error) => {
                     console.error(
@@ -268,13 +227,10 @@ export default function AuctionTimer({ deadline, auction }) {
                   });
 
                 // (BUYER)
-                fetch(
-                  config.apiUrl + "/offers/" + auction.id,
-                  {
-                    method: "GET",
-                    headers: { "Content-Type": "application/json" },
-                  }
-                )
+                fetch(config.apiUrl + "/offers/" + auction.id, {
+                  method: "GET",
+                  headers: { "Content-Type": "application/json" },
+                })
                   .then((response) => {
                     if (!response.ok) {
                       throw new Error("Network response was not ok");
@@ -283,8 +239,6 @@ export default function AuctionTimer({ deadline, auction }) {
                     return response.json();
                   })
                   .then((offers) => {
-                    console.log("Offers from auction id fetched successfully!");
-
                     offers.map((offer) => {
                       const englishNoti = {
                         id: auction.id + auction.idUserAccount,
@@ -293,24 +247,15 @@ export default function AuctionTimer({ deadline, auction }) {
                         idUserAccount: offer.idUserAccount,
                       };
 
-                      fetch(
-                        config.apiUrl +
-                          "/notifications/create",
-                        {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify(englishNoti),
-                        }
-                      )
+                      fetch(config.apiUrl + "/notifications/create", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(englishNoti),
+                      })
                         .then((response) => {
                           if (!response.ok) {
                             throw new Error("Network response was not ok");
                           }
-                        })
-                        .then(() => {
-                          console.log(
-                            "Notifications for auction ended created successfully"
-                          );
                         })
                         .catch((error) => {
                           console.error(
@@ -334,23 +279,14 @@ export default function AuctionTimer({ deadline, auction }) {
                 setAuctionEnded(true);
                 clearInterval(timer);
 
-                fetch(
-                  config.apiUrl +
-                    "/auctions/" +
-                    auction.id +
-                    "/is-over",
-                  {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                  }
-                )
+                fetch(config.apiUrl + "/auctions/" + auction.id + "/is-over", {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                })
                   .then((response) => {
                     if (!response.ok) {
                       throw new Error("Network response was not ok");
                     }
-                  })
-                  .then(() => {
-                    console.log("Auction has ended");
                   })
                   .catch((error) => {
                     console.error(
@@ -366,23 +302,15 @@ export default function AuctionTimer({ deadline, auction }) {
                   idAuction: auction.id,
                 };
 
-                fetch(
-                  config.apiUrl + "/notifications/create",
-                  {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(descendingNoti),
-                  }
-                )
+                fetch(config.apiUrl + "/notifications/create", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(descendingNoti),
+                })
                   .then((response) => {
                     if (!response.ok) {
                       throw new Error("Network response was not ok");
                     }
-                  })
-                  .then(() => {
-                    console.log(
-                      "Notifications for auction ended created successfully"
-                    );
                   })
                   .catch((error) => {
                     console.error(
@@ -417,7 +345,9 @@ export default function AuctionTimer({ deadline, auction }) {
   return (
     <div>
       {auctionEnded || Object.keys(timeLeft).length === 0 || auction.isOver ? (
-        <div className="text-red-500 text-lg font-medium">Auction ended</div>
+        <div className="text-red-700 text-lg font-bold rounded">
+          Auction ended
+        </div>
       ) : auction.auctionType === "fixedtime" ? (
         `${formatTimeLeft(timeLeft)}`
       ) : (

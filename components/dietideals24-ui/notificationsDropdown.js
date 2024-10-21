@@ -75,7 +75,7 @@ export default function NotificationsDropdown() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" className="mx-2 relative">
+        <Button variant="ghost" className="mx-2 relative" aria-label="notifications-dropdown">
           <BellIcon width="23" height="23" />
           <div
             className="absolute w-2.5 h-2.5 top-2.5 right-4 bg-red-500 rounded-full"

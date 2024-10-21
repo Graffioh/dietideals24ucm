@@ -6,7 +6,7 @@ import AuctionTimer from "./auctionTimer";
 import LoadingSpinner from "./loadingSpinner";
 import config from "@/config";
 import useSWR from "swr";
-import useSWRImmutable from 'swr/immutable'
+import useSWRImmutable from "swr/immutable";
 
 export default function CardAuction({ isHomepage, isMobile, auction }) {
   function generateDeadline(deadline, time) {
@@ -80,14 +80,18 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
       {isHomepage && !isMobile ? (
         <div className="">
           <button className="relative mt-10 bg-white w-64 h-80 flex justify-center rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]">
-              <div>
-                <Image
-                  alt="card-image"
-                  className="mt-4 pb-[5.5em] px-3 rounded-lg flex items-center object-cover"
-                  src={auction.auctionImages !== "no-images" ? auctionPicData : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"}
-                  fill
-                />
-              </div>
+            <div>
+              <Image
+                alt="card-image"
+                className="mt-4 pb-[5.5em] px-3 rounded-lg flex items-center object-cover"
+                src={
+                  auction.auctionImages !== "no-images"
+                    ? auctionPicData
+                    : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"
+                }
+                fill
+              />
+            </div>
 
             <div className="absolute bottom-2 left-0 right-0 text-base flex flex-col">
               <div className="flex justify-center items-center">
@@ -102,7 +106,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                   // <LoadingSpinner />
                 )}
 
-                <div className="text-xl mt-0.5 bg-stone-200 rounded w-[6.5em] h-8">
+                <div className="text-xl mt-0.5 bg-stone-200 rounded w-[7em] h-8">
                   <AuctionTimer
                     deadline={
                       auction.auctionType === "english"
@@ -119,12 +123,12 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
           </button>
         </div>
       ) : (
-        <div
-          className="flex"
-        >
+        <div className="flex">
           <button
             className={`px-2 relative bg-white ${
-              isMobile ? "w-44 h-64 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]" : "w-64 h-56"
+              isMobile
+                ? "w-44 h-64 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.15)]"
+                : "w-64 h-56"
             } flex justify-center rounded-lg`}
           >
             <div className="flex flex-col">
@@ -133,7 +137,11 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                 className={`object-cover ${
                   isMobile ? "w-[11.5em] h-36" : "w-56 h-36"
                 }  mt-4 flex items-center`}
-                src={auction.auctionImages !== "no-images" ? auctionPicData : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"}
+                src={
+                  auction.auctionImages !== "no-images"
+                    ? auctionPicData
+                    : "https://www.frosinonecalcio.com/wp-content/uploads/2021/09/default-placeholder.png"
+                }
                 width={230}
                 height={140}
               />

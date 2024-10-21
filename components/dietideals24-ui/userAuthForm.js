@@ -79,7 +79,6 @@ export function UserAuthForm({ className, createOrLogin }) {
         setError("Error: invalid password, please try again.");
       }
     } catch (e) {
-      console.log({ e });
       setError("Error: invalid email or password, please try again.");
     }
   }

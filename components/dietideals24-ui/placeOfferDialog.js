@@ -100,9 +100,6 @@ export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
                 throw new Error("Network response was not ok");
               }
             })
-            .then(() => {
-              console.log("Auction has ended");
-            })
             .catch((error) => {
               console.error("Failed to fetch: ", error);
             });
@@ -126,11 +123,6 @@ export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
                 throw new Error("Network response was not ok");
               }
             })
-            .then(() => {
-              console.log(
-                "Notifications for auction ended created successfully"
-              );
-            })
             .catch((error) => {
               console.error(
                 "Error while creating notification: " + error.message
@@ -150,8 +142,6 @@ export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
               return response.json();
             })
             .then((offers) => {
-              console.log("Offers from auction id fetched successfully!");
-
               offers.map((offer) => {
                 const noti = {
                   id: auction.id + auction.idUserAccount,
@@ -169,11 +159,6 @@ export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
                     if (!response.ok) {
                       throw new Error("Network response was not ok");
                     }
-                  })
-                  .then(() => {
-                    console.log(
-                      "Notifications for auction ended created successfully"
-                    );
                   })
                   .catch((error) => {
                     console.error(
@@ -260,6 +245,7 @@ export default function PlaceOfferDialog({ auction, onCurrentOfferChange }) {
                   min={auction.currentOffer + 1}
                   max="9999"
                   className="w-48"
+                  required
                 />
               </div>
             </AlertDialogHeader>

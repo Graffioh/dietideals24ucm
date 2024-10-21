@@ -8,9 +8,6 @@ const nextConfig = {
     const apiBaseUrl = isProd
       ? "https://dietideals24containerapp.greenmushroom-970193d0.italynorth.azurecontainerapps.io"
       : "http://localhost:8080"
-    
-    console.log("IS PROD: " + isProd);
-    console.log("API BASE URL: " + apiBaseUrl);
 
     return [
       {
