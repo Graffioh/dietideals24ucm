@@ -167,13 +167,7 @@ public class AuctionImpl implements AuctionDAO {
     }
 
     @Override
-    public void updateCurrentDecrementTimer(Long id, Time newTimerValue) {
-        String sql = "UPDATE auction SET currentTimer = ? WHERE id = ?";
-        jdbcTemplate.update(sql, newTimerValue, id);
-    }
-
-    @Override
-    public void updateCurrentOfferTimer(Long id, Time newTimerValue) {
+    public void updateCurrentTimer(Long id, Time newTimerValue) {
         String sql = "UPDATE auction SET currentTimer = ? WHERE id = ?";
         jdbcTemplate.update(sql, newTimerValue, id);
     }

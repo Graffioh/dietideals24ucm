@@ -26,7 +26,7 @@ import config from "@/config";
 import AuctionTypeInfoDialog from "@/components/dietideals24-ui/auctionTypeInfoDialog";
 
 export default function InsertAuctionPage() {
-  const { currentUser, currentUserIsLoading } = useUserContext();
+  const { currentUser } = useUserContext();
 
   // Category combobox state
   const [category, setCategory] = useState("");
@@ -223,7 +223,7 @@ export default function InsertAuctionPage() {
           {
             method: "POST",
             body: formData,
-          }
+          },
         );
 
         if (response.ok) {
@@ -254,7 +254,7 @@ export default function InsertAuctionPage() {
       return;
     }
 
-    const hasNumbers = /\d/;  // Regular expression to check for digits
+    const hasNumbers = /\d/; // Regular expression to check for digits
     if (hasNumbers.test(title)) {
       toast.warning("Numbers are not allowed in the title.");
       return;
@@ -370,7 +370,7 @@ export default function InsertAuctionPage() {
     <>
       <form onSubmit={onSubmit}>
         <div className="flex flex-col md:flex-row items-center mt-12 justify-center">
-          <div className="mr-12">
+          <div className="md:mr-12 mb-8">
             <AddAuctionImageBox
               onFileChange={handleFileChange}
               onHiddenFileInputChange={handleHiddenFileInput}
@@ -393,6 +393,9 @@ export default function InsertAuctionPage() {
                   placeholder="Title"
                   className="bg-white"
                   id="title"
+                  pattern="^[a-zA-Z\s]+$"
+                  title="Only letters and spaces are allowed. No numbers or special characters."
+                  required
                 ></Input>
               </div>
 
@@ -407,6 +410,7 @@ export default function InsertAuctionPage() {
                   className="resize-none bg-white"
                   id="description"
                   maxLength={250}
+                  required
                 />
               </div>
             </div>

@@ -16,14 +16,16 @@ import ProfilePic from "./profilePic";
 function Logo() {
   return (
     <Link href="/home" className="font-bold text-2xl">
-      <div className="mb-3 flex">
-        <Image
-          alt="dietideals-logo"
-          src={dietidealsLogo}
-          width={32}
-          height={22}
-        />
-        IETIDEALS24
+      <div className="mb-3 flex items-center">
+        <div className="relative w-8 h-8">
+          <Image
+            alt="dietideals-logo"
+            src={dietidealsLogo}
+            layout="fill"
+            objectFit="contain"
+          />
+        </div>
+        <span>IETIDEALS24</span>
       </div>
     </Link>
   );

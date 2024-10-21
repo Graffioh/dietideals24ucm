@@ -195,6 +195,8 @@ export default function ComboboxCategories({ onCategoryChange }) {
           role="combobox"
           aria-expanded={open}
           className="w-[200px] justify-between bg-white"
+          aria-labelledby="select-category-combobox"
+          aria-label="select-category-combobox"
         >
           {value
             ? categories.find((category) => category.value === value)?.label

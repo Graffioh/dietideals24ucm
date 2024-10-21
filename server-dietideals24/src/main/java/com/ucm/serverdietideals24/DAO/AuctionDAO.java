@@ -34,9 +34,7 @@ public interface AuctionDAO {
 
     public void updateCurrentOffer(Long id, Float newCurrentOffer);
 
-    public void updateCurrentDecrementTimer(Long id, Time newTimerValue);
-
-    public void updateCurrentOfferTimer(Long id, Time newTimerValue);
+    public void updateCurrentTimer(Long id, Time newTimerValue);
 
     public Integer countAll();
 
