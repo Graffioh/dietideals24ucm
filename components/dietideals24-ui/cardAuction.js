@@ -106,7 +106,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                   // <LoadingSpinner />
                 )}
 
-                <div className="text-xl mt-0.5 bg-stone-200 rounded w-[7.5em] h-8">
+                <div className="text-xl mt-0.5 bg-stone-200 rounded w-[7.5em] h-8 pt-0.5">
                   <AuctionTimer
                     deadline={
                       auction.auctionType === "english"
@@ -161,7 +161,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                     <div
                       className={`text-xl mt-0.5 ${
                         isMobile ? "" : "px-2 w-[7.5em]"
-                      } bg-stone-200 rounded h-8`}
+                      } bg-stone-200 rounded h-8 pt-0.5`}
                     >
                       <AuctionTimer
                         deadline={fixedTimeDeadlineTimer}
@@ -173,7 +173,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                     <div
                       className={`text-xl mt-0.5 ${
                         isMobile ? "" : "px-2 w-[7.5em]"
-                      } bg-stone-200 rounded h-8`}
+                      } bg-stone-200 rounded h-8 pt-0.5`}
                     >
                       <AuctionTimer
                         deadline={englishDeadlineTimer}
@@ -185,7 +185,7 @@ export default function CardAuction({ isHomepage, isMobile, auction }) {
                     <div
                       className={`text-xl mt-0.5 ${
                         isMobile ? "" : "px-2 w-[7.5em]"
-                      } bg-stone-200 rounded h-8`}
+                      } bg-stone-200 rounded h-8 pt-0.5`}
                     >
                       <AuctionTimer
                         deadline={descendingDeadlineTimer}
