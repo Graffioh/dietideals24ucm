@@ -171,7 +171,7 @@ public class AuctionTests {
                                         AuctionCategory.Toys,
                                         1L,
                                         "carsfromcars.jpeg",
-                                        parseDate("2024-10-10"),
+                                        parseDate("2025-10-10"),
                                         new Time(33200000),
                                         23.0f);
 
@@ -308,7 +308,7 @@ public class AuctionTests {
                                         AuctionCategory.Toys,
                                         1L,
                                         "carsfromcars.jpeg",
-                                        parseDate("2024-10-10"),
+                                        parseDate("2025-10-10"),
                                         new Time(33200000),
                                         23.0f);
 

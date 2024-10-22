@@ -345,7 +345,7 @@ export default function AuctionTimer({ deadline, auction }) {
   return (
     <div>
       {auctionEnded || Object.keys(timeLeft).length === 0 || auction.isOver ? (
-        <div className="text-red-700 text-lg font-bold rounded">
+        <div className="text-red-700 text-lg font-bold rounded mt-0.5">
           Auction ended
         </div>
       ) : auction.auctionType === "fixedtime" ? (
