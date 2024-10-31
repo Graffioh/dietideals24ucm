@@ -1,6 +1,8 @@
 package com.ucm.serverdietideals24;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -37,255 +39,280 @@ public class AuctionTests {
         // ------------------------------------------
         @Nested
         class InsertBaseAttributesAuctionValidation {
+                // Test AuctionType
                 @Test
-                void testAuctionTypeAndCategoryAndQualityAndImagesNull() {
+                public void testAuctionTypeNull() {
                         // Arrange
-                        // **********************************************
-                        Auction validAuction1 = new Auction(
-                                        5L,
-                                        "Table tennis table for sell, used by the best tennis table player in the world and rank 94 on leetcode, Ma Lin",
-                                        "Table tennis",
-                                        "Good",
-                                        0.0f,
-                                        AuctionType.english,
-                                        AuctionCategory.Sport,
-                                        5L,
-                                        "tabletennis123.jpg",
-                                        10.0f,
-                                        100.0f,
-                                        new Time(13200000),
-                                        new Time(0));
-
-                        Auction validAuction2 = new Auction(
+                        Auction validAuction = new Auction(
                                         1L,
-                                        "Brand new bike, never used",
-                                        "Bike",
+                                        "Valid auction description",
+                                        "Valid auction name",
                                         "Good",
                                         0.0f,
                                         AuctionType.english,
                                         AuctionCategory.Toys,
                                         1L,
-                                        "bike.jpg",
+                                        "image.jpg",
                                         10.0f,
                                         100.0f,
                                         new Time(34200000),
                                         new Time(0));
 
-                        // AuctionType null
-                        Auction invalidAuction1 = new Auction(
-                                        7L,
-                                        "New phone, unlocked",
-                                        "Phone",
+                        Auction invalidAuction = new Auction(
+                                        1L,
+                                        "Invalid auction description",
+                                        "Invalid auction name",
                                         "Good",
                                         0.0f,
-                                        null,
-                                        AuctionCategory.Electronics,
-                                        7L,
-                                        "phone.jpg",
-                                        1.0f,
-                                        100.0f,
-                                        new Time(18200000),
-                                        new Time(0));
-
-                        // AuctionCategory null
-                        Auction invalidAuction2 = new Auction(
-                                        7L,
-                                        "New phone, unlocked",
-                                        "Phone",
-                                        null,
-                                        0.0f,
-                                        AuctionType.english,
-                                        AuctionCategory.Electronics,
-                                        7L,
-                                        "phone.jpg",
-                                        1.0f,
-                                        100.0f,
-                                        new Time(18200000),
-                                        new Time(0));
-
-                        // AuctionaQuality null
-                        Auction invalidAuction3 = new Auction(
-                                        1L,
-                                        "Brand new bike, never used",
-                                        "Bike",
-                                        null,
-                                        0.0f,
-                                        AuctionType.english,
+                                        null, // AuctionType null
                                         AuctionCategory.Toys,
                                         1L,
-                                        "bike.jpg",
+                                        "image.jpg",
                                         10.0f,
                                         100.0f,
                                         new Time(34200000),
                                         new Time(0));
 
-                        // auctionImages null
-                        Auction invalidAuction4 = new Auction(
-                                        7L,
-                                        "New phone, unlocked",
-                                        "Phone",
+                        // Act
+                        boolean isValidAuction = auctionValidator.isAuctionValid(validAuction);
+                        boolean isInvalidAuction = auctionValidator.isAuctionValid(invalidAuction);
+
+                        // Assert
+                        assertTrue(isValidAuction);
+                        assertFalse(isInvalidAuction);
+                }
+
+                // Test AuctionCategory
+                @Test
+                public void testAuctionCategoryNull() {
+                        // Arrange
+                        Auction validAuction = new Auction(
+                                        1L,
+                                        "Valid auction description",
+                                        "Valid auction name",
                                         "Good",
                                         0.0f,
                                         AuctionType.english,
-                                        AuctionCategory.Electronics,
-                                        7L,
-                                        null,
-                                        1.0f,
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        "image.jpg",
+                                        10.0f,
                                         100.0f,
-                                        new Time(18200000),
+                                        new Time(34200000),
                                         new Time(0));
-                        // **********************************************
+
+                        Auction invalidAuction = new Auction(
+                                        1L,
+                                        "Invalid auction description",
+                                        "Invalid auction name",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.english,
+                                        null, // AuctionCategory null
+                                        1L,
+                                        "image.jpg",
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
+                                        new Time(0));
 
                         // Act
-                        // **********************************************
-                        boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
-                        boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
-                        boolean isAuctionValid3 = auctionValidator.isAuctionValid(validAuction2);
-                        boolean isAuctionValid4 = auctionValidator.isAuctionValid(invalidAuction2);
-                        boolean isAuctionValid5 = auctionValidator.isAuctionValid(invalidAuction3);
-                        boolean isAuctionValid6 = auctionValidator.isAuctionValid(invalidAuction4);
-                        // **********************************************
+                        boolean isValidAuction = auctionValidator.isAuctionValid(validAuction);
+                        boolean isInvalidAuction = auctionValidator.isAuctionValid(invalidAuction);
 
                         // Assert
-                        // **********************************************
-                        assertEquals(true, isAuctionValid1);
-                        assertEquals(false, isAuctionValid2);
-                        assertEquals(true, isAuctionValid3);
-                        assertEquals(false, isAuctionValid4);
-                        assertEquals(false, isAuctionValid5);
-                        assertEquals(false, isAuctionValid6);
-                        // **********************************************
+                        assertTrue(isValidAuction);
+                        assertFalse(isInvalidAuction);
                 }
 
+                // Test AuctionQuality
                 @Test
-                void testAuctionNameAndImagesEmpty() {
+                public void testAuctionQualityNull() {
                         // Arrange
-                        // **********************************************
-                        Auction validAuction1 = new Auction(
+                        Auction validAuction = new Auction(
                                         1L,
-                                        "Nice cars from cars, really good shape",
-                                        "Cars from Cars",
-                                        "Bad",
-                                        0.0f,
-                                        AuctionType.fixedtime,
-                                        AuctionCategory.Toys,
-                                        1L,
-                                        "carsfromcars.jpeg",
-                                        parseDate("2025-10-10"),
-                                        new Time(33200000),
-                                        23.0f);
-
-                        Auction validAuction2 = new Auction(
-                                        6L,
-                                        "Old chair, great condition",
-                                        "Chair",
+                                        "Valid auction description",
+                                        "Valid auction name",
                                         "Good",
                                         0.0f,
                                         AuctionType.english,
-                                        AuctionCategory.Clothing,
-                                        6L,
-                                        "iamges.png",
-                                        5.0f,
-                                        50.0f,
-                                        new Time(17200000),
-                                        new Time(0));
-
-                        // auctionName empty
-                        Auction invalidAuction1 = new Auction(
-                                        1L,
-                                        "Nice cars from cars, really good shape",
-                                        "",
-                                        "Bad",
-                                        0.0f,
-                                        AuctionType.fixedtime,
                                         AuctionCategory.Toys,
                                         1L,
-                                        "carsfromcars.jpeg",
-                                        parseDate("2024-10-10"),
-                                        new Time(33200000),
-                                        23.0f);
+                                        "image.jpg",
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
+                                        new Time(0));
 
-                        // auctionImages empty
-                        Auction invalidAuction2 = new Auction(
-                                        6L,
-                                        "Old chair, great condition",
-                                        "Chair",
-                                        "Good",
+                        Auction invalidAuction = new Auction(
+                                        1L,
+                                        "Invalid auction description",
+                                        "Invalid auction name",
+                                        null, // AuctionQuality null
                                         0.0f,
                                         AuctionType.english,
-                                        AuctionCategory.Clothing,
-                                        6L,
-                                        "",
-                                        5.0f,
-                                        50.0f,
-                                        new Time(17200000),
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        "image.jpg",
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
                                         new Time(0));
-                        // **********************************************
 
                         // Act
-                        // **********************************************
-                        boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
-                        boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
-                        boolean isAuctionValid3 = auctionValidator.isAuctionValid(validAuction2);
-                        boolean isAuctionValid4 = auctionValidator.isAuctionValid(invalidAuction2);
-                        // **********************************************
+                        boolean isValidAuction = auctionValidator.isAuctionValid(validAuction);
+                        boolean isInvalidAuction = auctionValidator.isAuctionValid(invalidAuction);
 
                         // Assert
-                        // **********************************************
-                        assertEquals(true, isAuctionValid1);
-                        assertEquals(false, isAuctionValid2);
-                        assertEquals(true, isAuctionValid3);
-                        assertEquals(false, isAuctionValid4);
-                        // **********************************************
+                        assertTrue(isValidAuction);
+                        assertFalse(isInvalidAuction);
                 }
 
+                // Test auctionImages null or empty
                 @Test
-                void testAuctionImagesWrongExtension() {
+                public void testAuctionImagesNullOrEmpty() {
                         // Arrange
-                        // **********************************************
-                        Auction validAuction1 = new Auction(
-                                        6L,
-                                        "Old chair, great condition",
-                                        "Chair",
+                        Auction validAuction = new Auction(
+                                        1L,
+                                        "Valid auction description",
+                                        "Valid auction name",
                                         "Good",
                                         0.0f,
                                         AuctionType.english,
-                                        AuctionCategory.Clothing,
-                                        6L,
-                                        "chair.jpg",
-                                        5.0f,
-                                        50.0f,
-                                        new Time(17200000),
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        "image.jpg",
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
                                         new Time(0));
 
-                        // auctionImages wrong extension
-                        Auction invalidAuction1 = new Auction(
-                                        6L,
-                                        "Old chair, great condition",
-                                        "Chair",
+                        Auction invalidAuctionNullImage = new Auction(
+                                        1L,
+                                        "Invalid auction description",
+                                        "Invalid auction name",
                                         "Good",
                                         0.0f,
                                         AuctionType.english,
-                                        AuctionCategory.Clothing,
-                                        6L,
-                                        "chair.doc",
-                                        5.0f,
-                                        50.0f,
-                                        new Time(17200000),
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        null, // auctionImages null
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
                                         new Time(0));
-                        // **********************************************
+
+                        Auction invalidAuctionEmptyImage = new Auction(
+                                        1L,
+                                        "Invalid auction description",
+                                        "Invalid auction name",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.english,
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        "", // auctionImages empty
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
+                                        new Time(0));
 
                         // Act
-                        // **********************************************
-                        boolean isAuctionValid1 = auctionValidator.isAuctionValid(validAuction1);
-                        boolean isAuctionValid2 = auctionValidator.isAuctionValid(invalidAuction1);
-                        // **********************************************
+                        boolean isValidAuction = auctionValidator.isAuctionValid(validAuction);
+                        boolean isInvalidAuctionNullImage = auctionValidator.isAuctionValid(invalidAuctionNullImage);
+                        boolean isInvalidAuctionEmptyImage = auctionValidator.isAuctionValid(invalidAuctionEmptyImage);
 
                         // Assert
-                        // **********************************************
-                        assertEquals(true, isAuctionValid1);
-                        assertEquals(false, isAuctionValid2);
-                        // **********************************************
+                        assertTrue(isValidAuction);
+                        assertFalse(isInvalidAuctionNullImage);
+                        assertFalse(isInvalidAuctionEmptyImage);
+                }
+
+                // Test auctionImages wrong extension
+                @Test
+                public void testAuctionImagesWrongExtension() {
+                        // Arrange
+                        Auction validAuction = new Auction(
+                                        1L,
+                                        "Valid auction description",
+                                        "Valid auction name",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.english,
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        "image.jpg",
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
+                                        new Time(0));
+
+                        Auction invalidAuctionWrongExtension = new Auction(
+                                        1L,
+                                        "Invalid auction description",
+                                        "Invalid auction name",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.english,
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        "image.doc", // wrong extension
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
+                                        new Time(0));
+
+                        // Act
+                        boolean isValidAuction = auctionValidator.isAuctionValid(validAuction);
+                        boolean isInvalidAuctionWrongExtension = auctionValidator
+                                        .isAuctionValid(invalidAuctionWrongExtension);
+
+                        // Assert
+                        assertTrue(isValidAuction);
+                        assertFalse(isInvalidAuctionWrongExtension);
+                }
+
+                // Test auctionName empty
+                @Test
+                public void testAuctionNameEmpty() {
+                        // Arrange
+                        Auction validAuction = new Auction(
+                                        1L,
+                                        "Valid auction description",
+                                        "Valid auction name",
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.english,
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        "image.jpg",
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
+                                        new Time(0));
+
+                        Auction invalidAuctionEmptyName = new Auction(
+                                        1L,
+                                        "Invalid auction description",
+                                        "", // auctionName empty
+                                        "Good",
+                                        0.0f,
+                                        AuctionType.english,
+                                        AuctionCategory.Toys,
+                                        1L,
+                                        "image.jpg",
+                                        10.0f,
+                                        100.0f,
+                                        new Time(34200000),
+                                        new Time(0));
+
+                        // Act
+                        boolean isValidAuction = auctionValidator.isAuctionValid(validAuction);
+                        boolean isInvalidAuctionEmptyName = auctionValidator.isAuctionValid(invalidAuctionEmptyName);
+
+                        // Assert
+                        assertTrue(isValidAuction);
+                        assertFalse(isInvalidAuctionEmptyName);
                 }
         }
         // ------------------------------------------

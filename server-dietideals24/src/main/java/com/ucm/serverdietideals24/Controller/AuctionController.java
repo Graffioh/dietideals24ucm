@@ -206,7 +206,7 @@ public class AuctionController {
         }
     }
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 1100)
     public void descendingAuctionOfferReduction() {
         List<Auction> auctions = auctionDAO.getAllDescendingAuctions();
 
@@ -220,7 +220,7 @@ public class AuctionController {
         }
     }
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 1100)
     public void englishAuctionTimerReduction() {
         List<Auction> auctions = auctionDAO.getAllEnglishAuctions();
 
@@ -228,6 +228,7 @@ public class AuctionController {
             if (!auction.getIsOver()) {
                 if (auction.getCurrentTimer().equals(Time.valueOf("00:00:00"))) {
                     setCurrentOfferTimer(auction.getId(), Time.valueOf("00:00:00"));
+                    setAuctionIsOver(auction.getId());
                 } else {
                     setCurrentOfferTimer(auction.getId(), decrementTimerBy1Second(auction));
                 }
