@@ -82,11 +82,7 @@ export default function AuctionTimer({ deadline, auction }) {
         }
 
         // SET END
-        if (
-          timeLeft === "00:00:00" &&
-          !auctionEnded &&
-          !auction.isOver
-        ) {
+        if (timeLeft === "00:00:00" && !auctionEnded && !auction.isOver) {
           switch (auction.auctionType) {
             case "fixedtime":
               setAuctionEnded(true);
@@ -183,7 +179,7 @@ export default function AuctionTimer({ deadline, auction }) {
               if (auction.currentTimer === "00:00:00") {
                 setAuctionEnded(true);
                 clearInterval(timer);
-                
+
                 // set isOver attribute in DB to true
                 fetch(config.apiUrl + "/auctions/" + auction.id + "/is-over", {
                   method: "PUT",
@@ -344,7 +340,11 @@ export default function AuctionTimer({ deadline, auction }) {
 
   return (
     <div>
-      {((auctionEnded || timeLeft === "00:00:00" || auction.isOver) && auction.auctionType != "descending") || auction.currentOffer == auction.endPrice || auction.isOver || auction.isOver ? (
+      {((auctionEnded || timeLeft === "00:00:00") &&
+        auction.auctionType != "descending") ||
+      auction.currentOffer == auction.endPrice ||
+      auction.isOver ||
+      Object.keys(timeLeft).length === 0 ? (
         <div className="text-red-700 text-lg font-bold rounded">
           Auction ended
         </div>
