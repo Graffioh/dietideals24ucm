@@ -12,9 +12,9 @@ You need to create one of those computer systems, specifically DietiDeals24, an 
 
 
 ### Requests:
-- Software deployment [WIP]
-- Software documentation [WIP]
-- Software presentation [WIP]
+- Software deployment ✅ 
+- Software documentation ✅ 
+- Software presentation ✅ 
 
 ## Demo
 https://github.com/Graffioh/dietideals24ucm/assets/93008765/5ce322dd-cfe4-4f2f-8b5a-e7c43fa76f49
